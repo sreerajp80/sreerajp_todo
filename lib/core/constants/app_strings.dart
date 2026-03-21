@@ -50,6 +50,8 @@ abstract final class AppStrings {
   static const String completeAll = 'Complete All';
   static const String markDropped = 'Mark Dropped';
   static const String selectAll = 'Select All';
+  static const String deselectAll = 'Deselect All';
+  static const String copyToAnotherDay = 'Copy to another day';
 
   static const String copiedFrom = 'Copied from';
   static const String portedTo = 'Ported to';
@@ -58,6 +60,24 @@ abstract final class AppStrings {
   static const String startTimer = 'Start timer';
   static const String stopTimer = 'Stop timer';
   static const String timerRunning = 'Timer running';
+  static const String addManualSegment = 'Add Manual Segment';
+  static const String manualSegmentAdded = 'Manual segment added';
+  static const String segmentStart = 'Start time';
+  static const String segmentEnd = 'End time';
+  static const String segmentType = 'Type';
+  static const String segmentDuration = 'Duration';
+  static const String segmentAuto = 'Auto';
+  static const String segmentManual = 'Manual';
+  static const String segmentRunning = 'running…';
+  static const String segmentInterruptedTooltip = 'Auto-closed on app restart';
+  static const String totalTime = 'Total time';
+  static const String viewSegments = 'Time Segments';
+  static const String noSegments = 'No time segments recorded';
+  static const String startBeforeEnd = 'Start time must be before end time';
+  static const String segmentOverlap =
+      'This segment overlaps with an existing one';
+  static const String segmentMustBeSameDay =
+      'Both times must fall within the same calendar day';
 
   static const String statusChangedTo = 'Status changed to';
   static const String undoStatusChange = 'Status change undone';
@@ -69,10 +89,72 @@ abstract final class AppStrings {
   static const String todosCopied = 'tasks copied';
   static const String todosSkipped = 'skipped (duplicate title)';
 
+  static const String stepSelectItems = 'Select Items';
+  static const String stepPickDate = 'Pick Date';
+  static const String stepPreview = 'Preview';
+  static const String next = 'Next';
+  static const String back = 'Back';
+  static const String copyConfirm = 'Copy';
+  static const String noItemsSelected = 'Select at least one item';
+  static const String willBeSkipped = 'Already exists — will be skipped';
+  static const String itemsToCopy = 'items to copy';
+  static const String itemsWillBeSkipped = 'will be skipped';
+  static const String targetDate = 'Target Date';
+  static const String sourceDate = 'Source Date';
+  static const String selectDateFirst = 'Select a target date first';
+
   static const String viewTodo = 'View Todo';
   static const String readOnlyPastDate = 'Past date — read only';
 
   static String selectedCount(int count) => '$count selected';
+
+  // Recurrence
+  static const String noRecurrenceRules = 'No recurrence rules yet';
+  static const String deleteRecurrenceRule = 'Delete recurrence rule?';
+  static const String deleteRecurrenceRuleBody =
+      'Existing tasks created by this rule will not be affected.';
+  static const String recurrenceRuleDeleted = 'Recurrence rule deleted';
+  static const String recurrenceRuleSaved = 'Recurrence rule saved';
+  static const String recurrenceRuleUpdated = 'Recurrence rule updated';
+  static const String active = 'Active';
+  static const String paused = 'Paused';
+  static const String noEndDate = 'No end date';
+  static const String startDate = 'Start date';
+  static const String endDate = 'End date';
+  static const String frequency = 'Frequency';
+  static const String interval = 'Interval';
+  static const String daily = 'Daily';
+  static const String weekly = 'Weekly';
+  static const String monthly = 'Monthly';
+  static const String yearly = 'Yearly';
+  static const String every = 'Every';
+  static const String days = 'days';
+  static const String weeks = 'weeks';
+  static const String months = 'months';
+  static const String years = 'years';
+  static const String daysOfWeek = 'Days of week';
+  static const String dayOfMonth = 'Day of month';
+  static const String specificDate = 'Specific date';
+  static const String ordinalWeekday = 'Ordinal weekday';
+  static const String month = 'Month';
+  static const String preview = 'Preview';
+  static const String nextOccurrences = 'Next 5 occurrences';
+  static const String noUpcomingOccurrences = 'No upcoming occurrences';
+  static const String selectDaysOfWeek = 'Select at least one day';
+
+  static const String monday = 'Mon';
+  static const String tuesday = 'Tue';
+  static const String wednesday = 'Wed';
+  static const String thursday = 'Thu';
+  static const String friday = 'Fri';
+  static const String saturday = 'Sat';
+  static const String sunday = 'Sun';
+
+  static const String first = 'First';
+  static const String second = 'Second';
+  static const String third = 'Third';
+  static const String fourth = 'Fourth';
+  static const String last = 'Last';
 
   static const errors = _ErrorStrings();
 }

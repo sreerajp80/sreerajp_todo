@@ -16,4 +16,5 @@ abstract final class AppRoutes {
   static String editTodoPath(String id) => '/todo/$id';
   static String timeSegmentsPath(String id) => '/todo/$id/segments';
   static String recurringEditPath(String id) => '/recurring/$id';
+  static String copyTodosPath(String fromDate) => '/copy?from=$fromDate';
 }

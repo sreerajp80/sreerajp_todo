@@ -58,7 +58,7 @@ class CopyTodos {
         description: source.description,
         status: TodoStatus.pending,
         sourceDate: source.date,
-        recurrenceRuleId: source.recurrenceRuleId,
+        recurrenceRuleId: null,
         sortOrder: nextSortOrder,
         createdAt: now,
         updatedAt: now,

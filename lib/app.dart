@@ -57,7 +57,11 @@ final _router = GoRouter(
       path: AppRoutes.copyTodos,
       builder: (context, state) {
         final from = state.uri.queryParameters['from'];
-        return CopyTodosScreen(fromDate: from);
+        final preSelectedIds = state.extra as List<String>?;
+        return CopyTodosScreen(
+          fromDate: from,
+          preSelectedIds: preSelectedIds,
+        );
       },
     ),
     GoRoute(

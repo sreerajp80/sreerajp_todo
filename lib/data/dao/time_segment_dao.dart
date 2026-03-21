@@ -84,6 +84,34 @@ class TimeSegmentDao {
     return maps.map(TimeSegmentEntity.fromMap).toList();
   }
 
+  /// Returns true if [startTime, endTime] overlaps any existing segment
+  /// for the given [todoId]. Excludes [excludeId] if provided.
+  Future<bool> hasOverlap({
+    required String todoId,
+    required String startTime,
+    required String endTime,
+    String? excludeId,
+  }) async {
+    final db = await _databaseService.database;
+    final excludeClause =
+        excludeId != null ? 'AND id != ?' : '';
+    final args = <dynamic>[todoId, endTime, startTime];
+    if (excludeId != null) args.add(excludeId);
+
+    final result = await db.rawQuery(
+      '''
+      SELECT COUNT(*) as cnt FROM time_segments
+      WHERE todo_id = ?
+        AND start_time < ?
+        AND end_time > ?
+        $excludeClause
+      ''',
+      args,
+    );
+    final count = result.first['cnt'] as int;
+    return count > 0;
+  }
+
   Future<void> deleteByTodoId(String todoId) async {
     final db = await _databaseService.database;
     await db.delete(

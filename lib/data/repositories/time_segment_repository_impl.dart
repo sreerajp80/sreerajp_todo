@@ -77,6 +77,19 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
 
     _checkTerminalStatus(todo.status);
 
+    if (segment.endTime == null) {
+      throw ArgumentError('Manual segments must have an end time.');
+    }
+
+    final overlaps = await _timeSegmentDao.hasOverlap(
+      todoId: segment.todoId,
+      startTime: segment.startTime,
+      endTime: segment.endTime!,
+    );
+    if (overlaps) {
+      throw const SegmentOverlapException();
+    }
+
     await _timeSegmentDao.insert(segment);
   }
 

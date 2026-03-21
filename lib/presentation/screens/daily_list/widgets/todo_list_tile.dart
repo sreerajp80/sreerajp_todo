@@ -22,6 +22,7 @@ class TodoListTile extends ConsumerWidget {
     required this.onCopy,
     required this.onEdit,
     required this.onDelete,
+    required this.onViewSegments,
   });
 
   final TodoEntity todo;
@@ -36,6 +37,7 @@ class TodoListTile extends ConsumerWidget {
   final VoidCallback onCopy;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback onViewSegments;
 
   bool get _isTerminal =>
       todo.status == TodoStatus.completed || todo.status == TodoStatus.dropped;
@@ -269,6 +271,16 @@ class TodoListTile extends ConsumerWidget {
           ),
         ],
         const PopupMenuItem(
+          value: 'segments',
+          child: Row(
+            children: [
+              Icon(Icons.timer_outlined, size: 20),
+              SizedBox(width: 8),
+              Text(AppStrings.viewSegments),
+            ],
+          ),
+        ),
+        const PopupMenuItem(
           value: 'edit',
           child: Row(
             children: [
@@ -307,6 +319,8 @@ class TodoListTile extends ConsumerWidget {
             onDrop();
           case 'port':
             onPort();
+          case 'segments':
+            onViewSegments();
           case 'edit':
             onEdit();
           case 'copy':

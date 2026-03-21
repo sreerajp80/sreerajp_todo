@@ -70,7 +70,7 @@ class PortTodo {
       description: todo.description,
       status: TodoStatus.pending,
       sourceDate: todo.date,
-      recurrenceRuleId: todo.recurrenceRuleId,
+      recurrenceRuleId: null,
       sortOrder: maxSortOrder,
       createdAt: now,
       updatedAt: now,

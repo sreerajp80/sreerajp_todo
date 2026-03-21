@@ -186,7 +186,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       if (!confirmed || !mounted) return;
     }
 
-    if (newStatus == TodoStatus.ported) {
+    if (newStatus == TodoStatus.ported && widget.isEditing) {
       final confirmed = await showConfirmDialog(
         context,
         title: AppStrings.confirmPort,
@@ -202,8 +202,31 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         lastDate: DateTime.now().add(const Duration(days: 365)),
         helpText: AppStrings.selectTargetDate,
       );
-      if (picked == null) return;
-      _portedTo = dateTimeToIso(picked);
+      if (picked == null || !mounted) return;
+
+      final targetDate = dateTimeToIso(picked);
+      try {
+        final notifier =
+            ref.read(dailyTodoProvider(_effectiveDate).notifier);
+        await notifier.portTodo(_existingTodo!.id, targetDate);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text(AppStrings.todoPorted)),
+          );
+          context.pop();
+        }
+      } on Exception catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString())),
+          );
+        }
+      }
+      return;
+    }
+
+    if (newStatus == TodoStatus.ported && !widget.isEditing) {
+      return;
     }
 
     setState(() => _status = newStatus);
@@ -344,27 +367,28 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
 
   Widget _buildStatusSelector(ThemeData theme) {
     return SegmentedButton<TodoStatus>(
-      segments: const [
-        ButtonSegment(
+      segments: [
+        const ButtonSegment(
           value: TodoStatus.pending,
           label: Text(AppStrings.statusPending),
           icon: Icon(Icons.radio_button_unchecked),
         ),
-        ButtonSegment(
+        const ButtonSegment(
           value: TodoStatus.completed,
           label: Text(AppStrings.statusCompleted),
           icon: Icon(Icons.check_circle_outline),
         ),
-        ButtonSegment(
+        const ButtonSegment(
           value: TodoStatus.dropped,
           label: Text(AppStrings.statusDropped),
           icon: Icon(Icons.cancel_outlined),
         ),
-        ButtonSegment(
-          value: TodoStatus.ported,
-          label: Text(AppStrings.statusPorted),
-          icon: Icon(Icons.arrow_forward),
-        ),
+        if (widget.isEditing)
+          const ButtonSegment(
+            value: TodoStatus.ported,
+            label: Text(AppStrings.statusPorted),
+            icon: Icon(Icons.arrow_forward),
+          ),
       ],
       selected: {_status},
       onSelectionChanged: _isReadOnly

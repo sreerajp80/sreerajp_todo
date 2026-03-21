@@ -46,6 +46,16 @@ class TodoNotFoundException implements Exception {
   String toString() => 'TodoNotFoundException: $message';
 }
 
+class SegmentOverlapException implements Exception {
+  const SegmentOverlapException([
+    this.message = 'This segment overlaps with an existing one.',
+  ]);
+  final String message;
+
+  @override
+  String toString() => 'SegmentOverlapException: $message';
+}
+
 class BackupVersionTooNewException implements Exception {
   const BackupVersionTooNewException([
     this.message = 'This backup was created by a newer version of the app.',

@@ -7,6 +7,7 @@ import 'package:sreerajp_todo/application/daily_todo_state.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
@@ -84,38 +85,21 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     }
   }
 
-  Future<void> _showCopyDatePicker(List<String> todoIds) async {
-    final tomorrow = DateTime.now().add(const Duration(days: 1));
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: tomorrow,
-      firstDate: DateTime.now().subtract(const Duration(days: 365)),
-      lastDate: DateTime.now().add(const Duration(days: 365)),
-      helpText: AppStrings.selectTargetDate,
+  Future<void> _openCopyWizard({List<String>? preSelectedIds}) async {
+    final result = await context.push<CopyTodosResult>(
+      AppRoutes.copyTodosPath(widget.date),
+      extra: preSelectedIds,
     );
-    if (picked != null && mounted) {
-      final targetDate = dateTimeToIso(picked);
-      try {
-        final result = await ref
-            .read(dailyTodoProvider(widget.date).notifier)
-            .copyTodos(todoIds, targetDate);
-        if (mounted) {
-          final msg = StringBuffer();
-          msg.write('${result.copied.length} ${AppStrings.todosCopied}');
-          if (result.skipped.isNotEmpty) {
-            msg.write(', ${result.skipped.length} ${AppStrings.todosSkipped}');
-          }
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(msg.toString())),
-          );
-        }
-      } on Exception catch (e) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
-        }
+    if (result != null && mounted) {
+      ref.read(dailyTodoProvider(widget.date).notifier).loadTodos();
+      final msg = StringBuffer();
+      msg.write('${result.copied.length} ${AppStrings.todosCopied}');
+      if (result.skipped.isNotEmpty) {
+        msg.write(', ${result.skipped.length} ${AppStrings.todosSkipped}');
       }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(msg.toString())),
+      );
     }
   }
 
@@ -225,7 +209,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                                 await _showPortDatePicker(todo.id);
                               }
                             },
-                            onCopy: () => _showCopyDatePicker([todo.id]),
+                            onCopy: () => _openCopyWizard(preSelectedIds: [todo.id]),
                             onEdit: () {
                               if (_isPast) {
                                 context.push(
@@ -234,6 +218,10 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                                 context.push(
                                     AppRoutes.editTodoPath(todo.id));
                               }
+                            },
+                            onViewSegments: () {
+                              context.push(
+                                  AppRoutes.timeSegmentsPath(todo.id));
                             },
                             onDelete: () async {
                               final confirmed = await showConfirmDialog(
@@ -330,6 +318,17 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         ),
         PopupMenuButton<String>(
           itemBuilder: (context) => [
+            if (!_isPast)
+              const PopupMenuItem(
+                value: 'copy_day',
+                child: Row(
+                  children: [
+                    Icon(Icons.copy_all, size: 20),
+                    SizedBox(width: 8),
+                    Text(AppStrings.copyToAnotherDay),
+                  ],
+                ),
+              ),
             const PopupMenuItem(
               value: 'recurring',
               child: Row(
@@ -363,6 +362,8 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           ],
           onSelected: (value) {
             switch (value) {
+              case 'copy_day':
+                _openCopyWizard();
               case 'recurring':
                 context.push(AppRoutes.recurring);
               case 'backup':
@@ -449,7 +450,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           icon: const Icon(Icons.copy),
           tooltip: AppStrings.copy,
           onPressed: () =>
-              _showCopyDatePicker(selectedIds.toList()),
+              _openCopyWizard(preSelectedIds: selectedIds.toList()),
         ),
         IconButton(
           icon: const Icon(Icons.select_all),

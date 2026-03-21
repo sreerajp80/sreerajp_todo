@@ -95,6 +95,27 @@ class TodoDao {
     return maps.map(TodoEntity.fromMap).toList();
   }
 
+  Future<int> maxSortOrder(String date) async {
+    final db = await _databaseService.database;
+    final result = await db.rawQuery(
+      'SELECT MAX(sort_order) AS max_order FROM todos WHERE date = ?',
+      [date],
+    );
+    final value = result.first['max_order'];
+    if (value == null) return -1;
+    return value as int;
+  }
+
+  Future<void> bulkInsert(List<TodoEntity> todos) async {
+    if (todos.isEmpty) return;
+    final db = await _databaseService.database;
+    await db.transaction((txn) async {
+      for (final todo in todos) {
+        await txn.insert('todos', todo.toMap());
+      }
+    });
+  }
+
   Future<void> updateSortOrders(List<TodoEntity> todos) async {
     final db = await _databaseService.database;
     final now = DateTime.now().toUtc().toIso8601String();
