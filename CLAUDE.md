@@ -1,4 +1,4 @@
-# CLAUDE.md — SreerajP Journal Vault
+# CLAUDE.md — SreerajP ToDo
 
 > This file is read automatically by Claude Code on every session in this project.
 > It defines conventions, constraints, and context that must be followed without exception.
@@ -9,9 +9,9 @@
 
 | Field | Value |
 |-------|-------|
-| **App name** | SreerajP Journal Vault |
+| **App name** | SreerajP ToDo |
 | **Type** | Personal offline-first daily ToDo / time-tracker |
-| **Project root** | `L:\Android\SreerajP_ToDo` |
+| **Project root** | `L:\Android\sreerajp_todo` |
 | **Flutter SDK** | 3.41.4 stable • rev `ff37bef603` |
 | **Dart SDK** | 3.11.1 |
 | **DevTools** | 2.54.1 |
@@ -22,7 +22,7 @@
 | **Database** | SQLite via `sqflite_sqlcipher` (mobile, AES-256 encrypted) + `sqflite_common_ffi` with SQLCipher (desktop) |
 | **State management** | Riverpod (`flutter_riverpod`) |
 | **Navigation** | `go_router` |
-| **Organisation ID** | `com.sreerajp` |
+| **Organisation ID** | `in.sreerajp` |
 | **Connectivity** | **None — fully offline, zero internet access required or permitted** |
 | **Backend** | None |
 | **Cloud services** | None |

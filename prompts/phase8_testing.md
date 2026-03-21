@@ -6,6 +6,9 @@ Fill unit/widget test coverage gaps, write integration tests, and perform perfor
 ## Pre-Requisites
 - Phases 1–7 complete (all features implemented, UI polished).
 - Read `CLAUDE.md` — testing rules, 80% coverage target.
+- Read `docs/architecture.md` — test layout (§13), critical test areas.
+- Read `docs/security.md` — security testing strategy (§12 — encryption, backup round-trip, wrong passphrase, schema validation, offline operation).
+- Read `docs/flutter_project_engineering_standard.md` — testing standard (§9 — test levels, test rules, test quality), Definition of Done (§14 — all three profiles: Core Baseline, Production App Extension, Sensitive Data Extension).
 
 ## Key Rules
 - Minimum unit test coverage: **80%** on `lib/data/` and `lib/domain/`.

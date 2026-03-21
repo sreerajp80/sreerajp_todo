@@ -1,9 +1,9 @@
-# Personal ToDo App — Project Plan
+# SreerajP ToDo — Project Plan
 
 **Flutter SDK:** 3.41.4 (stable) • rev `ff37bef603` • 2026-03-03
 **Dart SDK:** 3.11.1 • DevTools 2.54.1
 **IDE:** Visual Studio Code
-**Project Root:** `L:\Android\SreerajP_ToDo`
+**Project Root:** `L:\Android\sreerajp_todo`
 **Date:** 2026-03-15
 **Version:** 1.3 (updated 2026-03-20)
 
@@ -400,10 +400,10 @@ workflow tooling in place.
 
 1. **Scaffold the project**
    ```powershell
-   # Run from L:\Android\SreerajP_ToDo
+   # Run from L:\Android\sreerajp_todo
    # If starting fresh:
-   cd L:\Android\SreerajP_ToDo
-   flutter create --org com.sreerajp --platforms android,windows .
+   cd L:\Android\sreerajp_todo
+   flutter create --org in.sreerajp --platforms android,windows .
    code .
    ```
 
@@ -414,8 +414,8 @@ workflow tooling in place.
        sdk: flutter
      flutter_localizations:
        sdk: flutter
-     sqflite: ^2.4.1
-     sqflite_common_ffi: ^2.3.4
+     sqflite_sqlcipher: ^3.1.0   # Encrypted SQLite (mobile) — replaces sqflite
+     sqflite_common_ffi: ^2.3.4  # SQLite FFI for desktop (with SQLCipher)
      path: ^1.9.0
      path_provider: ^2.1.4
      flutter_riverpod: ^2.6.1
@@ -428,6 +428,7 @@ workflow tooling in place.
      json_annotation: ^4.9.0
      unorm_dart: ^2.0.0          # NFC normalisation — audit transitive deps first
      file_picker: ^8.0.0         # Backup file selection — audit transitive deps first
+     rrule: ^0.2.16              # iCalendar RRULE parsing (RFC 5545) — audit transitive deps first
 
    dev_dependencies:
      flutter_test:
@@ -928,7 +929,7 @@ restore from a previous backup file.
    ```dart
    class BackupService {
      /// Exports the database file to [destinationPath].
-     /// File name format: journal_vault_backup_YYYYMMDD_HHMMSS.db
+     /// File name format: sreerajp_todo_backup_YYYYMMDD_HHMMSS.db
      Future<String> exportDatabase(String destinationPath);
 
      /// Validates and imports a database from [sourcePath].
@@ -1228,7 +1229,7 @@ Review and fill any gaps in unit test coverage. The following should already exi
 ## 7. Folder Structure
 
 ```
-SreerajP_ToDo/
+sreerajp_todo/
 ├── CLAUDE.md                           # Claude Code project rules
 ├── .githooks/
 │   └── pre-commit                      # Automated checks: analyze, dep audit, manifest, tests

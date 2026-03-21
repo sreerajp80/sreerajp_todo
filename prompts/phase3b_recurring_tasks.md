@@ -7,6 +7,8 @@ Allow users to define recurrence rules (daily, weekly, monthly, yearly — full 
 - Phase 2 complete (DB layer with `RecurrenceRuleDao`, `RecurrenceRuleEntity` model).
 - Phase 3 complete (core todo CRUD, daily list screen, use-case pattern established).
 - Read `CLAUDE.md` — non-negotiable rules, architecture constraints.
+- Read `docs/architecture.md` — data flow (§6), use-case pattern, navigation (§9).
+- Read `docs/flutter_project_engineering_standard.md` — testing standard (§9), coding standards (§8), Definition of Done (§14).
 
 ## Architecture Reminder
 - Generated recurring tasks behave identically to manually created tasks.
@@ -25,7 +27,7 @@ Allow users to define recurrence rules (daily, weekly, monthly, yearly — full 
 Add `rrule` to `pubspec.yaml` dependencies. Before proceeding:
 ```powershell
 flutter pub get
-flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics"
+flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics|dio|chopper|retrofit|amplitude|mixpanel|datadog"
 ```
 Zero matches required. If `rrule` fails the audit, implement a subset RRULE parser in `lib/core/utils/rrule_utils.dart` covering: FREQ, INTERVAL, BYDAY, BYMONTH, BYMONTHDAY, UNTIL, and COUNT.
 

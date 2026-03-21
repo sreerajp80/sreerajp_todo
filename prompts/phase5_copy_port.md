@@ -7,6 +7,8 @@ Allow copying one or more ToDo items to another day, and implement the port work
 - Phases 1–4 complete (DB layer, CRUD, status changes with undo, time tracking).
 - `CopyTodos` and `PortTodo` use-cases defined in Phase 3 — may need refinement.
 - Read `CLAUDE.md` — rules on copying, porting, source_date, ported_to.
+- Read `docs/architecture.md` — data flow (§6), use-case pattern, navigation (§9).
+- Read `docs/flutter_project_engineering_standard.md` — testing standard (§9), UX rules (§6.4 — destructive actions require confirmation or undo), Definition of Done (§14).
 
 ## Key Business Rules
 - **Copy**: source item status unchanged. New item on target date with `status = pending`, `source_date = original.date`.

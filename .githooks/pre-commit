@@ -1,0 +1,4 @@
+#!/bin/sh
+# Delegate to PowerShell on Windows where flutter.bat is the native entry point.
+# Git for Windows' bundled sh cannot run flutter (it needs bash which may not be installed).
+exec powershell.exe -ExecutionPolicy Bypass -NoProfile -File "$(cd "$(dirname "$0")" && pwd)/pre-commit.ps1"

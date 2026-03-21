@@ -4,9 +4,9 @@
 Create a runnable Flutter skeleton with navigation, theming, folder structure, and offline enforcement tooling. The app must run on Android and Windows desktop with zero internet dependency.
 
 ## Context
-- **App name:** SreerajP Journal Vault
-- **Organisation:** `com.sreerajp`
-- **Project root:** `L:\Android\SreerajP_ToDo`
+- **App name:** SreerajP ToDo
+- **Organisation:** `in.sreerajp`
+- **Project root:** `L:\Android\sreerajp_todo`
 - **Flutter SDK:** 3.41.4 stable
 - **Platforms (MVP):** Android, Windows desktop
 - **This is a fully offline app** — no internet access, ever. No networking packages, no cloud services, no analytics, no telemetry.
@@ -14,13 +14,15 @@ Create a runnable Flutter skeleton with navigation, theming, folder structure, a
 ## Pre-Requisites
 - Read `CLAUDE.md` in the project root — it is the single source of truth.
 - Read `flutter_todo_app_plan.md` for full architectural context.
+- Read `docs/architecture.md` — layer boundaries, folder structure, ownership rules.
+- Read `docs/flutter_project_engineering_standard.md` — coding standards (§8), lint config (§8.1), structure rules (§3), AI assistant instructions (§13), Definition of Done (§14).
 
 ## Tasks
 
 ### 1. Scaffold the Flutter Project
 ```powershell
-cd L:\Android\SreerajP_ToDo
-flutter create --org com.sreerajp --platforms android,windows .
+cd L:\Android\sreerajp_todo
+flutter create --org in.sreerajp --platforms android,windows .
 ```
 
 ### 2. Set Up Folder Structure
@@ -99,7 +101,7 @@ Also create `test/`, `integration_test/`, and `assets/fonts/` directories.
 **dependencies:**
 - `flutter` (sdk)
 - `flutter_localizations` (sdk)
-- `sqflite_sqlcipher: ^1.0.0` (replaces `sqflite` — AES-256 encrypted SQLite for mobile)
+- `sqflite_sqlcipher: ^3.1.0` (replaces `sqflite` — AES-256 encrypted SQLite for mobile)
 - `sqflite_common_ffi: ^2.3.4` (SQLite FFI for desktop)
 - `path: ^1.9.0`
 - `path_provider: ^2.1.4`
@@ -113,6 +115,7 @@ Also create `test/`, `integration_test/`, and `assets/fonts/` directories.
 - `json_annotation: ^4.9.0`
 - `unorm_dart: ^2.0.0`
 - `file_picker: ^8.0.0`
+- `rrule: ^0.2.16` (iCalendar RRULE parsing — audit transitive deps first)
 
 **dev_dependencies:**
 - `flutter_test` (sdk)
@@ -149,7 +152,7 @@ void main() {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
   }
-  runApp(const ProviderScope(child: JournalVaultApp()));
+  runApp(const ProviderScope(child: TodoApp()));
 }
 ```
 

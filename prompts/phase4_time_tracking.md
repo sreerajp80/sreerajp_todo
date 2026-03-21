@@ -8,6 +8,8 @@ Implement reliable multi-segment start/stop time tracking per ToDo per day, incl
 - `TimeSegmentDao` and `TimeSegmentRepository` already created in Phase 2.
 - `StartTimeSegment` and `RepairOrphanedSegments` use-cases defined in plan.
 - Read `CLAUDE.md` — rules on segments, terminal status lock, one-open-segment constraint.
+- Read `docs/architecture.md` — data flow (§6), use-case pattern, provider types (§5).
+- Read `docs/flutter_project_engineering_standard.md` — testing standard (§9), coding standards (§8), Definition of Done (§14).
 
 ## Key Business Rules (from CLAUDE.md)
 1. **One open segment per todo**: at most one `TimeSegmentEntity` with `end_time IS NULL` per `todo_id`. Throw `SegmentAlreadyRunningException` if violated.

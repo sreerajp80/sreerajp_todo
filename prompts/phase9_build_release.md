@@ -6,6 +6,9 @@ Produce signed, distributable builds for Android (APK + AAB) and Windows (portab
 ## Pre-Requisites
 - Phases 1–8 complete (all features, tests passing, performance profiled).
 - Read `CLAUDE.md` — build rules, signing, offline enforcement.
+- Read `docs/release_process.md` — full release checklist (§7), Android release steps (§8), Windows release steps (§9), signing and secret handling (§6).
+- Read `docs/security.md` — platform security controls (§9 — Android manifest, Windows network capabilities), offline enforcement, permissions (§10).
+- Read `docs/flutter_project_engineering_standard.md` — Definition of Done (§14 — all three profiles), artifact selection (§5.4), CI standard (§10).
 
 ---
 
@@ -59,7 +62,7 @@ Semantic versioning. Build number can be auto-incremented in CI later.
   ```
 
 #### Set application ID and version:
-- `applicationId`: `com.sreerajp.journal_vault`
+- `applicationId`: `in.sreerajp.sreerajp_todo`
 - `minSdkVersion`: 21 (Android 5.0 Lollipop)
 - `targetSdkVersion`: latest stable (34+)
 - `compileSdkVersion`: latest stable
@@ -144,7 +147,7 @@ flutter test integration_test/app_test.dart
 #### Offline enforcement:
 ```powershell
 # Dep audit
-flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics|dio|chopper|retrofit"
+flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics|dio|chopper|retrofit|amplitude|mixpanel|datadog"
 # Expected: zero matches
 
 # Manifest check

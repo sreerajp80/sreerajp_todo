@@ -6,6 +6,8 @@ Build full CRUD for ToDo items: daily list screen, create/edit screen, autocompl
 ## Pre-Requisites
 - Phase 1 & 2 complete (project scaffolded, DB layer with all DAOs, models, and repositories working with passing tests).
 - Read `CLAUDE.md` — non-negotiable rules, architecture, naming conventions.
+- Read `docs/architecture.md` — data flow (§6), use-case list, navigation (§9), provider types (§5).
+- Read `docs/flutter_project_engineering_standard.md` — UI/UX baseline (§6), testing standard (§9), coding standards (§8), Definition of Done (§14).
 
 ## Architecture Reminder
 ```
@@ -251,6 +253,7 @@ Undo stack:
 
 ### Use-Case Unit Tests
 - `test/domain/usecases/mark_todo_completed_test.dart`: closes open segment + sets status.
+- `test/domain/usecases/mark_todo_dropped_test.dart`: closes open segment + sets status to dropped.
 - `test/domain/usecases/port_todo_test.dart`: creates copy + marks source + returns undo entry.
 - `test/domain/usecases/copy_todos_test.dart`: copies non-conflicting, skips conflicting.
 

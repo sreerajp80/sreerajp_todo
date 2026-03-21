@@ -1,4 +1,4 @@
-# SreerajP Journal Vault
+# SreerajP ToDo
 
 A personal, fully offline daily ToDo and time-tracking app built with Flutter. Every piece of
 data stays on your device — no accounts, no cloud, no internet required.
@@ -43,7 +43,7 @@ data stays on your device — no accounts, no cloud, no internet required.
 
 ## What This App Does
 
-SreerajP Journal Vault is a personal daily task manager that helps you:
+SreerajP ToDo is a personal daily task manager that helps you:
 
 - **Plan your day** by creating a list of tasks for each calendar date.
 - **Track time** spent on each task using a built-in start/stop timer (or by entering time
@@ -376,7 +376,7 @@ filesystem.
 
 - **Location:** The app's private documents directory (determined automatically by the
   operating system). On Android, this is typically under
-  `/data/data/com.sreerajp.journal_vault/databases/`. On Windows, it is in the app's
+  `/data/data/in.sreerajp.sreerajp_todo/databases/`. On Windows, it is in the app's
   AppData directory.
 - **Format:** SQLite database file (`.db`), encrypted with **AES-256**.
 - **Encryption:** The database is encrypted at rest using **AES-256** with a dual-key
@@ -392,7 +392,7 @@ filesystem.
 - **Reliability:** The database uses Write-Ahead Logging (WAL mode) for crash resilience
   and foreign key constraints for data integrity.
 
-The database contains two tables:
+The database contains three tables:
 
 **Tasks (`todos`)** — one row per task per day, storing the title, description, status,
 date, display order, and timestamps.
@@ -400,6 +400,10 @@ date, display order, and timestamps.
 **Time Segments (`time_segments`)** — one row per start/stop pair, linked to a task. Stores
 start time, end time, computed duration in seconds, and flags for whether the segment was
 interrupted (auto-closed on restart) or manually entered.
+
+**Recurrence Rules (`recurrence_rules`)** — one row per recurring task template, storing
+the title, description, iCalendar RRULE string, start/end dates, and active/paused state.
+Tasks generated from these rules are stored in the `todos` table like any other task.
 
 **No data is stored anywhere else.** There is no cloud database, no shared preferences synced
 to an account, no remote server, and no temporary files outside the app's sandbox.
@@ -419,7 +423,7 @@ The Backup screen is accessible from the app's main menu or navigation rail.
    backup cannot be recovered.
 4. Choose where to save the file (a file picker appears, or the app uses a default directory
    like Downloads).
-5. The app creates a file named `journal_vault_backup_YYYYMMDD_HHMMSS.db` — this is a
+5. The app creates a file named `sreerajp_todo_backup_YYYYMMDD_HHMMSS.db` — this is a
    complete, encrypted copy of your database.
 6. A success message confirms the export and shows the file path.
 
@@ -620,4 +624,4 @@ Android and Windows.
 
 ---
 
-*SreerajP Journal Vault — your data, your device, your control.*
+*SreerajP ToDo — your data, your device, your control.*

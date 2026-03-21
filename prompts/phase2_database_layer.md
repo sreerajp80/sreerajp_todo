@@ -7,6 +7,9 @@ Build the fully tested data access layer: encrypted SQLite database, complete in
 - Phase 1 complete (project scaffolded, dependencies installed, folder structure created).
 - Read `CLAUDE.md` — it defines the schema, naming conventions, and non-negotiable rules.
 - Read the database schema section of `flutter_todo_app_plan.md` (Section 4).
+- Read `docs/architecture.md` — data flow, models/entities, provider types, test layout.
+- Read `docs/security.md` — encryption design (§6), dual-key architecture, logging policy (§8), never-log rules.
+- Read `docs/flutter_project_engineering_standard.md` — testing standard (§9), security rules (§7.2), coding standards (§8), Definition of Done (§14).
 
 ## Tasks
 

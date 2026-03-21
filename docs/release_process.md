@@ -1,65 +1,95 @@
 # Release Process
 
-Use this document for repositories that ship builds to QA, external testers, enterprise distribution, or public app stores.
-
-If the repository is not release-tracked yet, keep this file short and mark the current release scope clearly.
-
 ## 1. Release Scope
 
-- App: `<app name>`
-- Release profile: `internal`, `beta`, `public`, or `not yet shipping`
+- App: `SreerajP ToDo`
+- Release profile: `personal use` (not yet shipping to public app stores)
 - Supported release platforms:
-  - `Android`
-  - `iOS`
-  - `<other>`
+  - `Android` (APK + AAB)
+  - `Windows` (portable folder)
 - Engineering standard profiles in force:
   - `Core Baseline`
   - `Production App Extension`
-  - `Sensitive Data Extension` if applicable
+  - `Sensitive Data Extension`
 
 ## 2. Roles And Responsibilities
 
 | Role | Responsibility | Owner |
 |------|----------------|-------|
-| Release owner | Coordinates release readiness and final sign-off | `<name/team>` |
-| Engineering | Code freeze, fixes, validation | `<name/team>` |
-| QA | Test execution and regression sign-off | `<name/team>` |
-| Store or distribution owner | Uploads artifacts and manages release metadata | `<name/team>` |
+| Release owner | Coordinates release readiness and final sign-off | SreerajP (single developer) |
+| Engineering | Code freeze, fixes, validation | SreerajP |
+| QA | Test execution and regression sign-off | SreerajP |
 
 ## 3. Versioning Policy
 
 - Version format: `MAJOR.MINOR.PATCH+BUILD`
 - Source of truth: `pubspec.yaml`
-- Build-number increment rule: `<rule>`
+- Build-number increment rule: Manual for v1.0; auto-incremented in CI if set up later.
 - Git tag format: `vX.Y.Z`
+- Initial release: `1.0.0+1`
 
 ## 4. Branch And Merge Policy
 
-- Release branch strategy: `<main only / release branches / trunk-based>`
-- Hotfix strategy: `<strategy>`
+- Release branch strategy: `main only` (single developer, trunk-based).
+- Hotfix strategy: Fix on main, tag, rebuild.
 - Required checks before merge:
-  - `<ci checks>`
-  - `<review requirements>`
+  - `flutter analyze` — zero errors.
+  - `flutter test` — all pass.
+  - Offline dep audit — zero matches.
+  - Manifest check — zero network permissions.
 
 ## 5. Environment And Flavor Matrix
 
-| Flavor | Mode | Purpose | Example Command |
-|--------|------|---------|-----------------|
-| `dev` | `debug` | Local development | `flutter run --flavor dev --dart-define=FLUTTER_APP_FLAVOR=dev` |
-| `dev` | `release` | Release-like QA | `flutter build apk --flavor dev --release --dart-define=FLUTTER_APP_FLAVOR=dev` |
-| `prod` | `release` | Final release artifact | `flutter build appbundle --flavor prod --release --dart-define=FLUTTER_APP_FLAVOR=prod` |
+v1.0 does not use build flavors. A single configuration is used for all builds.
 
-Adjust the matrix if the project uses `staging`, `qa`, or no flavors.
+| Mode | Purpose | Command |
+|------|---------|---------|
+| `debug` | Local development and device testing | `flutter run` |
+| `release` | Final release artifact | `flutter build apk --release` / `flutter build windows --release` |
+
+If flavors are introduced in a future version, see `docs/flutter_build_flavors_guide.md` for setup guidance.
 
 ## 6. Signing And Secret Handling
 
-- Signing config location: `<environment variables / secrets manager / CI secret store>`
-- Keystore or certificate ownership: `<owner>`
-- Secret rotation process: `<brief process>`
+- Signing config location: `L:\Android\key.properties` (one level above the project root).
+- Keystore file: `L:\Android\key.properties.jks`
+- Keystore ownership: SreerajP (single developer).
 - Rules:
-  - Signing material must not live in source control.
-  - Local signing helpers must not expose secrets in committed files.
+  - Signing material must not live in source control (`key.properties` and `.jks` files are in `.gitignore`).
+  - The `key.properties` path is referenced from `android/app/build.gradle` via a relative path (`../../key.properties`).
   - CI logs must not print signing secrets.
+
+### Keystore Generation
+
+```powershell
+keytool -genkey -v -keystore L:\Android\key.properties.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sreerajp
+```
+
+### Gradle Signing Configuration
+
+```groovy
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('../../key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+        }
+    }
+}
+```
 
 ## 7. Release Checklist
 
@@ -67,97 +97,132 @@ Complete these items before every release.
 
 ### Code And Quality
 
-- [ ] Required CI checks passed.
+- [ ] `flutter analyze` passed (zero errors, zero warnings).
 - [ ] `dart format --output=none --set-exit-if-changed .` passed.
-- [ ] `flutter analyze` passed.
-- [ ] `flutter test` passed.
-- [ ] Integration tests passed if applicable.
+- [ ] `flutter test` passed (all unit and widget tests).
+- [ ] Integration tests passed (`flutter test integration_test/app_test.dart`).
 - [ ] No critical or release-blocking bugs remain open.
+
+### Offline Enforcement
+
+- [ ] Offline dep audit passed — zero networking matches:
+  ```powershell
+  flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics|dio|chopper|retrofit|amplitude|mixpanel|datadog"
+  ```
+- [ ] Source manifest clean — zero network permissions:
+  ```powershell
+  Select-String -Path "android\app\src\main\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+  ```
+- [ ] Merged release manifest clean — zero network permissions:
+  ```powershell
+  Select-String -Path "build\app\intermediates\merged_manifests\release\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+  ```
+- [ ] No `Image.network()` or `NetworkImage` in codebase:
+  ```powershell
+  Select-String -Path "lib\**\*.dart" -Pattern "Image\.network|NetworkImage" -Recurse
+  ```
 
 ### Product And Documentation
 
 - [ ] Version in `pubspec.yaml` was updated.
-- [ ] Changelog or release notes were updated.
-- [ ] User-visible behavior changes were documented.
-- [ ] Required store metadata is ready.
+- [ ] `README.md` updated with screenshots and feature list.
 
-### Security And Compliance
+### Security
 
 - [ ] Manifest and permission review completed.
-- [ ] Secrets, keys, and backup settings reviewed if applicable.
-- [ ] Sensitive-data flows revalidated if applicable.
+- [ ] Signing material is NOT in source control.
+- [ ] Backup export/import round-trip test passed.
 
 ### Artifact Validation
 
-- [ ] Intended release artifact built successfully.
-- [ ] Artifact installs and launches correctly.
-- [ ] Flavor and environment are correct in the built artifact.
-- [ ] Version name and build number are correct.
+- [ ] Android release APK built successfully.
+- [ ] Android release AAB built successfully.
+- [ ] Windows release built successfully.
+- [ ] `sqlite3.dll` bundled in Windows release folder.
+- [ ] Version name and build number are correct in built artifacts.
 
 ## 8. Android Release Steps
 
-Adjust these steps to match the repository.
-
-1. Pull the intended release commit.
+1. Pull the intended release commit on `main`.
 2. Verify the version in `pubspec.yaml`.
-3. Fetch dependencies.
-4. Run format, analyze, and test checks.
-5. Build the required Android artifacts.
-6. Verify artifact naming, installability, and environment.
-7. Upload to the intended distribution channel.
-8. Tag the release in git if applicable.
+3. Fetch dependencies: `flutter pub get`.
+4. Run pre-release checks:
+   ```powershell
+   dart format --output=none --set-exit-if-changed .
+   flutter analyze
+   flutter test
+   ```
+5. Build the release artifacts:
+   ```powershell
+   flutter build apk --release
+   flutter build appbundle --release
+   ```
+6. Verify INTERNET permission is absent from the merged manifest:
+   ```powershell
+   Select-String -Path "build\app\intermediates\merged_manifests\release\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+   # Expected: ZERO matches. If any found: HALT and investigate.
+   ```
+7. Install the release APK on a physical device.
+8. **Disable Wi-Fi AND mobile data** (airplane mode).
+9. Launch the app and perform a full smoke test: create todo, start/stop timer, change status, view statistics, export/import backup.
+10. Verify the app functions normally with zero network access.
+11. Tag the release in git: `git tag v1.0.0`.
 
-### Common Commands
+### Release Artifacts
 
-```bash
-flutter pub get
-dart format --output=none --set-exit-if-changed .
-flutter analyze
-flutter test
-flutter build apk --flavor prod --release --dart-define=FLUTTER_APP_FLAVOR=prod --split-per-abi
-flutter build appbundle --flavor prod --release --dart-define=FLUTTER_APP_FLAVOR=prod
-```
+- `build/app/outputs/flutter-apk/app-release.apk`
+- `build/app/outputs/bundle/release/app-release.aab`
 
-## 9. iOS Release Steps
+## 9. Windows Release Steps
 
-Document the real process if iOS is supported.
+1. Build the Windows release:
+   ```powershell
+   flutter build windows --release
+   ```
+2. Verify `sqlite3.dll` is bundled:
+   ```powershell
+   Test-Path "build\windows\x64\runner\Release\sqlite3.dll"
+   # Expected: True
+   ```
+3. v1.0 is a **portable folder**: `build\windows\x64\runner\Release\`. No MSIX installer.
+4. Copy the entire `Release` folder to a clean Windows 10 machine (or VM).
+5. **Disable the network adapter.**
+6. Run the `.exe` and perform a full smoke test.
+7. Verify the app functions normally with zero network access and no firewall prompts.
 
-1. Confirm signing and provisioning are valid.
-2. Build the iOS release artifact.
-3. Validate permissions, metadata, and environment config.
-4. Upload through the approved pipeline.
-5. Confirm TestFlight or App Store processing.
+### Release Artifacts
+
+- `build\windows\x64\runner\Release\` (entire folder)
 
 ## 10. Distribution Channels
 
 | Channel | Artifact | Audience | Notes |
 |---------|----------|----------|-------|
-| `<channel>` | `<apk/aab/ipa/etc.>` | `<audience>` | `<notes>` |
-| `<channel>` | `<artifact>` | `<audience>` | `<notes>` |
+| Local sideload (Android) | APK | Personal use | Install via `adb install` or file manager |
+| Local copy (Windows) | Portable folder | Personal use | Copy `Release` folder to target machine |
+
+No public store distribution in v1.0.
 
 ## 11. Rollback And Hotfix Process
 
-- Rollback trigger: `<what forces rollback>`
-- Rollback method: `<store halt / phased rollout pause / hotfix release>`
-- Hotfix branch naming: `<pattern>`
+- Rollback trigger: Critical bug discovered after release (data loss, encryption failure, crash on launch).
+- Rollback method: Revert to previous git tag, rebuild, and reinstall.
+- Hotfix branch naming: Not applicable (main-only workflow, single developer).
 - Verification after rollback or hotfix:
-  - `<check 1>`
-  - `<check 2>`
+  - Full smoke test on both platforms with network disabled.
+  - Offline dep audit and manifest check.
 
 ## 12. Release Evidence
 
-Store links or references to release evidence here.
-
-- CI run: `<url or identifier>`
-- Test report: `<url or identifier>`
-- Built artifact: `<location>`
-- Release notes: `<location>`
-- Store submission or rollout record: `<location>`
+- CI run: Not applicable (no CI in v1.0; manual build process).
+- Test report: `flutter test` output in terminal.
+- Built artifact: Local build output directories.
+- Release tag: `git tag vX.Y.Z`
 
 ## 13. Post-Release Checks
 
-- [ ] Production crash and error monitoring reviewed.
-- [ ] Analytics or telemetry sanity checked if applicable.
-- [ ] User-reported issues triaged.
-- [ ] Release tag created.
-- [ ] Follow-up tasks recorded.
+- [ ] App launches and functions on both platforms with network disabled.
+- [ ] Backup export/import works end-to-end.
+- [ ] No network-related errors or warnings observed.
+- [ ] Release tag created in git.
+- [ ] Follow-up tasks recorded for the next version.

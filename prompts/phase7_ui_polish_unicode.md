@@ -6,6 +6,9 @@ Ensure the app is visually cohesive across light/dark themes, handles all Unicod
 ## Pre-Requisites
 - Phases 1–6 complete (all features functional).
 - Read `CLAUDE.md` — Unicode rules, asset rules, measurement rules.
+- Read `docs/security.md` — logging policy (§8 — never log task titles, descriptions, timestamps, file paths), platform security controls (§9).
+- Read `docs/architecture.md` — UI system (§12), accessibility expectations.
+- Read `docs/flutter_project_engineering_standard.md` — UI/UX baseline (§6 — theme, accessibility, screen states), coding standards (§8 — lint rules, formatting), Definition of Done (§14).
 
 ---
 

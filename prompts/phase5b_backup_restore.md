@@ -8,6 +8,9 @@ Allow the user to export the full encrypted SQLite database to user-accessible s
 - `DatabaseService` exists and manages the encrypted live database.
 - `file_picker` package installed (or fallback to `path_provider` default directory).
 - Read `CLAUDE.md` — encryption strategy, backup exceptions, offline constraint.
+- Read `docs/security.md` — dual-key architecture (§6), backup/import/export validation (§11), never-log rules (§8), sensitive data inventory (§4).
+- Read `docs/architecture.md` — persistence model (§10), data flow (§6).
+- Read `docs/flutter_project_engineering_standard.md` — sensitive data extension (§7.2 — encrypted export by default, backup/recovery tested as critical flows), testing standard (§9), Definition of Done (§14.3).
 
 ## Key Design Decisions
 - **Dual-key encryption:**
@@ -28,7 +31,7 @@ class BackupService {
   final DatabaseService _dbService;
 
   /// Exports the database to [destinationPath].
-  /// File name format: journal_vault_backup_YYYYMMDD_HHMMSS.db
+  /// File name format: sreerajp_todo_backup_YYYYMMDD_HHMMSS.db
   Future<String> exportDatabase({
     required String destinationPath,
     required String passphrase,
@@ -67,7 +70,7 @@ class BackupFileInfo {
 5. Re-key the copy to the **user's passphrase**: `PRAGMA rekey = '<passphrase>'` via SQLCipher.
 6. Close the temporary copy.
 7. Verify the re-keyed copy: open it with the passphrase → run `PRAGMA integrity_check`.
-8. If integrity check passes: move the verified copy to `destinationPath` with filename format `journal_vault_backup_YYYYMMDD_HHMMSS.db`.
+8. If integrity check passes: move the verified copy to `destinationPath` with filename format `sreerajp_todo_backup_YYYYMMDD_HHMMSS.db`.
 9. If integrity check fails: delete the temporary copy, throw `BackupCorruptedException`.
 10. Reopen the original database connection.
 

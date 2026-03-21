@@ -1,4 +1,4 @@
-# SreerajP Journal Vault — Implementation Prompts
+# SreerajP ToDo — Implementation Prompts
 
 These prompt files are designed to be given to an AI assistant to implement each phase of the app. Each prompt is **self-contained** with full context, constraints, task breakdowns, test requirements, and deliverable checklists.
 
@@ -25,7 +25,7 @@ Phases must be executed in order — each depends on the previous:
 ## How to Use These Prompts
 
 1. **Start each session** by telling the AI:
-   > "Read `CLAUDE.md` first, then follow the prompt in `prompts/phaseN_xxx.md`."
+   > "Read `CLAUDE.md` and the docs listed in the Pre-Requisites of `prompts/phaseN_xxx.md`, then follow the prompt."
 
 2. **One phase per session** (or set of sessions) — complete it before moving to the next.
 
@@ -41,6 +41,14 @@ Phases must be executed in order — each depends on the previous:
 
 - **`CLAUDE.md`** — The single source of truth for all project rules and constraints. Every prompt references it.
 - **`flutter_todo_app_plan.md`** — The full project plan with detailed specifications.
+- **`docs/`** — Engineering standards, architecture, security, and release process. Each prompt lists the specific docs relevant to that phase, but the following apply universally:
+
+| Document | Applies To | Key Sections |
+|----------|-----------|-------------|
+| `docs/flutter_project_engineering_standard.md` | **All phases** | Coding standards (§8), testing standard (§9), AI assistant instructions (§13), Definition of Done (§14) |
+| `docs/architecture.md` | **All phases** | Layer boundaries, data flow, provider types, route table, test layout |
+| `docs/security.md` | Phases handling encryption or sensitive data (2, 5B, 7, 8, 9) | Encryption design, logging policy, never-log rules, platform security controls |
+| `docs/release_process.md` | Phase 9 (and final verification of any phase) | Release checklist, signing, offline enforcement |
 
 ## Non-Negotiable Constraints (apply to ALL phases)
 
