@@ -79,11 +79,7 @@ String _describeMonthly(int interval, String? byDay, String? byMonthDay) {
   return prefix;
 }
 
-String _describeYearly(
-  int interval,
-  String? byMonth,
-  String? byMonthDay,
-) {
+String _describeYearly(int interval, String? byMonth, String? byMonthDay) {
   final prefix = interval == 1 ? 'Annually' : 'Every $interval years';
 
   if (byMonth != null && byMonthDay != null) {
@@ -131,8 +127,18 @@ String _dayAbbrevToFull(String abbrev) {
 
 String _monthName(int month) {
   const names = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
   if (month >= 1 && month <= 12) return names[month - 1];
   return 'Month $month';

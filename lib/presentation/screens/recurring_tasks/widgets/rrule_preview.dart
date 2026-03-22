@@ -45,10 +45,7 @@ class RrulePreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              AppStrings.nextOccurrences,
-              style: theme.textTheme.titleSmall,
-            ),
+            Text(AppStrings.nextOccurrences, style: theme.textTheme.titleSmall),
             const SizedBox(height: 8),
             if (occurrences.isEmpty)
               Text(
@@ -69,10 +66,7 @@ class RrulePreview extends StatelessWidget {
                         color: theme.colorScheme.primary,
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        formatDate(date),
-                        style: theme.textTheme.bodyMedium,
-                      ),
+                      Text(formatDate(date), style: theme.textTheme.bodyMedium),
                     ],
                   ),
                 ),

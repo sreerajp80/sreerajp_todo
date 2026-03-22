@@ -4,11 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
+import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/title_autocomplete_field.dart';
 import 'package:sreerajp_todo/presentation/screens/recurring_tasks/widgets/rrule_frequency_picker.dart';
 import 'package:sreerajp_todo/presentation/screens/recurring_tasks/widgets/rrule_preview.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:uuid/uuid.dart';
 
 class RecurrenceEditorScreen extends ConsumerStatefulWidget {
@@ -276,9 +277,9 @@ class _RecurrenceEditorScreenState
       if (mounted) context.pop();
     } on Exception catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(e))));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -288,14 +289,10 @@ class _RecurrenceEditorScreenState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final title =
-        widget.isEditing ? AppStrings.editRecurrence : AppStrings.newRecurrence;
+    final title = widget.isEditing
+        ? AppStrings.editRecurrence
+        : AppStrings.newRecurrence;
     final rruleStr = _buildRruleString();
-    final textDir =
-        unicode_utils.detectTextDirection(_descriptionController.text);
-    final flutterDir = textDir == unicode_utils.TextDirection.rtl
-        ? TextDirection.rtl
-        : TextDirection.ltr;
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
@@ -318,14 +315,17 @@ class _RecurrenceEditorScreenState
                     onChanged: (_) => setState(() {}),
                   ),
                   const SizedBox(height: 16),
-                  TextFormField(
-                    controller: _descriptionController,
-                    textDirection: flutterDir,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      labelText: AppStrings.descriptionHint,
-                      prefixIcon: Icon(Icons.description),
-                      alignLabelWithHint: true,
+                  AdaptiveDirectionality(
+                    text: _descriptionController.text,
+                    child: TextFormField(
+                      controller: _descriptionController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        labelText: AppStrings.descriptionHint,
+                        prefixIcon: Icon(Icons.description),
+                        alignLabelWithHint: true,
+                      ),
+                      onChanged: (_) => setState(() {}),
                     ),
                   ),
                   const SizedBox(height: 24),
@@ -348,8 +348,10 @@ class _RecurrenceEditorScreenState
                   const SizedBox(height: 16),
 
                   if (_frequency == RruleFrequency.weekly) ...[
-                    Text(AppStrings.daysOfWeek,
-                        style: theme.textTheme.titleSmall),
+                    Text(
+                      AppStrings.daysOfWeek,
+                      style: theme.textTheme.titleSmall,
+                    ),
                     const SizedBox(height: 8),
                     _buildDayOfWeekPicker(),
                     const SizedBox(height: 16),
@@ -398,8 +400,10 @@ class _RecurrenceEditorScreenState
 
     return Row(
       children: [
-        Text('${AppStrings.every} ',
-            style: Theme.of(context).textTheme.bodyLarge),
+        Text(
+          '${AppStrings.every} ',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
         SizedBox(
           width: 60,
           child: TextFormField(
@@ -409,7 +413,9 @@ class _RecurrenceEditorScreenState
             onChanged: (_) => setState(() {}),
             validator: (value) {
               final n = int.tryParse(value ?? '');
-              if (n == null || n < 1) return '≥1';
+              if (n == null || n < 1) {
+                return AppStrings.errors.intervalMustBeAtLeastOne;
+              }
               return null;
             },
           ),
@@ -463,14 +469,8 @@ class _RecurrenceEditorScreenState
         const SizedBox(height: 8),
         SegmentedButton<bool>(
           segments: const [
-            ButtonSegment(
-              value: false,
-              label: Text(AppStrings.specificDate),
-            ),
-            ButtonSegment(
-              value: true,
-              label: Text(AppStrings.ordinalWeekday),
-            ),
+            ButtonSegment(value: false, label: Text(AppStrings.specificDate)),
+            ButtonSegment(value: true, label: Text(AppStrings.ordinalWeekday)),
           ],
           selected: {_useOrdinalWeekday},
           onSelectionChanged: (s) =>
@@ -488,7 +488,7 @@ class _RecurrenceEditorScreenState
   Widget _buildDayOfMonthPicker() {
     return Row(
       children: [
-        Text('Day ', style: Theme.of(context).textTheme.bodyLarge),
+        Text(' ', style: Theme.of(context).textTheme.bodyLarge),
         SizedBox(
           width: 80,
           child: DropdownButtonFormField<int>(
@@ -514,13 +514,13 @@ class _RecurrenceEditorScreenState
     ];
 
     const weekdayLabels = [
-      (DateTime.monday, 'Monday'),
-      (DateTime.tuesday, 'Tuesday'),
-      (DateTime.wednesday, 'Wednesday'),
-      (DateTime.thursday, 'Thursday'),
-      (DateTime.friday, 'Friday'),
-      (DateTime.saturday, 'Saturday'),
-      (DateTime.sunday, 'Sunday'),
+      (DateTime.monday, AppStrings.mondayLong),
+      (DateTime.tuesday, AppStrings.tuesdayLong),
+      (DateTime.wednesday, AppStrings.wednesdayLong),
+      (DateTime.thursday, AppStrings.thursdayLong),
+      (DateTime.friday, AppStrings.fridayLong),
+      (DateTime.saturday, AppStrings.saturdayLong),
+      (DateTime.sunday, AppStrings.sundayLong),
     ];
 
     return Row(
@@ -531,8 +531,7 @@ class _RecurrenceEditorScreenState
                 ? _ordinalPosition
                 : 1,
             items: ordinalLabels
-                .map((e) =>
-                    DropdownMenuItem(value: e.$1, child: Text(e.$2)))
+                .map((e) => DropdownMenuItem(value: e.$1, child: Text(e.$2)))
                 .toList(),
             onChanged: (v) => setState(() => _ordinalPosition = v ?? 1),
           ),
@@ -542,8 +541,7 @@ class _RecurrenceEditorScreenState
           child: DropdownButtonFormField<int>(
             initialValue: _ordinalWeekday,
             items: weekdayLabels
-                .map((e) =>
-                    DropdownMenuItem(value: e.$1, child: Text(e.$2)))
+                .map((e) => DropdownMenuItem(value: e.$1, child: Text(e.$2)))
                 .toList(),
             onChanged: (v) =>
                 setState(() => _ordinalWeekday = v ?? DateTime.monday),
@@ -555,25 +553,24 @@ class _RecurrenceEditorScreenState
 
   Widget _buildYearlyOptions() {
     const monthLabels = [
-      (1, 'January'),
-      (2, 'February'),
-      (3, 'March'),
-      (4, 'April'),
-      (5, 'May'),
-      (6, 'June'),
-      (7, 'July'),
-      (8, 'August'),
-      (9, 'September'),
-      (10, 'October'),
-      (11, 'November'),
-      (12, 'December'),
+      (1, AppStrings.january),
+      (2, AppStrings.february),
+      (3, AppStrings.march),
+      (4, AppStrings.april),
+      (5, AppStrings.may),
+      (6, AppStrings.june),
+      (7, AppStrings.july),
+      (8, AppStrings.august),
+      (9, AppStrings.september),
+      (10, AppStrings.october),
+      (11, AppStrings.november),
+      (12, AppStrings.december),
     ];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppStrings.month,
-            style: Theme.of(context).textTheme.titleSmall),
+        Text(AppStrings.month, style: Theme.of(context).textTheme.titleSmall),
         const SizedBox(height: 8),
         Row(
           children: [
@@ -581,8 +578,9 @@ class _RecurrenceEditorScreenState
               child: DropdownButtonFormField<int>(
                 initialValue: _yearlyMonth,
                 items: monthLabels
-                    .map((e) =>
-                        DropdownMenuItem(value: e.$1, child: Text(e.$2)))
+                    .map(
+                      (e) => DropdownMenuItem(value: e.$1, child: Text(e.$2)),
+                    )
                     .toList(),
                 onChanged: (v) => setState(() => _yearlyMonth = v ?? 1),
               ),

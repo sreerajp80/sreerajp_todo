@@ -7,11 +7,13 @@ import 'package:uuid/uuid.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/title_autocomplete_field.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 
 class CreateEditTodoScreen extends ConsumerStatefulWidget {
@@ -78,7 +80,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           _isLoading = false;
         });
       } else {
-        if (mounted) setState(() => _isLoading = false);
+        if (mounted) {
+          setState(() => _isLoading = false);
+        }
       }
     } else {
       setState(() => _isLoading = false);
@@ -110,15 +114,20 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   }
 
   Future<void> _save() async {
-    if (!_formKey.currentState!.validate()) return;
-    if (_uniquenessError != null) return;
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    if (_uniquenessError != null) {
+      return;
+    }
 
     setState(() => _isSaving = true);
 
     try {
       final now = DateTime.now().toUtc().toIso8601String();
-      final normalizedTitle =
-          unicode_utils.nfcNormalize(_titleController.text.trim());
+      final normalizedTitle = unicode_utils.nfcNormalize(
+        _titleController.text.trim(),
+      );
       final description = _descriptionController.text.trim().isEmpty
           ? null
           : unicode_utils.nfcNormalize(_descriptionController.text.trim());
@@ -131,8 +140,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           portedTo: _status == TodoStatus.ported ? _portedTo : null,
           updatedAt: now,
         );
-        final notifier =
-            ref.read(dailyTodoProvider(_effectiveDate).notifier);
+        final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
         await notifier.updateTodo(updated);
       } else {
         final todo = TodoEntity(
@@ -146,8 +154,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           createdAt: now,
           updatedAt: now,
         );
-        final notifier =
-            ref.read(dailyTodoProvider(_effectiveDate).notifier);
+        final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
         await notifier.createTodo(todo);
       }
 
@@ -163,19 +170,23 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         );
         context.pop();
       }
-    } on Exception catch (e) {
+    } on Exception catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(error))));
       }
     } finally {
-      if (mounted) setState(() => _isSaving = false);
+      if (mounted) {
+        setState(() => _isSaving = false);
+      }
     }
   }
 
   Future<void> _onStatusChanged(TodoStatus? newStatus) async {
-    if (newStatus == null || _isReadOnly) return;
+    if (newStatus == null || _isReadOnly) {
+      return;
+    }
 
     if (newStatus == TodoStatus.dropped) {
       final confirmed = await showConfirmDialog(
@@ -183,7 +194,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         title: AppStrings.confirmDrop,
         content: AppStrings.confirmDropBody,
       );
-      if (!confirmed || !mounted) return;
+      if (!confirmed || !mounted) {
+        return;
+      }
     }
 
     if (newStatus == TodoStatus.ported && widget.isEditing) {
@@ -192,7 +205,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         title: AppStrings.confirmPort,
         content: AppStrings.confirmPortBody,
       );
-      if (!confirmed || !mounted) return;
+      if (!confirmed || !mounted) {
+        return;
+      }
 
       final tomorrow = DateTime.now().add(const Duration(days: 1));
       final picked = await showDatePicker(
@@ -202,24 +217,25 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         lastDate: DateTime.now().add(const Duration(days: 365)),
         helpText: AppStrings.selectTargetDate,
       );
-      if (picked == null || !mounted) return;
+      if (picked == null || !mounted) {
+        return;
+      }
 
       final targetDate = dateTimeToIso(picked);
       try {
-        final notifier =
-            ref.read(dailyTodoProvider(_effectiveDate).notifier);
+        final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
         await notifier.portTodo(_existingTodo!.id, targetDate);
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text(AppStrings.todoPorted)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text(AppStrings.todoPorted)));
           context.pop();
         }
-      } on Exception catch (e) {
+      } on Exception catch (error) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(error))));
         }
       }
       return;
@@ -234,7 +250,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final title = widget.isEditing ? AppStrings.editTodo : AppStrings.createTodo;
+    final title = widget.isEditing
+        ? AppStrings.editTodo
+        : AppStrings.createTodo;
     final theme = Theme.of(context);
 
     if (_isLoading) {
@@ -301,16 +319,16 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                 ),
               ),
             const SizedBox(height: 16),
-            _buildDescriptionField(theme),
+            _buildDescriptionField(),
             const SizedBox(height: 24),
-            _buildStatusSelector(theme),
+            _buildStatusSelector(),
             if (_status == TodoStatus.ported && _portedTo != null) ...[
               const SizedBox(height: 8),
               Text(
                 '${AppStrings.portedTo}: $_portedTo',
                 style: theme.textTheme.bodyMedium?.copyWith(
-                  color: const Color(0xFFF9A825),
-                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.tertiary,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
@@ -344,28 +362,24 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     );
   }
 
-  Widget _buildDescriptionField(ThemeData theme) {
-    final text = _descriptionController.text;
-    final textDir = unicode_utils.detectTextDirection(text);
-    final flutterDir = textDir == unicode_utils.TextDirection.rtl
-        ? TextDirection.rtl
-        : TextDirection.ltr;
-
-    return TextFormField(
-      controller: _descriptionController,
-      enabled: !_isReadOnly,
-      textDirection: flutterDir,
-      maxLines: 4,
-      decoration: const InputDecoration(
-        labelText: AppStrings.descriptionHint,
-        prefixIcon: Icon(Icons.notes),
-        alignLabelWithHint: true,
+  Widget _buildDescriptionField() {
+    return AdaptiveDirectionality(
+      text: _descriptionController.text,
+      child: TextFormField(
+        controller: _descriptionController,
+        enabled: !_isReadOnly,
+        maxLines: 4,
+        decoration: const InputDecoration(
+          labelText: AppStrings.descriptionHint,
+          prefixIcon: Icon(Icons.notes),
+          alignLabelWithHint: true,
+        ),
+        onChanged: (_) => setState(() {}),
       ),
-      onChanged: (_) => setState(() {}),
     );
   }
 
-  Widget _buildStatusSelector(ThemeData theme) {
+  Widget _buildStatusSelector() {
     return SegmentedButton<TodoStatus>(
       segments: [
         const ButtonSegment(

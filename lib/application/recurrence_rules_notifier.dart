@@ -26,8 +26,9 @@ class RecurrenceRulesNotifier
     try {
       final normalized = rule.copyWith(
         title: nfcNormalize(rule.title),
-        description:
-            rule.description != null ? nfcNormalize(rule.description!) : null,
+        description: rule.description != null
+            ? nfcNormalize(rule.description!)
+            : null,
       );
       await _dao.insert(normalized);
       await loadRules();
@@ -41,8 +42,9 @@ class RecurrenceRulesNotifier
     try {
       final normalized = rule.copyWith(
         title: nfcNormalize(rule.title),
-        description:
-            rule.description != null ? nfcNormalize(rule.description!) : null,
+        description: rule.description != null
+            ? nfcNormalize(rule.description!)
+            : null,
       );
       await _dao.update(normalized);
       await loadRules();

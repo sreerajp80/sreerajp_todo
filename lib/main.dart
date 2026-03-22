@@ -26,9 +26,6 @@ void main() async {
   await container.read(generateRecurringTasksProvider).call();
 
   runApp(
-    UncontrolledProviderScope(
-      container: container,
-      child: const TodoApp(),
-    ),
+    UncontrolledProviderScope(container: container, child: const TodoApp()),
   );
 }

@@ -20,8 +20,9 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoEntity _normalize(TodoEntity todo) {
     return todo.copyWith(
       title: nfcNormalize(todo.title),
-      description:
-          todo.description != null ? nfcNormalize(todo.description!) : null,
+      description: todo.description != null
+          ? nfcNormalize(todo.description!)
+          : null,
     );
   }
 

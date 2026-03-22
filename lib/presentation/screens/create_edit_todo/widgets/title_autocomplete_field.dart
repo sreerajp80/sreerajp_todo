@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
-import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
+import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 
 class TitleAutocompleteField extends ConsumerStatefulWidget {
   const TitleAutocompleteField({
@@ -61,12 +61,6 @@ class _TitleAutocompleteFieldState
 
   @override
   Widget build(BuildContext context) {
-    final textDir =
-        unicode_utils.detectTextDirection(widget.controller.text);
-    final flutterDir = textDir == unicode_utils.TextDirection.rtl
-        ? TextDirection.rtl
-        : TextDirection.ltr;
-
     return Autocomplete<String>(
       optionsBuilder: (textEditingValue) {
         if (textEditingValue.text.trim().isEmpty) {
@@ -81,30 +75,33 @@ class _TitleAutocompleteFieldState
         );
         widget.onChanged?.call(selection);
       },
-      fieldViewBuilder: (context, textController, fieldFocusNode, onFieldSubmitted) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (widget.controller.text.isNotEmpty &&
-              textController.text != widget.controller.text) {
-            textController.text = widget.controller.text;
-          }
-        });
-        return TextFormField(
-          controller: textController,
-          focusNode: fieldFocusNode,
-          enabled: widget.enabled,
-          textDirection: flutterDir,
-          decoration: const InputDecoration(
-            labelText: AppStrings.titleHint,
-            prefixIcon: Icon(Icons.title),
-          ),
-          validator: widget.validator,
-          onChanged: (value) {
-            widget.controller.text = value;
-            _onChanged(value);
+      fieldViewBuilder:
+          (context, textController, fieldFocusNode, onFieldSubmitted) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (widget.controller.text.isNotEmpty &&
+                  textController.text != widget.controller.text) {
+                textController.text = widget.controller.text;
+              }
+            });
+            return AdaptiveDirectionality(
+              text: textController.text,
+              child: TextFormField(
+                controller: textController,
+                focusNode: fieldFocusNode,
+                enabled: widget.enabled,
+                decoration: const InputDecoration(
+                  labelText: AppStrings.titleHint,
+                  prefixIcon: Icon(Icons.title),
+                ),
+                validator: widget.validator,
+                onChanged: (value) {
+                  widget.controller.text = value;
+                  _onChanged(value);
+                },
+                textInputAction: TextInputAction.next,
+              ),
+            );
           },
-          textInputAction: TextInputAction.next,
-        );
-      },
     );
   }
 }

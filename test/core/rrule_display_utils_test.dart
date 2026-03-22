@@ -26,10 +26,7 @@ void main() {
     });
 
     test('FREQ=WEEKLY;BYDAY=SA,SU → Every weekend', () {
-      expect(
-        describeRrule('FREQ=WEEKLY;BYDAY=SA,SU'),
-        'Every weekend',
-      );
+      expect(describeRrule('FREQ=WEEKLY;BYDAY=SA,SU'), 'Every weekend');
     });
 
     test('FREQ=MONTHLY;BYDAY=1MO → Monthly on the 1st Monday', () {
@@ -40,10 +37,7 @@ void main() {
     });
 
     test('FREQ=MONTHLY;BYMONTHDAY=15 → Monthly on day 15', () {
-      expect(
-        describeRrule('FREQ=MONTHLY;BYMONTHDAY=15'),
-        'Monthly on day 15',
-      );
+      expect(describeRrule('FREQ=MONTHLY;BYMONTHDAY=15'), 'Monthly on day 15');
     });
 
     test('FREQ=YEARLY;BYMONTH=3;BYMONTHDAY=15 → Annually on March 15', () {

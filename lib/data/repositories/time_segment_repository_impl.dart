@@ -95,8 +95,7 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
 
   @override
   Future<void> repairOrphanedSegments(String todayDate) async {
-    final orphans =
-        await _timeSegmentDao.findAllOrphanedSegments(todayDate);
+    final orphans = await _timeSegmentDao.findAllOrphanedSegments(todayDate);
 
     for (final orphan in orphans) {
       final startTime = DateTime.parse(orphan.startTime);

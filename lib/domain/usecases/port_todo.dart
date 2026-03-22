@@ -8,10 +8,7 @@ import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class PortTodoResult {
-  const PortTodoResult({
-    required this.oldStatus,
-    required this.copiedTodoId,
-  });
+  const PortTodoResult({required this.oldStatus, required this.copiedTodoId});
 
   final TodoStatus oldStatus;
   final String copiedTodoId;
@@ -34,7 +31,9 @@ class PortTodo {
   /// 5. Stops any running timer on the source.
   Future<PortTodoResult> call(String todoId, String targetDate) async {
     if (!isFutureDate(targetDate)) {
-      throw const DayLockedException('Port target date must be tomorrow or later.');
+      throw const DayLockedException(
+        'Port target date must be tomorrow or later.',
+      );
     }
 
     final todo = await _todoRepository.getTodoById(todoId);
@@ -59,8 +58,9 @@ class PortTodo {
     final maxSortOrder = existingTodos.isEmpty
         ? 0
         : existingTodos
-            .map((t) => t.sortOrder)
-            .reduce((a, b) => a > b ? a : b) + 1;
+                  .map((t) => t.sortOrder)
+                  .reduce((a, b) => a > b ? a : b) +
+              1;
 
     final copiedTodoId = _uuid.v4();
     final copy = TodoEntity(

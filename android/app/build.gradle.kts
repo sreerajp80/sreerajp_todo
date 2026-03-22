@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.util.Properties
+import org.gradle.api.GradleException
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,9 +9,21 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("../../key.properties")
+val hasReleaseKeystore = keystorePropertiesFile.exists()
+val releasePackagingTasks = listOf("assembleRelease", "bundleRelease", "packageRelease")
+val isReleasePackagingBuild = gradle.startParameter.taskNames.any { taskName ->
+    releasePackagingTasks.any { releaseTask -> taskName.contains(releaseTask, ignoreCase = true) }
+}
+
+if (hasReleaseKeystore) {
+    FileInputStream(keystorePropertiesFile).use(keystoreProperties::load)
+}
+
 android {
     namespace = "in.sreerajp.sreerajp_todo"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = maxOf(flutter.compileSdkVersion, 35)
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -20,21 +36,39 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "in.sreerajp.sreerajp_todo"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        targetSdk = maxOf(flutter.targetSdkVersion, 35)
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            if (hasReleaseKeystore) {
+                val keyAliasValue = keystoreProperties.getProperty("keyAlias")
+                val keyPasswordValue = keystoreProperties.getProperty("keyPassword")
+                val storeFileValue = keystoreProperties.getProperty("storeFile")
+                val storePasswordValue = keystoreProperties.getProperty("storePassword")
+
+                require(!keyAliasValue.isNullOrBlank()) { "key.properties is missing keyAlias." }
+                require(!keyPasswordValue.isNullOrBlank()) { "key.properties is missing keyPassword." }
+                require(!storeFileValue.isNullOrBlank()) { "key.properties is missing storeFile." }
+                require(!storePasswordValue.isNullOrBlank()) {
+                    "key.properties is missing storePassword."
+                }
+
+                keyAlias = keyAliasValue
+                keyPassword = keyPasswordValue
+                storeFile = file(storeFileValue)
+                storePassword = storePasswordValue
+            }
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }
@@ -42,3 +76,11 @@ android {
 flutter {
     source = "../.."
 }
+
+if (isReleasePackagingBuild && !hasReleaseKeystore) {
+    throw GradleException(
+        "Missing Android release signing config. Create L:\\Android\\key.properties " +
+            "and point it to the external keystore before running a release build."
+    )
+}
+

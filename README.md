@@ -8,6 +8,10 @@ data stays on your device — no accounts, no cloud, no internet required.
 ## Table of Contents
 
 - [What This App Does](#what-this-app-does)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+- [Build Instructions](#build-instructions)
+- [Offline Guarantee](#offline-guarantee)
 - [Features at a Glance](#features-at-a-glance)
 - [How the App Works](#how-the-app-works)
   - [Daily ToDo List](#daily-todo-list)
@@ -57,6 +61,92 @@ SreerajP ToDo is a personal daily task manager that helps you:
 
 The app is designed to work **entirely offline**. It never connects to the internet, never
 sends data anywhere, and never requires an account or login. You own your data completely.
+
+---
+
+## Screenshots
+
+Release screenshots should be captured from the final v1.0 builds and added here before any
+public-facing distribution:
+
+- `docs\screenshots\daily_list.png` - daily list screen
+- `docs\screenshots\statistics.png` - statistics dashboard
+- `docs\screenshots\time_tracking.png` - time-tracking and segments flow
+
+---
+
+## Installation
+
+### Android
+
+1. Copy `build\app\outputs\flutter-apk\app-release.apk` to the device.
+2. Enable sideloading for the installer if Android prompts for it.
+3. Install the APK from the device file manager.
+4. Launch the app and verify it runs normally in airplane mode.
+
+### Windows
+
+1. Copy the entire `build\windows\x64\runner\Release\` folder to the target machine.
+2. Keep the folder contents together; do not move the `.exe` out on its own.
+3. Run `sreerajp_todo.exe`.
+4. Verify the app runs normally with the network adapter disabled.
+
+---
+
+## Build Instructions
+
+### Prerequisites
+
+- Flutter `3.41.4` stable
+- Dart `3.11.1`
+- Android release signing files at `L:\Android\key.properties` and `L:\Android\key.properties.jks`
+
+### Android
+
+```powershell
+flutter pub get
+flutter build apk --debug
+flutter build apk --release
+flutter build appbundle --release
+```
+
+### Windows
+
+```powershell
+flutter pub get
+flutter build windows --release
+```
+
+### Release Validation
+
+```powershell
+dart format lib/ test/ integration_test/
+flutter analyze
+flutter test
+flutter test integration_test/app_test.dart
+flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics|dio|chopper|retrofit|amplitude|mixpanel|datadog"
+Select-String -Path "android\app\src\main\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+Select-String -Path "build\app\intermediates\merged_manifests\release\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+Select-String -Path "lib\**\*.dart" -Pattern "Image\.network|NetworkImage" -Recurse
+Test-Path "build\windows\x64\runner\Release\sqlite3.dll"
+```
+
+More detail is in [docs/release_process.md](/l:/Android/sreerajp_todo/docs/release_process.md).
+
+---
+
+## Offline Guarantee
+
+SreerajP ToDo is intentionally built to function with zero network access:
+
+- No internet permission is declared in the Android manifest.
+- No network or telemetry package is included in the dependency graph.
+- No data is sent to cloud services, analytics systems, or remote APIs.
+- The Android release APK and the Windows portable build are both intended to be smoke-tested
+  with Wi-Fi and mobile data disabled before release.
+
+If a dependency or build artifact ever introduces network access, that release is treated as
+blocked until the issue is removed.
 
 ---
 
@@ -625,3 +715,4 @@ Android and Windows.
 ---
 
 *SreerajP ToDo — your data, your device, your control.*
+

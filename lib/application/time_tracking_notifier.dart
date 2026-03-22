@@ -5,11 +5,8 @@ import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 
 class TimeTrackingNotifier extends StateNotifier<TimeTrackingState> {
-  TimeTrackingNotifier(
-    this._repository,
-    this._startTimeSegment,
-    this._todoId,
-  ) : super(const TimeTrackingState()) {
+  TimeTrackingNotifier(this._repository, this._startTimeSegment, this._todoId)
+    : super(const TimeTrackingState()) {
     loadSegments();
   }
 

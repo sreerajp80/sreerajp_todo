@@ -3,12 +3,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/screens/time_segments/widgets/manual_segment_form.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_error_state.dart';
 
 final _timeFormat = DateFormat.Hm();
 
@@ -27,20 +30,18 @@ class TimeSegmentsScreen extends ConsumerWidget {
         if (todo == null) {
           return Scaffold(
             appBar: AppBar(title: const Text(AppStrings.timeSegments)),
-            body: const Center(child: Text(AppStrings.noSegments)),
+            body: AppErrorState(message: AppStrings.errors.todoNotFound),
           );
         }
 
         final past = isPastDate(todo.date);
-        final isTerminal = todo.status == TodoStatus.completed ||
+        final isTerminal =
+            todo.status == TodoStatus.completed ||
             todo.status == TodoStatus.dropped;
-        final canAddManual =
-            !past && todo.status == TodoStatus.pending;
+        final canAddManual = !past && todo.status == TodoStatus.pending;
 
         return Scaffold(
-          appBar: AppBar(
-            title: const Text(AppStrings.timeSegments),
-          ),
+          appBar: AppBar(title: const Text(AppStrings.timeSegments)),
           body: trackingState.isLoading
               ? const Center(child: CircularProgressIndicator())
               : _SegmentsBody(
@@ -54,11 +55,7 @@ class TimeSegmentsScreen extends ConsumerWidget {
                 ),
           floatingActionButton: canAddManual
               ? FloatingActionButton.extended(
-                  onPressed: () => _showManualSegmentDialog(
-                    context,
-                    ref,
-                    todo,
-                  ),
+                  onPressed: () => _showManualSegmentDialog(context, ref, todo),
                   icon: const Icon(Icons.add),
                   label: const Text(AppStrings.addManualSegment),
                 )
@@ -69,9 +66,9 @@ class TimeSegmentsScreen extends ConsumerWidget {
         appBar: AppBar(title: const Text(AppStrings.timeSegments)),
         body: const Center(child: CircularProgressIndicator()),
       ),
-      error: (e, _) => Scaffold(
+      error: (error, _) => Scaffold(
         appBar: AppBar(title: const Text(AppStrings.timeSegments)),
-        body: Center(child: Text(e.toString())),
+        body: AppErrorState(message: mapErrorToMessage(error)),
       ),
     );
   }
@@ -104,8 +101,10 @@ class TimeSegmentsScreen extends ConsumerWidget {
   }
 }
 
-final _todoByIdProvider =
-    FutureProvider.family<TodoEntity?, String>((ref, todoId) {
+final _todoByIdProvider = FutureProvider.family<TodoEntity?, String>((
+  ref,
+  todoId,
+) {
   return ref.read(todoRepositoryProvider).getTodoById(todoId);
 });
 
@@ -145,19 +144,11 @@ class _SegmentsBody extends ConsumerWidget {
         _buildHeader(theme, colorScheme, grandTotal),
         const Divider(height: 1),
         if (segments.isEmpty)
-          Expanded(
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.timer_off, size: 48,
-                      color: colorScheme.onSurface.withValues(alpha: 0.3)),
-                  const SizedBox(height: 12),
-                  Text(AppStrings.noSegments,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                          color: colorScheme.onSurface.withValues(alpha: 0.5))),
-                ],
-              ),
+          const Expanded(
+            child: AppEmptyState(
+              icon: Icons.timer_off,
+              title: AppStrings.noSegments,
+              message: AppStrings.noSegmentsRecordedDetailed,
             ),
           )
         else
@@ -183,31 +174,49 @@ class _SegmentsBody extends ConsumerWidget {
   }
 
   Widget _buildHeader(
-      ThemeData theme, ColorScheme colorScheme, int grandTotal) {
+    ThemeData theme,
+    ColorScheme colorScheme,
+    int grandTotal,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(todo.title,
-              style: theme.textTheme.titleLarge,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis),
+          Text(
+            todo.title,
+            style: theme.textTheme.titleLarge,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
           const SizedBox(height: 4),
-          Text(formatDateFromIso(todo.date),
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: colorScheme.onSurfaceVariant)),
+          Text(
+            formatDateFromIso(todo.date),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              Icon(Icons.access_time, size: 20,
-                  color: colorScheme.primary),
-              const SizedBox(width: 8),
-              Text('${AppStrings.totalTime}: ${formatDuration(grandTotal)}',
-                  style: theme.textTheme.titleMedium?.copyWith(
+          Semantics(
+            label: AppStrings.totalTimeForTask(
+              todo.title,
+              formatDuration(grandTotal),
+            ),
+            child: ExcludeSemantics(
+              child: Row(
+                children: [
+                  Icon(Icons.access_time, size: 20, color: colorScheme.primary),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${AppStrings.totalTime}: ${formatDuration(grandTotal)}',
+                    style: theme.textTheme.titleMedium?.copyWith(
                       color: colorScheme.primary,
-                      fontWeight: FontWeight.w600)),
-            ],
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -240,7 +249,7 @@ class _SegmentTile extends ConsumerWidget {
     String durationStr;
 
     if (isRunning) {
-      endStr = '—';
+      endStr = AppStrings.emptyValue;
       final liveElapsed = ref.watch(liveTimerProvider(todoId));
       final elapsed = liveElapsed.valueOrNull ?? 0;
       durationStr = AppStrings.segmentRunning;
@@ -252,8 +261,8 @@ class _SegmentTile extends ConsumerWidget {
       endStr = _timeFormat.format(endDt);
       durationStr = formatDuration(segment.durationSeconds ?? 0);
     } else {
-      endStr = '—';
-      durationStr = '—';
+      endStr = AppStrings.emptyValue;
+      durationStr = AppStrings.emptyValue;
     }
 
     final typeLabel = segment.manual
@@ -261,65 +270,91 @@ class _SegmentTile extends ConsumerWidget {
         : AppStrings.segmentAuto;
 
     return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 28,
-              child: Text('#$index',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: colorScheme.onSurfaceVariant)),
-            ),
-            if (isRunning)
-              _BlinkingDot(color: colorScheme.primary)
-            else if (segment.interrupted)
-              Tooltip(
-                message: AppStrings.segmentInterruptedTooltip,
-                child: Icon(Icons.warning_amber, size: 18,
-                    color: colorScheme.error),
-              )
-            else
-              const SizedBox(width: 18),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Text(startStr, style: theme.textTheme.bodyMedium),
-                      Text(' → ', style: theme.textTheme.bodyMedium?.copyWith(
-                          color: colorScheme.onSurfaceVariant)),
-                      Text(isRunning ? '—' : endStr,
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                              color: isRunning ? colorScheme.primary : null,
-                              fontWeight: isRunning ? FontWeight.w600 : null)),
-                    ],
+        child: Semantics(
+          label: AppStrings.segmentSemantics(
+            index: index,
+            start: startStr,
+            end: endStr,
+            duration: durationStr,
+            type: typeLabel,
+          ),
+          child: ExcludeSemantics(
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 28,
+                  child: Text(
+                    '#$index',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
-                  const SizedBox(height: 2),
-                  Row(
+                ),
+                if (isRunning)
+                  _BlinkingDot(color: colorScheme.primary)
+                else if (segment.interrupted)
+                  Tooltip(
+                    message: AppStrings.segmentInterruptedTooltip,
+                    child: Icon(
+                      Icons.warning_amber,
+                      size: 18,
+                      color: colorScheme.error,
+                    ),
+                  )
+                else
+                  const SizedBox(width: 18),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(durationStr,
-                          style: theme.textTheme.bodySmall?.copyWith(
+                      Row(
+                        children: [
+                          Text(startStr, style: theme.textTheme.bodyMedium),
+                          Text(
+                            ' -> ',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                          Text(
+                            endStr,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: isRunning ? colorScheme.primary : null,
+                              fontWeight: isRunning ? FontWeight.w700 : null,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Row(
+                        children: [
+                          Text(
+                            durationStr,
+                            style: theme.textTheme.bodySmall?.copyWith(
                               color: isRunning
                                   ? colorScheme.primary
                                   : colorScheme.onSurfaceVariant,
                               fontWeight: isRunning
-                                  ? FontWeight.w600
-                                  : FontWeight.normal)),
-                      const SizedBox(width: 8),
-                      _TypeBadge(
-                        label: typeLabel,
-                        isManual: segment.manual,
+                                  ? FontWeight.w700
+                                  : FontWeight.normal,
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          _TypeBadge(
+                            label: typeLabel,
+                            isManual: segment.manual,
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -327,10 +362,7 @@ class _SegmentTile extends ConsumerWidget {
 }
 
 class _TypeBadge extends StatelessWidget {
-  const _TypeBadge({
-    required this.label,
-    required this.isManual,
-  });
+  const _TypeBadge({required this.label, required this.isManual});
 
   final String label;
   final bool isManual;
@@ -352,11 +384,11 @@ class _TypeBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
-        isManual ? 'M' : label,
+        isManual ? AppStrings.manualSegmentShort : label,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: textColor,
-              fontWeight: FontWeight.w600,
-            ),
+          color: textColor,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
@@ -398,10 +430,7 @@ class _BlinkingDotState extends State<_BlinkingDot>
         width: 10,
         height: 10,
         margin: const EdgeInsets.symmetric(horizontal: 4),
-        decoration: BoxDecoration(
-          color: widget.color,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle),
       ),
     );
   }

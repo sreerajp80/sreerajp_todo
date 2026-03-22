@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
-import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
+import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
 
 class DailyListScreen extends ConsumerStatefulWidget {
@@ -34,18 +38,24 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
 
   void _goToPreviousDay() {
     final current = parseIsoDate(widget.date);
-    final prev = current.subtract(const Duration(days: 1));
-    _navigateToDate(dateTimeToIso(prev));
+    final previousDay = current.subtract(const Duration(days: 1));
+    _navigateToDate(dateTimeToIso(previousDay));
   }
 
   void _goToNextDay() {
     final current = parseIsoDate(widget.date);
-    final next = current.add(const Duration(days: 1));
-    _navigateToDate(dateTimeToIso(next));
+    final nextDay = current.add(const Duration(days: 1));
+    _navigateToDate(dateTimeToIso(nextDay));
   }
 
   void _goToToday() {
     _navigateToDate(todayAsIso());
+  }
+
+  void _showError(Object error) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(error))));
   }
 
   Future<void> _showPortDatePicker(String todoId) async {
@@ -60,10 +70,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     if (picked != null && mounted) {
       final targetDate = dateTimeToIso(picked);
       try {
-        await ref.read(dailyTodoProvider(widget.date).notifier).portTodo(
-              todoId,
-              targetDate,
-            );
+        await ref
+            .read(dailyTodoProvider(widget.date).notifier)
+            .portTodo(todoId, targetDate);
         if (mounted) {
           showUndoSnackBar(
             context,
@@ -75,11 +84,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
             },
           );
         }
-      } on Exception catch (e) {
+      } on Exception catch (error) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e.toString())),
-          );
+          _showError(error);
         }
       }
     }
@@ -92,14 +99,14 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     );
     if (result != null && mounted) {
       ref.read(dailyTodoProvider(widget.date).notifier).loadTodos();
-      final msg = StringBuffer();
-      msg.write('${result.copied.length} ${AppStrings.todosCopied}');
+      final message = StringBuffer();
+      message.write('${result.copied.length} ${AppStrings.todosCopied}');
       if (result.skipped.isNotEmpty) {
-        msg.write(', ${result.skipped.length} ${AppStrings.todosSkipped}');
+        message.write(', ${result.skipped.length} ${AppStrings.todosSkipped}');
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(msg.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(message.toString())));
     }
   }
 
@@ -107,86 +114,101 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(dailyTodoProvider(widget.date));
     final notifier = ref.read(dailyTodoProvider(widget.date).notifier);
-    final theme = Theme.of(context);
     final hasUndoStack = state.undoStack.isNotEmpty;
 
-    return Scaffold(
+    return ResponsiveScaffold(
+      currentDestination: AppScaffoldDestination.daily,
       appBar: state.isMultiSelectMode
           ? _buildMultiSelectAppBar(state, notifier)
           : _buildNormalAppBar(hasUndoStack, notifier),
+      floatingActionButton: _isPast
+          ? null
+          : FloatingActionButton(
+              onPressed: () {
+                context.push('${AppRoutes.createTodo}?date=${widget.date}');
+              },
+              tooltip: AppStrings.createTodo,
+              child: const Icon(Icons.add),
+            ),
       body: Column(
         children: [
           if (_showCalendar) _buildCalendar(),
           Expanded(
-            child: state.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : state.todos.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.task_alt,
-                              size: 64,
-                              color: theme.colorScheme.onSurface
-                                  .withValues(alpha: 0.3),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 220),
+              child: state.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : state.todos.isEmpty
+                  ? AppEmptyState(
+                      key: ValueKey('empty-${widget.date}'),
+                      icon: Icons.task_alt,
+                      title: isToday(widget.date)
+                          ? AppStrings.noTasksTodayTitle
+                          : AppStrings.noTodosForDay,
+                      message: _isPast
+                          ? AppStrings.noTasksForPastDayMessage
+                          : AppStrings.noTasksTodayMessage,
+                      actionLabel: _isPast ? null : AppStrings.addFirstTask,
+                      onAction: _isPast
+                          ? null
+                          : () => context.push(
+                              '${AppRoutes.createTodo}?date=${widget.date}',
                             ),
-                            const SizedBox(height: 16),
-                            Text(
-                              AppStrings.noTodosForDay,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: theme.colorScheme.onSurface
-                                    .withValues(alpha: 0.5),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : ReorderableListView.builder(
-                        buildDefaultDragHandles: !_isPast,
-                        padding: const EdgeInsets.only(bottom: 80),
-                        itemCount: state.todos.length,
-                        onReorder: (oldIndex, newIndex) {
-                          if (!_isPast) {
-                            notifier.reorder(oldIndex, newIndex);
-                          }
-                        },
-                        itemBuilder: (context, index) {
-                          final todo = state.todos[index];
-                          return TodoListTile(
-                            key: ValueKey(todo.id),
-                            todo: todo,
-                            isPast: _isPast,
-                            isSelected:
-                                state.selectedIds.contains(todo.id),
-                            isMultiSelectMode: state.isMultiSelectMode,
-                            onTap: () {
-                              if (state.isMultiSelectMode) {
-                                notifier.toggleSelect(todo.id);
-                              }
-                            },
-                            onLongPress: () {
+                    )
+                  : ReorderableListView.builder(
+                      key: ValueKey(
+                        'list-${widget.date}-${state.todos.length}',
+                      ),
+                      buildDefaultDragHandles: !_isPast,
+                      padding: const EdgeInsets.only(bottom: 88),
+                      itemCount: state.todos.length,
+                      onReorder: (oldIndex, newIndex) {
+                        if (!_isPast) {
+                          notifier.reorder(oldIndex, newIndex);
+                        }
+                      },
+                      itemBuilder: (context, index) {
+                        final todo = state.todos[index];
+                        return TodoListTile(
+                          key: ValueKey(todo.id),
+                          animationIndex: index,
+                          todo: todo,
+                          isPast: _isPast,
+                          isSelected: state.selectedIds.contains(todo.id),
+                          isMultiSelectMode: state.isMultiSelectMode,
+                          onTap: () {
+                            if (state.isMultiSelectMode) {
                               notifier.toggleSelect(todo.id);
-                            },
-                            onComplete: () async {
+                            }
+                          },
+                          onLongPress: () {
+                            notifier.toggleSelect(todo.id);
+                          },
+                          onComplete: () async {
+                            try {
                               await notifier.markCompleted(todo.id);
                               if (context.mounted) {
                                 showUndoSnackBar(
                                   context,
                                   message:
                                       '${AppStrings.statusChangedTo} ${AppStrings.statusCompleted}',
-                                  onUndo: () =>
-                                      notifier.undoLastStatusChange(),
+                                  onUndo: () => notifier.undoLastStatusChange(),
                                 );
                               }
-                            },
-                            onDrop: () async {
-                              final confirmed = await showConfirmDialog(
-                                context,
-                                title: AppStrings.confirmDrop,
-                                content: AppStrings.confirmDropBody,
-                              );
-                              if (confirmed && context.mounted) {
+                            } on Exception catch (error) {
+                              if (context.mounted) {
+                                _showError(error);
+                              }
+                            }
+                          },
+                          onDrop: () async {
+                            final confirmed = await showConfirmDialog(
+                              context,
+                              title: AppStrings.confirmDrop,
+                              content: AppStrings.confirmDropBody,
+                            );
+                            if (confirmed && context.mounted) {
+                              try {
                                 await notifier.markDropped(todo.id);
                                 if (context.mounted) {
                                   showUndoSnackBar(
@@ -197,66 +219,60 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                                         notifier.undoLastStatusChange(),
                                   );
                                 }
+                              } on Exception catch (error) {
+                                if (context.mounted) {
+                                  _showError(error);
+                                }
                               }
-                            },
-                            onPort: () async {
-                              final confirmed = await showConfirmDialog(
-                                context,
-                                title: AppStrings.confirmPort,
-                                content: AppStrings.confirmPortBody,
-                              );
-                              if (confirmed) {
-                                await _showPortDatePicker(todo.id);
-                              }
-                            },
-                            onCopy: () => _openCopyWizard(preSelectedIds: [todo.id]),
-                            onEdit: () {
-                              if (_isPast) {
-                                context.push(
-                                    AppRoutes.editTodoPath(todo.id));
-                              } else {
-                                context.push(
-                                    AppRoutes.editTodoPath(todo.id));
-                              }
-                            },
-                            onViewSegments: () {
-                              context.push(
-                                  AppRoutes.timeSegmentsPath(todo.id));
-                            },
-                            onDelete: () async {
-                              final confirmed = await showConfirmDialog(
-                                context,
-                                title: AppStrings.confirmDelete,
-                                content: AppStrings.confirmDeleteBody,
-                              );
-                              if (confirmed && context.mounted) {
+                            }
+                          },
+                          onPort: () async {
+                            final confirmed = await showConfirmDialog(
+                              context,
+                              title: AppStrings.confirmPort,
+                              content: AppStrings.confirmPortBody,
+                            );
+                            if (confirmed) {
+                              await _showPortDatePicker(todo.id);
+                            }
+                          },
+                          onCopy: () =>
+                              _openCopyWizard(preSelectedIds: [todo.id]),
+                          onEdit: () =>
+                              context.push(AppRoutes.editTodoPath(todo.id)),
+                          onViewSegments: () {
+                            context.push(AppRoutes.timeSegmentsPath(todo.id));
+                          },
+                          onDelete: () async {
+                            final confirmed = await showConfirmDialog(
+                              context,
+                              title: AppStrings.confirmDelete,
+                              content: AppStrings.confirmDeleteBody,
+                            );
+                            if (confirmed && context.mounted) {
+                              try {
                                 await notifier.deleteTodo(todo.id);
                                 if (context.mounted) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(
+                                  ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
-                                      content:
-                                          Text(AppStrings.todoDeleted),
+                                      content: Text(AppStrings.todoDeleted),
                                     ),
                                   );
                                 }
+                              } on Exception catch (error) {
+                                if (context.mounted) {
+                                  _showError(error);
+                                }
                               }
-                            },
-                          );
-                        },
-                      ),
+                            }
+                          },
+                        );
+                      },
+                    ),
+            ),
           ),
         ],
       ),
-      floatingActionButton: _isPast
-          ? null
-          : FloatingActionButton(
-              onPressed: () {
-                context.push('${AppRoutes.createTodo}?date=${widget.date}');
-              },
-              tooltip: AppStrings.createTodo,
-              child: const Icon(Icons.add),
-            ),
     );
   }
 
@@ -265,27 +281,40 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     DailyTodoNotifier notifier,
   ) {
     return AppBar(
-      title: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.chevron_left),
-            onPressed: _goToPreviousDay,
-            tooltip: 'Previous day',
-          ),
-          GestureDetector(
-            onTap: () => setState(() => _showCalendar = !_showCalendar),
-            child: Text(
-              formatDateFromIso(widget.date),
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.chevron_right),
-            onPressed: _goToNextDay,
-            tooltip: 'Next day',
-          ),
-        ],
+      title: LayoutBuilder(
+        builder: (context, constraints) {
+          final dateLabel = _buildAppBarDateLabel(constraints.maxWidth);
+          return Row(
+            children: [
+              _buildDateNavigationButton(
+                icon: Icons.chevron_left,
+                onPressed: _goToPreviousDay,
+                tooltip: AppStrings.previousDay,
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () => setState(() => _showCalendar = !_showCalendar),
+                  borderRadius: BorderRadius.circular(8),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      dateLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ),
+                ),
+              ),
+              _buildDateNavigationButton(
+                icon: Icons.chevron_right,
+                onPressed: _goToNextDay,
+                tooltip: AppStrings.nextDay,
+              ),
+            ],
+          );
+        },
       ),
       actions: [
         if (!isToday(widget.date))
@@ -296,7 +325,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         IconButton(
           icon: const Icon(Icons.calendar_month),
           onPressed: () => setState(() => _showCalendar = !_showCalendar),
-          tooltip: 'Calendar',
+          tooltip: AppStrings.openCalendar,
         ),
         if (hasUndoStack)
           IconButton(
@@ -339,13 +368,13 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 ],
               ),
             ),
-            const PopupMenuItem(
+            PopupMenuItem(
               value: 'backup',
               child: Row(
                 children: [
-                  Icon(Icons.backup_outlined, size: 20),
-                  SizedBox(width: 8),
-                  Text(AppStrings.backup),
+                  const Icon(Icons.backup_outlined, size: 20),
+                  const SizedBox(width: 8),
+                  Text(AppStrings.backup.label),
                 ],
               ),
             ),
@@ -377,6 +406,29 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     );
   }
 
+  String _buildAppBarDateLabel(double maxWidth) {
+    if (maxWidth < 220) {
+      return DateFormat('E, MMM d').format(parseIsoDate(widget.date));
+    }
+
+    return formatDateFromIso(widget.date);
+  }
+
+  Widget _buildDateNavigationButton({
+    required IconData icon,
+    required VoidCallback onPressed,
+    required String tooltip,
+  }) {
+    return IconButton(
+      icon: Icon(icon, size: 20),
+      onPressed: onPressed,
+      tooltip: tooltip,
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints.tightFor(width: 36, height: 36),
+      visualDensity: VisualDensity.compact,
+    );
+  }
+
   PreferredSizeWidget _buildMultiSelectAppBar(
     DailyTodoState dailyState,
     DailyTodoNotifier notifier,
@@ -386,7 +438,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
 
     final canComplete = selectedIds.any((id) {
       try {
-        final todo = dailyState.todos.firstWhere((t) => t.id == id);
+        final todo = dailyState.todos.firstWhere((item) => item.id == id);
         return todo.status == TodoStatus.pending;
       } on StateError {
         return false;

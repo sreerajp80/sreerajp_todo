@@ -7,7 +7,10 @@ import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/rrule_display_utils.dart';
 import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_error_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 
 class RecurringTasksScreen extends ConsumerWidget {
   const RecurringTasksScreen({super.key});
@@ -15,52 +18,37 @@ class RecurringTasksScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final rulesAsync = ref.watch(recurrenceRulesProvider);
-    final theme = Theme.of(context);
 
-    return Scaffold(
+    return ResponsiveScaffold(
+      currentDestination: AppScaffoldDestination.recurring,
       appBar: AppBar(title: const Text(AppStrings.recurringTasks)),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.push(AppRoutes.recurringNew),
+        tooltip: AppStrings.newRecurrence,
+        child: const Icon(Icons.add),
+      ),
       body: rulesAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, _) => Center(
-          child: Text(
-            error.toString(),
-            style: TextStyle(color: theme.colorScheme.error),
-          ),
+        error: (error, _) => AppErrorState(
+          message: AppStrings.errors.retryableGeneric,
+          onRetry: () => ref.invalidate(recurrenceRulesProvider),
         ),
         data: (rules) => rules.isEmpty
-            ? Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.repeat,
-                      size: 64,
-                      color: theme.colorScheme.onSurface.withValues(alpha: 0.3),
-                    ),
-                    const SizedBox(height: 16),
-                    Text(
-                      AppStrings.noRecurrenceRules,
-                      style: theme.textTheme.bodyLarge?.copyWith(
-                        color: theme.colorScheme.onSurface
-                            .withValues(alpha: 0.5),
-                      ),
-                    ),
-                  ],
-                ),
+            ? AppEmptyState(
+                icon: Icons.repeat,
+                title: AppStrings.noRecurrenceRules,
+                message: AppStrings.noRecurringTasksDetailed,
+                actionLabel: AppStrings.newRecurrence,
+                onAction: () => context.push(AppRoutes.recurringNew),
               )
             : ListView.builder(
-                padding: const EdgeInsets.only(bottom: 80),
+                padding: const EdgeInsets.only(bottom: 88),
                 itemCount: rules.length,
                 itemBuilder: (context, index) {
                   final rule = rules[index];
                   return _RuleTile(rule: rule);
                 },
               ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push(AppRoutes.recurringNew),
-        tooltip: AppStrings.newRecurrence,
-        child: const Icon(Icons.add),
       ),
     );
   }
@@ -102,7 +90,6 @@ class _RuleTile extends ConsumerWidget {
         );
       },
       child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: ListTile(
           onTap: () => context.push(AppRoutes.recurringEditPath(rule.id)),
           leading: Icon(
@@ -114,7 +101,9 @@ class _RuleTile extends ConsumerWidget {
           title: Text(
             rule.title,
             style: theme.textTheme.titleSmall?.copyWith(
-              color: rule.active ? null : theme.colorScheme.onSurface.withValues(alpha: 0.5),
+              color: rule.active
+                  ? null
+                  : theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ),
           subtitle: Column(
@@ -122,7 +111,7 @@ class _RuleTile extends ConsumerWidget {
             children: [
               Text(description),
               Text(
-                '${formatDateFromIso(rule.startDate)} — $endDateText',
+                '${formatDateFromIso(rule.startDate)} - $endDateText',
                 style: theme.textTheme.bodySmall,
               ),
             ],

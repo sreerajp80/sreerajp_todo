@@ -30,10 +30,7 @@ class RecurrenceRuleDao {
 
   Future<List<RecurrenceRuleEntity>> findAll() async {
     final db = await _databaseService.database;
-    final maps = await db.query(
-      'recurrence_rules',
-      orderBy: 'created_at DESC',
-    );
+    final maps = await db.query('recurrence_rules', orderBy: 'created_at DESC');
     return maps.map(RecurrenceRuleEntity.fromMap).toList();
   }
 

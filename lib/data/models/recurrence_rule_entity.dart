@@ -19,16 +19,16 @@ class RecurrenceRuleEntity with _$RecurrenceRuleEntity {
   }) = _RecurrenceRuleEntity;
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'rrule': rrule,
-        'start_date': startDate,
-        'end_date': endDate,
-        'active': active ? 1 : 0,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-      };
+    'id': id,
+    'title': title,
+    'description': description,
+    'rrule': rrule,
+    'start_date': startDate,
+    'end_date': endDate,
+    'active': active ? 1 : 0,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+  };
 
   factory RecurrenceRuleEntity.fromMap(Map<String, dynamic> map) =>
       RecurrenceRuleEntity(

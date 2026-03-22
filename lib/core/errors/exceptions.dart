@@ -57,21 +57,32 @@ class SegmentOverlapException implements Exception {
 }
 
 class BackupVersionTooNewException implements Exception {
-  const BackupVersionTooNewException([
+  const BackupVersionTooNewException(
+    this.backupVersion,
+    this.appVersion, [
     this.message = 'This backup was created by a newer version of the app.',
   ]);
+
+  final int backupVersion;
+  final int appVersion;
   final String message;
 
   @override
-  String toString() => 'BackupVersionTooNewException: $message';
+  String toString() =>
+      'BackupVersionTooNewException: $message (backupVersion: $backupVersion, appVersion: $appVersion)';
 }
 
 class BackupCorruptedException implements Exception {
   const BackupCorruptedException([
+    this.details,
     this.message = 'The backup file is corrupted.',
   ]);
+
+  final String? details;
   final String message;
 
   @override
-  String toString() => 'BackupCorruptedException: $message';
+  String toString() => details == null
+      ? 'BackupCorruptedException: $message'
+      : 'BackupCorruptedException: $message ($details)';
 }

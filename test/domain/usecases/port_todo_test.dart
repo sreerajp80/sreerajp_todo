@@ -106,10 +106,7 @@ void main() {
 
     final result = await useCase('pt-undo', _tomorrowIso());
 
-    expect(
-      (await todoRepo.getTodoById('pt-undo'))?.status,
-      TodoStatus.ported,
-    );
+    expect((await todoRepo.getTodoById('pt-undo'))?.status, TodoStatus.ported);
     expect(await todoRepo.getTodoById(result.copiedTodoId), isNotNull);
 
     await todoRepo.deleteTodo(result.copiedTodoId, bypassLock: true);
@@ -134,35 +131,39 @@ void main() {
     expect(runningAfter, isNull);
   });
 
-  test('throws DayLockedException if target date is today (not future)',
-      () async {
-    await todoRepo.createTodo(makeTodo(id: 'pt-today', title: 'Today Port'));
+  test(
+    'throws DayLockedException if target date is today (not future)',
+    () async {
+      await todoRepo.createTodo(makeTodo(id: 'pt-today', title: 'Today Port'));
 
-    expect(
-      () => useCase('pt-today', _todayIso()),
-      throwsA(isA<DayLockedException>()),
-    );
-  });
+      expect(
+        () => useCase('pt-today', _todayIso()),
+        throwsA(isA<DayLockedException>()),
+      );
+    },
+  );
 
-  test('throws DuplicateTitleException if title exists on target date',
-      () async {
-    await todoRepo.createTodo(makeTodo(id: 'pt-dup', title: 'Dup Port'));
+  test(
+    'throws DuplicateTitleException if title exists on target date',
+    () async {
+      await todoRepo.createTodo(makeTodo(id: 'pt-dup', title: 'Dup Port'));
 
-    final existingOnTarget = TodoEntity(
-      id: 'target-dup',
-      date: _tomorrowIso(),
-      title: 'Dup Port',
-      sortOrder: 0,
-      createdAt: DateTime.now().toUtc().toIso8601String(),
-      updatedAt: DateTime.now().toUtc().toIso8601String(),
-    );
-    await todoRepo.createTodo(existingOnTarget);
+      final existingOnTarget = TodoEntity(
+        id: 'target-dup',
+        date: _tomorrowIso(),
+        title: 'Dup Port',
+        sortOrder: 0,
+        createdAt: DateTime.now().toUtc().toIso8601String(),
+        updatedAt: DateTime.now().toUtc().toIso8601String(),
+      );
+      await todoRepo.createTodo(existingOnTarget);
 
-    expect(
-      () => useCase('pt-dup', _tomorrowIso()),
-      throwsA(isA<DuplicateTitleException>()),
-    );
-  });
+      expect(
+        () => useCase('pt-dup', _tomorrowIso()),
+        throwsA(isA<DuplicateTitleException>()),
+      );
+    },
+  );
 
   test('throws TodoNotFoundException for nonexistent todo', () async {
     expect(
@@ -173,19 +174,23 @@ void main() {
 
   test('recurrenceRuleId is NOT inherited', () async {
     final now = DateTime.now().toUtc().toIso8601String();
-    await recurrenceRuleDao.insert(RecurrenceRuleEntity(
-      id: 'rule-123',
-      title: 'Test Rule',
-      rrule: 'FREQ=DAILY;COUNT=5',
-      startDate: _todayIso(),
-      createdAt: now,
-      updatedAt: now,
-    ));
-    await todoRepo.createTodo(makeTodo(
-      id: 'pt-rule',
-      title: 'Recurring Port',
-      recurrenceRuleId: 'rule-123',
-    ));
+    await recurrenceRuleDao.insert(
+      RecurrenceRuleEntity(
+        id: 'rule-123',
+        title: 'Test Rule',
+        rrule: 'FREQ=DAILY;COUNT=5',
+        startDate: _todayIso(),
+        createdAt: now,
+        updatedAt: now,
+      ),
+    );
+    await todoRepo.createTodo(
+      makeTodo(
+        id: 'pt-rule',
+        title: 'Recurring Port',
+        recurrenceRuleId: 'rule-123',
+      ),
+    );
 
     final result = await useCase('pt-rule', _tomorrowIso());
 

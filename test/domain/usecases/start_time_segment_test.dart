@@ -75,48 +75,38 @@ void main() {
     final todo = _makeTodo(id: 'st-2', date: _yesterdayIso());
     await todoDao.insert(todo);
 
-    expect(
-      () => useCase('st-2'),
-      throwsA(isA<DayLockedException>()),
-    );
+    expect(() => useCase('st-2'), throwsA(isA<DayLockedException>()));
   });
 
   test('throws CompletedLockException for completed todo', () async {
     await todoRepo.createTodo(_makeTodo(id: 'st-3'));
     await todoRepo.updateStatus('st-3', TodoStatus.completed);
 
-    expect(
-      () => useCase('st-3'),
-      throwsA(isA<CompletedLockException>()),
-    );
+    expect(() => useCase('st-3'), throwsA(isA<CompletedLockException>()));
   });
 
   test('throws CompletedLockException for dropped todo', () async {
     await todoRepo.createTodo(_makeTodo(id: 'st-4', title: 'Dropped task'));
     await todoRepo.updateStatus('st-4', TodoStatus.dropped);
 
-    expect(
-      () => useCase('st-4'),
-      throwsA(isA<CompletedLockException>()),
-    );
+    expect(() => useCase('st-4'), throwsA(isA<CompletedLockException>()));
   });
 
-  test('throws SegmentAlreadyRunningException when one already running',
-      () async {
-    await todoRepo.createTodo(_makeTodo(id: 'st-5', title: 'Running'));
+  test(
+    'throws SegmentAlreadyRunningException when one already running',
+    () async {
+      await todoRepo.createTodo(_makeTodo(id: 'st-5', title: 'Running'));
 
-    await useCase('st-5');
+      await useCase('st-5');
 
-    expect(
-      () => useCase('st-5'),
-      throwsA(isA<SegmentAlreadyRunningException>()),
-    );
-  });
+      expect(
+        () => useCase('st-5'),
+        throwsA(isA<SegmentAlreadyRunningException>()),
+      );
+    },
+  );
 
   test('throws TodoNotFoundException for nonexistent todo', () async {
-    expect(
-      () => useCase('nonexistent'),
-      throwsA(isA<TodoNotFoundException>()),
-    );
+    expect(() => useCase('nonexistent'), throwsA(isA<TodoNotFoundException>()));
   });
 }

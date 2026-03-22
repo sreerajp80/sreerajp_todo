@@ -56,7 +56,7 @@ If flavors are introduced in a future version, see `docs/flutter_build_flavors_g
 - Keystore ownership: SreerajP (single developer).
 - Rules:
   - Signing material must not live in source control (`key.properties` and `.jks` files are in `.gitignore`).
-  - The `key.properties` path is referenced from `android/app/build.gradle` via a relative path (`../../key.properties`).
+  - The `key.properties` path is referenced from `android/app/build.gradle.kts` via a relative path (`../../key.properties`).
   - CI logs must not print signing secrets.
 
 ### Keystore Generation
@@ -67,25 +67,27 @@ keytool -genkey -v -keystore L:\Android\key.properties.jks -keyalg RSA -keysize 
 
 ### Gradle Signing Configuration
 
-```groovy
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('../../key.properties')
+```kotlin
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("../../key.properties")
+
 if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    FileInputStream(keystorePropertiesFile).use(keystoreProperties::load)
 }
 
 android {
     signingConfigs {
-        release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+        create("release") {
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+            storeFile = file(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
         }
     }
+
     buildTypes {
         release {
-            signingConfig signingConfigs.release
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }
@@ -226,3 +228,5 @@ No public store distribution in v1.0.
 - [ ] No network-related errors or warnings observed.
 - [ ] Release tag created in git.
 - [ ] Follow-up tasks recorded for the next version.
+
+

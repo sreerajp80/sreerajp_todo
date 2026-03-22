@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
@@ -10,11 +11,7 @@ import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 
 class CopyTodosScreen extends ConsumerStatefulWidget {
-  const CopyTodosScreen({
-    super.key,
-    this.fromDate,
-    this.preSelectedIds,
-  });
+  const CopyTodosScreen({super.key, this.fromDate, this.preSelectedIds});
 
   final String? fromDate;
   final List<String>? preSelectedIds;
@@ -47,9 +44,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       _sourceTodos = todos;
       if (widget.preSelectedIds != null) {
         _selectedIds.addAll(
-          widget.preSelectedIds!.where(
-            (id) => todos.any((t) => t.id == id),
-          ),
+          widget.preSelectedIds!.where((id) => todos.any((t) => t.id == id)),
         );
       }
       _isLoading = false;
@@ -85,9 +80,9 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       context.pop<CopyTodosResult>(result);
     } on Exception catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(e))));
       setState(() => _isCopying = false);
     }
   }
@@ -161,8 +156,11 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                       ? theme.colorScheme.primary
                       : theme.colorScheme.outlineVariant,
                   child: isDone
-                      ? Icon(Icons.check, size: 16,
-                          color: theme.colorScheme.onPrimary)
+                      ? Icon(
+                          Icons.check,
+                          size: 16,
+                          color: theme.colorScheme.onPrimary,
+                        )
                       : Text(
                           '${index + 1}',
                           style: TextStyle(
@@ -280,8 +278,10 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       TodoStatus.completed => (Icons.check_circle, const Color(0xFF2E7D32)),
       TodoStatus.dropped => (Icons.cancel, const Color(0xFFC62828)),
       TodoStatus.ported => (Icons.arrow_forward, const Color(0xFFF9A825)),
-      TodoStatus.pending => (Icons.radio_button_unchecked,
-          theme.colorScheme.onSurfaceVariant),
+      TodoStatus.pending => (
+        Icons.radio_button_unchecked,
+        theme.colorScheme.onSurfaceVariant,
+      ),
     };
     return Icon(icon, color: color, size: 20);
   }
@@ -292,10 +292,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppStrings.selectTargetDate,
-            style: theme.textTheme.titleMedium,
-          ),
+          Text(AppStrings.selectTargetDate, style: theme.textTheme.titleMedium),
           const SizedBox(height: 16),
           if (_targetDate != null)
             Card(
@@ -344,9 +341,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
     final now = DateTime.now();
     final picked = await showDatePicker(
       context: context,
-      initialDate: _targetDate != null
-          ? parseIsoDate(_targetDate!)
-          : now,
+      initialDate: _targetDate != null ? parseIsoDate(_targetDate!) : now,
       firstDate: now,
       lastDate: now.add(const Duration(days: 365)),
       helpText: AppStrings.selectTargetDate,
@@ -410,8 +405,9 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                   overflow: TextOverflow.ellipsis,
                   style: isConflict
                       ? TextStyle(
-                          color: theme.colorScheme.onSurface
-                              .withValues(alpha: 0.5),
+                          color: theme.colorScheme.onSurface.withValues(
+                            alpha: 0.5,
+                          ),
                           decoration: TextDecoration.lineThrough,
                         )
                       : null,
@@ -459,7 +455,9 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
             const Spacer(),
             if (_currentStep < 2)
               FilledButton(
-                onPressed: _canAdvance() ? () => _goToStep(_currentStep + 1) : null,
+                onPressed: _canAdvance()
+                    ? () => _goToStep(_currentStep + 1)
+                    : null,
                 child: const Text(AppStrings.next),
               ),
             if (_currentStep == 2)

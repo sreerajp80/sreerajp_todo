@@ -20,12 +20,12 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     required MarkTodoDropped markTodoDropped,
     required PortTodo portTodo,
     required CopyTodos copyTodos,
-  })  : _todoRepository = todoRepository,
-        _markTodoCompleted = markTodoCompleted,
-        _markTodoDropped = markTodoDropped,
-        _portTodo = portTodo,
-        _copyTodos = copyTodos,
-        super(const DailyTodoState()) {
+  }) : _todoRepository = todoRepository,
+       _markTodoCompleted = markTodoCompleted,
+       _markTodoDropped = markTodoDropped,
+       _portTodo = portTodo,
+       _copyTodos = copyTodos,
+       super(const DailyTodoState()) {
     loadTodos();
   }
 
@@ -115,12 +115,14 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> markCompleted(String todoId) async {
     try {
       final oldStatus = await _markTodoCompleted(todoId);
-      _pushUndo(UndoEntry(
-        todoId: todoId,
-        oldStatus: oldStatus,
-        newStatus: TodoStatus.completed,
-        timestamp: DateTime.now(),
-      ));
+      _pushUndo(
+        UndoEntry(
+          todoId: todoId,
+          oldStatus: oldStatus,
+          newStatus: TodoStatus.completed,
+          timestamp: DateTime.now(),
+        ),
+      );
       await loadTodos();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
@@ -130,12 +132,14 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> markDropped(String todoId) async {
     try {
       final oldStatus = await _markTodoDropped(todoId);
-      _pushUndo(UndoEntry(
-        todoId: todoId,
-        oldStatus: oldStatus,
-        newStatus: TodoStatus.dropped,
-        timestamp: DateTime.now(),
-      ));
+      _pushUndo(
+        UndoEntry(
+          todoId: todoId,
+          oldStatus: oldStatus,
+          newStatus: TodoStatus.dropped,
+          timestamp: DateTime.now(),
+        ),
+      );
       await loadTodos();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
@@ -145,13 +149,15 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> portTodo(String todoId, String targetDate) async {
     try {
       final result = await _portTodo(todoId, targetDate);
-      _pushUndo(UndoEntry(
-        todoId: todoId,
-        oldStatus: result.oldStatus,
-        newStatus: TodoStatus.ported,
-        copiedTodoId: result.copiedTodoId,
-        timestamp: DateTime.now(),
-      ));
+      _pushUndo(
+        UndoEntry(
+          todoId: todoId,
+          oldStatus: result.oldStatus,
+          newStatus: TodoStatus.ported,
+          copiedTodoId: result.copiedTodoId,
+          timestamp: DateTime.now(),
+        ),
+      );
       await loadTodos();
     } on DuplicateTitleException {
       rethrow;
@@ -173,12 +179,14 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     try {
       for (final id in ids) {
         final oldStatus = await _markTodoCompleted(id);
-        _pushUndo(UndoEntry(
-          todoId: id,
-          oldStatus: oldStatus,
-          newStatus: TodoStatus.completed,
-          timestamp: DateTime.now(),
-        ));
+        _pushUndo(
+          UndoEntry(
+            todoId: id,
+            oldStatus: oldStatus,
+            newStatus: TodoStatus.completed,
+            timestamp: DateTime.now(),
+          ),
+        );
       }
       clearSelection();
       await loadTodos();
@@ -191,12 +199,14 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     try {
       for (final id in ids) {
         final oldStatus = await _markTodoDropped(id);
-        _pushUndo(UndoEntry(
-          todoId: id,
-          oldStatus: oldStatus,
-          newStatus: TodoStatus.dropped,
-          timestamp: DateTime.now(),
-        ));
+        _pushUndo(
+          UndoEntry(
+            todoId: id,
+            oldStatus: oldStatus,
+            newStatus: TodoStatus.dropped,
+            timestamp: DateTime.now(),
+          ),
+        );
       }
       clearSelection();
       await loadTodos();
@@ -214,10 +224,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
     try {
       if (entry.copiedTodoId != null) {
-        await _todoRepository.deleteTodo(
-          entry.copiedTodoId!,
-          bypassLock: true,
-        );
+        await _todoRepository.deleteTodo(entry.copiedTodoId!, bypassLock: true);
       }
 
       await _todoRepository.updateStatus(
@@ -263,10 +270,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     } else {
       ids.add(id);
     }
-    state = state.copyWith(
-      selectedIds: ids,
-      isMultiSelectMode: ids.isNotEmpty,
-    );
+    state = state.copyWith(selectedIds: ids, isMultiSelectMode: ids.isNotEmpty);
   }
 
   void selectAll() {
@@ -275,9 +279,6 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   }
 
   void clearSelection() {
-    state = state.copyWith(
-      selectedIds: {},
-      isMultiSelectMode: false,
-    );
+    state = state.copyWith(selectedIds: {}, isMultiSelectMode: false);
   }
 }

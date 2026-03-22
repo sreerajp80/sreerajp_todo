@@ -14,6 +14,32 @@ import 'package:sreerajp_todo/presentation/screens/statistics/statistics_screen.
 import 'package:sreerajp_todo/presentation/screens/time_segments/time_segments_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 
+CustomTransitionPage<void> _buildPage(GoRouterState state, Widget child) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    child: child,
+    transitionDuration: const Duration(milliseconds: 220),
+    reverseTransitionDuration: const Duration(milliseconds: 180),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      final curved = CurvedAnimation(
+        parent: animation,
+        curve: Curves.easeOutCubic,
+        reverseCurve: Curves.easeInCubic,
+      );
+      return FadeTransition(
+        opacity: curved,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0.04, 0),
+            end: Offset.zero,
+          ).animate(curved),
+          child: child,
+        ),
+      );
+    },
+  );
+}
+
 final _router = GoRouter(
   initialLocation: AppRoutes.root,
   redirect: (context, state) {
@@ -25,74 +51,77 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: AppRoutes.dailyList,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final date = state.pathParameters['date'] ?? todayAsIso();
-        return DailyListScreen(date: date);
+        return _buildPage(state, DailyListScreen(date: date));
       },
     ),
     GoRoute(
       path: AppRoutes.createTodo,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final date = state.uri.queryParameters['date'];
-        return CreateEditTodoScreen(date: date);
+        return _buildPage(state, CreateEditTodoScreen(date: date));
       },
     ),
     GoRoute(
       path: AppRoutes.editTodo,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final id = state.pathParameters['id']!;
-        return CreateEditTodoScreen(todoId: id);
+        return _buildPage(state, CreateEditTodoScreen(todoId: id));
       },
       routes: [
         GoRoute(
           path: 'segments',
-          builder: (context, state) {
+          pageBuilder: (context, state) {
             final id = state.pathParameters['id']!;
-            return TimeSegmentsScreen(todoId: id);
+            return _buildPage(state, TimeSegmentsScreen(todoId: id));
           },
         ),
       ],
     ),
     GoRoute(
       path: AppRoutes.copyTodos,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final from = state.uri.queryParameters['from'];
         final preSelectedIds = state.extra as List<String>?;
-        return CopyTodosScreen(
-          fromDate: from,
-          preSelectedIds: preSelectedIds,
+        return _buildPage(
+          state,
+          CopyTodosScreen(fromDate: from, preSelectedIds: preSelectedIds),
         );
       },
     ),
     GoRoute(
       path: AppRoutes.search,
-      builder: (context, state) {
-        final q = state.uri.queryParameters['q'];
-        return SearchResultsScreen(query: q);
+      pageBuilder: (context, state) {
+        final query = state.uri.queryParameters['q'];
+        return _buildPage(state, SearchResultsScreen(query: query));
       },
     ),
     GoRoute(
       path: AppRoutes.backup,
-      builder: (context, state) => const BackupScreen(),
+      pageBuilder: (context, state) => _buildPage(state, const BackupScreen()),
     ),
     GoRoute(
       path: AppRoutes.recurring,
-      builder: (context, state) => const RecurringTasksScreen(),
+      pageBuilder: (context, state) =>
+          _buildPage(state, const RecurringTasksScreen()),
     ),
     GoRoute(
       path: AppRoutes.recurringNew,
-      builder: (context, state) => const RecurrenceEditorScreen(),
+      pageBuilder: (context, state) =>
+          _buildPage(state, const RecurrenceEditorScreen()),
     ),
     GoRoute(
       path: AppRoutes.recurringEdit,
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final id = state.pathParameters['id']!;
-        return RecurrenceEditorScreen(ruleId: id);
+        return _buildPage(state, RecurrenceEditorScreen(ruleId: id));
       },
     ),
     GoRoute(
       path: AppRoutes.statistics,
-      builder: (context, state) => const StatisticsScreen(),
+      pageBuilder: (context, state) =>
+          _buildPage(state, const StatisticsScreen()),
     ),
   ],
 );

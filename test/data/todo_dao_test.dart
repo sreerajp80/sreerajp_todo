@@ -137,10 +137,7 @@ void main() {
   group('existsTitleOnDate', () {
     test('returns true when title exists on date', () async {
       await todoDao.insert(makeTodo(title: 'My Task'));
-      final exists = await todoDao.existsTitleOnDate(
-        'My Task',
-        '2026-03-21',
-      );
+      final exists = await todoDao.existsTitleOnDate('My Task', '2026-03-21');
       expect(exists, isTrue);
     });
 
@@ -154,10 +151,7 @@ void main() {
 
     test('returns false when title exists on different date', () async {
       await todoDao.insert(makeTodo(title: 'My Task', date: '2026-03-20'));
-      final exists = await todoDao.existsTitleOnDate(
-        'My Task',
-        '2026-03-21',
-      );
+      final exists = await todoDao.existsTitleOnDate('My Task', '2026-03-21');
       expect(exists, isFalse);
     });
 
@@ -211,11 +205,7 @@ void main() {
     test('returns titles matching prefix', () async {
       await todoDao.insert(makeTodo(id: 'a', title: 'Buy groceries'));
       await todoDao.insert(
-        makeTodo(
-          id: 'b',
-          title: 'Buy milk',
-          date: '2026-03-20',
-        ),
+        makeTodo(id: 'b', title: 'Buy milk', date: '2026-03-20'),
       );
       await todoDao.insert(
         makeTodo(id: 'c', title: 'Read book', date: '2026-03-19'),

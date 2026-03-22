@@ -60,8 +60,9 @@ class TodoDao {
     final where = excludeId != null
         ? 'title = ? AND date = ? AND id != ?'
         : 'title = ? AND date = ?';
-    final whereArgs =
-        excludeId != null ? [title, date, excludeId] : [title, date];
+    final whereArgs = excludeId != null
+        ? [title, date, excludeId]
+        : [title, date];
     final result = await db.query(
       'todos',
       where: where,
@@ -80,10 +81,7 @@ class TodoDao {
     return maps.map((m) => m['title'] as String).toList();
   }
 
-  Future<List<TodoEntity>> searchByTitle(
-    String query, {
-    int limit = 50,
-  }) async {
+  Future<List<TodoEntity>> searchByTitle(String query, {int limit = 50}) async {
     final db = await _databaseService.database;
     final maps = await db.query(
       'todos',

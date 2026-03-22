@@ -74,10 +74,7 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
         ? (_startTime ?? const TimeOfDay(hour: 9, minute: 0))
         : (_endTime ?? const TimeOfDay(hour: 10, minute: 0));
 
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: initial,
-    );
+    final picked = await showTimePicker(context: context, initialTime: initial);
     if (picked != null) {
       setState(() {
         if (isStart) {
@@ -136,8 +133,7 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(AppStrings.addManualSegment,
-              style: theme.textTheme.titleLarge),
+          Text(AppStrings.addManualSegment, style: theme.textTheme.titleLarge),
           const SizedBox(height: 24),
           Row(
             children: [
@@ -162,22 +158,29 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
             const SizedBox(height: 12),
             Row(
               children: [
-                Icon(Icons.access_time, size: 16,
-                    color: colorScheme.onSurfaceVariant),
+                Icon(
+                  Icons.access_time,
+                  size: 16,
+                  color: colorScheme.onSurfaceVariant,
+                ),
                 const SizedBox(width: 6),
                 Text(
                   '${AppStrings.segmentDuration}: $durationPreview',
                   style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant),
+                    color: colorScheme.onSurfaceVariant,
+                  ),
                 ),
               ],
             ),
           ],
           if (_error != null) ...[
             const SizedBox(height: 12),
-            Text(_error!,
-                style: theme.textTheme.bodySmall
-                    ?.copyWith(color: colorScheme.error)),
+            Text(
+              _error!,
+              style: theme.textTheme.bodySmall?.copyWith(
+                color: colorScheme.error,
+              ),
+            ),
           ],
           const SizedBox(height: 24),
           Row(
@@ -215,8 +218,7 @@ class _TimePickerField extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    final displayText =
-        value != null ? value!.format(context) : '—:—';
+    final displayText = value != null ? value!.format(context) : ':';
 
     return InkWell(
       onTap: onTap,

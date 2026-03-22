@@ -127,21 +127,22 @@ void main() {
   });
 
   group('Title Uniqueness', () {
-    test('duplicate title on same date throws DuplicateTitleException',
-        () async {
-      final todo1 = _makeTodo(id: 'dup-1', title: 'Same Title');
-      await repository.createTodo(todo1);
+    test(
+      'duplicate title on same date throws DuplicateTitleException',
+      () async {
+        final todo1 = _makeTodo(id: 'dup-1', title: 'Same Title');
+        await repository.createTodo(todo1);
 
-      final todo2 = _makeTodo(id: 'dup-2', title: 'Same Title');
-      expect(
-        () => repository.createTodo(todo2),
-        throwsA(isA<DuplicateTitleException>()),
-      );
-    });
+        final todo2 = _makeTodo(id: 'dup-2', title: 'Same Title');
+        expect(
+          () => repository.createTodo(todo2),
+          throwsA(isA<DuplicateTitleException>()),
+        );
+      },
+    );
 
     test('same title on different dates is allowed', () async {
-      final todo1 =
-          _makeTodo(id: 'diff-date-1', title: 'Cross Date Title');
+      final todo1 = _makeTodo(id: 'diff-date-1', title: 'Cross Date Title');
       await repository.createTodo(todo1);
 
       final todo2 = _makeTodo(
@@ -184,11 +185,10 @@ void main() {
   group('Autocomplete and Search', () {
     test('autocomplete returns matching titles', () async {
       await repository.createTodo(
-          _makeTodo(id: 'ac-1', title: 'Buy groceries'));
-      await repository
-          .createTodo(_makeTodo(id: 'ac-2', title: 'Buy milk'));
-      await repository
-          .createTodo(_makeTodo(id: 'ac-3', title: 'Read book'));
+        _makeTodo(id: 'ac-1', title: 'Buy groceries'),
+      );
+      await repository.createTodo(_makeTodo(id: 'ac-2', title: 'Buy milk'));
+      await repository.createTodo(_makeTodo(id: 'ac-3', title: 'Read book'));
 
       final suggestions = await repository.getAutocompleteSuggestions('Buy');
       expect(suggestions, hasLength(2));
@@ -197,10 +197,10 @@ void main() {
     });
 
     test('search returns results across dates', () async {
+      await repository.createTodo(_makeTodo(id: 's-1', title: 'Review code'));
       await repository.createTodo(
-          _makeTodo(id: 's-1', title: 'Review code'));
-      await repository.createTodo(
-          _makeTodo(id: 's-2', date: _tomorrowIso(), title: 'Code review'));
+        _makeTodo(id: 's-2', date: _tomorrowIso(), title: 'Code review'),
+      );
 
       final results = await repository.searchByTitle('code');
       expect(results.length, greaterThanOrEqualTo(1));

@@ -18,15 +18,15 @@ class TimeSegmentEntity with _$TimeSegmentEntity {
   }) = _TimeSegmentEntity;
 
   Map<String, dynamic> toMap() => {
-        'id': id,
-        'todo_id': todoId,
-        'start_time': startTime,
-        'end_time': endTime,
-        'duration_seconds': durationSeconds,
-        'interrupted': interrupted ? 1 : 0,
-        'manual': manual ? 1 : 0,
-        'created_at': createdAt,
-      };
+    'id': id,
+    'todo_id': todoId,
+    'start_time': startTime,
+    'end_time': endTime,
+    'duration_seconds': durationSeconds,
+    'interrupted': interrupted ? 1 : 0,
+    'manual': manual ? 1 : 0,
+    'created_at': createdAt,
+  };
 
   factory TimeSegmentEntity.fromMap(Map<String, dynamic> map) =>
       TimeSegmentEntity(

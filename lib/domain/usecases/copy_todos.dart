@@ -23,10 +23,7 @@ class CopyTodos {
   /// Skips any todo whose title already exists on [targetDate].
   /// All inserts are performed via the repository (which handles
   /// NFC normalisation and day lock checks).
-  Future<CopyTodosResult> call(
-    List<String> todoIds,
-    String targetDate,
-  ) async {
+  Future<CopyTodosResult> call(List<String> todoIds, String targetDate) async {
     final copied = <TodoEntity>[];
     final skipped = <TodoEntity>[];
 
@@ -34,8 +31,9 @@ class CopyTodos {
     var nextSortOrder = existingTodos.isEmpty
         ? 0
         : existingTodos
-            .map((t) => t.sortOrder)
-            .reduce((a, b) => a > b ? a : b) + 1;
+                  .map((t) => t.sortOrder)
+                  .reduce((a, b) => a > b ? a : b) +
+              1;
 
     for (final todoId in todoIds) {
       final source = await _todoRepository.getTodoById(todoId);

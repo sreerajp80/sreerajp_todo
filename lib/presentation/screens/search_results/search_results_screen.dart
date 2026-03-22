@@ -7,10 +7,14 @@ import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_error_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/status_badge.dart';
 
 class SearchResultsScreen extends ConsumerStatefulWidget {
@@ -57,24 +61,26 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          autofocus: widget.query == null || widget.query!.isEmpty,
-          decoration: const InputDecoration(
-            hintText: AppStrings.searchHint,
-            border: InputBorder.none,
-            prefixIcon: Icon(Icons.search),
+        title: AdaptiveDirectionality(
+          text: _searchController.text,
+          child: TextField(
+            controller: _searchController,
+            autofocus: widget.query == null || widget.query!.isEmpty,
+            decoration: const InputDecoration(
+              hintText: AppStrings.searchHint,
+              border: InputBorder.none,
+              prefixIcon: Icon(Icons.search),
+            ),
+            onChanged: _onSearchChanged,
           ),
-          onChanged: _onSearchChanged,
         ),
         actions: [
           if (_searchController.text.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.clear),
+              tooltip: AppStrings.clearSearch,
               onPressed: () {
                 _searchController.clear();
                 setState(() => _currentQuery = '');
@@ -83,59 +89,30 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
         ],
       ),
       body: _currentQuery.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.search,
-                    size: 64,
-                    color:
-                        theme.colorScheme.onSurface.withValues(alpha: 0.3),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    AppStrings.searchHint,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurface
-                          .withValues(alpha: 0.5),
-                    ),
-                  ),
-                ],
-              ),
+          ? const AppEmptyState(
+              icon: Icons.search,
+              title: AppStrings.searchTasksTitle,
+              message: AppStrings.searchTasksMessage,
             )
-          : _buildResults(theme),
+          : _buildResults(),
     );
   }
 
-  Widget _buildResults(ThemeData theme) {
+  Widget _buildResults() {
     final results = ref.watch(searchResultsProvider(_currentQuery));
 
     return results.when(
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, _) => Center(child: Text(error.toString())),
+      error: (error, _) => AppErrorState(
+        message: mapErrorToMessage(error),
+        onRetry: () => ref.invalidate(searchResultsProvider(_currentQuery)),
+      ),
       data: (todos) {
         if (todos.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.search_off,
-                  size: 64,
-                  color:
-                      theme.colorScheme.onSurface.withValues(alpha: 0.3),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  AppStrings.noSearchResults,
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color:
-                        theme.colorScheme.onSurface.withValues(alpha: 0.5),
-                  ),
-                ),
-              ],
-            ),
+          return AppEmptyState(
+            icon: Icons.search_off,
+            title: AppStrings.noSearchResults,
+            message: AppStrings.noSearchResultsForQuery(_currentQuery),
           );
         }
 
@@ -152,13 +129,15 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Text(
                     formatDateFromIso(date),
-                    style: theme.textTheme.titleSmall?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w600,
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
@@ -174,10 +153,9 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
                         : null,
                     trailing: StatusBadge(
                       label: _statusLabel(todo.status),
-                      color: _statusColor(todo.status, theme.colorScheme),
+                      status: todo.status,
                     ),
-                    onTap: () =>
-                        context.go(AppRoutes.dailyListPath(todo.date)),
+                    onTap: () => context.go(AppRoutes.dailyListPath(todo.date)),
                   ),
                 ),
                 if (index < dates.length - 1) const Divider(),
@@ -190,11 +168,11 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
   }
 
   Map<String, List<TodoEntity>> _groupByDate(List<TodoEntity> todos) {
-    final map = <String, List<TodoEntity>>{};
+    final grouped = <String, List<TodoEntity>>{};
     for (final todo in todos) {
-      map.putIfAbsent(todo.date, () => []).add(todo);
+      grouped.putIfAbsent(todo.date, () => []).add(todo);
     }
-    return map;
+    return grouped;
   }
 
   String _statusLabel(TodoStatus status) {
@@ -203,15 +181,6 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
       TodoStatus.dropped => AppStrings.statusDropped,
       TodoStatus.ported => AppStrings.statusPorted,
       TodoStatus.pending => AppStrings.statusPending,
-    };
-  }
-
-  Color _statusColor(TodoStatus status, ColorScheme colorScheme) {
-    return switch (status) {
-      TodoStatus.completed => const Color(0xFF2E7D32),
-      TodoStatus.dropped => const Color(0xFFC62828),
-      TodoStatus.ported => const Color(0xFFF9A825),
-      TodoStatus.pending => colorScheme.onSurfaceVariant,
     };
   }
 }

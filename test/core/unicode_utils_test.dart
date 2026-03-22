@@ -83,5 +83,12 @@ void main() {
       expect(detectTextDirection('123Hello'), TextDirection.ltr);
       expect(detectTextDirection('123مرحبا'), TextDirection.rtl);
     });
+
+    test(
+      'defaults mixed LTR and RTL text to the first strong LTR character',
+      () {
+        expect(detectTextDirection('Task: المهمة'), TextDirection.ltr);
+      },
+    );
   });
 }

@@ -77,16 +77,10 @@ void main() {
     test('orders by start_time ascending', () async {
       await insertParentTodo();
       await segmentDao.insert(
-        makeSegment(
-          id: 'seg-a',
-          startTime: DateTime(2026, 3, 21, 11, 0),
-        ),
+        makeSegment(id: 'seg-a', startTime: DateTime(2026, 3, 21, 11, 0)),
       );
       await segmentDao.insert(
-        makeSegment(
-          id: 'seg-b',
-          startTime: DateTime(2026, 3, 21, 9, 0),
-        ),
+        makeSegment(id: 'seg-b', startTime: DateTime(2026, 3, 21, 9, 0)),
       );
 
       final results = await segmentDao.findByTodoId('todo-1');
@@ -167,12 +161,8 @@ void main() {
       await insertParentTodo(id: 'past-todo', date: '2026-03-19');
       await insertParentTodo(id: 'today-todo', date: '2026-03-21');
 
-      await segmentDao.insert(
-        makeSegment(id: 'orphan', todoId: 'past-todo'),
-      );
-      await segmentDao.insert(
-        makeSegment(id: 'current', todoId: 'today-todo'),
-      );
+      await segmentDao.insert(makeSegment(id: 'orphan', todoId: 'past-todo'));
+      await segmentDao.insert(makeSegment(id: 'current', todoId: 'today-todo'));
 
       final orphans = await segmentDao.findAllOrphanedSegments('2026-03-21');
       expect(orphans, hasLength(1));

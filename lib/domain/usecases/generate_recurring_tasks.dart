@@ -28,8 +28,9 @@ class GenerateRecurringTasks {
     final windowEnd = todayDate.add(const Duration(days: _lookAheadDays));
 
     for (final rule in rules) {
-      final ruleEndDate =
-          rule.endDate != null ? parseIsoDate(rule.endDate!) : null;
+      final ruleEndDate = rule.endDate != null
+          ? parseIsoDate(rule.endDate!)
+          : null;
 
       if (ruleEndDate != null && ruleEndDate.isBefore(todayDate)) {
         continue;
@@ -65,23 +66,27 @@ class GenerateRecurringTasks {
             continue;
           }
 
-          final exists =
-              await _todoDao.existsTitleOnDate(normalizedTitle, dateStr);
+          final exists = await _todoDao.existsTitleOnDate(
+            normalizedTitle,
+            dateStr,
+          );
           if (exists) continue;
 
           final maxOrder = await _todoDao.maxSortOrder(dateStr);
           final now = DateTime.now().toUtc().toIso8601String();
-          todosToInsert.add(TodoEntity(
-            id: _uuid.v4(),
-            date: dateStr,
-            title: normalizedTitle,
-            description: normalizedDescription,
-            status: TodoStatus.pending,
-            recurrenceRuleId: rule.id,
-            sortOrder: maxOrder + 1,
-            createdAt: now,
-            updatedAt: now,
-          ));
+          todosToInsert.add(
+            TodoEntity(
+              id: _uuid.v4(),
+              date: dateStr,
+              title: normalizedTitle,
+              description: normalizedDescription,
+              status: TodoStatus.pending,
+              recurrenceRuleId: rule.id,
+              sortOrder: maxOrder + 1,
+              createdAt: now,
+              updatedAt: now,
+            ),
+          );
         }
 
         if (todosToInsert.isNotEmpty) {

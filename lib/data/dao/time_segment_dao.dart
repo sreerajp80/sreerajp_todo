@@ -93,31 +93,23 @@ class TimeSegmentDao {
     String? excludeId,
   }) async {
     final db = await _databaseService.database;
-    final excludeClause =
-        excludeId != null ? 'AND id != ?' : '';
+    final excludeClause = excludeId != null ? 'AND id != ?' : '';
     final args = <dynamic>[todoId, endTime, startTime];
     if (excludeId != null) args.add(excludeId);
 
-    final result = await db.rawQuery(
-      '''
+    final result = await db.rawQuery('''
       SELECT COUNT(*) as cnt FROM time_segments
       WHERE todo_id = ?
         AND start_time < ?
         AND end_time > ?
         $excludeClause
-      ''',
-      args,
-    );
+      ''', args);
     final count = result.first['cnt'] as int;
     return count > 0;
   }
 
   Future<void> deleteByTodoId(String todoId) async {
     final db = await _databaseService.database;
-    await db.delete(
-      'time_segments',
-      where: 'todo_id = ?',
-      whereArgs: [todoId],
-    );
+    await db.delete('time_segments', where: 'todo_id = ?', whereArgs: [todoId]);
   }
 }

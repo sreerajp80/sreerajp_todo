@@ -70,24 +70,26 @@ void main() {
     );
   }
 
-  test('closes orphaned segments on past-date todos with zero duration and interrupted=true',
-      () async {
-    await todoDao.insert(makeTodo(id: 'past-todo', date: _yesterdayIso()));
-    final startTime = DateTime(2026, 3, 20, 14, 0);
-    await segmentDao.insert(
-      makeSegment(id: 'orphan-1', todoId: 'past-todo', startTime: startTime),
-    );
+  test(
+    'closes orphaned segments on past-date todos with zero duration and interrupted=true',
+    () async {
+      await todoDao.insert(makeTodo(id: 'past-todo', date: _yesterdayIso()));
+      final startTime = DateTime(2026, 3, 20, 14, 0);
+      await segmentDao.insert(
+        makeSegment(id: 'orphan-1', todoId: 'past-todo', startTime: startTime),
+      );
 
-    await useCase();
+      await useCase();
 
-    final segments = await segmentDao.findByTodoId('past-todo');
-    expect(segments, hasLength(1));
-    final repaired = segments.first;
-    expect(repaired.endTime, isNotNull);
-    expect(repaired.endTime, repaired.startTime);
-    expect(repaired.durationSeconds, 0);
-    expect(repaired.interrupted, isTrue);
-  });
+      final segments = await segmentDao.findByTodoId('past-todo');
+      expect(segments, hasLength(1));
+      final repaired = segments.first;
+      expect(repaired.endTime, isNotNull);
+      expect(repaired.endTime, repaired.startTime);
+      expect(repaired.durationSeconds, 0);
+      expect(repaired.interrupted, isTrue);
+    },
+  );
 
   test('does not repair today\'s running segments', () async {
     await todoDao.insert(makeTodo(id: 'today-todo', date: _todayIso()));

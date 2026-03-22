@@ -65,8 +65,7 @@ void main() {
       final today = DateTime.now();
       for (var i = 0; i <= 7; i++) {
         final date = dateTimeToIso(
-          DateTime(today.year, today.month, today.day)
-              .add(Duration(days: i)),
+          DateTime(today.year, today.month, today.day).add(Duration(days: i)),
         );
         final todos = await todoDao.findByDate(date);
         expect(
@@ -80,19 +79,24 @@ void main() {
     });
 
     test('weekly rule (Mon, Thu) generates correct subset', () async {
-      await ruleDao.insert(makeRule(
-        rrule: 'FREQ=WEEKLY;BYDAY=MO,TH',
-        title: 'Weekly Meeting',
-        startDate: '2020-01-01',
-      ));
+      await ruleDao.insert(
+        makeRule(
+          rrule: 'FREQ=WEEKLY;BYDAY=MO,TH',
+          title: 'Weekly Meeting',
+          startDate: '2020-01-01',
+        ),
+      );
 
       final count = await useCase.call();
 
       final today = DateTime.now();
       var expectedCount = 0;
       for (var i = 0; i <= 7; i++) {
-        final d = DateTime(today.year, today.month, today.day)
-            .add(Duration(days: i));
+        final d = DateTime(
+          today.year,
+          today.month,
+          today.day,
+        ).add(Duration(days: i));
         if (d.weekday == DateTime.monday || d.weekday == DateTime.thursday) {
           expectedCount++;
           final date = dateTimeToIso(d);
@@ -132,107 +136,113 @@ void main() {
     });
 
     test('rule with end_date in the past generates zero tasks', () async {
-      await ruleDao.insert(makeRule(
-        startDate: '2025-01-01',
-        endDate: '2025-12-31',
-      ));
+      await ruleDao.insert(
+        makeRule(startDate: '2025-01-01', endDate: '2025-12-31'),
+      );
 
       final count = await useCase.call();
       expect(count, 0);
     });
 
-    test('rule with end_date within window generates tasks only up to end_date',
-        () async {
-      final today = DateTime.now();
-      final threeDaysFromNow = DateTime(today.year, today.month, today.day)
-          .add(const Duration(days: 3));
-      final endDate = dateTimeToIso(threeDaysFromNow);
+    test(
+      'rule with end_date within window generates tasks only up to end_date',
+      () async {
+        final today = DateTime.now();
+        final threeDaysFromNow = DateTime(
+          today.year,
+          today.month,
+          today.day,
+        ).add(const Duration(days: 3));
+        final endDate = dateTimeToIso(threeDaysFromNow);
 
-      await ruleDao.insert(makeRule(endDate: endDate));
+        await ruleDao.insert(makeRule(endDate: endDate));
 
-      final count = await useCase.call();
-      expect(count, 4, reason: 'today + 3 more days = 4 tasks');
+        final count = await useCase.call();
+        expect(count, 4, reason: 'today + 3 more days = 4 tasks');
 
-      final dayAfterEnd = dateTimeToIso(
-        threeDaysFromNow.add(const Duration(days: 1)),
-      );
-      final todosAfterEnd = await todoDao.findByDate(dayAfterEnd);
-      expect(
-        todosAfterEnd.where((t) => t.title == 'Daily Task').isEmpty,
-        isTrue,
-        reason: 'No tasks after end_date',
-      );
-    });
+        final dayAfterEnd = dateTimeToIso(
+          threeDaysFromNow.add(const Duration(days: 1)),
+        );
+        final todosAfterEnd = await todoDao.findByDate(dayAfterEnd);
+        expect(
+          todosAfterEnd.where((t) => t.title == 'Daily Task').isEmpty,
+          isTrue,
+          reason: 'No tasks after end_date',
+        );
+      },
+    );
 
-    test('NFC normalisation: decomposed title matches existing composed title',
-        () async {
-      // Insert a todo with NFC-composed title
-      final todayStr = todayAsIso();
-      final composedTitle = nfcNormalize('café');
-      final now = nowUtc();
-      await todoDao.insert(TodoEntity(
-        id: 'existing-1',
-        date: todayStr,
-        title: composedTitle,
-        status: TodoStatus.pending,
-        sortOrder: 0,
-        createdAt: now,
-        updatedAt: now,
-      ));
+    test(
+      'NFC normalisation: decomposed title matches existing composed title',
+      () async {
+        // Insert a todo with NFC-composed title
+        final todayStr = todayAsIso();
+        final composedTitle = nfcNormalize('café');
+        final now = nowUtc();
+        await todoDao.insert(
+          TodoEntity(
+            id: 'existing-1',
+            date: todayStr,
+            title: composedTitle,
+            status: TodoStatus.pending,
+            sortOrder: 0,
+            createdAt: now,
+            updatedAt: now,
+          ),
+        );
 
-      // Create a rule with decomposed title 'café' (e + combining acute)
-      const decomposedTitle = 'caf\u0065\u0301';
-      await ruleDao.insert(makeRule(title: decomposedTitle));
+        // Create a rule with decomposed title 'café' (e + combining acute)
+        const decomposedTitle = 'caf\u0065\u0301';
+        await ruleDao.insert(makeRule(title: decomposedTitle));
 
-      final count = await useCase.call();
+        final count = await useCase.call();
 
-      final todayTodos = await todoDao.findByDate(todayStr);
-      final matchingTodos =
-          todayTodos.where((t) => t.title == composedTitle).toList();
-      expect(
-        matchingTodos.length,
-        1,
-        reason: 'Should not duplicate because NFC-normalised titles match',
-      );
+        final todayTodos = await todoDao.findByDate(todayStr);
+        final matchingTodos = todayTodos
+            .where((t) => t.title == composedTitle)
+            .toList();
+        expect(
+          matchingTodos.length,
+          1,
+          reason: 'Should not duplicate because NFC-normalised titles match',
+        );
 
-      // Other days should still get the task (7 tasks, today skipped)
-      expect(count, 7);
-    });
+        // Other days should still get the task (7 tasks, today skipped)
+        expect(count, 7);
+      },
+    );
 
     test('generated tasks are appended at end of sort order', () async {
       final todayStr = todayAsIso();
       final now = nowUtc();
 
-      await todoDao.insert(TodoEntity(
-        id: 'manual-1',
-        date: todayStr,
-        title: 'Existing Task',
-        status: TodoStatus.pending,
-        sortOrder: 5,
-        createdAt: now,
-        updatedAt: now,
-      ));
+      await todoDao.insert(
+        TodoEntity(
+          id: 'manual-1',
+          date: todayStr,
+          title: 'Existing Task',
+          status: TodoStatus.pending,
+          sortOrder: 5,
+          createdAt: now,
+          updatedAt: now,
+        ),
+      );
 
       await ruleDao.insert(makeRule());
       await useCase.call();
 
       final todos = await todoDao.findByDate(todayStr);
-      final generated =
-          todos.firstWhere((t) => t.title == 'Daily Task');
+      final generated = todos.firstWhere((t) => t.title == 'Daily Task');
       expect(generated.sortOrder, greaterThan(5));
     });
 
     test('multiple rules generate tasks independently', () async {
-      await ruleDao.insert(makeRule(
-        id: 'rule-a',
-        title: 'Task A',
-        rrule: 'FREQ=DAILY',
-      ));
-      await ruleDao.insert(makeRule(
-        id: 'rule-b',
-        title: 'Task B',
-        rrule: 'FREQ=DAILY',
-      ));
+      await ruleDao.insert(
+        makeRule(id: 'rule-a', title: 'Task A', rrule: 'FREQ=DAILY'),
+      );
+      await ruleDao.insert(
+        makeRule(id: 'rule-b', title: 'Task B', rrule: 'FREQ=DAILY'),
+      );
 
       final count = await useCase.call();
       expect(count, 16, reason: '8 days × 2 rules = 16 tasks');

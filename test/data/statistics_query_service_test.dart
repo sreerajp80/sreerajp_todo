@@ -63,7 +63,7 @@ void main() {
   }
 
   group('getCountsPerDay', () {
-    test('returns per-day status counts', () async {
+    test('returns per-day status counts and total time', () async {
       await todoDao.insert(
         makeTodo(
           id: 't1',
@@ -83,107 +83,176 @@ void main() {
       await todoDao.insert(
         makeTodo(
           id: 't3',
-          date: '2026-03-21',
+          date: '2026-03-20',
           title: 'C',
+          status: TodoStatus.dropped,
+        ),
+      );
+      await insertSegment('s1', 't1', 3600);
+      await insertSegment('s2', 't2', 600);
+      await insertSegment('s3', 't3', 1800);
+
+      final stats = await statsService.getCountsPerDay();
+
+      expect(stats, hasLength(2));
+      expect(stats.first.date, '2026-03-21');
+      expect(stats.first.total, 2);
+      expect(stats.first.completed, 1);
+      expect(stats.first.pending, 1);
+      expect(stats.first.totalSeconds, 4200);
+      expect(stats.last.date, '2026-03-20');
+      expect(stats.last.dropped, 1);
+      expect(stats.last.totalSeconds, 1800);
+    });
+
+    test('respects pagination with 20 rows per page', () async {
+      for (var i = 0; i < 25; i++) {
+        final day = DateTime(2026, 3, 1).add(Duration(days: i));
+        final dayString =
+            '${day.year}-${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+        await todoDao.insert(
+          makeTodo(id: 'todo_$i', date: dayString, title: 'Task $i'),
+        );
+      }
+
+      final page1 = await statsService.getCountsPerDay(limit: 20, offset: 0);
+      final page2 = await statsService.getCountsPerDay(limit: 20, offset: 20);
+
+      expect(page1, hasLength(20));
+      expect(page2, hasLength(5));
+      expect(page1.first.date, '2026-03-25');
+      expect(page2.first.date, '2026-03-05');
+    });
+
+    test('filters by date range', () async {
+      await todoDao.insert(makeTodo(id: 't1', date: '2026-03-19', title: 'A'));
+      await todoDao.insert(makeTodo(id: 't2', date: '2026-03-20', title: 'B'));
+      await todoDao.insert(makeTodo(id: 't3', date: '2026-03-21', title: 'C'));
+
+      final stats = await statsService.getCountsPerDay(
+        startDate: '2026-03-20',
+        endDate: '2026-03-21',
+      );
+
+      expect(stats, hasLength(2));
+      expect(stats.map((item) => item.date), ['2026-03-21', '2026-03-20']);
+    });
+  });
+
+  group('getPerItemStats', () {
+    test('aggregates appearances, statuses, and total time by title', () async {
+      await todoDao.insert(
+        makeTodo(
+          id: 't1',
+          date: '2026-03-20',
+          title: 'Code',
+          status: TodoStatus.completed,
+        ),
+      );
+      await todoDao.insert(
+        makeTodo(
+          id: 't2',
+          date: '2026-03-21',
+          title: 'Code',
           status: TodoStatus.dropped,
         ),
       );
       await todoDao.insert(
         makeTodo(
-          id: 't4',
-          date: '2026-03-20',
-          title: 'D',
+          id: 't3',
+          date: '2026-03-21',
+          title: 'Read',
           status: TodoStatus.ported,
         ),
       );
+      await insertSegment('s1', 't1', 1200);
+      await insertSegment('s2', 't2', 1800);
+      await insertSegment('s3', 't3', 900);
 
-      final stats = await statsService.getCountsPerDay();
-      expect(stats, hasLength(2));
+      final stats = await statsService.getPerItemStats();
+      final code = stats.firstWhere((item) => item.title == 'Code');
 
-      final day21 = stats.firstWhere((s) => s.date == '2026-03-21');
-      expect(day21.total, 3);
-      expect(day21.completed, 1);
-      expect(day21.pending, 1);
-      expect(day21.dropped, 1);
-      expect(day21.ported, 0);
-
-      final day20 = stats.firstWhere((s) => s.date == '2026-03-20');
-      expect(day20.total, 1);
-      expect(day20.ported, 1);
-    });
-
-    test('returns empty list when no todos', () async {
-      final stats = await statsService.getCountsPerDay();
-      expect(stats, isEmpty);
-    });
-
-    test('respects limit and offset', () async {
-      for (var i = 1; i <= 5; i++) {
-        await todoDao.insert(
-          makeTodo(
-            id: 't$i',
-            date: '2026-03-${(20 + i).toString().padLeft(2, '0')}',
-            title: 'Task $i',
-          ),
-        );
-      }
-
-      final page1 = await statsService.getCountsPerDay(limit: 2, offset: 0);
-      expect(page1, hasLength(2));
-      expect(page1.first.date, '2026-03-25');
-
-      final page2 = await statsService.getCountsPerDay(limit: 2, offset: 2);
-      expect(page2, hasLength(2));
-      expect(page2.first.date, '2026-03-23');
+      expect(code.appearances, 2);
+      expect(code.completed, 1);
+      expect(code.dropped, 1);
+      expect(code.totalSeconds, 3000);
     });
   });
 
-  group('getTimePerTodoPerDay', () {
-    test('returns time aggregated per todo per day', () async {
+  group('getSummaryStats', () {
+    test('separates productive and dropped time', () async {
       await todoDao.insert(
-        makeTodo(id: 't1', date: '2026-03-21', title: 'Code'),
+        makeTodo(
+          id: 't1',
+          date: '2026-03-20',
+          title: 'Build',
+          status: TodoStatus.completed,
+        ),
+      );
+      await todoDao.insert(
+        makeTodo(
+          id: 't2',
+          date: '2026-03-21',
+          title: 'Discard',
+          status: TodoStatus.dropped,
+        ),
+      );
+      await todoDao.insert(
+        makeTodo(
+          id: 't3',
+          date: '2026-03-21',
+          title: 'Plan',
+          status: TodoStatus.pending,
+        ),
       );
       await insertSegment('s1', 't1', 3600);
-      await insertSegment('s2', 't1', 1800);
+      await insertSegment('s2', 't2', 1800);
 
-      final stats = await statsService.getTimePerTodoPerDay();
-      expect(stats, hasLength(1));
-      expect(stats.first.title, 'Code');
-      expect(stats.first.totalSeconds, 5400);
-    });
-
-    test('returns empty when no segments', () async {
-      await todoDao.insert(
-        makeTodo(id: 't1', date: '2026-03-21', title: 'Code'),
+      final summary = await statsService.getSummaryStats(
+        startDate: '2026-03-20',
+        endDate: '2026-03-21',
       );
-      final stats = await statsService.getTimePerTodoPerDay();
-      expect(stats, isEmpty);
+
+      expect(summary.totalTodos, 3);
+      expect(summary.avgCompletedPerDay, 0.5);
+      expect(summary.avgTimePerDaySeconds, 2700);
+      expect(summary.totalProductiveTimeSeconds, 3600);
+      expect(summary.totalDroppedTimeSeconds, 1800);
     });
   });
 
-  group('getTimePerTodo', () {
-    test('filters by title', () async {
+  group('getTimeSeriesForTitle', () {
+    test('returns time history ordered by date for one title', () async {
       await todoDao.insert(
-        makeTodo(id: 't1', date: '2026-03-21', title: 'Code'),
+        makeTodo(
+          id: 't1',
+          date: '2026-03-20',
+          title: 'Code',
+          status: TodoStatus.completed,
+        ),
       );
       await todoDao.insert(
-        makeTodo(id: 't2', date: '2026-03-21', title: 'Review'),
+        makeTodo(
+          id: 't2',
+          date: '2026-03-21',
+          title: 'Code',
+          status: TodoStatus.pending,
+        ),
       );
-      await insertSegment('s1', 't1', 3600);
-      await insertSegment('s2', 't2', 900);
+      await todoDao.insert(
+        makeTodo(id: 't3', date: '2026-03-21', title: 'Read'),
+      );
+      await insertSegment('s1', 't1', 1200);
+      await insertSegment('s2', 't2', 2400);
+      await insertSegment('s3', 't3', 600);
 
-      final stats = await statsService.getTimePerTodo('Code');
-      expect(stats, hasLength(1));
-      expect(stats.first.title, 'Code');
-      expect(stats.first.totalSeconds, 3600);
-    });
+      final history = await statsService.getTimeSeriesForTitle('Code');
 
-    test('returns empty when title has no segments', () async {
-      await todoDao.insert(
-        makeTodo(id: 't1', date: '2026-03-21', title: 'Code'),
-      );
-      final stats = await statsService.getTimePerTodo('Code');
-      expect(stats, isEmpty);
+      expect(history, hasLength(2));
+      expect(history.first.date, '2026-03-20');
+      expect(history.first.totalSeconds, 1200);
+      expect(history.last.date, '2026-03-21');
+      expect(history.last.totalSeconds, 2400);
     });
   });
 }

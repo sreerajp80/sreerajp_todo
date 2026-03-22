@@ -111,26 +111,28 @@ void main() {
     expect(result.copied.first.sourceDate, todayIso());
   });
 
-  test('copied todos have status=pending regardless of source status',
-      () async {
-    await todoRepo.createTodo(makeTodo(
-      id: 'c-8',
-      title: 'Completed One',
-      status: TodoStatus.completed,
-    ));
-    await todoRepo.createTodo(makeTodo(
-      id: 'c-9',
-      title: 'Dropped One',
-      status: TodoStatus.dropped,
-    ));
+  test(
+    'copied todos have status=pending regardless of source status',
+    () async {
+      await todoRepo.createTodo(
+        makeTodo(
+          id: 'c-8',
+          title: 'Completed One',
+          status: TodoStatus.completed,
+        ),
+      );
+      await todoRepo.createTodo(
+        makeTodo(id: 'c-9', title: 'Dropped One', status: TodoStatus.dropped),
+      );
 
-    final result = await useCase(['c-8', 'c-9'], tomorrowIso());
+      final result = await useCase(['c-8', 'c-9'], tomorrowIso());
 
-    expect(result.copied, hasLength(2));
-    for (final t in result.copied) {
-      expect(t.status, TodoStatus.pending);
-    }
-  });
+      expect(result.copied, hasLength(2));
+      for (final t in result.copied) {
+        expect(t.status, TodoStatus.pending);
+      }
+    },
+  );
 
   test('time segments are NOT copied', () async {
     await todoRepo.createTodo(makeTodo(id: 'c-10', title: 'Timer Task'));
@@ -146,19 +148,23 @@ void main() {
 
   test('recurrenceRuleId is NOT inherited', () async {
     final now = DateTime.now().toUtc().toIso8601String();
-    await recurrenceRuleDao.insert(RecurrenceRuleEntity(
-      id: 'some-rule-id',
-      title: 'Test Rule',
-      rrule: 'FREQ=DAILY;COUNT=5',
-      startDate: todayIso(),
-      createdAt: now,
-      updatedAt: now,
-    ));
-    await todoRepo.createTodo(makeTodo(
-      id: 'c-11',
-      title: 'Recurring Copy',
-      recurrenceRuleId: 'some-rule-id',
-    ));
+    await recurrenceRuleDao.insert(
+      RecurrenceRuleEntity(
+        id: 'some-rule-id',
+        title: 'Test Rule',
+        rrule: 'FREQ=DAILY;COUNT=5',
+        startDate: todayIso(),
+        createdAt: now,
+        updatedAt: now,
+      ),
+    );
+    await todoRepo.createTodo(
+      makeTodo(
+        id: 'c-11',
+        title: 'Recurring Copy',
+        recurrenceRuleId: 'some-rule-id',
+      ),
+    );
 
     final result = await useCase(['c-11'], tomorrowIso());
 

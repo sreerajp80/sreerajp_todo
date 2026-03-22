@@ -2,8 +2,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';
 import 'package:sreerajp_todo/application/recurrence_rules_notifier.dart';
+import 'package:sreerajp_todo/application/statistics_notifier.dart';
+import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/application/time_tracking_notifier.dart';
 import 'package:sreerajp_todo/application/time_tracking_state.dart';
+import 'package:sreerajp_todo/data/backup/backup_service.dart';
 import 'package:sreerajp_todo/data/dao/recurrence_rule_dao.dart';
 import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
@@ -23,10 +26,12 @@ import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/repair_orphaned_segments.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 
-// --- Data layer ---
-
 final databaseServiceProvider = Provider<DatabaseService>((ref) {
   return DatabaseService();
+});
+
+final backupServiceProvider = Provider<BackupService>((ref) {
+  return BackupService(ref.read(databaseServiceProvider));
 });
 
 final todoDaoProvider = Provider<TodoDao>((ref) {
@@ -45,8 +50,6 @@ final statisticsQueryServiceProvider = Provider<StatisticsQueryService>((ref) {
   return StatisticsQueryService(ref.read(databaseServiceProvider));
 });
 
-// --- Repositories ---
-
 final todoRepositoryProvider = Provider<TodoRepository>((ref) {
   return TodoRepositoryImpl(ref.read(todoDaoProvider));
 });
@@ -57,8 +60,6 @@ final timeSegmentRepositoryProvider = Provider<TimeSegmentRepository>((ref) {
     ref.read(todoDaoProvider),
   );
 });
-
-// --- Use-cases ---
 
 final markTodoCompletedProvider = Provider<MarkTodoCompleted>((ref) {
   return MarkTodoCompleted(
@@ -103,34 +104,40 @@ final generateRecurringTasksProvider = Provider<GenerateRecurringTasks>((ref) {
   );
 });
 
-// --- Application state ---
+final dailyTodoProvider =
+    StateNotifierProvider.family<DailyTodoNotifier, DailyTodoState, String>((
+      ref,
+      date,
+    ) {
+      return DailyTodoNotifier(
+        date: date,
+        todoRepository: ref.read(todoRepositoryProvider),
+        markTodoCompleted: ref.read(markTodoCompletedProvider),
+        markTodoDropped: ref.read(markTodoDroppedProvider),
+        portTodo: ref.read(portTodoProvider),
+        copyTodos: ref.read(copyTodosProvider),
+      );
+    });
 
-final dailyTodoProvider = StateNotifierProvider.family<
-    DailyTodoNotifier, DailyTodoState, String>((ref, date) {
-  return DailyTodoNotifier(
-    date: date,
-    todoRepository: ref.read(todoRepositoryProvider),
-    markTodoCompleted: ref.read(markTodoCompletedProvider),
-    markTodoDropped: ref.read(markTodoDroppedProvider),
-    portTodo: ref.read(portTodoProvider),
-    copyTodos: ref.read(copyTodosProvider),
-  );
-});
+final timeTrackingProvider =
+    StateNotifierProvider.family<
+      TimeTrackingNotifier,
+      TimeTrackingState,
+      String
+    >((ref, todoId) {
+      return TimeTrackingNotifier(
+        ref.read(timeSegmentRepositoryProvider),
+        ref.read(startTimeSegmentProvider),
+        todoId,
+      );
+    });
 
-final timeTrackingProvider = StateNotifierProvider.family<
-    TimeTrackingNotifier, TimeTrackingState, String>((ref, todoId) {
-  return TimeTrackingNotifier(
-    ref.read(timeSegmentRepositoryProvider),
-    ref.read(startTimeSegmentProvider),
-    todoId,
-  );
-});
-
-final liveTimerProvider =
-    StreamProvider.family<int, String>((ref, todoId) {
+final liveTimerProvider = StreamProvider.family<int, String>((ref, todoId) {
   final trackingState = ref.watch(timeTrackingProvider(todoId));
   final running = trackingState.runningSegment;
-  if (running == null) return Stream.value(0);
+  if (running == null) {
+    return Stream.value(0);
+  }
 
   final startTime = DateTime.parse(running.startTime);
   return Stream.periodic(const Duration(seconds: 1), (_) {
@@ -138,23 +145,31 @@ final liveTimerProvider =
   });
 });
 
-// --- Autocomplete & Search ---
-
-final autocompleteProvider =
-    FutureProvider.family<List<String>, String>((ref, prefix) {
+final autocompleteProvider = FutureProvider.family<List<String>, String>((
+  ref,
+  prefix,
+) {
   final repo = ref.read(todoRepositoryProvider);
   return repo.getAutocompleteSuggestions(prefix);
 });
 
-final searchResultsProvider =
-    FutureProvider.family<List<TodoEntity>, String>((ref, query) {
+final searchResultsProvider = FutureProvider.family<List<TodoEntity>, String>((
+  ref,
+  query,
+) {
   final repo = ref.read(todoRepositoryProvider);
   return repo.searchByTitle(query);
 });
 
-// --- Recurrence rules ---
+final recurrenceRulesProvider =
+    StateNotifierProvider<
+      RecurrenceRulesNotifier,
+      AsyncValue<List<RecurrenceRuleEntity>>
+    >((ref) {
+      return RecurrenceRulesNotifier(ref.read(recurrenceRuleDaoProvider));
+    });
 
-final recurrenceRulesProvider = StateNotifierProvider<RecurrenceRulesNotifier,
-    AsyncValue<List<RecurrenceRuleEntity>>>((ref) {
-  return RecurrenceRulesNotifier(ref.read(recurrenceRuleDaoProvider));
-});
+final statisticsProvider =
+    StateNotifierProvider<StatisticsNotifier, StatisticsState>((ref) {
+      return StatisticsNotifier(ref.read(statisticsQueryServiceProvider));
+    });
