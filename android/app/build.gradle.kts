@@ -10,7 +10,7 @@ plugins {
 }
 
 val keystoreProperties = Properties()
-val keystorePropertiesFile = rootProject.file("../../key.properties")
+val keystorePropertiesFile = rootProject.file("key.properties")
 val hasReleaseKeystore = keystorePropertiesFile.exists()
 val releasePackagingTasks = listOf("assembleRelease", "bundleRelease", "packageRelease")
 val isReleasePackagingBuild = gradle.startParameter.taskNames.any { taskName ->
@@ -91,8 +91,8 @@ flutter {
 
 if (isReleasePackagingBuild && !hasReleaseKeystore) {
     throw GradleException(
-        "Missing Android release signing config. Create L:\\Android\\key.properties " +
-            "and point it to the external keystore before running a release build."
+        "Missing Android release signing config. Create android/key.properties " +
+            "and point it to the keystore before running a release build."
     )
 }
 
