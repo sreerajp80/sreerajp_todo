@@ -2,17 +2,17 @@ import 'package:flutter/foundation.dart';
 import 'package:rrule/rrule.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
-import 'package:sreerajp_todo/data/dao/recurrence_rule_dao.dart';
-import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
+import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class GenerateRecurringTasks {
-  GenerateRecurringTasks(this._recurrenceRuleDao, this._todoDao);
+  GenerateRecurringTasks(this._recurrenceRuleRepository, this._todoRepository);
 
-  final RecurrenceRuleDao _recurrenceRuleDao;
-  final TodoDao _todoDao;
+  final RecurrenceRuleRepository _recurrenceRuleRepository;
+  final TodoRepository _todoRepository;
 
   static const _uuid = Uuid();
   static const _lookAheadDays = 7;
@@ -20,7 +20,7 @@ class GenerateRecurringTasks {
   /// Generates recurring tasks for [today, today + 7 days].
   /// Returns the number of tasks created.
   Future<int> call() async {
-    final rules = await _recurrenceRuleDao.findActive();
+    final rules = await _recurrenceRuleRepository.findActive();
     var totalGenerated = 0;
 
     final today = DateTime.now();
@@ -66,13 +66,13 @@ class GenerateRecurringTasks {
             continue;
           }
 
-          final exists = await _todoDao.existsTitleOnDate(
+          final exists = await _todoRepository.titleExistsOnDate(
             normalizedTitle,
             dateStr,
           );
           if (exists) continue;
 
-          final maxOrder = await _todoDao.maxSortOrder(dateStr);
+          final maxOrder = await _todoRepository.maxSortOrder(dateStr);
           final now = DateTime.now().toUtc().toIso8601String();
           todosToInsert.add(
             TodoEntity(
@@ -90,7 +90,7 @@ class GenerateRecurringTasks {
         }
 
         if (todosToInsert.isNotEmpty) {
-          await _todoDao.bulkInsert(todosToInsert);
+          await _todoRepository.bulkCreateTodos(todosToInsert);
           totalGenerated += todosToInsert.length;
         }
       } on FormatException catch (e) {

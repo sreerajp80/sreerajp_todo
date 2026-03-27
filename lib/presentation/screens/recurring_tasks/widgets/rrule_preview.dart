@@ -22,12 +22,13 @@ class RrulePreview extends StatelessWidget {
       final start = parseIsoDate(startDate);
       final end = endDate != null ? parseIsoDate(endDate!) : null;
 
-      final instances = rrule
-          .getInstances(start: start.copyWith(isUtc: true))
-          .where((d) => end == null || !d.isAfter(end.copyWith(isUtc: true)))
-          .take(5)
-          .map((d) => d.copyWith(isUtc: false))
-          .toList();
+      var stream = rrule.getInstances(start: start.copyWith(isUtc: true));
+      if (end != null) {
+        final endUtc = end.copyWith(isUtc: true);
+        stream = stream.takeWhile((d) => !d.isAfter(endUtc));
+      }
+      final instances =
+          stream.take(5).map((d) => d.copyWith(isUtc: false)).toList();
       return instances;
     } on Object {
       return [];

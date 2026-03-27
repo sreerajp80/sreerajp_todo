@@ -73,6 +73,11 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
+  Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) {
+    return _todoDao.deleteByRecurrenceRuleId(recurrenceRuleId);
+  }
+
+  @override
   Future<void> updateStatus(
     String id,
     TodoStatus status, {
@@ -123,5 +128,14 @@ class TodoRepositoryImpl implements TodoRepository {
       _checkDayLock(todos.first.date, bypassLock: bypassLock);
     }
     await _todoDao.updateSortOrders(todos);
+  }
+
+  @override
+  Future<int> maxSortOrder(String date) => _todoDao.maxSortOrder(date);
+
+  @override
+  Future<void> bulkCreateTodos(List<TodoEntity> todos) async {
+    final normalized = todos.map(_normalize).toList();
+    await _todoDao.bulkInsert(normalized);
   }
 }

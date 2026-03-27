@@ -12,23 +12,64 @@ class BackupListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final formatter = DateFormat.yMMMd().add_jm();
+    final theme = Theme.of(context);
 
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.insert_drive_file_outlined),
-        title: Text(
-          info.fileName,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Text(
-          '${formatter.format(info.createdAt)} • ${_formatBytes(info.fileSizeBytes)}',
-        ),
-        trailing: IconButton(
-          onPressed: onDelete,
-          icon: const Icon(Icons.delete_outline),
-          tooltip: AppStrings.delete,
-        ),
+    return Container(
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: theme.colorScheme.outlineVariant),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 46,
+            height: 46,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primaryContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Icon(
+              Icons.insert_drive_file_outlined,
+              color: theme.colorScheme.onPrimaryContainer,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  info.fileName,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: theme.textTheme.titleSmall,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  formatter.format(info.createdAt),
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _formatBytes(info.fileSizeBytes),
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          IconButton.filledTonal(
+            onPressed: onDelete,
+            icon: const Icon(Icons.delete_outline),
+            tooltip: AppStrings.delete,
+          ),
+        ],
       ),
     );
   }

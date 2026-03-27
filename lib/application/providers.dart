@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';
@@ -14,8 +15,10 @@ import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/repositories/recurrence_rule_repository_impl.dart';
 import 'package:sreerajp_todo/data/repositories/time_segment_repository_impl.dart';
 import 'package:sreerajp_todo/data/repositories/todo_repository_impl.dart';
+import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
@@ -52,6 +55,11 @@ final statisticsQueryServiceProvider = Provider<StatisticsQueryService>((ref) {
 
 final todoRepositoryProvider = Provider<TodoRepository>((ref) {
   return TodoRepositoryImpl(ref.read(todoDaoProvider));
+});
+
+final recurrenceRuleRepositoryProvider =
+    Provider<RecurrenceRuleRepository>((ref) {
+  return RecurrenceRuleRepositoryImpl(ref.read(recurrenceRuleDaoProvider));
 });
 
 final timeSegmentRepositoryProvider = Provider<TimeSegmentRepository>((ref) {
@@ -99,8 +107,8 @@ final repairOrphanedSegmentsProvider = Provider<RepairOrphanedSegments>((ref) {
 
 final generateRecurringTasksProvider = Provider<GenerateRecurringTasks>((ref) {
   return GenerateRecurringTasks(
-    ref.read(recurrenceRuleDaoProvider),
-    ref.read(todoDaoProvider),
+    ref.read(recurrenceRuleRepositoryProvider),
+    ref.read(todoRepositoryProvider),
   );
 });
 
@@ -116,6 +124,7 @@ final dailyTodoProvider =
         markTodoDropped: ref.read(markTodoDroppedProvider),
         portTodo: ref.read(portTodoProvider),
         copyTodos: ref.read(copyTodosProvider),
+        onDataChanged: () => ref.invalidate(statisticsProvider),
       );
     });
 
@@ -166,10 +175,14 @@ final recurrenceRulesProvider =
       RecurrenceRulesNotifier,
       AsyncValue<List<RecurrenceRuleEntity>>
     >((ref) {
-      return RecurrenceRulesNotifier(ref.read(recurrenceRuleDaoProvider));
+      return RecurrenceRulesNotifier(ref.read(recurrenceRuleRepositoryProvider));
     });
 
 final statisticsProvider =
     StateNotifierProvider<StatisticsNotifier, StatisticsState>((ref) {
       return StatisticsNotifier(ref.read(statisticsQueryServiceProvider));
     });
+
+final themeModeProvider = StateProvider<ThemeMode>((ref) {
+  return ThemeMode.system;
+});

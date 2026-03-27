@@ -20,11 +20,13 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     required MarkTodoDropped markTodoDropped,
     required PortTodo portTodo,
     required CopyTodos copyTodos,
+    void Function()? onDataChanged,
   }) : _todoRepository = todoRepository,
        _markTodoCompleted = markTodoCompleted,
        _markTodoDropped = markTodoDropped,
        _portTodo = portTodo,
        _copyTodos = copyTodos,
+       _onDataChanged = onDataChanged,
        super(const DailyTodoState()) {
     loadTodos();
   }
@@ -35,6 +37,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   final MarkTodoDropped _markTodoDropped;
   final PortTodo _portTodo;
   final CopyTodos _copyTodos;
+  final void Function()? _onDataChanged;
 
   Timer? _undoInactivityTimer;
 
@@ -103,12 +106,25 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<void> deleteTodo(String id) async {
     try {
-      await _todoRepository.deleteTodo(id);
+      await _todoRepository.deleteTodo(id, bypassLock: true);
       await loadTodos();
-    } on DayLockedException {
-      rethrow;
+      _onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
+    }
+  }
+
+  Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async {
+    try {
+      final count = await _todoRepository.deleteAllByRecurrenceRuleId(
+        recurrenceRuleId,
+      );
+      await loadTodos();
+      _onDataChanged?.call();
+      return count;
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+      return 0;
     }
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';
@@ -10,6 +9,7 @@ import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
@@ -56,6 +56,60 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(error))));
+  }
+
+  Future<void> _handleRecurringDelete(
+    BuildContext context,
+    DailyTodoNotifier notifier,
+    TodoEntity todo,
+  ) async {
+    final choice = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(AppStrings.confirmDeleteRecurring),
+        content: const Text(AppStrings.confirmDeleteRecurringBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(AppStrings.cancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop('this'),
+            child: const Text(AppStrings.deleteOnlyThis),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(context).pop('all'),
+            child: const Text(AppStrings.deleteAllOccurrences),
+          ),
+        ],
+      ),
+    );
+    if (choice == null || !context.mounted) return;
+    try {
+      if (choice == 'all') {
+        final count = await notifier.deleteAllByRecurrenceRuleId(
+          todo.recurrenceRuleId!,
+        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$count ${AppStrings.allOccurrencesDeleted}'),
+            ),
+          );
+        }
+      } else {
+        await notifier.deleteTodo(todo.id);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text(AppStrings.todoDeleted)),
+          );
+        }
+      }
+    } on Exception catch (error) {
+      if (context.mounted) {
+        _showError(error);
+      }
+    }
   }
 
   Future<void> _showPortDatePicker(String todoId) async {
@@ -244,24 +298,32 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                             context.push(AppRoutes.timeSegmentsPath(todo.id));
                           },
                           onDelete: () async {
-                            final confirmed = await showConfirmDialog(
-                              context,
-                              title: AppStrings.confirmDelete,
-                              content: AppStrings.confirmDeleteBody,
-                            );
-                            if (confirmed && context.mounted) {
-                              try {
-                                await notifier.deleteTodo(todo.id);
-                                if (context.mounted) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text(AppStrings.todoDeleted),
-                                    ),
-                                  );
-                                }
-                              } on Exception catch (error) {
-                                if (context.mounted) {
-                                  _showError(error);
+                            if (todo.recurrenceRuleId != null) {
+                              await _handleRecurringDelete(
+                                context,
+                                notifier,
+                                todo,
+                              );
+                            } else {
+                              final confirmed = await showConfirmDialog(
+                                context,
+                                title: AppStrings.confirmDelete,
+                                content: AppStrings.confirmDeleteBody,
+                              );
+                              if (confirmed && context.mounted) {
+                                try {
+                                  await notifier.deleteTodo(todo.id);
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(AppStrings.todoDeleted),
+                                      ),
+                                    );
+                                  }
+                                } on Exception catch (error) {
+                                  if (context.mounted) {
+                                    _showError(error);
+                                  }
                                 }
                               }
                             }
@@ -281,55 +343,63 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     DailyTodoNotifier notifier,
   ) {
     return AppBar(
-      title: LayoutBuilder(
-        builder: (context, constraints) {
-          final dateLabel = _buildAppBarDateLabel(constraints.maxWidth);
-          return Row(
-            children: [
-              _buildDateNavigationButton(
-                icon: Icons.chevron_left,
-                onPressed: _goToPreviousDay,
-                tooltip: AppStrings.previousDay,
-              ),
-              Expanded(
-                child: InkWell(
-                  onTap: () => setState(() => _showCalendar = !_showCalendar),
-                  borderRadius: BorderRadius.circular(8),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Text(
-                      dateLabel,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
+      titleSpacing: 0,
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildDateNavigationButton(
+            icon: Icons.chevron_left,
+            onPressed: _goToPreviousDay,
+            tooltip: AppStrings.previousDay,
+          ),
+          Flexible(
+            child: InkWell(
+              onTap: () => setState(() => _showCalendar = !_showCalendar),
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Text(
+                  _buildAppBarDateLabel(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
-              _buildDateNavigationButton(
-                icon: Icons.chevron_right,
-                onPressed: _goToNextDay,
-                tooltip: AppStrings.nextDay,
-              ),
-            ],
-          );
-        },
+            ),
+          ),
+          _buildDateNavigationButton(
+            icon: Icons.chevron_right,
+            onPressed: _goToNextDay,
+            tooltip: AppStrings.nextDay,
+          ),
+        ],
       ),
       actions: [
         if (!isToday(widget.date))
-          TextButton(
+          _buildActionIcon(
+            icon: Icons.today,
             onPressed: _goToToday,
-            child: const Text(AppStrings.today),
+            tooltip: AppStrings.today,
           ),
-        IconButton(
-          icon: const Icon(Icons.calendar_month),
+        _buildActionIcon(
+          icon: Icons.calendar_month,
           onPressed: () => setState(() => _showCalendar = !_showCalendar),
           tooltip: AppStrings.openCalendar,
         ),
+        _buildActionIcon(
+          icon: Icons.search,
+          onPressed: () => context.push(AppRoutes.search),
+          tooltip: AppStrings.searchResults,
+        ),
+        if (!_isPast)
+          _buildActionIcon(
+            icon: Icons.copy_all,
+            onPressed: () => _openCopyWizard(),
+            tooltip: AppStrings.copyToAnotherDay,
+          ),
         if (hasUndoStack)
-          IconButton(
-            icon: const Icon(Icons.undo),
+          _buildActionIcon(
+            icon: Icons.undo,
             onPressed: () {
               ref
                   .read(dailyTodoProvider(widget.date).notifier)
@@ -340,78 +410,28 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
             },
             tooltip: AppStrings.undo,
           ),
-        IconButton(
-          icon: const Icon(Icons.search),
-          onPressed: () => context.push(AppRoutes.search),
-          tooltip: AppStrings.searchResults,
-        ),
-        PopupMenuButton<String>(
-          itemBuilder: (context) => [
-            if (!_isPast)
-              const PopupMenuItem(
-                value: 'copy_day',
-                child: Row(
-                  children: [
-                    Icon(Icons.copy_all, size: 20),
-                    SizedBox(width: 8),
-                    Text(AppStrings.copyToAnotherDay),
-                  ],
-                ),
-              ),
-            const PopupMenuItem(
-              value: 'recurring',
-              child: Row(
-                children: [
-                  Icon(Icons.repeat, size: 20),
-                  SizedBox(width: 8),
-                  Text(AppStrings.recurringTasks),
-                ],
-              ),
-            ),
-            PopupMenuItem(
-              value: 'backup',
-              child: Row(
-                children: [
-                  const Icon(Icons.backup_outlined, size: 20),
-                  const SizedBox(width: 8),
-                  Text(AppStrings.backup.label),
-                ],
-              ),
-            ),
-            const PopupMenuItem(
-              value: 'statistics',
-              child: Row(
-                children: [
-                  Icon(Icons.bar_chart, size: 20),
-                  SizedBox(width: 8),
-                  Text(AppStrings.statistics),
-                ],
-              ),
-            ),
-          ],
-          onSelected: (value) {
-            switch (value) {
-              case 'copy_day':
-                _openCopyWizard();
-              case 'recurring':
-                context.push(AppRoutes.recurring);
-              case 'backup':
-                context.push(AppRoutes.backup);
-              case 'statistics':
-                context.push(AppRoutes.statistics);
-            }
-          },
-        ),
+        const SizedBox(width: 4),
       ],
     );
   }
 
-  String _buildAppBarDateLabel(double maxWidth) {
-    if (maxWidth < 220) {
-      return DateFormat('E, MMM d').format(parseIsoDate(widget.date));
-    }
-
+  String _buildAppBarDateLabel() {
     return formatDateFromIso(widget.date);
+  }
+
+  Widget _buildActionIcon({
+    required IconData icon,
+    required VoidCallback onPressed,
+    required String tooltip,
+  }) {
+    return IconButton(
+      icon: Icon(icon, size: 22),
+      onPressed: onPressed,
+      tooltip: tooltip,
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints.tightFor(width: 36, height: 36),
+      visualDensity: VisualDensity.compact,
+    );
   }
 
   Widget _buildDateNavigationButton({
@@ -424,8 +444,11 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       onPressed: onPressed,
       tooltip: tooltip,
       padding: EdgeInsets.zero,
-      constraints: const BoxConstraints.tightFor(width: 36, height: 36),
+      constraints: const BoxConstraints.tightFor(width: 24, height: 36),
       visualDensity: VisualDensity.compact,
+      style: IconButton.styleFrom(
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      ),
     );
   }
 
@@ -454,8 +477,12 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       actions: [
         if (canComplete)
           TextButton.icon(
-            icon: const Icon(Icons.check_circle_outline),
-            label: const Text(AppStrings.completeAll),
+            icon: const Icon(Icons.check_circle_outline, size: 18),
+            label: const Text(
+              AppStrings.completeAll,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
             onPressed: () async {
               final ids = Set<String>.from(selectedIds);
               await notifier.bulkMarkCompleted(ids);
@@ -473,8 +500,12 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
             },
           ),
         TextButton.icon(
-          icon: const Icon(Icons.cancel_outlined),
-          label: const Text(AppStrings.markDropped),
+          icon: const Icon(Icons.cancel_outlined, size: 18),
+          label: const Text(
+            AppStrings.markDropped,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           onPressed: () async {
             final confirmed = await showConfirmDialog(
               context,

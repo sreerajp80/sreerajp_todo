@@ -67,8 +67,8 @@ class _RecurrenceEditorScreenState
   }
 
   Future<void> _loadExistingRule() async {
-    final dao = ref.read(recurrenceRuleDaoProvider);
-    final rule = await dao.findById(widget.ruleId!);
+    final notifier = ref.read(recurrenceRulesProvider.notifier);
+    final rule = await notifier.findById(widget.ruleId!);
     if (rule == null || !mounted) return;
 
     _existingRule = rule;
@@ -467,14 +467,20 @@ class _RecurrenceEditorScreenState
       children: [
         Text(AppStrings.dayOfMonth, style: theme.textTheme.titleSmall),
         const SizedBox(height: 8),
-        SegmentedButton<bool>(
-          segments: const [
-            ButtonSegment(value: false, label: Text(AppStrings.specificDate)),
-            ButtonSegment(value: true, label: Text(AppStrings.ordinalWeekday)),
-          ],
-          selected: {_useOrdinalWeekday},
-          onSelectionChanged: (s) =>
-              setState(() => _useOrdinalWeekday = s.first),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: SegmentedButton<bool>(
+            segments: const [
+              ButtonSegment(value: false, label: Text(AppStrings.specificDate)),
+              ButtonSegment(
+                value: true,
+                label: Text(AppStrings.ordinalWeekday),
+              ),
+            ],
+            selected: {_useOrdinalWeekday},
+            onSelectionChanged: (s) =>
+                setState(() => _useOrdinalWeekday = s.first),
+          ),
         ),
         const SizedBox(height: 12),
         if (_useOrdinalWeekday)

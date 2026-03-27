@@ -9,6 +9,7 @@ import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
+import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 
 class CopyTodosScreen extends ConsumerStatefulWidget {
   const CopyTodosScreen({super.key, this.fromDate, this.preSelectedIds});
@@ -274,14 +275,12 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
   }
 
   Widget _buildStatusIndicator(TodoEntity todo, ThemeData theme) {
-    final (icon, color) = switch (todo.status) {
-      TodoStatus.completed => (Icons.check_circle, const Color(0xFF2E7D32)),
-      TodoStatus.dropped => (Icons.cancel, const Color(0xFFC62828)),
-      TodoStatus.ported => (Icons.arrow_forward, const Color(0xFFF9A825)),
-      TodoStatus.pending => (
-        Icons.radio_button_unchecked,
-        theme.colorScheme.onSurfaceVariant,
-      ),
+    final color = AppTheme.statusColor(theme, todo.status);
+    final icon = switch (todo.status) {
+      TodoStatus.completed => Icons.check_circle,
+      TodoStatus.dropped => Icons.cancel,
+      TodoStatus.ported => Icons.arrow_forward,
+      TodoStatus.pending => Icons.radio_button_unchecked,
     };
     return Icon(icon, color: color, size: 20);
   }
@@ -397,7 +396,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                   isConflict ? Icons.warning_amber : Icons.check_circle_outline,
                   color: isConflict
                       ? theme.colorScheme.error
-                      : const Color(0xFF2E7D32),
+                      : AppTheme.statusColor(theme, TodoStatus.completed),
                 ),
                 title: Text(
                   todo.title,

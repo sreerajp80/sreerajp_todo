@@ -1,8 +1,7 @@
 # Flutter Build Flavors Guide
 
-> **SreerajP ToDo v1.0 does not use build flavors.** This guide is kept as a reusable
-> reference for when dev/prod environments are introduced in a future version. For v1.0
-> build commands, see `docs/release_process.md`.
+> This project uses `dev` and `prod` Android build flavors. Configuration is in
+> `android/app/build.gradle.kts`. For release steps, see `docs/release_process.md`.
 
 Use this as a reusable reference for Flutter projects that define Android product flavors such as `dev` and `prod`.
 

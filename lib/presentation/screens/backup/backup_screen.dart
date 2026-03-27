@@ -12,8 +12,8 @@ import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_list_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
-import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
   const BackupScreen({super.key});
@@ -207,8 +207,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return ResponsiveScaffold(
-      currentDestination: AppScaffoldDestination.backup,
+    return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.backup.label),
         actions: [
@@ -224,44 +223,57 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
           ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: [
-                  FilledButton.icon(
-                    onPressed: _isBusy ? null : _handleExport,
-                    icon: const Icon(Icons.upload_file_outlined),
-                    label: Text(AppStrings.backup.exportTitle),
-                  ),
-                  FilledButton.tonalIcon(
-                    onPressed: _isBusy ? null : _handleImport,
-                    icon: const Icon(Icons.download_for_offline_outlined),
-                    label: Text(AppStrings.backup.importTitle),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              Text(
-                AppStrings.backup.recentBackups,
-                style: theme.textTheme.titleMedium,
-              ),
-              const SizedBox(height: 8),
-              if (_backupDirectory != null)
-                Text(
-                  '${AppStrings.backupDirectory}: $_backupDirectory',
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+              AppSectionCard(
+                title: AppStrings.backup.label,
+                subtitle: _backupDirectory == null
+                    ? null
+                    : '${AppStrings.backupDirectory}: $_backupDirectory',
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final compact = constraints.maxWidth < 420;
+                    final exportButton = FilledButton.icon(
+                      onPressed: _isBusy ? null : _handleExport,
+                      icon: const Icon(Icons.upload_file_outlined),
+                      label: Text(AppStrings.backup.exportTitle),
+                    );
+                    final importButton = ElevatedButton.icon(
+                      onPressed: _isBusy ? null : _handleImport,
+                      icon: const Icon(Icons.download_for_offline_outlined),
+                      label: Text(AppStrings.backup.importTitle),
+                    );
+
+                    if (compact) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          exportButton,
+                          const SizedBox(height: 12),
+                          importButton,
+                        ],
+                      );
+                    }
+
+                    return Row(
+                      children: [
+                        Expanded(child: exportButton),
+                        const SizedBox(width: 12),
+                        Expanded(child: importButton),
+                      ],
+                    );
+                  },
                 ),
-              const SizedBox(height: 12),
+              ),
+              const SizedBox(height: 16),
               if (_isLoading)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 32),
-                  child: Center(child: CircularProgressIndicator()),
+                const AppSectionCard(
+                  child: SizedBox(
+                    height: 220,
+                    child: Center(child: CircularProgressIndicator()),
+                  ),
                 )
               else if (_backups.isEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                AppSectionCard(
+                  title: AppStrings.backup.recentBackups,
                   child: AppEmptyState(
                     icon: Icons.backup_outlined,
                     title: AppStrings.backup.noBackupsFound,
@@ -269,13 +281,21 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                   ),
                 )
               else
-                ..._backups.map(
-                  (info) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: BackupListTile(
-                      info: info,
-                      onDelete: _isBusy ? null : () => _handleDelete(info),
-                    ),
+                AppSectionCard(
+                  title: AppStrings.backup.recentBackups,
+                  child: Column(
+                    children: [
+                      for (var i = 0; i < _backups.length; i++) ...[
+                        BackupListTile(
+                          info: _backups[i],
+                          onDelete: _isBusy
+                              ? null
+                              : () => _handleDelete(_backups[i]),
+                        ),
+                        if (i != _backups.length - 1)
+                          const SizedBox(height: 12),
+                      ],
+                    ],
                   ),
                 ),
             ],
@@ -285,15 +305,15 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
               child: ColoredBox(
                 color: theme.colorScheme.surface.withValues(alpha: 0.8),
                 child: Center(
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24),
+                  child: SizedBox(
+                    width: 280,
+                    child: AppSectionCard(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           const CircularProgressIndicator(),
                           const SizedBox(height: 16),
-                          Text(_busyMessage!),
+                          Text(_busyMessage!, textAlign: TextAlign.center),
                         ],
                       ),
                     ),

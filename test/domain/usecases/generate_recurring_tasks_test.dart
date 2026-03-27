@@ -7,6 +7,8 @@ import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/data/repositories/recurrence_rule_repository_impl.dart';
+import 'package:sreerajp_todo/data/repositories/todo_repository_impl.dart';
 import 'package:sreerajp_todo/domain/usecases/generate_recurring_tasks.dart';
 
 import '../../helpers/test_database.dart';
@@ -23,7 +25,10 @@ void main() {
     databaseService = await createTestDatabaseService();
     ruleDao = RecurrenceRuleDao(databaseService);
     todoDao = TodoDao(databaseService);
-    useCase = GenerateRecurringTasks(ruleDao, todoDao);
+    useCase = GenerateRecurringTasks(
+      RecurrenceRuleRepositoryImpl(ruleDao),
+      TodoRepositoryImpl(todoDao),
+    );
   });
 
   tearDown(() async {

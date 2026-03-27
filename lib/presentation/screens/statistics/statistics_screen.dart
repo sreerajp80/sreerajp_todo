@@ -17,6 +17,7 @@ import 'package:sreerajp_todo/presentation/screens/statistics/widgets/per_item_s
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_error_state.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 
 class StatisticsScreen extends ConsumerStatefulWidget {
@@ -117,6 +118,11 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
               tooltip: AppStrings.stats.refresh,
               icon: const Icon(Icons.refresh),
             ),
+            IconButton(
+              onPressed: () => context.push(AppRoutes.settings),
+              tooltip: AppStrings.settings.label,
+              icon: const Icon(Icons.settings_outlined),
+            ),
           ],
           bottom: TabBar(
             tabs: [
@@ -182,6 +188,8 @@ class _DailyOverviewTab extends StatelessWidget {
     required this.onPickCustomDate,
   });
 
+  static const double _sectionGap = 16;
+
   final StatisticsState state;
   final StatisticsNotifier notifier;
   final ValueChanged<bool> onPickCustomDate;
@@ -194,6 +202,8 @@ class _DailyOverviewTab extends StatelessWidget {
 
     final isWide = MediaQuery.sizeOf(context).width >= 600;
     final hasData = state.dailyStats.isNotEmpty;
+    final chart = DailyBarChart(stats: state.dailyStats);
+
     final content = isWide
         ? Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,45 +213,15 @@ class _DailyOverviewTab extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      height: 360,
-                      child: DailyBarChart(stats: state.dailyStats),
-                    ),
-                    const SizedBox(height: 16),
+                    chart,
+                    const SizedBox(height: _sectionGap),
                     _SummaryCards(summaryStats: state.summaryStats),
                   ],
                 ),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: _sectionGap),
               Expanded(
                 flex: 4,
-                child: SizedBox(
-                  height: 520,
-                  child: DailyStatsTable(
-                    stats: state.dailyStats,
-                    currentPage: state.dailyCurrentPage,
-                    totalPages: state.dailyTotalPages,
-                    onPrevious: () => notifier.previousDailyPage(),
-                    onNext: () => notifier.nextDailyPage(),
-                    onSelectDate: (date) =>
-                        context.push(AppRoutes.dailyListPath(date)),
-                  ),
-                ),
-              ),
-            ],
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 360,
-                child: DailyBarChart(stats: state.dailyStats),
-              ),
-              const SizedBox(height: 16),
-              _SummaryCards(summaryStats: state.summaryStats),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 420,
                 child: DailyStatsTable(
                   stats: state.dailyStats,
                   currentPage: state.dailyCurrentPage,
@@ -253,10 +233,28 @@ class _DailyOverviewTab extends StatelessWidget {
                 ),
               ),
             ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              chart,
+              const SizedBox(height: _sectionGap),
+              _SummaryCards(summaryStats: state.summaryStats),
+              const SizedBox(height: _sectionGap),
+              DailyStatsTable(
+                stats: state.dailyStats,
+                currentPage: state.dailyCurrentPage,
+                totalPages: state.dailyTotalPages,
+                onPrevious: () => notifier.previousDailyPage(),
+                onNext: () => notifier.nextDailyPage(),
+                onSelectDate: (date) =>
+                    context.push(AppRoutes.dailyListPath(date)),
+              ),
+            ],
           );
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isWide ? 16 : 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -277,7 +275,7 @@ class _DailyOverviewTab extends StatelessWidget {
             },
             onPickCustomDate: onPickCustomDate,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: _sectionGap),
           if (!hasData)
             const AppEmptyState(
               icon: Icons.bar_chart_outlined,
@@ -300,10 +298,27 @@ class _PerItemOverviewTab extends StatelessWidget {
     required this.onSelectFromSearch,
   });
 
+  static const double _sectionGap = 16;
+
   final StatisticsState state;
   final StatisticsNotifier notifier;
   final TextEditingController searchController;
   final VoidCallback onSelectFromSearch;
+
+  TodoTimeStats? _findSelectedStat() {
+    final selectedTitle = state.selectedTitle;
+    if (selectedTitle == null || selectedTitle.isEmpty) {
+      return null;
+    }
+
+    for (final stat in state.perItemStats) {
+      if (stat.title == selectedTitle) {
+        return stat;
+      }
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -313,64 +328,70 @@ class _PerItemOverviewTab extends StatelessWidget {
 
     final isWide = MediaQuery.sizeOf(context).width >= 600;
     final hasData = state.perItemStats.isNotEmpty;
+    final selectedStat = _findSelectedStat();
+    final showChartPanel =
+        hasData || (state.selectedTitle?.isNotEmpty ?? false);
+    final chart = PerItemLineChart(
+      selectedTitle: state.selectedTitle,
+      history: state.selectedTitleHistory,
+      selectedStat: selectedStat,
+    );
+
     final content = isWide
-        ? Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                flex: 5,
-                child: SizedBox(
-                  height: 360,
-                  child: PerItemLineChart(
-                    selectedTitle: state.selectedTitle,
-                    history: state.selectedTitleHistory,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                flex: 4,
-                child: SizedBox(
-                  height: 520,
-                  child: PerItemStatsTable(
-                    stats: state.perItemStats,
-                    currentPage: state.perItemCurrentPage,
-                    totalPages: state.perItemTotalPages,
-                    onPrevious: () => notifier.previousPerItemPage(),
-                    onNext: () => notifier.nextPerItemPage(),
-                    onSelectTitle: (title) => notifier.selectTitle(title),
-                  ),
-                ),
-              ),
-            ],
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: 360,
-                child: PerItemLineChart(
-                  selectedTitle: state.selectedTitle,
-                  history: state.selectedTitleHistory,
-                ),
-              ),
-              const SizedBox(height: 16),
-              SizedBox(
-                height: 420,
-                child: PerItemStatsTable(
+        ? (showChartPanel
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [chart],
+                      ),
+                    ),
+                    const SizedBox(width: _sectionGap),
+                    Expanded(
+                      flex: 4,
+                      child: PerItemStatsTable(
+                        stats: state.perItemStats,
+                        currentPage: state.perItemCurrentPage,
+                        totalPages: state.perItemTotalPages,
+                        onPrevious: () => notifier.previousPerItemPage(),
+                        onNext: () => notifier.nextPerItemPage(),
+                        onSelectTitle: (title) => notifier.selectTitle(title),
+                      ),
+                    ),
+                  ],
+                )
+              : PerItemStatsTable(
                   stats: state.perItemStats,
                   currentPage: state.perItemCurrentPage,
                   totalPages: state.perItemTotalPages,
                   onPrevious: () => notifier.previousPerItemPage(),
                   onNext: () => notifier.nextPerItemPage(),
                   onSelectTitle: (title) => notifier.selectTitle(title),
-                ),
+                ))
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              PerItemSelectorCard(
+                stats: state.perItemStats,
+                selectedTitle: state.selectedTitle,
+                currentPage: state.perItemCurrentPage,
+                totalPages: state.perItemTotalPages,
+                onPrevious: () => notifier.previousPerItemPage(),
+                onNext: () => notifier.nextPerItemPage(),
+                onSelectTitle: (title) => notifier.selectTitle(title),
               ),
+              if (showChartPanel) ...[
+                const SizedBox(height: _sectionGap),
+                chart,
+              ],
             ],
           );
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(isWide ? 16 : 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -405,7 +426,7 @@ class _PerItemOverviewTab extends StatelessWidget {
               onSubmitted: (_) => onSelectFromSearch(),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: _sectionGap),
           if (!hasData && searchController.text.isEmpty)
             const AppEmptyState(
               icon: Icons.insights_outlined,
@@ -431,6 +452,8 @@ class _DateRangeFilter extends StatelessWidget {
   final ValueChanged<DateRange> onRangeSelected;
   final ValueChanged<bool> onPickCustomDate;
 
+  static const double _compactRangeSelectorBreakpoint = 360;
+
   Text _buildRangeLabel(String text) {
     return Text(
       text,
@@ -440,63 +463,171 @@ class _DateRangeFilter extends StatelessWidget {
     );
   }
 
+  Widget _buildCompactRangeSelector() {
+    final ranges = [
+      (DateRange.last7Days, AppStrings.stats.last7Days),
+      (DateRange.last30Days, AppStrings.stats.last30Days),
+      (DateRange.allTime, AppStrings.stats.allTime),
+      (DateRange.custom, AppStrings.stats.customRange),
+    ];
+
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: ranges.map((entry) {
+        final (range, label) = entry;
+        return ChoiceChip(
+          label: Text(label),
+          selected: state.dateRange == range,
+          onSelected: (selected) {
+            if (selected) {
+              onRangeSelected(range);
+            }
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildCustomDateSelector(
+    BuildContext context, {
+    required bool isStartDate,
+    required bool isCompact,
+    required DateTime? selectedDate,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final headline = selectedDate == null
+        ? (isStartDate ? AppStrings.startDate : AppStrings.endDate)
+        : (isCompact
+              ? DateFormat.MMMd().format(selectedDate)
+              : DateFormat.yMMMd().format(selectedDate));
+    final subtitle = selectedDate != null && isCompact
+        ? DateFormat.y().format(selectedDate)
+        : null;
+
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () => onPickCustomDate(isStartDate),
+        child: Ink(
+          padding: EdgeInsets.symmetric(
+            horizontal: isCompact ? 12 : 14,
+            vertical: isCompact ? 10 : 12,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: colorScheme.outlineVariant),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                isStartDate ? Icons.date_range_outlined : Icons.event_outlined,
+                size: 18,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: subtitle == null
+                    ? Text(
+                        headline,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                      )
+                    : Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            headline,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            subtitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(color: colorScheme.primary),
+                          ),
+                        ],
+                      ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return AppSectionCard(
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SegmentedButton<DateRange>(
-              showSelectedIcon: false,
-              segments: [
-                ButtonSegment(
-                  value: DateRange.last7Days,
-                  label: _buildRangeLabel(AppStrings.stats.last7Days),
-                ),
-                ButtonSegment(
-                  value: DateRange.last30Days,
-                  label: _buildRangeLabel(AppStrings.stats.last30Days),
-                ),
-                ButtonSegment(
-                  value: DateRange.allTime,
-                  label: _buildRangeLabel(AppStrings.stats.allTime),
-                ),
-                ButtonSegment(
-                  value: DateRange.custom,
-                  label: _buildRangeLabel(AppStrings.stats.customRange),
-                ),
-              ],
-              selected: {state.dateRange},
-              onSelectionChanged: (selection) =>
-                  onRangeSelected(selection.first),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                if (constraints.maxWidth < _compactRangeSelectorBreakpoint) {
+                  return _buildCompactRangeSelector();
+                }
+
+                return SegmentedButton<DateRange>(
+                  showSelectedIcon: false,
+                  segments: [
+                    ButtonSegment(
+                      value: DateRange.last7Days,
+                      label: _buildRangeLabel(AppStrings.stats.last7Days),
+                    ),
+                    ButtonSegment(
+                      value: DateRange.last30Days,
+                      label: _buildRangeLabel(AppStrings.stats.last30Days),
+                    ),
+                    ButtonSegment(
+                      value: DateRange.allTime,
+                      label: _buildRangeLabel(AppStrings.stats.allTime),
+                    ),
+                    ButtonSegment(
+                      value: DateRange.custom,
+                      label: _buildRangeLabel(AppStrings.stats.customRange),
+                    ),
+                  ],
+                  selected: {state.dateRange},
+                  onSelectionChanged: (selection) =>
+                      onRangeSelected(selection.first),
+                );
+              },
             ),
             if (state.dateRange == DateRange.custom) ...[
               const SizedBox(height: 16),
-              Wrap(
-                spacing: 12,
-                runSpacing: 12,
-                children: [
-                  OutlinedButton.icon(
-                    onPressed: () => onPickCustomDate(true),
-                    icon: const Icon(Icons.date_range_outlined),
-                    label: Text(
-                      state.customStartDate == null
-                          ? AppStrings.startDate
-                          : DateFormat.yMMMd().format(state.customStartDate!),
-                    ),
-                  ),
-                  OutlinedButton.icon(
-                    onPressed: () => onPickCustomDate(false),
-                    icon: const Icon(Icons.event_outlined),
-                    label: Text(
-                      state.customEndDate == null
-                          ? AppStrings.endDate
-                          : DateFormat.yMMMd().format(state.customEndDate!),
-                    ),
-                  ),
-                ],
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final isCompact =
+                      constraints.maxWidth < _compactRangeSelectorBreakpoint;
+
+                  return Row(
+                    children: [
+                      Expanded(
+                        child: _buildCustomDateSelector(
+                          context,
+                          isStartDate: true,
+                          isCompact: isCompact,
+                          selectedDate: state.customStartDate,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _buildCustomDateSelector(
+                          context,
+                          isStartDate: false,
+                          isCompact: isCompact,
+                          selectedDate: state.customEndDate,
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ],
@@ -513,58 +644,123 @@ class _SummaryCards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      children: [
-        _SummaryCard(
-          label: AppStrings.stats.totalTodos,
-          value: '${summaryStats.totalTodos}',
-        ),
-        _SummaryCard(
-          label: AppStrings.stats.averageCompletedPerDay,
-          value: summaryStats.avgCompletedPerDay.toStringAsFixed(1),
-        ),
-        _SummaryCard(
-          label: AppStrings.stats.averageTimePerDay,
-          value: formatDuration(summaryStats.avgTimePerDaySeconds),
-        ),
-        _SummaryCard(
-          label: AppStrings.stats.productiveTime,
-          value: formatDuration(summaryStats.totalProductiveTimeSeconds),
-        ),
-        _SummaryCard(
-          label: AppStrings.stats.droppedTime,
-          value: formatDuration(summaryStats.totalDroppedTimeSeconds),
-        ),
-      ],
+    final cards = [
+      (
+        AppStrings.stats.totalTodos,
+        '${summaryStats.totalTodos}',
+        Icons.checklist_rounded,
+      ),
+      (
+        AppStrings.stats.averageCompletedPerDay,
+        summaryStats.avgCompletedPerDay.toStringAsFixed(1),
+        Icons.task_alt_rounded,
+      ),
+      (
+        AppStrings.stats.averageTimePerDay,
+        formatDuration(summaryStats.avgTimePerDaySeconds),
+        Icons.schedule_rounded,
+      ),
+      (
+        AppStrings.stats.productiveTime,
+        formatDuration(summaryStats.totalProductiveTimeSeconds),
+        Icons.trending_up_rounded,
+      ),
+      (
+        AppStrings.stats.droppedTime,
+        formatDuration(summaryStats.totalDroppedTimeSeconds),
+        Icons.remove_circle_outline_rounded,
+      ),
+    ];
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const spacing = 12.0;
+        final maxWidth = constraints.maxWidth;
+        final columns = maxWidth >= 960
+            ? 5
+            : maxWidth >= 720
+            ? 3
+            : 2;
+        final itemWidth = (maxWidth - (spacing * (columns - 1))) / columns;
+
+        return Wrap(
+          spacing: spacing,
+          runSpacing: spacing,
+          children: [
+            for (final card in cards)
+              SizedBox(
+                width: itemWidth,
+                child: _SummaryCard(
+                  label: card.$1,
+                  value: card.$2,
+                  icon: card.$3,
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }
 
 class _SummaryCard extends StatelessWidget {
-  const _SummaryCard({required this.label, required this.value});
+  const _SummaryCard({
+    required this.label,
+    required this.value,
+    required this.icon,
+  });
 
   final String label;
   final String value;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-    return SizedBox(
-      width: 190,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(label, style: theme.textTheme.bodyMedium),
-              const SizedBox(height: 8),
-              Text(value, style: theme.textTheme.titleLarge),
-            ],
-          ),
+    return AppSectionCard(
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    icon,
+                    size: 18,
+                    color: colorScheme.onPrimaryContainer,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    label,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              value,
+              style: theme.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
         ),
       ),
     );

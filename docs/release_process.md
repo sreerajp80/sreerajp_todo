@@ -40,14 +40,21 @@
 
 ## 5. Environment And Flavor Matrix
 
-v1.0 does not use build flavors. A single configuration is used for all builds.
+Two Android build flavors are defined: `dev` and `prod`.
 
-| Mode | Purpose | Command |
-|------|---------|---------|
-| `debug` | Local development and device testing | `flutter run` |
-| `release` | Final release artifact | `flutter build apk --release` / `flutter build windows --release` |
+| Flavor | Application ID | App Name | Purpose |
+|--------|---------------|----------|---------|
+| `dev` | `in.sreerajp.sreerajp_todo.dev` | SreerajP ToDo Dev | Local development, QA, internal testing |
+| `prod` | `in.sreerajp.sreerajp_todo` | SreerajP ToDo | Production builds, store submissions |
 
-If flavors are introduced in a future version, see `docs/flutter_build_flavors_guide.md` for setup guidance.
+| Flavor + Mode | Command | Typical Use |
+|---------------|---------|-------------|
+| `dev` + `debug` | `flutter run --flavor dev` | Daily development and device testing |
+| `dev` + `release` | `flutter build apk --flavor dev --release` | Release-like QA build |
+| `prod` + `release` | `flutter build apk --flavor prod --release --split-per-abi` | Shareable release APKs |
+| `prod` + `release` | `flutter build appbundle --flavor prod --release` | Play Store submission |
+
+Windows builds do not use flavors. For detailed flavor usage, see `docs/flutter_build_flavors_guide.md`.
 
 ## 6. Signing And Secret Handling
 
@@ -117,7 +124,7 @@ Complete these items before every release.
   ```
 - [ ] Merged release manifest clean — zero network permissions:
   ```powershell
-  Select-String -Path "build\app\intermediates\merged_manifests\release\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+  Select-String -Path "build\app\intermediates\merged_manifests\prodRelease\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
   ```
 - [ ] No `Image.network()` or `NetworkImage` in codebase:
   ```powershell
@@ -156,12 +163,12 @@ Complete these items before every release.
    ```
 5. Build the release artifacts:
    ```powershell
-   flutter build apk --release
-   flutter build appbundle --release
+   flutter build apk --flavor prod --release --split-per-abi
+   flutter build appbundle --flavor prod --release
    ```
 6. Verify INTERNET permission is absent from the merged manifest:
    ```powershell
-   Select-String -Path "build\app\intermediates\merged_manifests\release\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+   Select-String -Path "build\app\intermediates\merged_manifests\prodRelease\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
    # Expected: ZERO matches. If any found: HALT and investigate.
    ```
 7. Install the release APK on a physical device.
@@ -172,8 +179,10 @@ Complete these items before every release.
 
 ### Release Artifacts
 
-- `build/app/outputs/flutter-apk/app-release.apk`
-- `build/app/outputs/bundle/release/app-release.aab`
+- `build/app/outputs/flutter-apk/app-armeabi-v7a-prod-release.apk`
+- `build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk`
+- `build/app/outputs/flutter-apk/app-x86_64-prod-release.apk`
+- `build/app/outputs/bundle/prodRelease/app-prod-release.aab`
 
 ## 9. Windows Release Steps
 

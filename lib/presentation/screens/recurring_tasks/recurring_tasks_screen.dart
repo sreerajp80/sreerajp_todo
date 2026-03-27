@@ -10,7 +10,6 @@ import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_error_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
-import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 
 class RecurringTasksScreen extends ConsumerWidget {
   const RecurringTasksScreen({super.key});
@@ -19,8 +18,7 @@ class RecurringTasksScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final rulesAsync = ref.watch(recurrenceRulesProvider);
 
-    return ResponsiveScaffold(
-      currentDestination: AppScaffoldDestination.recurring,
+    return Scaffold(
       appBar: AppBar(title: const Text(AppStrings.recurringTasks)),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.push(AppRoutes.recurringNew),

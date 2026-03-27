@@ -28,6 +28,15 @@ class TodoDao {
     await db.delete('todos', where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<int> deleteByRecurrenceRuleId(String recurrenceRuleId) async {
+    final db = await _databaseService.database;
+    return db.delete(
+      'todos',
+      where: 'recurrence_rule_id = ?',
+      whereArgs: [recurrenceRuleId],
+    );
+  }
+
   Future<List<TodoEntity>> findByDate(String date) async {
     final db = await _databaseService.database;
     final maps = await db.query(

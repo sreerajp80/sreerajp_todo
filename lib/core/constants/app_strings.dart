@@ -1,13 +1,16 @@
 abstract final class AppStrings {
   static const String appName = 'SreerajP ToDo';
 
-  static const String dailyList = 'Daily List';
+  static const String dailyList = 'My ToDos';
   static const String createTodo = 'New Todo';
   static const String editTodo = 'Edit Todo';
   static const String timeSegments = 'Time Segments';
   static const String copyTodos = 'Copy Todos';
   static const String searchResults = 'Search Results';
   static const backup = _BackupStrings();
+  static const settings = _SettingsStrings();
+  static const permissions = _PermissionsStrings();
+  static const about = _AboutStrings();
   static const String recurringTasks = 'Recurring Tasks';
   static const String newRecurrence = 'New Recurrence Rule';
   static const String editRecurrence = 'Edit Recurrence Rule';
@@ -46,6 +49,8 @@ abstract final class AppStrings {
   static const String manualSegmentShort = 'M';
   static const String emptyValue = '—';
   static const String day = 'Day';
+  static const String details = 'Details';
+  static const String taskStatus = 'Status';
   static const String mondayLong = 'Monday';
   static const String tuesdayLong = 'Tuesday';
   static const String wednesdayLong = 'Wednesday';
@@ -70,6 +75,8 @@ abstract final class AppStrings {
   static const String statusCompleted = 'Completed';
   static const String statusDropped = 'Dropped';
   static const String statusPorted = 'Ported';
+  static const String completeAction = 'Complete';
+  static const String dropAction = 'Drop';
 
   static const String confirmDrop = 'Drop this task?';
   static const String confirmDropBody =
@@ -80,6 +87,12 @@ abstract final class AppStrings {
   static const String confirmDelete = 'Delete this task?';
   static const String confirmDeleteBody =
       'This task and all its time segments will be permanently deleted.';
+  static const String confirmDeleteRecurring = 'Delete recurring task?';
+  static const String confirmDeleteRecurringBody =
+      'This task was created by a recurrence rule.';
+  static const String deleteOnlyThis = 'Delete only this one';
+  static const String deleteAllOccurrences = 'Delete all occurrences';
+  static const String allOccurrencesDeleted = 'All occurrences deleted';
   static const String confirmBulkDrop = 'Drop selected tasks?';
   static const String confirmBulkDropBody =
       'All selected tasks will be marked as dropped.';
@@ -173,6 +186,12 @@ abstract final class AppStrings {
     return 'Segment $index. $start to $end. Duration $duration. Type $type.';
   }
 
+  static const String repeat = 'Repeat';
+  static const String repeatNone = 'None';
+  static const String repeatConfigure = 'Repeat\u2026';
+  static const String repeatsInfo = 'This task repeats';
+  static const String recurrenceCreated = 'Task and recurrence rule created';
+
   static const String noRecurrenceRules = 'No recurrence rules yet';
   static const String deleteRecurrenceRule = 'Delete recurrence rule?';
   static const String deleteRecurrenceRuleBody =
@@ -258,11 +277,80 @@ class _BackupStrings {
   String get importInProgress => 'Restoring backup...';
 }
 
+class _SettingsStrings {
+  const _SettingsStrings();
+
+  String get label => 'Settings';
+  String get appearance => 'Appearance';
+  String get themeMode => 'Theme mode';
+  String get followSystem => 'System';
+  String get light => 'Light';
+  String get dark => 'Dark';
+  String get shortcuts => 'Shortcuts';
+  String get aboutApp => 'About this app';
+  String get permissions => 'Permissions';
+  String get offlineTitle => 'Offline and private';
+  String get offlineBody =>
+      'This app works fully offline. Tasks, backups, and statistics stay on this device unless you export a local backup file.';
+}
+
+class _PermissionsStrings {
+  const _PermissionsStrings();
+
+  String get label => 'Permissions';
+  String get summary =>
+      'This app requires no explicit permissions. All access is implicit and confined to app-private directories or user-initiated actions.';
+  String get implicit => 'Implicit';
+  String get explicit => 'Explicit';
+  String get explicitNone =>
+      'This app declares zero permissions in the Android manifest for release builds. No runtime permission dialogs are shown.';
+  String get storageTitle => 'App-private storage';
+  String get storageBody =>
+      'The SQLite database is stored in the app-private directory. No storage permission is needed because Android grants every app access to its own data folder.';
+  String get filePickerTitle => 'File picker access';
+  String get filePickerBody =>
+      'Backup export and import use the system file picker dialog. Access is granted per file by the user through the picker and requires no persistent permission.';
+  String get systemClockTitle => 'System clock';
+  String get systemClockBody =>
+      'Used for time tracking, timestamps, and date calculations. Reading the system clock requires no permission.';
+  String get textProcessingTitle => 'Text processing';
+  String get textProcessingBody =>
+      'Declared as an intent query so the system can handle text selection actions. This is a standard Flutter framework registration and requires no permission.';
+}
+
+class _AboutStrings {
+  const _AboutStrings();
+
+  String get label => 'About';
+  String get headline => 'Private daily planning';
+  String get summary =>
+      'SreerajP ToDo is an offline-first daily task list and time tracker designed to keep your data on this device.';
+  String get localOnlyTitle => 'Local-only data';
+  String get localOnlyBody =>
+      'Tasks, recurrence rules, backups, and statistics stay on local storage. No cloud sync or telemetry is used.';
+  String get backupTitle => 'Portable encrypted backups';
+  String get backupBody =>
+      'Backup export creates encrypted files that you can store anywhere you choose and restore later with your passphrase.';
+  String get unicodeTitle => 'Unicode-first input';
+  String get unicodeBody =>
+      'Titles and descriptions accept full Unicode text, including RTL scripts, emoji, and composed characters.';
+  String get navigationTitle => 'Built for daily flow';
+  String get navigationBody =>
+      'Daily planning, statistics, recurring rules, and backups are available from the main navigation with no account setup.';
+  String get author => 'Author';
+  String get authorName => 'Sreeraj P';
+  String get aiAssisted => 'AI assisted by';
+  String get aiModels => 'Claude 4.6 & GPT 5.4';
+  String get buildDate => 'Build date';
+  String get madeWithLoveIn => 'Made with \u2764 in India';
+}
+
 class _StatisticsStrings {
   const _StatisticsStrings();
 
   String get dailyOverview => 'Daily Overview';
   String get perItemOverview => 'Per-Item Overview';
+  String get chooseTask => 'Choose task';
   String get last7Days => 'Last 7 days';
   String get last30Days => 'Last 30 days';
   String get allTime => 'All time';

@@ -15,29 +15,32 @@ class RruleFrequencyPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SegmentedButton<RruleFrequency>(
-      segments: const [
-        ButtonSegment(
-          value: RruleFrequency.daily,
-          label: Text(AppStrings.daily),
-        ),
-        ButtonSegment(
-          value: RruleFrequency.weekly,
-          label: Text(AppStrings.weekly),
-        ),
-        ButtonSegment(
-          value: RruleFrequency.monthly,
-          label: Text(AppStrings.monthly),
-        ),
-        ButtonSegment(
-          value: RruleFrequency.yearly,
-          label: Text(AppStrings.yearly),
-        ),
-      ],
-      selected: {selected},
-      onSelectionChanged: (newSelection) {
-        onChanged(newSelection.first);
-      },
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: SegmentedButton<RruleFrequency>(
+        segments: const [
+          ButtonSegment(
+            value: RruleFrequency.daily,
+            label: Text(AppStrings.daily),
+          ),
+          ButtonSegment(
+            value: RruleFrequency.weekly,
+            label: Text(AppStrings.weekly),
+          ),
+          ButtonSegment(
+            value: RruleFrequency.monthly,
+            label: Text(AppStrings.monthly),
+          ),
+          ButtonSegment(
+            value: RruleFrequency.yearly,
+            label: Text(AppStrings.yearly),
+          ),
+        ],
+        selected: {selected},
+        onSelectionChanged: (newSelection) {
+          onChanged(newSelection.first);
+        },
+      ),
     );
   }
 }

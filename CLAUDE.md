@@ -58,7 +58,7 @@ and no Wi-Fi. No feature may degrade, warn, or fail when the device is offline.
 - During Phase 9 (Build), verify with:
   ```powershell
   # Confirm INTERNET permission is absent from the merged manifest
-  Select-String -Path "build\app\intermediates\merged_manifests\release\AndroidManifest.xml" `
+  Select-String -Path "build\app\intermediates\merged_manifests\prodRelease\AndroidManifest.xml" `
     -Pattern "INTERNET"
   # Expected: zero matches
   ```
@@ -442,14 +442,14 @@ flutter test integration_test/app_test.dart
 ## Build Commands
 
 ```powershell
-# Android debug
-flutter run -d <emulator-id>
+# Android debug (dev flavor)
+flutter run --flavor dev -d <emulator-id>
 
-# Android release APK
-flutter build apk --release
+# Android release APK (prod flavor, split per ABI)
+flutter build apk --flavor prod --release --split-per-abi
 
-# Android App Bundle
-flutter build appbundle --release
+# Android App Bundle (prod flavor)
+flutter build appbundle --flavor prod --release
 
 # Windows debug
 flutter run -d windows

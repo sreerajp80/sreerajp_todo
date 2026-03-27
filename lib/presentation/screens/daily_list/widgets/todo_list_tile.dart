@@ -42,9 +42,6 @@ class TodoListTile extends ConsumerWidget {
   final VoidCallback onViewSegments;
   final int animationIndex;
 
-  bool get _isTerminal =>
-      todo.status == TodoStatus.completed || todo.status == TodoStatus.dropped;
-
   String _statusLabel() {
     return switch (todo.status) {
       TodoStatus.completed => AppStrings.statusCompleted,
@@ -52,6 +49,115 @@ class TodoListTile extends ConsumerWidget {
       TodoStatus.ported => AppStrings.statusPorted,
       TodoStatus.pending => AppStrings.statusPending,
     };
+  }
+
+  Widget _buildCompactActionButton(
+    BuildContext context, {
+    required IconData icon,
+    required String tooltip,
+    required VoidCallback onPressed,
+    required Color backgroundColor,
+    required Color foregroundColor,
+  }) {
+    return Semantics(
+      button: true,
+      label: tooltip,
+      child: Material(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(8),
+          child: SizedBox(
+            width: 34,
+            height: 34,
+            child: Icon(icon, size: 18, color: foregroundColor),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPopupMenu(BuildContext context, ColorScheme colorScheme) {
+    return PopupMenuButton<String>(
+      tooltip: AppStrings.openTaskActions,
+      icon: Icon(
+        Icons.more_vert,
+        color: colorScheme.onSurfaceVariant,
+      ),
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+      ),
+      itemBuilder: (context) => [
+        if (todo.status == TodoStatus.pending)
+          const PopupMenuItem(
+            value: 'port',
+            child: Row(
+              children: [
+                Icon(Icons.arrow_forward, size: 20),
+                SizedBox(width: 8),
+                Text(AppStrings.port),
+              ],
+            ),
+          ),
+        const PopupMenuItem(
+          value: 'segments',
+          child: Row(
+            children: [
+              Icon(Icons.timer_outlined, size: 20),
+              SizedBox(width: 8),
+              Text(AppStrings.viewSegments),
+            ],
+          ),
+        ),
+        const PopupMenuItem(
+          value: 'edit',
+          child: Row(
+            children: [
+              Icon(Icons.edit_outlined, size: 20),
+              SizedBox(width: 8),
+              Text(AppStrings.edit),
+            ],
+          ),
+        ),
+        const PopupMenuItem(
+          value: 'copy',
+          child: Row(
+            children: [
+              Icon(Icons.copy_outlined, size: 20),
+              SizedBox(width: 8),
+              Text(AppStrings.copy),
+            ],
+          ),
+        ),
+        const PopupMenuItem(
+          value: 'delete',
+          child: Row(
+            children: [
+              Icon(Icons.delete_outline, size: 20),
+              SizedBox(width: 8),
+              Text(AppStrings.delete),
+            ],
+          ),
+        ),
+      ],
+      onSelected: (value) {
+        switch (value) {
+          case 'port':
+            onPort();
+          case 'segments':
+            onViewSegments();
+          case 'edit':
+            onEdit();
+          case 'copy':
+            onCopy();
+          case 'delete':
+            onDelete();
+        }
+      },
+    );
   }
 
   @override
@@ -67,284 +173,247 @@ class TodoListTile extends ConsumerWidget {
         ? totalSeconds + (liveElapsed.valueOrNull ?? 0)
         : totalSeconds;
     final statusColor = AppTheme.statusColor(theme, todo.status);
+    final tileTap = isMultiSelectMode ? (isPast ? null : onTap) : onEdit;
+    final tileLongPress = isPast ? null : onLongPress;
+    final showQuickActions =
+        !isMultiSelectMode && !isPast && todo.status == TodoStatus.pending;
 
     final tile = Card(
       elevation: isSelected ? 2 : 0,
       color: isSelected
-          ? colorScheme.primaryContainer.withValues(alpha: 0.52)
+          ? colorScheme.primaryContainer.withValues(alpha: 0.46)
           : null,
       child: Semantics(
         container: true,
         label: todo.title,
         child: InkWell(
-          onTap: isMultiSelectMode ? onTap : onEdit,
-          onLongPress: onLongPress,
-          borderRadius: BorderRadius.circular(18),
+          onTap: tileTap,
+          onLongPress: tileLongPress,
+          borderRadius: BorderRadius.circular(24),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (isMultiSelectMode)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 8),
-                    child: Semantics(
-                      button: true,
-                      label: AppStrings.toggleSelection,
-                      child: Icon(
-                        isSelected
-                            ? Icons.check_circle
-                            : Icons.radio_button_unchecked,
-                        color: isSelected
-                            ? colorScheme.primary
-                            : colorScheme.onSurfaceVariant,
+                // Row 1: [select?] [recurrence?] title [complete] [drop] [play/stop] [menu/lock]
+                Row(
+                  children: [
+                    if (isMultiSelectMode)
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8),
+                        child: Semantics(
+                          button: true,
+                          label: AppStrings.toggleSelection,
+                          child: Icon(
+                            isSelected
+                                ? Icons.check_circle
+                                : Icons.radio_button_unchecked,
+                            size: 22,
+                            color: isSelected
+                                ? colorScheme.primary
+                                : colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ),
+                    if (todo.recurrenceRuleId != null)
+                      Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.repeat,
+                          size: 14,
+                          color: colorScheme.onPrimaryContainer,
+                        ),
+                      ),
+                    Expanded(
+                      child: Text(
+                        todo.title,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          decoration: todo.status == TodoStatus.completed
+                              ? TextDecoration.lineThrough
+                              : null,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          if (todo.recurrenceRuleId != null)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 4),
-                              child: Icon(
-                                Icons.repeat,
-                                size: 16,
-                                color: colorScheme.primary,
-                              ),
-                            ),
-                          Expanded(
-                            child: Text(
-                              todo.title,
-                              style: theme.textTheme.titleSmall?.copyWith(
-                                decoration: todo.status == TodoStatus.completed
-                                    ? TextDecoration.lineThrough
-                                    : null,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
+                    if (showQuickActions) ...[
+                      const SizedBox(width: 6),
+                      _buildCompactActionButton(
+                        context,
+                        icon: Icons.check_circle_outline,
+                        tooltip: AppStrings.completeAction,
+                        onPressed: onComplete,
+                        backgroundColor: AppTheme.statusColor(
+                          theme,
+                          TodoStatus.completed,
+                        ).withValues(alpha: 0.14),
+                        foregroundColor: AppTheme.statusColor(
+                          theme,
+                          TodoStatus.completed,
+                        ),
                       ),
-                      const SizedBox(height: 6),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 6,
-                        crossAxisAlignment: WrapCrossAlignment.center,
-                        children: [
-                          StatusBadge(
-                            label: _statusLabel(),
-                            status: todo.status,
-                          ),
-                          if (displaySeconds > 0 || isRunning)
-                            Semantics(
-                              label: isRunning
-                                  ? AppStrings.runningTimerForTask(todo.title)
-                                  : AppStrings.totalTimeForTask(
-                                      todo.title,
-                                      formatDuration(displaySeconds),
-                                    ),
-                              child: ExcludeSemantics(
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Icon(
-                                      isRunning
-                                          ? Icons.timer
-                                          : Icons.access_time,
-                                      size: 14,
-                                      color: isRunning
-                                          ? colorScheme.primary
-                                          : colorScheme.onSurfaceVariant,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      formatDuration(displaySeconds),
-                                      style: theme.textTheme.bodySmall
-                                          ?.copyWith(
-                                            color: isRunning
-                                                ? colorScheme.primary
-                                                : colorScheme.onSurfaceVariant,
-                                            fontWeight: isRunning
-                                                ? FontWeight.w700
-                                                : FontWeight.normal,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                        ],
+                      const SizedBox(width: 4),
+                      _buildCompactActionButton(
+                        context,
+                        icon: Icons.cancel_outlined,
+                        tooltip: AppStrings.dropAction,
+                        onPressed: onDrop,
+                        backgroundColor: AppTheme.statusColor(
+                          theme,
+                          TodoStatus.dropped,
+                        ).withValues(alpha: 0.14),
+                        foregroundColor: AppTheme.statusColor(
+                          theme,
+                          TodoStatus.dropped,
+                        ),
                       ),
-                      if (todo.sourceDate != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            '${AppStrings.copiedFrom} ${todo.sourceDate}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: colorScheme.onSurfaceVariant,
-                              fontStyle: FontStyle.italic,
-                            ),
-                          ),
-                        ),
-                      if (todo.status == TodoStatus.ported &&
-                          todo.portedTo != null)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4),
-                          child: Text(
-                            '${AppStrings.portedTo}: ${todo.portedTo}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: statusColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-                if (!isMultiSelectMode) ...[
-                  if (!_isTerminal &&
-                      !isPast &&
-                      todo.status != TodoStatus.ported)
-                    Semantics(
-                      button: true,
-                      label: isRunning
-                          ? AppStrings.stopTimerForTask(todo.title)
-                          : AppStrings.startTimerForTask(todo.title),
-                      child: IconButton(
-                        icon: Icon(
-                          isRunning ? Icons.stop_circle : Icons.play_circle,
-                          color: isRunning
-                              ? colorScheme.error
-                              : colorScheme.primary,
-                        ),
-                        tooltip: isRunning
-                            ? AppStrings.stopTimer
-                            : AppStrings.startTimer,
-                        onPressed: () {
+                      const SizedBox(width: 4),
+                      Builder(
+                        builder: (context) {
                           final notifier = ref.read(
                             timeTrackingProvider(todo.id).notifier,
                           );
-                          if (isRunning) {
-                            notifier.stopTimer();
-                          } else {
-                            notifier.startTimer();
-                          }
+                          return _buildCompactActionButton(
+                            context,
+                            icon: isRunning
+                                ? Icons.stop_circle_outlined
+                                : Icons.play_circle_fill_rounded,
+                            tooltip: isRunning
+                                ? AppStrings.stopTimer
+                                : AppStrings.startTimer,
+                            onPressed: () {
+                              if (isRunning) {
+                                notifier.stopTimer();
+                              } else {
+                                notifier.startTimer();
+                              }
+                            },
+                            backgroundColor: isRunning
+                                ? colorScheme.errorContainer
+                                : colorScheme.primaryContainer,
+                            foregroundColor: isRunning
+                                ? colorScheme.onErrorContainer
+                                : colorScheme.onPrimaryContainer,
+                          );
                         },
                       ),
+                    ],
+                    if (!isMultiSelectMode) ...[
+                      if (isPast) ...[
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6),
+                          child: Semantics(
+                            button: true,
+                            label: AppStrings.delete,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.delete_outline,
+                                size: 20,
+                                color: colorScheme.onSurface.withValues(
+                                  alpha: 0.44,
+                                ),
+                              ),
+                              onPressed: onDelete,
+                              padding: EdgeInsets.zero,
+                              constraints: const BoxConstraints(),
+                              tooltip: AppStrings.delete,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 2),
+                          child: Semantics(
+                            label: AppStrings.lockedTask,
+                            child: Icon(
+                              Icons.lock_outline,
+                              size: 20,
+                              color: colorScheme.onSurface.withValues(
+                                alpha: 0.44,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ] else
+                        _buildPopupMenu(context, colorScheme),
+                    ],
+                  ],
+                ),
+                // Row 2: status badge + timer + metadata
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    StatusBadge(
+                      label: _statusLabel(),
+                      status: todo.status,
                     ),
-                  if (isPast)
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: Semantics(
-                        label: AppStrings.lockedTask,
-                        child: Icon(
-                          Icons.lock_outline,
-                          size: 20,
-                          color: colorScheme.onSurface.withValues(alpha: 0.44),
+                    if (displaySeconds > 0 || isRunning)
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: isRunning
+                              ? colorScheme.primaryContainer
+                              : colorScheme.surfaceContainerLow,
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                            color: isRunning
+                                ? colorScheme.primary.withValues(alpha: 0.22)
+                                : colorScheme.outlineVariant,
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              isRunning
+                                  ? Icons.timer_rounded
+                                  : Icons.access_time_rounded,
+                              size: 14,
+                              color: isRunning
+                                  ? colorScheme.primary
+                                  : colorScheme.onSurfaceVariant,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              formatDuration(displaySeconds),
+                              style: theme.textTheme.labelMedium?.copyWith(
+                                color: isRunning
+                                    ? colorScheme.primary
+                                    : colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    )
-                  else
-                    PopupMenuButton<String>(
-                      tooltip: AppStrings.openTaskActions,
-                      itemBuilder: (context) => [
-                        if (todo.status == TodoStatus.pending) ...[
-                          const PopupMenuItem(
-                            value: 'complete',
-                            child: Row(
-                              children: [
-                                Icon(Icons.check_circle_outline, size: 20),
-                                SizedBox(width: 8),
-                                Text(AppStrings.statusCompleted),
-                              ],
-                            ),
-                          ),
-                          const PopupMenuItem(
-                            value: 'drop',
-                            child: Row(
-                              children: [
-                                Icon(Icons.cancel_outlined, size: 20),
-                                SizedBox(width: 8),
-                                Text(AppStrings.statusDropped),
-                              ],
-                            ),
-                          ),
-                          const PopupMenuItem(
-                            value: 'port',
-                            child: Row(
-                              children: [
-                                Icon(Icons.arrow_forward, size: 20),
-                                SizedBox(width: 8),
-                                Text(AppStrings.port),
-                              ],
-                            ),
-                          ),
-                        ],
-                        const PopupMenuItem(
-                          value: 'segments',
-                          child: Row(
-                            children: [
-                              Icon(Icons.timer_outlined, size: 20),
-                              SizedBox(width: 8),
-                              Text(AppStrings.viewSegments),
-                            ],
-                          ),
+                    if (todo.sourceDate != null)
+                      Text(
+                        '${AppStrings.copiedFrom} ${todo.sourceDate}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          fontStyle: FontStyle.italic,
                         ),
-                        const PopupMenuItem(
-                          value: 'edit',
-                          child: Row(
-                            children: [
-                              Icon(Icons.edit_outlined, size: 20),
-                              SizedBox(width: 8),
-                              Text(AppStrings.edit),
-                            ],
-                          ),
+                      ),
+                    if (todo.status == TodoStatus.ported &&
+                        todo.portedTo != null)
+                      Text(
+                        '${AppStrings.portedTo}: ${todo.portedTo}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: statusColor,
+                          fontWeight: FontWeight.w700,
                         ),
-                        const PopupMenuItem(
-                          value: 'copy',
-                          child: Row(
-                            children: [
-                              Icon(Icons.copy_outlined, size: 20),
-                              SizedBox(width: 8),
-                              Text(AppStrings.copy),
-                            ],
-                          ),
-                        ),
-                        const PopupMenuItem(
-                          value: 'delete',
-                          child: Row(
-                            children: [
-                              Icon(Icons.delete_outline, size: 20),
-                              SizedBox(width: 8),
-                              Text(AppStrings.delete),
-                            ],
-                          ),
-                        ),
-                      ],
-                      onSelected: (value) {
-                        switch (value) {
-                          case 'complete':
-                            onComplete();
-                          case 'drop':
-                            onDrop();
-                          case 'port':
-                            onPort();
-                          case 'segments':
-                            onViewSegments();
-                          case 'edit':
-                            onEdit();
-                          case 'copy':
-                            onCopy();
-                          case 'delete':
-                            onDelete();
-                        }
-                      },
-                    ),
-                ],
+                      ),
+                  ],
+                ),
               ],
             ),
           ),

@@ -112,6 +112,17 @@ class InMemoryTodoRepository implements TodoRepository {
       _todos[index] = todo;
     }
   }
+
+  @override
+  Future<int> maxSortOrder(String date) async => 0;
+
+  @override
+  Future<void> bulkCreateTodos(List<TodoEntity> todos) async {
+    _todos.addAll(todos);
+  }
+
+  @override
+  Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async => 0;
 }
 
 class FakeTimeSegmentRepository implements TimeSegmentRepository {
@@ -206,17 +217,15 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Future<void> markTodoCompletedFromMenu(WidgetTester tester) async {
-    await tester.tap(find.byTooltip(AppStrings.openTaskActions));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text(AppStrings.statusCompleted).last);
+  Future<void> markTodoCompletedFromStrip(WidgetTester tester) async {
+    await tester.tap(find.bySemanticsLabel(AppStrings.completeAction));
     await tester.pumpAndSettle();
   }
 
   testWidgets('shows a snackbar after a status change', (tester) async {
     await pumpDailyList(tester);
 
-    await markTodoCompletedFromMenu(tester);
+    await markTodoCompletedFromStrip(tester);
 
     expect(
       find.text('${AppStrings.statusChangedTo} ${AppStrings.statusCompleted}'),
@@ -227,7 +236,7 @@ void main() {
   testWidgets('tapping Undo reverts the status', (tester) async {
     await pumpDailyList(tester);
 
-    await markTodoCompletedFromMenu(tester);
+    await markTodoCompletedFromStrip(tester);
     await tester.tap(find.text(AppStrings.undo));
     await tester.pumpAndSettle();
 
@@ -258,7 +267,7 @@ void main() {
   ) async {
     await pumpDailyList(tester);
 
-    await markTodoCompletedFromMenu(tester);
+    await markTodoCompletedFromStrip(tester);
 
     expect(find.byIcon(Icons.undo), findsOneWidget);
   });

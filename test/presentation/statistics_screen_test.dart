@@ -2,12 +2,14 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/statistics_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/statistics/widgets/per_item_stats_table.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 
 class MockStatisticsQueryService extends Mock
@@ -199,8 +201,8 @@ void main() {
     await pumpStatisticsScreen(tester, themeMode: ThemeMode.light);
 
     expect(find.text('Statistics'), findsWidgets);
-    expect(find.text('Daily Overview'), findsOneWidget);
-    expect(find.text('Per-Item Overview'), findsOneWidget);
+    expect(find.text('Daily Overview'), findsWidgets);
+    expect(find.text('Per-Item Overview'), findsWidgets);
     expect(find.byType(TabBar), findsOneWidget);
   });
 
@@ -281,15 +283,52 @@ void main() {
   ) async {
     await pumpStatisticsScreen(tester, size: const Size(300, 844));
 
-    final selector = tester.widget<SegmentedButton<DateRange>>(
-      find.byType(SegmentedButton<DateRange>),
-    );
-
-    expect(selector.showSelectedIcon, isFalse);
+    expect(find.byType(SegmentedButton<DateRange>), findsNothing);
+    expect(find.byType(ChoiceChip), findsNWidgets(4));
     expect(find.text('Last 7 days'), findsOneWidget);
     expect(find.text('Last 30 days'), findsOneWidget);
     expect(find.text('All time'), findsOneWidget);
     expect(find.text('Custom range'), findsOneWidget);
+
+    final chipTops = [
+      tester.getTopLeft(find.widgetWithText(ChoiceChip, 'Last 7 days')).dy,
+      tester.getTopLeft(find.widgetWithText(ChoiceChip, 'Last 30 days')).dy,
+      tester.getTopLeft(find.widgetWithText(ChoiceChip, 'All time')).dy,
+      tester.getTopLeft(find.widgetWithText(ChoiceChip, 'Custom range')).dy,
+    ];
+
+    expect(chipTops.toSet().length, greaterThan(1));
+  });
+  testWidgets('custom range date buttons stay on one row at compact width', (
+    tester,
+  ) async {
+    await pumpStatisticsScreen(tester, size: const Size(300, 844));
+
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Custom range'));
+    await tester.pumpAndSettle();
+
+    final compactYearLabel = DateFormat.y().format(DateTime.now());
+
+    expect(find.text(compactYearLabel), findsNWidgets(2));
+
+    final startTop = tester
+        .getTopLeft(
+          find.ancestor(
+            of: find.byIcon(Icons.date_range_outlined),
+            matching: find.byType(InkWell),
+          ),
+        )
+        .dy;
+    final endTop = tester
+        .getTopLeft(
+          find.ancestor(
+            of: find.byIcon(Icons.event_outlined),
+            matching: find.byType(InkWell),
+          ),
+        )
+        .dy;
+
+    expect(startTop, moreOrLessEquals(endTop));
   });
 
   testWidgets('pagination buttons advance pages', (tester) async {
@@ -297,10 +336,8 @@ void main() {
 
     expect(find.text('Page 1 of 2'), findsOneWidget);
 
-    await tester.ensureVisible(
-      find.widgetWithText(OutlinedButton, 'Next').first,
-    );
-    await tester.tap(find.widgetWithText(OutlinedButton, 'Next').first);
+    await tester.ensureVisible(find.byType(OutlinedButton).last);
+    await tester.tap(find.byType(OutlinedButton).last);
     await tester.pumpAndSettle();
 
     expect(find.text('Page 2 of 2'), findsOneWidget);
@@ -320,5 +357,31 @@ void main() {
 
     expect(find.text('Read'), findsWidgets);
     expect(find.byType(StatisticsScreen), findsOneWidget);
+  });
+  testWidgets('mobile per-item tab keeps task selection above the chart', (
+    tester,
+  ) async {
+    await pumpStatisticsScreen(tester, size: const Size(390, 844));
+
+    await tester.tap(find.text('Per-Item Overview'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Choose task'), findsWidgets);
+    expect(find.byType(PerItemStatsTable), findsNothing);
+
+    expect(find.byType(DropdownButtonFormField<String>), findsOneWidget);
+
+    await tester.tap(find.byType(DropdownButtonFormField<String>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Read').last);
+    await tester.pumpAndSettle();
+
+    final chooserTop = tester.getTopLeft(find.byType(PerItemSelectorCard)).dy;
+    final chartTop = tester.getTopLeft(find.text('Time history: Read')).dy;
+
+    expect(find.text('Selected task'), findsNothing);
+    expect(find.text('Completed 1'), findsOneWidget);
+    expect(find.text('Dropped 1'), findsOneWidget);
+    expect(chooserTop, lessThan(chartTop));
   });
 }
