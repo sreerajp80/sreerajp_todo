@@ -1,4 +1,4 @@
 // GENERATED FILE — DO NOT EDIT.
 // Run: dart run tool/generate_build_date.dart
 
-const String kBuildDate = '2026-03-27';
+const String kBuildDate = '2026-03-28';

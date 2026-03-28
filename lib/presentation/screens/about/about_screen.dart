@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/constants/app_version.g.dart';
 import 'package:sreerajp_todo/core/constants/build_date.g.dart';
 import 'package:sreerajp_todo/presentation/screens/about/widgets/about_info_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
@@ -39,6 +40,12 @@ class AboutScreen extends StatelessWidget {
                   icon: Icons.auto_awesome_outlined,
                   label: AppStrings.about.aiAssisted,
                   value: AppStrings.about.aiModels,
+                ),
+                const SizedBox(height: 12),
+                _AboutDetailRow(
+                  icon: Icons.info_outline_rounded,
+                  label: AppStrings.about.appVersion,
+                  value: kAppVersion,
                 ),
                 const SizedBox(height: 12),
                 _AboutDetailRow(

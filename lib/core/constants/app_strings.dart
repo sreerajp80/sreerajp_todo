@@ -352,6 +352,7 @@ class _AboutStrings {
   String get aiAssisted => 'AI assisted by';
   String get aiModels => 'Claude 4.6 & GPT 5.4';
   String get buildDate => 'Build date';
+  String get appVersion => 'Version';
   String get madeWithLoveIn => 'Made with \u2764 in India';
 }
 
