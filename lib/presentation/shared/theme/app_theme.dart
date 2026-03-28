@@ -113,10 +113,15 @@ abstract final class AppTheme {
       cardTheme: CardThemeData(
         elevation: 0,
         color: isDark
-            ? const Color(0xFF1B2A3E)
+            ? const Color(0xFF1F3355)
             : Colors.white.withValues(alpha: 0.94),
         shadowColor: scheme.shadow,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+          side: isDark
+              ? const BorderSide(color: Color(0xFF3A5472), width: 1)
+              : BorderSide.none,
+        ),
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       ),
       appBarTheme: AppBarTheme(
@@ -136,6 +141,7 @@ abstract final class AppTheme {
         backgroundColor: Color(0xFF1D2939),
         contentTextStyle: TextStyle(color: Colors.white),
         actionTextColor: Color(0xFFFFD54F),
+        closeIconColor: Colors.white70,
       ),
       dialogTheme: DialogThemeData(
         backgroundColor: isDark ? const Color(0xFF17212B) : Colors.white,

@@ -239,6 +239,16 @@ abstract final class AppStrings {
   static const String fourth = 'Fourth';
   static const String last = 'Last';
 
+  static const String sortTodos = 'Sort';
+  static const String sortManual = 'Manual order';
+  static const String sortNameAZ = 'Name A\u2192Z';
+  static const String sortNameZA = 'Name Z\u2192A';
+  static const String sortCreatedOldest = 'Created (oldest first)';
+  static const String sortCreatedNewest = 'Created (newest first)';
+  static const String sortTimeMost = 'Time spent (most first)';
+  static const String sortTimeLeast = 'Time spent (least first)';
+  static const String sortByStatus = 'By status';
+
   static const errors = _ErrorStrings();
 }
 

@@ -12,6 +12,7 @@ import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/todo_sort_option.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
@@ -29,6 +30,7 @@ class DailyListScreen extends ConsumerStatefulWidget {
 
 class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   bool _showCalendar = false;
+  TodoSortOption _sortOption = TodoSortOption.manual;
 
   bool get _isPast => isPastDate(widget.date);
 
@@ -164,11 +166,188 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     }
   }
 
+  List<TodoEntity> _applySorting(List<TodoEntity> todos) {
+    if (_sortOption == TodoSortOption.manual) return todos;
+    final sorted = [...todos];
+    switch (_sortOption) {
+      case TodoSortOption.nameAsc:
+        sorted.sort(
+          (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()),
+        );
+      case TodoSortOption.nameDesc:
+        sorted.sort(
+          (a, b) => b.title.toLowerCase().compareTo(a.title.toLowerCase()),
+        );
+      case TodoSortOption.createdOldest:
+        sorted.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      case TodoSortOption.createdNewest:
+        sorted.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      case TodoSortOption.timeMost:
+        sorted.sort((a, b) {
+          final aTime =
+              ref.read(timeTrackingProvider(a.id)).totalDurationSeconds;
+          final bTime =
+              ref.read(timeTrackingProvider(b.id)).totalDurationSeconds;
+          return bTime.compareTo(aTime);
+        });
+      case TodoSortOption.timeLeast:
+        sorted.sort((a, b) {
+          final aTime =
+              ref.read(timeTrackingProvider(a.id)).totalDurationSeconds;
+          final bTime =
+              ref.read(timeTrackingProvider(b.id)).totalDurationSeconds;
+          return aTime.compareTo(bTime);
+        });
+      case TodoSortOption.status:
+        const rank = {
+          TodoStatus.pending: 0,
+          TodoStatus.completed: 1,
+          TodoStatus.dropped: 2,
+          TodoStatus.ported: 3,
+        };
+        sorted.sort(
+          (a, b) => (rank[a.status] ?? 0).compareTo(rank[b.status] ?? 0),
+        );
+      case TodoSortOption.manual:
+        break;
+    }
+    return sorted;
+  }
+
+  PopupMenuItem<TodoSortOption> _buildSortMenuItem(
+    TodoSortOption option,
+    IconData icon,
+    String label,
+  ) {
+    final isSelected = _sortOption == option;
+    final color = Theme.of(context).colorScheme.primary;
+    return PopupMenuItem<TodoSortOption>(
+      value: option,
+      child: Row(
+        children: [
+          Icon(icon, size: 18, color: isSelected ? color : null),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              label,
+              style: isSelected
+                  ? TextStyle(color: color, fontWeight: FontWeight.w600)
+                  : null,
+            ),
+          ),
+          if (isSelected) Icon(Icons.check, size: 16, color: color),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(dailyTodoProvider(widget.date));
     final notifier = ref.read(dailyTodoProvider(widget.date).notifier);
     final hasUndoStack = state.undoStack.isNotEmpty;
+    final sortedTodos = _applySorting(state.todos);
+
+    Widget buildTile(BuildContext ctx, int index) {
+      final todo = sortedTodos[index];
+      return TodoListTile(
+        key: ValueKey(todo.id),
+        animationIndex: index,
+        todo: todo,
+        isPast: _isPast,
+        isSelected: state.selectedIds.contains(todo.id),
+        isMultiSelectMode: state.isMultiSelectMode,
+        onTap: () {
+          if (state.isMultiSelectMode) {
+            notifier.toggleSelect(todo.id);
+          }
+        },
+        onLongPress: () {
+          notifier.toggleSelect(todo.id);
+        },
+        onComplete: () async {
+          try {
+            await notifier.markCompleted(todo.id);
+            if (context.mounted) {
+              showUndoSnackBar(
+                context,
+                message:
+                    '${AppStrings.statusChangedTo} ${AppStrings.statusCompleted}',
+                onUndo: () => notifier.undoLastStatusChange(),
+              );
+            }
+          } on Exception catch (error) {
+            if (context.mounted) {
+              _showError(error);
+            }
+          }
+        },
+        onDrop: () async {
+          final confirmed = await showConfirmDialog(
+            context,
+            title: AppStrings.confirmDrop,
+            content: AppStrings.confirmDropBody,
+          );
+          if (confirmed && context.mounted) {
+            try {
+              await notifier.markDropped(todo.id);
+              if (context.mounted) {
+                showUndoSnackBar(
+                  context,
+                  message:
+                      '${AppStrings.statusChangedTo} ${AppStrings.statusDropped}',
+                  onUndo: () => notifier.undoLastStatusChange(),
+                );
+              }
+            } on Exception catch (error) {
+              if (context.mounted) {
+                _showError(error);
+              }
+            }
+          }
+        },
+        onPort: () async {
+          final confirmed = await showConfirmDialog(
+            context,
+            title: AppStrings.confirmPort,
+            content: AppStrings.confirmPortBody,
+          );
+          if (confirmed) {
+            await _showPortDatePicker(todo.id);
+          }
+        },
+        onCopy: () => _openCopyWizard(preSelectedIds: [todo.id]),
+        onEdit: () => context.push(AppRoutes.editTodoPath(todo.id)),
+        onViewSegments: () {
+          context.push(AppRoutes.timeSegmentsPath(todo.id));
+        },
+        onDelete: () async {
+          if (todo.recurrenceRuleId != null) {
+            await _handleRecurringDelete(context, notifier, todo);
+          } else {
+            final confirmed = await showConfirmDialog(
+              context,
+              title: AppStrings.confirmDelete,
+              content: AppStrings.confirmDeleteBody,
+            );
+            if (confirmed && context.mounted) {
+              try {
+                await notifier.deleteTodo(todo.id);
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text(AppStrings.todoDeleted)),
+                  );
+                }
+              } on Exception catch (error) {
+                if (context.mounted) {
+                  _showError(error);
+                }
+              }
+            }
+          }
+        },
+      );
+    }
 
     return ResponsiveScaffold(
       currentDestination: AppScaffoldDestination.daily,
@@ -209,127 +388,26 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                               '${AppRoutes.createTodo}?date=${widget.date}',
                             ),
                     )
-                  : ReorderableListView.builder(
-                      key: ValueKey(
-                        'list-${widget.date}-${state.todos.length}',
-                      ),
+                  : _sortOption == TodoSortOption.manual
+                  ? ReorderableListView.builder(
+                      key: ValueKey('list-${widget.date}-${state.todos.length}'),
                       buildDefaultDragHandles: !_isPast,
                       padding: const EdgeInsets.only(bottom: 88),
-                      itemCount: state.todos.length,
+                      itemCount: sortedTodos.length,
                       onReorder: (oldIndex, newIndex) {
                         if (!_isPast) {
                           notifier.reorder(oldIndex, newIndex);
                         }
                       },
-                      itemBuilder: (context, index) {
-                        final todo = state.todos[index];
-                        return TodoListTile(
-                          key: ValueKey(todo.id),
-                          animationIndex: index,
-                          todo: todo,
-                          isPast: _isPast,
-                          isSelected: state.selectedIds.contains(todo.id),
-                          isMultiSelectMode: state.isMultiSelectMode,
-                          onTap: () {
-                            if (state.isMultiSelectMode) {
-                              notifier.toggleSelect(todo.id);
-                            }
-                          },
-                          onLongPress: () {
-                            notifier.toggleSelect(todo.id);
-                          },
-                          onComplete: () async {
-                            try {
-                              await notifier.markCompleted(todo.id);
-                              if (context.mounted) {
-                                showUndoSnackBar(
-                                  context,
-                                  message:
-                                      '${AppStrings.statusChangedTo} ${AppStrings.statusCompleted}',
-                                  onUndo: () => notifier.undoLastStatusChange(),
-                                );
-                              }
-                            } on Exception catch (error) {
-                              if (context.mounted) {
-                                _showError(error);
-                              }
-                            }
-                          },
-                          onDrop: () async {
-                            final confirmed = await showConfirmDialog(
-                              context,
-                              title: AppStrings.confirmDrop,
-                              content: AppStrings.confirmDropBody,
-                            );
-                            if (confirmed && context.mounted) {
-                              try {
-                                await notifier.markDropped(todo.id);
-                                if (context.mounted) {
-                                  showUndoSnackBar(
-                                    context,
-                                    message:
-                                        '${AppStrings.statusChangedTo} ${AppStrings.statusDropped}',
-                                    onUndo: () =>
-                                        notifier.undoLastStatusChange(),
-                                  );
-                                }
-                              } on Exception catch (error) {
-                                if (context.mounted) {
-                                  _showError(error);
-                                }
-                              }
-                            }
-                          },
-                          onPort: () async {
-                            final confirmed = await showConfirmDialog(
-                              context,
-                              title: AppStrings.confirmPort,
-                              content: AppStrings.confirmPortBody,
-                            );
-                            if (confirmed) {
-                              await _showPortDatePicker(todo.id);
-                            }
-                          },
-                          onCopy: () =>
-                              _openCopyWizard(preSelectedIds: [todo.id]),
-                          onEdit: () =>
-                              context.push(AppRoutes.editTodoPath(todo.id)),
-                          onViewSegments: () {
-                            context.push(AppRoutes.timeSegmentsPath(todo.id));
-                          },
-                          onDelete: () async {
-                            if (todo.recurrenceRuleId != null) {
-                              await _handleRecurringDelete(
-                                context,
-                                notifier,
-                                todo,
-                              );
-                            } else {
-                              final confirmed = await showConfirmDialog(
-                                context,
-                                title: AppStrings.confirmDelete,
-                                content: AppStrings.confirmDeleteBody,
-                              );
-                              if (confirmed && context.mounted) {
-                                try {
-                                  await notifier.deleteTodo(todo.id);
-                                  if (context.mounted) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(AppStrings.todoDeleted),
-                                      ),
-                                    );
-                                  }
-                                } on Exception catch (error) {
-                                  if (context.mounted) {
-                                    _showError(error);
-                                  }
-                                }
-                              }
-                            }
-                          },
-                        );
-                      },
+                      itemBuilder: buildTile,
+                    )
+                  : ListView.builder(
+                      key: ValueKey(
+                        'sorted-${widget.date}-${state.todos.length}-${_sortOption.name}',
+                      ),
+                      padding: const EdgeInsets.only(bottom: 88),
+                      itemCount: sortedTodos.length,
+                      itemBuilder: buildTile,
                     ),
             ),
           ),
@@ -410,6 +488,64 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
             },
             tooltip: AppStrings.undo,
           ),
+        PopupMenuButton<TodoSortOption>(
+          icon: Icon(
+            Icons.sort,
+            size: 22,
+            color: _sortOption != TodoSortOption.manual
+                ? Theme.of(context).colorScheme.primary
+                : null,
+          ),
+          padding: EdgeInsets.zero,
+          tooltip: AppStrings.sortTodos,
+          onSelected: (option) => setState(() => _sortOption = option),
+          itemBuilder: (context) => [
+            _buildSortMenuItem(
+              TodoSortOption.manual,
+              Icons.reorder,
+              AppStrings.sortManual,
+            ),
+            const PopupMenuDivider(),
+            _buildSortMenuItem(
+              TodoSortOption.nameAsc,
+              Icons.sort_by_alpha,
+              AppStrings.sortNameAZ,
+            ),
+            _buildSortMenuItem(
+              TodoSortOption.nameDesc,
+              Icons.sort_by_alpha,
+              AppStrings.sortNameZA,
+            ),
+            const PopupMenuDivider(),
+            _buildSortMenuItem(
+              TodoSortOption.createdOldest,
+              Icons.arrow_upward,
+              AppStrings.sortCreatedOldest,
+            ),
+            _buildSortMenuItem(
+              TodoSortOption.createdNewest,
+              Icons.arrow_downward,
+              AppStrings.sortCreatedNewest,
+            ),
+            const PopupMenuDivider(),
+            _buildSortMenuItem(
+              TodoSortOption.timeMost,
+              Icons.timer,
+              AppStrings.sortTimeMost,
+            ),
+            _buildSortMenuItem(
+              TodoSortOption.timeLeast,
+              Icons.timer_outlined,
+              AppStrings.sortTimeLeast,
+            ),
+            const PopupMenuDivider(),
+            _buildSortMenuItem(
+              TodoSortOption.status,
+              Icons.flag_outlined,
+              AppStrings.sortByStatus,
+            ),
+          ],
+        ),
         const SizedBox(width: 4),
       ],
     );
@@ -440,15 +576,11 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     required String tooltip,
   }) {
     return IconButton(
-      icon: Icon(icon, size: 20),
+      icon: Icon(icon, size: 22),
       onPressed: onPressed,
       tooltip: tooltip,
-      padding: EdgeInsets.zero,
-      constraints: const BoxConstraints.tightFor(width: 24, height: 36),
-      visualDensity: VisualDensity.compact,
-      style: IconButton.styleFrom(
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      constraints: const BoxConstraints.tightFor(width: 44, height: 44),
     );
   }
 

@@ -21,12 +21,14 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     required PortTodo portTodo,
     required CopyTodos copyTodos,
     void Function()? onDataChanged,
+    void Function(String todoId)? onTimerStopped,
   }) : _todoRepository = todoRepository,
        _markTodoCompleted = markTodoCompleted,
        _markTodoDropped = markTodoDropped,
        _portTodo = portTodo,
        _copyTodos = copyTodos,
        _onDataChanged = onDataChanged,
+       _onTimerStopped = onTimerStopped,
        super(const DailyTodoState()) {
     loadTodos();
   }
@@ -38,6 +40,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   final PortTodo _portTodo;
   final CopyTodos _copyTodos;
   final void Function()? _onDataChanged;
+  final void Function(String todoId)? _onTimerStopped;
 
   Timer? _undoInactivityTimer;
 
@@ -131,6 +134,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> markCompleted(String todoId) async {
     try {
       final oldStatus = await _markTodoCompleted(todoId);
+      _onTimerStopped?.call(todoId);
       _pushUndo(
         UndoEntry(
           todoId: todoId,
@@ -148,6 +152,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> markDropped(String todoId) async {
     try {
       final oldStatus = await _markTodoDropped(todoId);
+      _onTimerStopped?.call(todoId);
       _pushUndo(
         UndoEntry(
           todoId: todoId,
@@ -195,6 +200,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     try {
       for (final id in ids) {
         final oldStatus = await _markTodoCompleted(id);
+        _onTimerStopped?.call(id);
         _pushUndo(
           UndoEntry(
             todoId: id,
@@ -215,6 +221,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     try {
       for (final id in ids) {
         final oldStatus = await _markTodoDropped(id);
+        _onTimerStopped?.call(id);
         _pushUndo(
           UndoEntry(
             todoId: id,

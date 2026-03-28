@@ -125,6 +125,7 @@ final dailyTodoProvider =
         portTodo: ref.read(portTodoProvider),
         copyTodos: ref.read(copyTodosProvider),
         onDataChanged: () => ref.invalidate(statisticsProvider),
+        onTimerStopped: (id) => ref.invalidate(timeTrackingProvider(id)),
       );
     });
 
