@@ -55,26 +55,74 @@ class TodoListTile extends ConsumerWidget {
     bool isDark,
     bool isSelected,
     ColorScheme colorScheme,
+    TodoStatus status,
+    bool isRunning,
   ) {
+    final List<Color> gradientColors;
+    final Color borderColor;
+    final double borderWidth;
+
+    if (isSelected) {
+      gradientColors = isDark
+          ? [const Color(0xFF2E4F7E), const Color(0xFF1C3459)]
+          : [const Color(0xFFEDF3FF), const Color(0xFFD5E4FF)];
+      borderColor = colorScheme.primary
+          .withValues(alpha: isDark ? 0.55 : 0.30);
+      borderWidth = 1.0;
+    } else if (isRunning) {
+      gradientColors = isDark
+          ? [const Color(0xFF1B3E55), const Color(0xFF102535)]
+          : [const Color(0xFFE6F3FF), const Color(0xFFCBE2FF)];
+      borderColor =
+          isDark ? const Color(0xFF4A90C4) : const Color(0xFF4A8FD4);
+      borderWidth = 1.5;
+    } else {
+      switch (status) {
+        case TodoStatus.completed:
+          gradientColors = isDark
+              ? [const Color(0xFF182E1F), const Color(0xFF0F1E13)]
+              : [const Color(0xFFEEF8EF), const Color(0xFFD5EFD8)];
+          borderColor =
+              isDark ? const Color(0xFF2E6840) : const Color(0xFF7DC48A);
+          borderWidth = 1.0;
+        case TodoStatus.dropped:
+          gradientColors = isDark
+              ? [const Color(0xFF2E1818), const Color(0xFF1E1010)]
+              : [const Color(0xFFFFF1F1), const Color(0xFFFFDDDD)];
+          borderColor =
+              isDark ? const Color(0xFF6B3030) : const Color(0xFFDE8888);
+          borderWidth = 1.0;
+        case TodoStatus.ported:
+          gradientColors = isDark
+              ? [const Color(0xFF2E2510), const Color(0xFF1E180A)]
+              : [const Color(0xFFFFF9EE), const Color(0xFFFFEDD0)];
+          borderColor =
+              isDark ? const Color(0xFF6B4E1A) : const Color(0xFFD9A855);
+          borderWidth = 1.0;
+        case TodoStatus.pending:
+          gradientColors = isDark
+              ? [const Color(0xFF1F3457), const Color(0xFF142440)]
+              : [Colors.white, const Color(0xFFECF2FF)];
+          borderColor =
+              isDark ? const Color(0xFF3A5472) : const Color(0xFFCFDDFA);
+          borderWidth = 1.0;
+      }
+    }
+
     if (isDark) {
       return BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: isSelected
-              ? [const Color(0xFF2E4F7E), const Color(0xFF1C3459)]
-              : [const Color(0xFF1F3457), const Color(0xFF142440)],
+          colors: gradientColors,
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: isSelected
-              ? colorScheme.primary.withValues(alpha: 0.55)
-              : const Color(0xFF3A5472),
-          width: 1,
-        ),
+        border: Border.all(color: borderColor, width: borderWidth),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.44),
+            color: isRunning
+                ? borderColor.withValues(alpha: 0.25)
+                : Colors.black.withValues(alpha: 0.44),
             blurRadius: 18,
             offset: const Offset(0, 8),
             spreadRadius: -4,
@@ -91,20 +139,15 @@ class TodoListTile extends ConsumerWidget {
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: isSelected
-              ? [const Color(0xFFEDF3FF), const Color(0xFFD5E4FF)]
-              : [Colors.white, const Color(0xFFECF2FF)],
+          colors: gradientColors,
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: isSelected
-              ? colorScheme.primary.withValues(alpha: 0.30)
-              : const Color(0xFFCFDDFA),
-          width: 1,
-        ),
+        border: Border.all(color: borderColor, width: borderWidth),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF2B4D8F).withValues(alpha: 0.14),
+            color: isRunning
+                ? borderColor.withValues(alpha: 0.25)
+                : const Color(0xFF2B4D8F).withValues(alpha: 0.14),
             blurRadius: 18,
             offset: const Offset(0, 7),
             spreadRadius: -3,
@@ -250,8 +293,10 @@ class TodoListTile extends ConsumerWidget {
 
     final tile = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: DecoratedBox(
-        decoration: _buildCardDecoration(isDark, isSelected, colorScheme),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        decoration: _buildCardDecoration(isDark, isSelected, colorScheme, todo.status, isRunning),
         child: Stack(
           children: [
             ClipRRect(
