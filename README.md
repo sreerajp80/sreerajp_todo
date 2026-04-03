@@ -110,10 +110,13 @@ flutter build apk --release
 flutter build appbundle --release
 ```
 
+Android builds automatically regenerate the About screen version and build date from `pubspec.yaml` and the current local date before compilation.
+
 ### Windows
 
 ```powershell
 flutter pub get
+.\tool\refresh_build_metadata.ps1
 flutter build windows --release
 ```
 
@@ -715,4 +718,5 @@ Android and Windows.
 ---
 
 *SreerajP ToDo — your data, your device, your control.*
+
 

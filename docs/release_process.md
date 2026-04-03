@@ -134,6 +134,7 @@ Complete these items before every release.
 ### Product And Documentation
 
 - [ ] Version in `pubspec.yaml` was updated.
+- [ ] Generated build metadata refreshed (`flutter build` does this on Android; run `.\tool\refresh_build_metadata.ps1` before Windows builds).
 - [ ] `README.md` updated with screenshots and feature list.
 
 ### Security
@@ -153,7 +154,7 @@ Complete these items before every release.
 ## 8. Android Release Steps
 
 1. Pull the intended release commit on `main`.
-2. Verify the version in `pubspec.yaml`.
+2. Verify the version in `pubspec.yaml`. Android builds auto-refresh the generated About-screen metadata.
 3. Fetch dependencies: `flutter pub get`.
 4. Run pre-release checks:
    ```powershell
@@ -186,20 +187,24 @@ Complete these items before every release.
 
 ## 9. Windows Release Steps
 
-1. Build the Windows release:
+1. Refresh the generated About-screen metadata:
+   ```powershell
+   .\tool\refresh_build_metadata.ps1
+   ```
+2. Build the Windows release:
    ```powershell
    flutter build windows --release
    ```
-2. Verify `sqlite3.dll` is bundled:
+3. Verify `sqlite3.dll` is bundled:
    ```powershell
    Test-Path "build\windows\x64\runner\Release\sqlite3.dll"
    # Expected: True
    ```
-3. v1.0 is a **portable folder**: `build\windows\x64\runner\Release\`. No MSIX installer.
-4. Copy the entire `Release` folder to a clean Windows 10 machine (or VM).
-5. **Disable the network adapter.**
-6. Run the `.exe` and perform a full smoke test.
-7. Verify the app functions normally with zero network access and no firewall prompts.
+4. v1.0 is a **portable folder**: `build\windows\x64\runner\Release\`. No MSIX installer.
+5. Copy the entire `Release` folder to a clean Windows 10 machine (or VM).
+6. **Disable the network adapter.**
+7. Run the `.exe` and perform a full smoke test.
+8. Verify the app functions normally with zero network access and no firewall prompts.
 
 ### Release Artifacts
 
@@ -237,5 +242,6 @@ No public store distribution in v1.0.
 - [ ] No network-related errors or warnings observed.
 - [ ] Release tag created in git.
 - [ ] Follow-up tasks recorded for the next version.
+
 
 
