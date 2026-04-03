@@ -1,18 +1,20 @@
+import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_status.dart';
 
 class TodoDao {
   TodoDao(this._databaseService);
 
   final DatabaseService _databaseService;
 
-  Future<void> insert(TodoEntity todo) async {
-    final db = await _databaseService.database;
+  Future<void> insert(TodoEntity todo, {DatabaseExecutor? executor}) async {
+    final db = executor ?? await _databaseService.database;
     await db.insert('todos', todo.toMap());
   }
 
-  Future<void> update(TodoEntity todo) async {
-    final db = await _databaseService.database;
+  Future<void> update(TodoEntity todo, {DatabaseExecutor? executor}) async {
+    final db = executor ?? await _databaseService.database;
     final now = DateTime.now().toUtc().toIso8601String();
     final updated = todo.copyWith(updatedAt: now);
     await db.update(
@@ -20,6 +22,25 @@ class TodoDao {
       updated.toMap(),
       where: 'id = ?',
       whereArgs: [updated.id],
+    );
+  }
+
+  Future<void> updateStatus(
+    String id,
+    TodoStatus status, {
+    String? portedTo,
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    await db.update(
+      'todos',
+      {
+        'status': status.toDbString(),
+        'ported_to': status == TodoStatus.ported ? portedTo : null,
+        'updated_at': DateTime.now().toUtc().toIso8601String(),
+      },
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 

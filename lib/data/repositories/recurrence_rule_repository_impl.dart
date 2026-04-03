@@ -11,8 +11,9 @@ class RecurrenceRuleRepositoryImpl implements RecurrenceRuleRepository {
   RecurrenceRuleEntity _normalize(RecurrenceRuleEntity rule) {
     return rule.copyWith(
       title: nfcNormalize(rule.title),
-      description:
-          rule.description != null ? nfcNormalize(rule.description!) : null,
+      description: rule.description != null
+          ? nfcNormalize(rule.description!)
+          : null,
     );
   }
 

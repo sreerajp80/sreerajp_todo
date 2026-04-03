@@ -38,7 +38,8 @@ class TimeSegmentsScreen extends ConsumerWidget {
         final isTerminal =
             todo.status == TodoStatus.completed ||
             todo.status == TodoStatus.dropped;
-        final canAddManual = !past && todo.status == TodoStatus.pending;
+        final canAddManual =
+            !past && !isTerminal && todo.status != TodoStatus.ported;
 
         return Scaffold(
           appBar: AppBar(title: const Text(AppStrings.timeSegments)),

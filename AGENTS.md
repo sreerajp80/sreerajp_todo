@@ -51,13 +51,14 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 
 ### 4. Terminal Status Lock
 
+- `working` means the todo has at least one recorded time segment and is the in-progress state between `pending` and terminal statuses.
+- Allowed workflow: `pending -> working -> completed`, `pending -> completed`, `pending -> working -> dropped`, `pending -> dropped`. `ported` remains a separate explicit status.
 - `completed` and `dropped` todos cannot accept new time segments.
 - Any open segment must be stopped when a todo becomes terminal.
 - Repository throws `CompletedLockException` when violated.
 - Start/stop controls must be hidden for completed and dropped todos.
 - In statistics, completed time and dropped time are separate categories.
 - Changing status to `dropped` or `ported` requires confirmation.
-
 ### 5. One Open Segment Per Todo
 
 - At most one open `TimeSegmentEntity` per `todo_id`.
@@ -309,3 +310,5 @@ If a new package is proposed:
 All exceptions are defined in `lib/core/errors/exceptions.dart`.
 
 Last synced from `CLAUDE.md`: `2026-03-22`
+
+

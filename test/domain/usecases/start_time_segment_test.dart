@@ -56,7 +56,11 @@ void main() {
     todoDao = TodoDao(dbService);
     timeSegmentDao = TimeSegmentDao(dbService);
     todoRepo = TodoRepositoryImpl(todoDao);
-    timeSegmentRepo = TimeSegmentRepositoryImpl(timeSegmentDao, todoDao);
+    timeSegmentRepo = TimeSegmentRepositoryImpl(
+      timeSegmentDao,
+      todoDao,
+      dbService,
+    );
     useCase = StartTimeSegment(todoRepo, timeSegmentRepo);
   });
 
@@ -66,9 +70,11 @@ void main() {
     await useCase('st-1');
 
     final running = await timeSegmentRepo.getRunningSegment('st-1');
+    final updated = await todoRepo.getTodoById('st-1');
     expect(running, isNotNull);
     expect(running!.endTime, isNull);
     expect(running.todoId, 'st-1');
+    expect(updated?.status, TodoStatus.working);
   });
 
   test('throws DayLockedException for past-date todo', () async {

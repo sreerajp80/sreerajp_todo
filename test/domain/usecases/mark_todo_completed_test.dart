@@ -21,7 +21,11 @@ void main() {
     todoDao = TodoDao(dbService);
     timeSegmentDao = TimeSegmentDao(dbService);
     todoRepo = TodoRepositoryImpl(todoDao);
-    timeSegmentRepo = TimeSegmentRepositoryImpl(timeSegmentDao, todoDao);
+    timeSegmentRepo = TimeSegmentRepositoryImpl(
+      timeSegmentDao,
+      todoDao,
+      dbService,
+    );
     useCase = MarkTodoCompleted(todoRepo, timeSegmentRepo);
   });
 

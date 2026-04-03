@@ -23,6 +23,7 @@ mixin _$DayStats {
   int get dropped => throw _privateConstructorUsedError;
   int get ported => throw _privateConstructorUsedError;
   int get pending => throw _privateConstructorUsedError;
+  int get working => throw _privateConstructorUsedError;
   int get totalSeconds => throw _privateConstructorUsedError;
 
   /// Create a copy of DayStats
@@ -44,6 +45,7 @@ abstract class $DayStatsCopyWith<$Res> {
     int dropped,
     int ported,
     int pending,
+    int working,
     int totalSeconds,
   });
 }
@@ -69,6 +71,7 @@ class _$DayStatsCopyWithImpl<$Res, $Val extends DayStats>
     Object? dropped = null,
     Object? ported = null,
     Object? pending = null,
+    Object? working = null,
     Object? totalSeconds = null,
   }) {
     return _then(
@@ -97,6 +100,10 @@ class _$DayStatsCopyWithImpl<$Res, $Val extends DayStats>
                 ? _value.pending
                 : pending // ignore: cast_nullable_to_non_nullable
                       as int,
+            working: null == working
+                ? _value.working
+                : working // ignore: cast_nullable_to_non_nullable
+                      as int,
             totalSeconds: null == totalSeconds
                 ? _value.totalSeconds
                 : totalSeconds // ignore: cast_nullable_to_non_nullable
@@ -123,6 +130,7 @@ abstract class _$$DayStatsImplCopyWith<$Res>
     int dropped,
     int ported,
     int pending,
+    int working,
     int totalSeconds,
   });
 }
@@ -147,6 +155,7 @@ class __$$DayStatsImplCopyWithImpl<$Res>
     Object? dropped = null,
     Object? ported = null,
     Object? pending = null,
+    Object? working = null,
     Object? totalSeconds = null,
   }) {
     return _then(
@@ -175,6 +184,10 @@ class __$$DayStatsImplCopyWithImpl<$Res>
             ? _value.pending
             : pending // ignore: cast_nullable_to_non_nullable
                   as int,
+        working: null == working
+            ? _value.working
+            : working // ignore: cast_nullable_to_non_nullable
+                  as int,
         totalSeconds: null == totalSeconds
             ? _value.totalSeconds
             : totalSeconds // ignore: cast_nullable_to_non_nullable
@@ -194,6 +207,7 @@ class _$DayStatsImpl implements _DayStats {
     required this.dropped,
     required this.ported,
     required this.pending,
+    this.working = 0,
     this.totalSeconds = 0,
   });
 
@@ -211,11 +225,14 @@ class _$DayStatsImpl implements _DayStats {
   final int pending;
   @override
   @JsonKey()
+  final int working;
+  @override
+  @JsonKey()
   final int totalSeconds;
 
   @override
   String toString() {
-    return 'DayStats(date: $date, total: $total, completed: $completed, dropped: $dropped, ported: $ported, pending: $pending, totalSeconds: $totalSeconds)';
+    return 'DayStats(date: $date, total: $total, completed: $completed, dropped: $dropped, ported: $ported, pending: $pending, working: $working, totalSeconds: $totalSeconds)';
   }
 
   @override
@@ -230,6 +247,7 @@ class _$DayStatsImpl implements _DayStats {
             (identical(other.dropped, dropped) || other.dropped == dropped) &&
             (identical(other.ported, ported) || other.ported == ported) &&
             (identical(other.pending, pending) || other.pending == pending) &&
+            (identical(other.working, working) || other.working == working) &&
             (identical(other.totalSeconds, totalSeconds) ||
                 other.totalSeconds == totalSeconds));
   }
@@ -243,6 +261,7 @@ class _$DayStatsImpl implements _DayStats {
     dropped,
     ported,
     pending,
+    working,
     totalSeconds,
   );
 
@@ -263,6 +282,7 @@ abstract class _DayStats implements DayStats {
     required final int dropped,
     required final int ported,
     required final int pending,
+    final int working,
     final int totalSeconds,
   }) = _$DayStatsImpl;
 
@@ -278,6 +298,8 @@ abstract class _DayStats implements DayStats {
   int get ported;
   @override
   int get pending;
+  @override
+  int get working;
   @override
   int get totalSeconds;
 
@@ -297,6 +319,7 @@ mixin _$TodoTimeStats {
   int get dropped => throw _privateConstructorUsedError;
   int get ported => throw _privateConstructorUsedError;
   int get pending => throw _privateConstructorUsedError;
+  int get working => throw _privateConstructorUsedError;
   int get totalSeconds => throw _privateConstructorUsedError;
 
   /// Create a copy of TodoTimeStats
@@ -320,6 +343,7 @@ abstract class $TodoTimeStatsCopyWith<$Res> {
     int dropped,
     int ported,
     int pending,
+    int working,
     int totalSeconds,
   });
 }
@@ -345,6 +369,7 @@ class _$TodoTimeStatsCopyWithImpl<$Res, $Val extends TodoTimeStats>
     Object? dropped = null,
     Object? ported = null,
     Object? pending = null,
+    Object? working = null,
     Object? totalSeconds = null,
   }) {
     return _then(
@@ -373,6 +398,10 @@ class _$TodoTimeStatsCopyWithImpl<$Res, $Val extends TodoTimeStats>
                 ? _value.pending
                 : pending // ignore: cast_nullable_to_non_nullable
                       as int,
+            working: null == working
+                ? _value.working
+                : working // ignore: cast_nullable_to_non_nullable
+                      as int,
             totalSeconds: null == totalSeconds
                 ? _value.totalSeconds
                 : totalSeconds // ignore: cast_nullable_to_non_nullable
@@ -399,6 +428,7 @@ abstract class _$$TodoTimeStatsImplCopyWith<$Res>
     int dropped,
     int ported,
     int pending,
+    int working,
     int totalSeconds,
   });
 }
@@ -423,6 +453,7 @@ class __$$TodoTimeStatsImplCopyWithImpl<$Res>
     Object? dropped = null,
     Object? ported = null,
     Object? pending = null,
+    Object? working = null,
     Object? totalSeconds = null,
   }) {
     return _then(
@@ -451,6 +482,10 @@ class __$$TodoTimeStatsImplCopyWithImpl<$Res>
             ? _value.pending
             : pending // ignore: cast_nullable_to_non_nullable
                   as int,
+        working: null == working
+            ? _value.working
+            : working // ignore: cast_nullable_to_non_nullable
+                  as int,
         totalSeconds: null == totalSeconds
             ? _value.totalSeconds
             : totalSeconds // ignore: cast_nullable_to_non_nullable
@@ -470,6 +505,7 @@ class _$TodoTimeStatsImpl implements _TodoTimeStats {
     this.dropped = 0,
     this.ported = 0,
     this.pending = 0,
+    this.working = 0,
     this.totalSeconds = 0,
   });
 
@@ -492,11 +528,14 @@ class _$TodoTimeStatsImpl implements _TodoTimeStats {
   final int pending;
   @override
   @JsonKey()
+  final int working;
+  @override
+  @JsonKey()
   final int totalSeconds;
 
   @override
   String toString() {
-    return 'TodoTimeStats(title: $title, appearances: $appearances, completed: $completed, dropped: $dropped, ported: $ported, pending: $pending, totalSeconds: $totalSeconds)';
+    return 'TodoTimeStats(title: $title, appearances: $appearances, completed: $completed, dropped: $dropped, ported: $ported, pending: $pending, working: $working, totalSeconds: $totalSeconds)';
   }
 
   @override
@@ -512,6 +551,7 @@ class _$TodoTimeStatsImpl implements _TodoTimeStats {
             (identical(other.dropped, dropped) || other.dropped == dropped) &&
             (identical(other.ported, ported) || other.ported == ported) &&
             (identical(other.pending, pending) || other.pending == pending) &&
+            (identical(other.working, working) || other.working == working) &&
             (identical(other.totalSeconds, totalSeconds) ||
                 other.totalSeconds == totalSeconds));
   }
@@ -525,6 +565,7 @@ class _$TodoTimeStatsImpl implements _TodoTimeStats {
     dropped,
     ported,
     pending,
+    working,
     totalSeconds,
   );
 
@@ -545,6 +586,7 @@ abstract class _TodoTimeStats implements TodoTimeStats {
     final int dropped,
     final int ported,
     final int pending,
+    final int working,
     final int totalSeconds,
   }) = _$TodoTimeStatsImpl;
 
@@ -560,6 +602,8 @@ abstract class _TodoTimeStats implements TodoTimeStats {
   int get ported;
   @override
   int get pending;
+  @override
+  int get working;
   @override
   int get totalSeconds;
 

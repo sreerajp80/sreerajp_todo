@@ -57,8 +57,9 @@ final todoRepositoryProvider = Provider<TodoRepository>((ref) {
   return TodoRepositoryImpl(ref.read(todoDaoProvider));
 });
 
-final recurrenceRuleRepositoryProvider =
-    Provider<RecurrenceRuleRepository>((ref) {
+final recurrenceRuleRepositoryProvider = Provider<RecurrenceRuleRepository>((
+  ref,
+) {
   return RecurrenceRuleRepositoryImpl(ref.read(recurrenceRuleDaoProvider));
 });
 
@@ -66,6 +67,7 @@ final timeSegmentRepositoryProvider = Provider<TimeSegmentRepository>((ref) {
   return TimeSegmentRepositoryImpl(
     ref.read(timeSegmentDaoProvider),
     ref.read(todoDaoProvider),
+    ref.read(databaseServiceProvider),
   );
 });
 
@@ -176,7 +178,9 @@ final recurrenceRulesProvider =
       RecurrenceRulesNotifier,
       AsyncValue<List<RecurrenceRuleEntity>>
     >((ref) {
-      return RecurrenceRulesNotifier(ref.read(recurrenceRuleRepositoryProvider));
+      return RecurrenceRulesNotifier(
+        ref.read(recurrenceRuleRepositoryProvider),
+      );
     });
 
 final statisticsProvider =

@@ -115,6 +115,11 @@ and no Wi-Fi. No feature may degrade, warn, or fail when the device is offline.
 
 ### 4. Terminal Status Lock (Completed / Dropped)
 
+- `working` is the in-progress status. A todo becomes `working` once it has at least one recorded
+  `TimeSegmentEntity`, unless it has already been marked `completed`, `dropped`, or `ported`.
+- Allowed workflow: `pending -> working -> completed`, `pending -> completed`,
+  `pending -> working -> dropped`, `pending -> dropped`. `ported` is a separate explicit status,
+  not a synonym for `working`.
 - Once a `TodoEntity.status` is set to `completed` or `dropped`, no new `TimeSegmentEntity` may
   be inserted for that todo, and no existing open segment may be closed against it. Any running
   timer is stopped when the status is changed.
@@ -124,7 +129,6 @@ and no Wi-Fi. No feature may degrade, warn, or fail when the device is offline.
   time spent on dropped tasks is categorised as **dropped time** — they are reported separately.
 - Changing status to **dropped** or **ported** requires a **confirmation dialog**. Marking as
   **completed** does not (most common action, should be fast).
-
 ### 5. One Open Segment Per Todo
 
 - At most one `TimeSegmentEntity` with `end_time IS NULL` may exist for any given `todo_id` at any
@@ -274,7 +278,7 @@ Core          lib/core/               Utils, constants, exceptions — no Flutte
 | `date` | TEXT | NOT NULL | `YYYY-MM-DD` local date |
 | `title` | TEXT | NOT NULL | NFC-normalised Unicode |
 | `description` | TEXT | nullable | Unicode |
-| `status` | TEXT | NOT NULL DEFAULT `'pending'` | `pending` \| `completed` \| `dropped` \| `ported` |
+| `status` | TEXT | NOT NULL DEFAULT `'pending'` | `pending` \| `working` \| `completed` \| `dropped` \| `ported` |
 | `ported_to` | TEXT | nullable | `YYYY-MM-DD` — set only when `status = 'ported'` |
 | `source_date` | TEXT | nullable | `YYYY-MM-DD` — set when this row was copied/ported from another date |
 | `recurrence_rule_id` | TEXT | nullable, FK → `recurrence_rules.id` ON DELETE SET NULL | Links to the recurrence rule that generated this todo |
@@ -314,7 +318,8 @@ Core          lib/core/               Utils, constants, exceptions — no Flutte
 
 | Dart enum | DB string | Meaning |
 |-----------|-----------|---------|
-| `TodoStatus.pending` | `'pending'` | Not yet acted on |
+| `TodoStatus.pending` | `'pending'` | Not yet started; no recorded time segments |
+| `TodoStatus.working` | `'working'` | In progress; at least one time segment exists |
 | `TodoStatus.completed` | `'completed'` | Done — locks new time segments |
 | `TodoStatus.dropped` | `'dropped'` | Task dropped / no longer being pursued |
 | `TodoStatus.ported` | `'ported'` | Moved to another day — `ported_to` is set |
@@ -592,3 +597,6 @@ All exceptions are defined in `lib/core/errors/exceptions.dart`.
 Last updated: 2026-03-20 — synced with plan v1.3 (unable→dropped, hybrid undo with confirmation
 dialogs, dual-key encryption: device key for live DB + user passphrase for portable backups,
 dropped≠completed in stats, sqflite_sqlcipher replaces sqflite).*
+
+
+

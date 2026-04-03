@@ -298,6 +298,8 @@ abstract final class AppTheme {
     return switch (status) {
       TodoStatus.pending =>
         isDark ? const Color(0xFFD4D8E0) : const Color(0xFF687181),
+      TodoStatus.working =>
+        isDark ? const Color(0xFF7CC7FF) : const Color(0xFF2478C8),
       TodoStatus.completed =>
         isDark ? const Color(0xFF73D18A) : const Color(0xFF2E7D46),
       TodoStatus.dropped =>

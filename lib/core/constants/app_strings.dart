@@ -72,6 +72,7 @@ abstract final class AppStrings {
   static const String december = 'December';
 
   static const String statusPending = 'Pending';
+  static const String statusWorking = 'Working';
   static const String statusCompleted = 'Completed';
   static const String statusDropped = 'Dropped';
   static const String statusPorted = 'Ported';

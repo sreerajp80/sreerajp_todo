@@ -1,3 +1,4 @@
+import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 
@@ -6,8 +7,11 @@ class TimeSegmentDao {
 
   final DatabaseService _databaseService;
 
-  Future<void> insert(TimeSegmentEntity segment) async {
-    final db = await _databaseService.database;
+  Future<void> insert(
+    TimeSegmentEntity segment, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
     await db.insert('time_segments', segment.toMap());
   }
 
@@ -56,8 +60,11 @@ class TimeSegmentDao {
     return maps.map(TimeSegmentEntity.fromMap).toList();
   }
 
-  Future<TimeSegmentEntity?> findRunningSegment(String todoId) async {
-    final db = await _databaseService.database;
+  Future<TimeSegmentEntity?> findRunningSegment(
+    String todoId, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
     final maps = await db.query(
       'time_segments',
       where: 'todo_id = ? AND end_time IS NULL',
@@ -91,8 +98,9 @@ class TimeSegmentDao {
     required String startTime,
     required String endTime,
     String? excludeId,
+    DatabaseExecutor? executor,
   }) async {
-    final db = await _databaseService.database;
+    final db = executor ?? await _databaseService.database;
     final excludeClause = excludeId != null ? 'AND id != ?' : '';
     final args = <dynamic>[todoId, endTime, startTime];
     if (excludeId != null) args.add(excludeId);

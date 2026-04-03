@@ -6,7 +6,7 @@ import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dar
 class RecurrenceRulesNotifier
     extends StateNotifier<AsyncValue<List<RecurrenceRuleEntity>>> {
   RecurrenceRulesNotifier(this._repository)
-      : super(const AsyncValue.loading()) {
+    : super(const AsyncValue.loading()) {
     loadRules();
   }
 

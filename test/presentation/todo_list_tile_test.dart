@@ -196,10 +196,7 @@ void main() {
     expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
     expect(find.byIcon(Icons.cancel_outlined), findsOneWidget);
     expect(find.byIcon(Icons.play_circle_fill_rounded), findsOneWidget);
-    expect(
-      find.bySemanticsLabel(AppStrings.completeAction),
-      findsOneWidget,
-    );
+    expect(find.bySemanticsLabel(AppStrings.completeAction), findsOneWidget);
     expect(find.bySemanticsLabel(AppStrings.dropAction), findsOneWidget);
     expect(find.bySemanticsLabel(AppStrings.startTimer), findsOneWidget);
 
@@ -229,7 +226,9 @@ void main() {
       await tester.pumpAndSettle();
 
       // The main tile InkWell should have onLongPress disabled for past days
-      final inkWells = tester.widgetList<InkWell>(find.byType(InkWell)).toList();
+      final inkWells = tester
+          .widgetList<InkWell>(find.byType(InkWell))
+          .toList();
       final mainInkWell = inkWells.firstWhere(
         (iw) => iw.onTap != null && iw.onLongPress == null,
       );

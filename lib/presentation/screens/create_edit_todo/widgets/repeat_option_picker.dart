@@ -50,8 +50,7 @@ class RepeatOptionPicker extends StatelessWidget {
             }
           },
         ),
-        if (selected == SimpleRepeatOption.repeat &&
-            summaryLabel != null) ...[
+        if (selected == SimpleRepeatOption.repeat && summaryLabel != null) ...[
           const SizedBox(height: 8),
           InkWell(
             onTap: onRepeatRequested,

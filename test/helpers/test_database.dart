@@ -21,7 +21,7 @@ Future<DatabaseService> createTestDatabaseService() async {
   final db = await databaseFactoryFfi.openDatabase(
     inMemoryDatabasePath,
     options: OpenDatabaseOptions(
-      version: 1,
+      version: kDatabaseVersion,
       singleInstance: false,
       onCreate: (db, version) async {
         await runMigrationV1(db);
@@ -44,7 +44,7 @@ Future<DatabaseService> createFileBackedTestDatabaseService(
   final db = await databaseFactoryFfi.openDatabase(
     dbPath,
     options: OpenDatabaseOptions(
-      version: 1,
+      version: kDatabaseVersion,
       singleInstance: false,
       onCreate: (db, version) async {
         await runMigrationV1(db);

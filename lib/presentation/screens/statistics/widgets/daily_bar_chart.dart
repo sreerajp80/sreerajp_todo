@@ -17,10 +17,11 @@ class DailyBarChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final pendingColor = AppTheme.statusColor(theme, TodoStatus.pending);
+    final workingColor = AppTheme.statusColor(theme, TodoStatus.working);
     final completedColor = AppTheme.statusColor(theme, TodoStatus.completed);
     final droppedColor = AppTheme.statusColor(theme, TodoStatus.dropped);
     final portedColor = AppTheme.statusColor(theme, TodoStatus.ported);
-    final pendingColor = AppTheme.statusColor(theme, TodoStatus.pending);
 
     if (stats.isEmpty) {
       return AppSectionCard(
@@ -41,10 +42,11 @@ class DailyBarChart extends StatelessWidget {
     final maxValue = stats
         .map(
           (item) => [
+            item.pending,
+            item.working,
             item.completed,
             item.dropped,
             item.ported,
-            item.pending,
           ].reduce(math.max),
         )
         .reduce(math.max)
@@ -60,13 +62,14 @@ class DailyBarChart extends StatelessWidget {
             spacing: 10,
             runSpacing: 8,
             children: [
+              _LegendItem(color: pendingColor, label: AppStrings.statusPending),
+              _LegendItem(color: workingColor, label: AppStrings.statusWorking),
               _LegendItem(
                 color: completedColor,
                 label: AppStrings.statusCompleted,
               ),
               _LegendItem(color: droppedColor, label: AppStrings.statusDropped),
               _LegendItem(color: portedColor, label: AppStrings.statusPorted),
-              _LegendItem(color: pendingColor, label: AppStrings.statusPending),
             ],
           ),
           const SizedBox(height: 16),
@@ -75,7 +78,7 @@ class DailyBarChart extends StatelessWidget {
             child: LayoutBuilder(
               builder: (context, constraints) {
                 final width = math
-                    .max(constraints.maxWidth, stats.length * 82)
+                    .max(constraints.maxWidth, stats.length * 96)
                     .toDouble();
 
                 return SingleChildScrollView(
@@ -92,10 +95,11 @@ class DailyBarChart extends StatelessWidget {
                             getTooltipItem: (group, groupIndex, rod, rodIndex) {
                               final item = stats[group.x.toInt()];
                               final labels = [
+                                AppStrings.statusPending,
+                                AppStrings.statusWorking,
                                 AppStrings.statusCompleted,
                                 AppStrings.statusDropped,
                                 AppStrings.statusPorted,
-                                AppStrings.statusPending,
                               ];
                               return BarTooltipItem(
                                 '${DateFormat.yMMMd().format(DateTime.parse(item.date))}\n${labels[rodIndex]}: ${rod.toY.toStringAsFixed(0)}',
@@ -172,6 +176,22 @@ class DailyBarChart extends StatelessWidget {
                               barsSpace: 4,
                               barRods: [
                                 BarChartRodData(
+                                  toY: stats[i].pending.toDouble(),
+                                  color: pendingColor,
+                                  width: 10,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
+                                ),
+                                BarChartRodData(
+                                  toY: stats[i].working.toDouble(),
+                                  color: workingColor,
+                                  width: 10,
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(5),
+                                  ),
+                                ),
+                                BarChartRodData(
                                   toY: stats[i].completed.toDouble(),
                                   color: completedColor,
                                   width: 10,
@@ -190,14 +210,6 @@ class DailyBarChart extends StatelessWidget {
                                 BarChartRodData(
                                   toY: stats[i].ported.toDouble(),
                                   color: portedColor,
-                                  width: 10,
-                                  borderRadius: const BorderRadius.all(
-                                    Radius.circular(5),
-                                  ),
-                                ),
-                                BarChartRodData(
-                                  toY: stats[i].pending.toDouble(),
-                                  color: pendingColor,
                                   width: 10,
                                   borderRadius: const BorderRadius.all(
                                     Radius.circular(5),

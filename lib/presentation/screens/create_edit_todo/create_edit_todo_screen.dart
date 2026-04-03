@@ -228,9 +228,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
             createdAt: now,
             updatedAt: now,
           );
-          await ref
-              .read(recurrenceRulesProvider.notifier)
-              .createRule(rule);
+          await ref.read(recurrenceRulesProvider.notifier).createRule(rule);
         }
 
         final todo = TodoEntity(
@@ -261,8 +259,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
               widget.isEditing
                   ? AppStrings.todoUpdated
                   : _repeatOption != SimpleRepeatOption.none
-                      ? AppStrings.recurrenceCreated
-                      : AppStrings.todoCreated,
+                  ? AppStrings.recurrenceCreated
+                  : AppStrings.todoCreated,
             ),
           ),
         );
@@ -283,6 +281,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
 
   Future<void> _onStatusChanged(TodoStatus? newStatus) async {
     if (newStatus == null || _isReadOnly) {
+      return;
+    }
+    if (newStatus == TodoStatus.working) {
       return;
     }
 
@@ -633,11 +634,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                         selected: freq,
                         onChanged: (f) => setSheetState(() {
                           freq = f;
-                          if (f == RruleFrequency.weekly &&
-                              weekDays.isEmpty) {
-                            weekDays = {
-                              parseIsoDate(_effectiveDate).weekday,
-                            };
+                          if (f == RruleFrequency.weekly && weekDays.isEmpty) {
+                            weekDays = {parseIsoDate(_effectiveDate).weekday};
                           }
                         }),
                       ),
@@ -663,10 +661,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            unitLabel,
-                            style: theme.textTheme.bodyLarge,
-                          ),
+                          Text(unitLabel, style: theme.textTheme.bodyLarge),
                         ],
                       ),
                       if (freq == RruleFrequency.weekly) ...[
@@ -676,10 +671,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                           style: theme.textTheme.titleSmall,
                         ),
                         const SizedBox(height: 8),
-                        _buildSheetDayOfWeekPicker(
-                          weekDays,
-                          setSheetState,
-                        ),
+                        _buildSheetDayOfWeekPicker(weekDays, setSheetState),
                       ],
                       const SizedBox(height: 16),
                       Row(
@@ -823,11 +815,18 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   Widget _buildStatusSelector() {
     final theme = Theme.of(context);
     final options = <_StatusOption>[
-      const _StatusOption(
-        status: TodoStatus.pending,
-        label: AppStrings.statusPending,
-        icon: Icons.radio_button_unchecked,
-      ),
+      if (_status == TodoStatus.working)
+        const _StatusOption(
+          status: TodoStatus.working,
+          label: AppStrings.statusWorking,
+          icon: Icons.play_circle_fill_rounded,
+        ),
+      if (_status != TodoStatus.working)
+        const _StatusOption(
+          status: TodoStatus.pending,
+          label: AppStrings.statusPending,
+          icon: Icons.radio_button_unchecked,
+        ),
       const _StatusOption(
         status: TodoStatus.completed,
         label: AppStrings.statusCompleted,
@@ -845,6 +844,16 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           icon: Icons.arrow_forward,
         ),
     ];
+
+    bool isSelectable(TodoStatus status) {
+      if (_isReadOnly || status == TodoStatus.working) {
+        return false;
+      }
+      if (_status == TodoStatus.working && status == TodoStatus.pending) {
+        return false;
+      }
+      return true;
+    }
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -872,9 +881,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                 child: Semantics(
                   selected: _status == option.status,
                   child: TextButton(
-                    onPressed: _isReadOnly
-                        ? null
-                        : () => _onStatusChanged(option.status),
+                    onPressed: isSelectable(option.status)
+                        ? () => _onStatusChanged(option.status)
+                        : null,
                     style:
                         TextButton.styleFrom(
                           minimumSize: const Size.fromHeight(52),

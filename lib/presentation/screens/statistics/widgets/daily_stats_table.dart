@@ -69,10 +69,11 @@ class DailyStatsTable extends StatelessWidget {
                     columns: [
                       DataColumn(label: Text(AppStrings.stats.date)),
                       DataColumn(label: Text(AppStrings.stats.total)),
+                      const DataColumn(label: Text(AppStrings.statusPending)),
+                      const DataColumn(label: Text(AppStrings.statusWorking)),
                       const DataColumn(label: Text(AppStrings.statusCompleted)),
                       const DataColumn(label: Text(AppStrings.statusDropped)),
                       const DataColumn(label: Text(AppStrings.statusPorted)),
-                      const DataColumn(label: Text(AppStrings.statusPending)),
                       const DataColumn(label: Text(AppStrings.totalTime)),
                     ],
                     rows: [
@@ -92,6 +93,14 @@ class DailyStatsTable extends StatelessWidget {
                               onTap: () => onSelectDate(stat.date),
                             ),
                             DataCell(
+                              Text('${stat.pending}'),
+                              onTap: () => onSelectDate(stat.date),
+                            ),
+                            DataCell(
+                              Text('${stat.working}'),
+                              onTap: () => onSelectDate(stat.date),
+                            ),
+                            DataCell(
                               Text('${stat.completed}'),
                               onTap: () => onSelectDate(stat.date),
                             ),
@@ -101,10 +110,6 @@ class DailyStatsTable extends StatelessWidget {
                             ),
                             DataCell(
                               Text('${stat.ported}'),
-                              onTap: () => onSelectDate(stat.date),
-                            ),
-                            DataCell(
-                              Text('${stat.pending}'),
                               onTap: () => onSelectDate(stat.date),
                             ),
                             DataCell(
@@ -181,6 +186,16 @@ class _CompactDailyStatTile extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   _StatusPill(
+                    label: AppStrings.statusPending,
+                    value: '${stat.pending}',
+                    status: TodoStatus.pending,
+                  ),
+                  _StatusPill(
+                    label: AppStrings.statusWorking,
+                    value: '${stat.working}',
+                    status: TodoStatus.working,
+                  ),
+                  _StatusPill(
                     label: AppStrings.statusCompleted,
                     value: '${stat.completed}',
                     status: TodoStatus.completed,
@@ -194,11 +209,6 @@ class _CompactDailyStatTile extends StatelessWidget {
                     label: AppStrings.statusPorted,
                     value: '${stat.ported}',
                     status: TodoStatus.ported,
-                  ),
-                  _StatusPill(
-                    label: AppStrings.statusPending,
-                    value: '${stat.pending}',
-                    status: TodoStatus.pending,
                   ),
                 ],
               ),

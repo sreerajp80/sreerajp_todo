@@ -102,9 +102,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       } else {
         await notifier.deleteTodo(todo.id);
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text(AppStrings.todoDeleted)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text(AppStrings.todoDeleted)));
         }
       }
     } on Exception catch (error) {
@@ -166,9 +166,26 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     }
   }
 
+  TodoStatus _effectiveStatus(
+    TodoEntity todo,
+    int totalDurationSeconds,
+    bool isRunning,
+  ) {
+    if (todo.status == TodoStatus.pending &&
+        (isRunning || totalDurationSeconds > 0)) {
+      return TodoStatus.working;
+    }
+    return todo.status;
+  }
+
   List<TodoEntity> _applySorting(List<TodoEntity> todos) {
     if (_sortOption == TodoSortOption.manual) return todos;
     final sorted = [...todos];
+    final trackingStates = {
+      for (final todo in todos)
+        todo.id: ref.watch(timeTrackingProvider(todo.id)),
+    };
+
     switch (_sortOption) {
       case TodoSortOption.nameAsc:
         sorted.sort(
@@ -184,30 +201,39 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         sorted.sort((a, b) => b.createdAt.compareTo(a.createdAt));
       case TodoSortOption.timeMost:
         sorted.sort((a, b) {
-          final aTime =
-              ref.read(timeTrackingProvider(a.id)).totalDurationSeconds;
-          final bTime =
-              ref.read(timeTrackingProvider(b.id)).totalDurationSeconds;
+          final aTime = trackingStates[a.id]?.totalDurationSeconds ?? 0;
+          final bTime = trackingStates[b.id]?.totalDurationSeconds ?? 0;
           return bTime.compareTo(aTime);
         });
       case TodoSortOption.timeLeast:
         sorted.sort((a, b) {
-          final aTime =
-              ref.read(timeTrackingProvider(a.id)).totalDurationSeconds;
-          final bTime =
-              ref.read(timeTrackingProvider(b.id)).totalDurationSeconds;
+          final aTime = trackingStates[a.id]?.totalDurationSeconds ?? 0;
+          final bTime = trackingStates[b.id]?.totalDurationSeconds ?? 0;
           return aTime.compareTo(bTime);
         });
       case TodoSortOption.status:
         const rank = {
           TodoStatus.pending: 0,
-          TodoStatus.completed: 1,
-          TodoStatus.dropped: 2,
-          TodoStatus.ported: 3,
+          TodoStatus.working: 1,
+          TodoStatus.completed: 2,
+          TodoStatus.dropped: 3,
+          TodoStatus.ported: 4,
         };
-        sorted.sort(
-          (a, b) => (rank[a.status] ?? 0).compareTo(rank[b.status] ?? 0),
-        );
+        sorted.sort((a, b) {
+          final aState = trackingStates[a.id];
+          final bState = trackingStates[b.id];
+          final aStatus = _effectiveStatus(
+            a,
+            aState?.totalDurationSeconds ?? 0,
+            aState?.runningSegment != null,
+          );
+          final bStatus = _effectiveStatus(
+            b,
+            bState?.totalDurationSeconds ?? 0,
+            bState?.runningSegment != null,
+          );
+          return (rank[aStatus] ?? 0).compareTo(rank[bStatus] ?? 0);
+        });
       case TodoSortOption.manual:
         break;
     }
@@ -390,7 +416,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                     )
                   : _sortOption == TodoSortOption.manual
                   ? ReorderableListView.builder(
-                      key: ValueKey('list-${widget.date}-${state.todos.length}'),
+                      key: ValueKey(
+                        'list-${widget.date}-${state.todos.length}',
+                      ),
                       buildDefaultDragHandles: !_isPast,
                       padding: const EdgeInsets.only(bottom: 88),
                       itemCount: sortedTodos.length,
@@ -594,7 +622,8 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     final canComplete = selectedIds.any((id) {
       try {
         final todo = dailyState.todos.firstWhere((item) => item.id == id);
-        return todo.status == TodoStatus.pending;
+        return todo.status == TodoStatus.pending ||
+            todo.status == TodoStatus.working;
       } on StateError {
         return false;
       }

@@ -163,6 +163,8 @@ class PerItemStatsTable extends StatelessWidget {
                     columns: [
                       DataColumn(label: Text(AppStrings.stats.title)),
                       DataColumn(label: Text(AppStrings.stats.appearances)),
+                      const DataColumn(label: Text(AppStrings.statusPending)),
+                      const DataColumn(label: Text(AppStrings.statusWorking)),
                       const DataColumn(label: Text(AppStrings.statusCompleted)),
                       const DataColumn(label: Text(AppStrings.statusDropped)),
                       const DataColumn(label: Text(AppStrings.statusPorted)),
@@ -178,6 +180,14 @@ class PerItemStatsTable extends StatelessWidget {
                             ),
                             DataCell(
                               Text('${stat.appearances}'),
+                              onTap: () => onSelectTitle(stat.title),
+                            ),
+                            DataCell(
+                              Text('${stat.pending}'),
+                              onTap: () => onSelectTitle(stat.title),
+                            ),
+                            DataCell(
+                              Text('${stat.working}'),
                               onTap: () => onSelectTitle(stat.title),
                             ),
                             DataCell(
@@ -262,6 +272,16 @@ class _CompactPerItemTile extends StatelessWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
+                  _StatusPill(
+                    label: AppStrings.statusPending,
+                    value: '${stat.pending}',
+                    status: TodoStatus.pending,
+                  ),
+                  _StatusPill(
+                    label: AppStrings.statusWorking,
+                    value: '${stat.working}',
+                    status: TodoStatus.working,
+                  ),
                   _StatusPill(
                     label: AppStrings.statusCompleted,
                     value: '${stat.completed}',

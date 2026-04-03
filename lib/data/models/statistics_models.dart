@@ -11,6 +11,7 @@ class DayStats with _$DayStats {
     required int dropped,
     required int ported,
     required int pending,
+    @Default(0) int working,
     @Default(0) int totalSeconds,
   }) = _DayStats;
 }
@@ -24,6 +25,7 @@ class TodoTimeStats with _$TodoTimeStats {
     @Default(0) int dropped,
     @Default(0) int ported,
     @Default(0) int pending,
+    @Default(0) int working,
     @Default(0) int totalSeconds,
   }) = _TodoTimeStats;
 }

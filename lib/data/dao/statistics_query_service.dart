@@ -25,6 +25,7 @@ class StatisticsQueryService {
         SUM(CASE WHEN t.status = 'dropped' THEN 1 ELSE 0 END) AS dropped,
         SUM(CASE WHEN t.status = 'ported' THEN 1 ELSE 0 END) AS ported,
         SUM(CASE WHEN t.status = 'pending' THEN 1 ELSE 0 END) AS pending,
+        SUM(CASE WHEN t.status = 'working' THEN 1 ELSE 0 END) AS working,
         COALESCE(SUM(COALESCE(seg.total_seconds, 0)), 0) AS total_seconds
       FROM todos t
       LEFT JOIN (
@@ -50,6 +51,7 @@ class StatisticsQueryService {
             dropped: _toInt(map['dropped']),
             ported: _toInt(map['ported']),
             pending: _toInt(map['pending']),
+            working: _toInt(map['working']),
             totalSeconds: _toInt(map['total_seconds']),
           ),
         )
@@ -94,6 +96,7 @@ class StatisticsQueryService {
         SUM(CASE WHEN t.status = 'dropped' THEN 1 ELSE 0 END) AS dropped,
         SUM(CASE WHEN t.status = 'ported' THEN 1 ELSE 0 END) AS ported,
         SUM(CASE WHEN t.status = 'pending' THEN 1 ELSE 0 END) AS pending,
+        SUM(CASE WHEN t.status = 'working' THEN 1 ELSE 0 END) AS working,
         COALESCE(SUM(COALESCE(seg.total_seconds, 0)), 0) AS total_seconds
       FROM todos t
       LEFT JOIN (
@@ -119,6 +122,7 @@ class StatisticsQueryService {
             dropped: _toInt(map['dropped']),
             ported: _toInt(map['ported']),
             pending: _toInt(map['pending']),
+            working: _toInt(map['working']),
             totalSeconds: _toInt(map['total_seconds']),
           ),
         )

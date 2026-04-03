@@ -42,13 +42,33 @@ class TodoListTile extends ConsumerWidget {
   final VoidCallback onViewSegments;
   final int animationIndex;
 
-  String _statusLabel() {
-    return switch (todo.status) {
+  TodoStatus _effectiveStatus({
+    required bool isRunning,
+    required int totalDurationSeconds,
+  }) {
+    if (todo.status == TodoStatus.pending &&
+        (isRunning || totalDurationSeconds > 0)) {
+      return TodoStatus.working;
+    }
+    return todo.status;
+  }
+
+  String _statusLabel(TodoStatus status) {
+    return switch (status) {
+      TodoStatus.pending => AppStrings.statusPending,
+      TodoStatus.working => AppStrings.statusWorking,
       TodoStatus.completed => AppStrings.statusCompleted,
       TodoStatus.dropped => AppStrings.statusDropped,
       TodoStatus.ported => AppStrings.statusPorted,
-      TodoStatus.pending => AppStrings.statusPending,
     };
+  }
+
+  bool _canShowQuickActions(TodoStatus status) {
+    return status == TodoStatus.pending || status == TodoStatus.working;
+  }
+
+  bool _canPort(TodoStatus status) {
+    return status == TodoStatus.pending || status == TodoStatus.working;
   }
 
   BoxDecoration _buildCardDecoration(
@@ -66,15 +86,13 @@ class TodoListTile extends ConsumerWidget {
       gradientColors = isDark
           ? [const Color(0xFF2E4F7E), const Color(0xFF1C3459)]
           : [const Color(0xFFEDF3FF), const Color(0xFFD5E4FF)];
-      borderColor = colorScheme.primary
-          .withValues(alpha: isDark ? 0.55 : 0.30);
+      borderColor = colorScheme.primary.withValues(alpha: isDark ? 0.55 : 0.30);
       borderWidth = 1.0;
     } else if (isRunning) {
       gradientColors = isDark
           ? [const Color(0xFF1B3E55), const Color(0xFF102535)]
           : [const Color(0xFFE6F3FF), const Color(0xFFCBE2FF)];
-      borderColor =
-          isDark ? const Color(0xFF4A90C4) : const Color(0xFF4A8FD4);
+      borderColor = isDark ? const Color(0xFF4A90C4) : const Color(0xFF4A8FD4);
       borderWidth = 1.5;
     } else {
       switch (status) {
@@ -82,29 +100,41 @@ class TodoListTile extends ConsumerWidget {
           gradientColors = isDark
               ? [const Color(0xFF182E1F), const Color(0xFF0F1E13)]
               : [const Color(0xFFEEF8EF), const Color(0xFFD5EFD8)];
-          borderColor =
-              isDark ? const Color(0xFF2E6840) : const Color(0xFF7DC48A);
+          borderColor = isDark
+              ? const Color(0xFF2E6840)
+              : const Color(0xFF7DC48A);
           borderWidth = 1.0;
         case TodoStatus.dropped:
           gradientColors = isDark
               ? [const Color(0xFF2E1818), const Color(0xFF1E1010)]
               : [const Color(0xFFFFF1F1), const Color(0xFFFFDDDD)];
-          borderColor =
-              isDark ? const Color(0xFF6B3030) : const Color(0xFFDE8888);
+          borderColor = isDark
+              ? const Color(0xFF6B3030)
+              : const Color(0xFFDE8888);
           borderWidth = 1.0;
         case TodoStatus.ported:
           gradientColors = isDark
               ? [const Color(0xFF2E2510), const Color(0xFF1E180A)]
               : [const Color(0xFFFFF9EE), const Color(0xFFFFEDD0)];
-          borderColor =
-              isDark ? const Color(0xFF6B4E1A) : const Color(0xFFD9A855);
+          borderColor = isDark
+              ? const Color(0xFF6B4E1A)
+              : const Color(0xFFD9A855);
           borderWidth = 1.0;
         case TodoStatus.pending:
           gradientColors = isDark
               ? [const Color(0xFF1F3457), const Color(0xFF142440)]
               : [Colors.white, const Color(0xFFECF2FF)];
-          borderColor =
-              isDark ? const Color(0xFF3A5472) : const Color(0xFFCFDDFA);
+          borderColor = isDark
+              ? const Color(0xFF3A5472)
+              : const Color(0xFFCFDDFA);
+          borderWidth = 1.0;
+        case TodoStatus.working:
+          gradientColors = isDark
+              ? [const Color(0xFF163347), const Color(0xFF0F2433)]
+              : [const Color(0xFFEAF6FF), const Color(0xFFD6EBFF)];
+          borderColor = isDark
+              ? const Color(0xFF3B7AA6)
+              : const Color(0xFF86B9E4);
           borderWidth = 1.0;
       }
     }
@@ -189,20 +219,19 @@ class TodoListTile extends ConsumerWidget {
     );
   }
 
-  Widget _buildPopupMenu(BuildContext context, ColorScheme colorScheme) {
+  Widget _buildPopupMenu(
+    BuildContext context,
+    ColorScheme colorScheme,
+    TodoStatus displayStatus,
+  ) {
     return PopupMenuButton<String>(
       tooltip: AppStrings.openTaskActions,
-      icon: Icon(
-        Icons.more_vert,
-        color: colorScheme.onSurfaceVariant,
-      ),
+      icon: Icon(Icons.more_vert, color: colorScheme.onSurfaceVariant),
       padding: EdgeInsets.zero,
       constraints: const BoxConstraints(),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       itemBuilder: (context) => [
-        if (todo.status == TodoStatus.pending)
+        if (_canPort(displayStatus))
           const PopupMenuItem(
             value: 'port',
             child: Row(
@@ -283,11 +312,15 @@ class TodoListTile extends ConsumerWidget {
     final displaySeconds = isRunning
         ? totalSeconds + (liveElapsed.valueOrNull ?? 0)
         : totalSeconds;
-    final statusColor = AppTheme.statusColor(theme, todo.status);
+    final displayStatus = _effectiveStatus(
+      isRunning: isRunning,
+      totalDurationSeconds: totalSeconds,
+    );
+    final statusColor = AppTheme.statusColor(theme, displayStatus);
     final tileTap = isMultiSelectMode ? (isPast ? null : onTap) : onEdit;
     final tileLongPress = isPast ? null : onLongPress;
     final showQuickActions =
-        !isMultiSelectMode && !isPast && todo.status == TodoStatus.pending;
+        !isMultiSelectMode && !isPast && _canShowQuickActions(displayStatus);
 
     final isDark = theme.brightness == Brightness.dark;
 
@@ -296,7 +329,13 @@ class TodoListTile extends ConsumerWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        decoration: _buildCardDecoration(isDark, isSelected, colorScheme, todo.status, isRunning),
+        decoration: _buildCardDecoration(
+          isDark,
+          isSelected,
+          colorScheme,
+          displayStatus,
+          isRunning,
+        ),
         child: Stack(
           children: [
             ClipRRect(
@@ -358,11 +397,12 @@ class TodoListTile extends ConsumerWidget {
                                   style: theme.textTheme.titleMedium?.copyWith(
                                     decoration:
                                         todo.status == TodoStatus.completed
-                                            ? TextDecoration.lineThrough
-                                            : null,
+                                        ? TextDecoration.lineThrough
+                                        : null,
                                     color: todo.status == TodoStatus.completed
                                         ? colorScheme.onSurface.withValues(
-                                            alpha: theme.brightness ==
+                                            alpha:
+                                                theme.brightness ==
                                                     Brightness.dark
                                                 ? 0.62
                                                 : 0.45,
@@ -370,8 +410,8 @@ class TodoListTile extends ConsumerWidget {
                                         : null,
                                     decorationColor:
                                         todo.status == TodoStatus.completed
-                                            ? statusColor
-                                            : null,
+                                        ? statusColor
+                                        : null,
                                     decorationThickness: 2,
                                   ),
                                   maxLines: 1,
@@ -468,13 +508,18 @@ class TodoListTile extends ConsumerWidget {
                                       child: Icon(
                                         Icons.lock_outline,
                                         size: 20,
-                                        color: colorScheme.onSurface
-                                            .withValues(alpha: 0.44),
+                                        color: colorScheme.onSurface.withValues(
+                                          alpha: 0.44,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ] else
-                                  _buildPopupMenu(context, colorScheme),
+                                  _buildPopupMenu(
+                                    context,
+                                    colorScheme,
+                                    displayStatus,
+                                  ),
                               ],
                             ],
                           ),
@@ -486,8 +531,8 @@ class TodoListTile extends ConsumerWidget {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               StatusBadge(
-                                label: _statusLabel(),
-                                status: todo.status,
+                                label: _statusLabel(displayStatus),
+                                status: displayStatus,
                               ),
                               if (displaySeconds > 0 || isRunning)
                                 Container(
@@ -502,8 +547,9 @@ class TodoListTile extends ConsumerWidget {
                                     borderRadius: BorderRadius.circular(999),
                                     border: Border.all(
                                       color: isRunning
-                                          ? colorScheme.primary
-                                              .withValues(alpha: 0.22)
+                                          ? colorScheme.primary.withValues(
+                                              alpha: 0.22,
+                                            )
                                           : colorScheme.outlineVariant,
                                     ),
                                   ),
@@ -524,10 +570,11 @@ class TodoListTile extends ConsumerWidget {
                                         formatDuration(displaySeconds),
                                         style: theme.textTheme.labelMedium
                                             ?.copyWith(
-                                          color: isRunning
-                                              ? colorScheme.primary
-                                              : colorScheme.onSurfaceVariant,
-                                        ),
+                                              color: isRunning
+                                                  ? colorScheme.primary
+                                                  : colorScheme
+                                                        .onSurfaceVariant,
+                                            ),
                                       ),
                                     ],
                                   ),

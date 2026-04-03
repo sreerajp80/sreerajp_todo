@@ -77,7 +77,7 @@ void main() {
           id: 't2',
           date: '2026-03-21',
           title: 'B',
-          status: TodoStatus.pending,
+          status: TodoStatus.working,
         ),
       );
       await todoDao.insert(
@@ -98,7 +98,8 @@ void main() {
       expect(stats.first.date, '2026-03-21');
       expect(stats.first.total, 2);
       expect(stats.first.completed, 1);
-      expect(stats.first.pending, 1);
+      expect(stats.first.working, 1);
+      expect(stats.first.pending, 0);
       expect(stats.first.totalSeconds, 4200);
       expect(stats.last.date, '2026-03-20');
       expect(stats.last.dropped, 1);
@@ -154,7 +155,7 @@ void main() {
           id: 't2',
           date: '2026-03-21',
           title: 'Code',
-          status: TodoStatus.dropped,
+          status: TodoStatus.working,
         ),
       );
       await todoDao.insert(
@@ -174,7 +175,7 @@ void main() {
 
       expect(code.appearances, 2);
       expect(code.completed, 1);
-      expect(code.dropped, 1);
+      expect(code.working, 1);
       expect(code.totalSeconds, 3000);
     });
   });
@@ -236,7 +237,7 @@ void main() {
           id: 't2',
           date: '2026-03-21',
           title: 'Code',
-          status: TodoStatus.pending,
+          status: TodoStatus.working,
         ),
       );
       await todoDao.insert(
@@ -253,6 +254,7 @@ void main() {
       expect(history.first.totalSeconds, 1200);
       expect(history.last.date, '2026-03-21');
       expect(history.last.totalSeconds, 2400);
+      expect(history.last.status, TodoStatus.working.toDbString());
     });
   });
 }

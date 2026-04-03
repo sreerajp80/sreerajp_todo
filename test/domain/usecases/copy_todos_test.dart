@@ -25,7 +25,11 @@ void main() {
     timeSegmentDao = TimeSegmentDao(dbService);
     recurrenceRuleDao = RecurrenceRuleDao(dbService);
     todoRepo = TodoRepositoryImpl(todoDao);
-    timeSegmentRepo = TimeSegmentRepositoryImpl(timeSegmentDao, todoDao);
+    timeSegmentRepo = TimeSegmentRepositoryImpl(
+      timeSegmentDao,
+      todoDao,
+      dbService,
+    );
     useCase = CopyTodos(todoRepo);
   });
 

@@ -177,10 +177,11 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
 
   String _statusLabel(TodoStatus status) {
     return switch (status) {
+      TodoStatus.pending => AppStrings.statusPending,
+      TodoStatus.working => AppStrings.statusWorking,
       TodoStatus.completed => AppStrings.statusCompleted,
       TodoStatus.dropped => AppStrings.statusDropped,
       TodoStatus.ported => AppStrings.statusPorted,
-      TodoStatus.pending => AppStrings.statusPending,
     };
   }
 }

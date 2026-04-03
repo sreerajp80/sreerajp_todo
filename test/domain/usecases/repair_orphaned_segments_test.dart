@@ -41,7 +41,7 @@ void main() {
     final dbService = await createTestDatabaseService();
     todoDao = TodoDao(dbService);
     segmentDao = TimeSegmentDao(dbService);
-    segmentRepo = TimeSegmentRepositoryImpl(segmentDao, todoDao);
+    segmentRepo = TimeSegmentRepositoryImpl(segmentDao, todoDao, dbService);
     useCase = RepairOrphanedSegments(segmentRepo);
   });
 

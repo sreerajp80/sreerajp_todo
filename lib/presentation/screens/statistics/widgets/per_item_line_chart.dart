@@ -240,6 +240,16 @@ class _ChartLegend extends StatelessWidget {
               foregroundColor: theme.colorScheme.onPrimaryContainer,
             ),
             _StatusLegendBadge(
+              label: AppStrings.statusPending,
+              value: '${stat.pending}',
+              status: TodoStatus.pending,
+            ),
+            _StatusLegendBadge(
+              label: AppStrings.statusWorking,
+              value: '${stat.working}',
+              status: TodoStatus.working,
+            ),
+            _StatusLegendBadge(
               label: AppStrings.statusCompleted,
               value: '${stat.completed}',
               status: TodoStatus.completed,

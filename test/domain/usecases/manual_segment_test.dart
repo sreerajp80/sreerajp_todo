@@ -37,7 +37,7 @@ void main() {
     todoDao = TodoDao(dbService);
     segmentDao = TimeSegmentDao(dbService);
     todoRepo = TodoRepositoryImpl(todoDao);
-    segmentRepo = TimeSegmentRepositoryImpl(segmentDao, todoDao);
+    segmentRepo = TimeSegmentRepositoryImpl(segmentDao, todoDao, dbService);
   });
 
   TodoEntity makeTodo({
@@ -92,9 +92,11 @@ void main() {
       await segmentRepo.insertManualSegment(segment);
 
       final segments = await segmentRepo.getSegments('ms-1');
+      final updated = await todoRepo.getTodoById('ms-1');
       expect(segments, hasLength(1));
       expect(segments.first.manual, isTrue);
       expect(segments.first.durationSeconds, 2700);
+      expect(updated?.status, TodoStatus.working);
     },
   );
 

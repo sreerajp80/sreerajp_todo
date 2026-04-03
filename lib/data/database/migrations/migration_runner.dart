@@ -1,5 +1,6 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v1.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v2.dart';
 
 Future<void> runDatabaseMigrations(
   Database db,
@@ -25,6 +26,11 @@ Future<void> runDatabaseMigrations(
       await runMigrationV1(db);
     }
 
-    await db.rawQuery('PRAGMA user_version = 1');
+    await db.execute('PRAGMA user_version = 1');
+  }
+
+  if (oldVersion < 2 && newVersion >= 2) {
+    await runMigrationV2(db);
+    await db.execute('PRAGMA user_version = 2');
   }
 }

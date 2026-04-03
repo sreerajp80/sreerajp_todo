@@ -1,4 +1,4 @@
-const int kDatabaseVersion = 1;
+const int kDatabaseVersion = 2;
 const String kDatabaseName = 'sreerajp_todo.db';
 
 const int kUndoTimeoutSeconds = 5;

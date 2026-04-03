@@ -277,10 +277,11 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
   Widget _buildStatusIndicator(TodoEntity todo, ThemeData theme) {
     final color = AppTheme.statusColor(theme, todo.status);
     final icon = switch (todo.status) {
+      TodoStatus.pending => Icons.radio_button_unchecked,
+      TodoStatus.working => Icons.play_circle_fill_rounded,
       TodoStatus.completed => Icons.check_circle,
       TodoStatus.dropped => Icons.cancel,
       TodoStatus.ported => Icons.arrow_forward,
-      TodoStatus.pending => Icons.radio_button_unchecked,
     };
     return Icon(icon, color: color, size: 20);
   }

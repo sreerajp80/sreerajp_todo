@@ -125,9 +125,10 @@ void main() {
   });
 
   test(
-    'import with older schema version migrates to current version',
+    'import with schema version 1 migrates to current version and promotes worked todos',
     () async {
       await _insertTodo(databaseService, title: 'Migrated task');
+      await _insertSegmentForTodo(databaseService, title: 'Migrated task');
 
       final backupDirectory = Directory(p.join(tempDir.path, 'backups'));
       final backupPath = await backupService.exportDatabase(
@@ -137,7 +138,7 @@ void main() {
       await _rewriteBackupUserVersion(
         backupPath,
         'correct horse battery staple',
-        0,
+        1,
       );
 
       await _replaceTodosWith(databaseService, ['Different current task']);
@@ -151,9 +152,12 @@ void main() {
       final versionResult = await db.rawQuery('PRAGMA user_version');
       expect(versionResult.first.values.first, kDatabaseVersion);
       expect(await _loadTitles(databaseService), ['Migrated task']);
+      expect(
+        await _loadTodoStatus(databaseService, 'Migrated task'),
+        'working',
+      );
     },
   );
-
   test(
     'import with newer schema version throws BackupVersionTooNewException',
     () async {
@@ -276,6 +280,26 @@ Future<void> _insertTodo(
   });
 }
 
+Future<void> _insertSegmentForTodo(
+  DatabaseService databaseService, {
+  required String title,
+}) async {
+  final db = await databaseService.database;
+  final start = DateTime.utc(2026, 3, 22, 10, 0, 0);
+  final end = start.add(const Duration(minutes: 25));
+  final now = end.toIso8601String();
+  await db.insert('time_segments', {
+    'id': '${title}_segment_1',
+    'todo_id': '${title}_id',
+    'start_time': start.toIso8601String(),
+    'end_time': end.toIso8601String(),
+    'duration_seconds': end.difference(start).inSeconds,
+    'interrupted': 0,
+    'manual': 0,
+    'created_at': now,
+  });
+}
+
 Future<void> _replaceTodosWith(
   DatabaseService databaseService,
   List<String> titles,
@@ -292,6 +316,23 @@ Future<List<String>> _loadTitles(DatabaseService databaseService) async {
   final db = await databaseService.database;
   final rows = await db.rawQuery('SELECT title FROM todos ORDER BY title');
   return rows.map((row) => row['title']! as String).toList();
+}
+
+Future<String?> _loadTodoStatus(
+  DatabaseService databaseService,
+  String title,
+) async {
+  final db = await databaseService.database;
+  final rows = await db.query(
+    'todos',
+    columns: ['status'],
+    where: 'title = ?',
+    whereArgs: [title],
+  );
+  if (rows.isEmpty) {
+    return null;
+  }
+  return rows.single['status'] as String?;
 }
 
 Future<void> _rewriteBackupUserVersion(

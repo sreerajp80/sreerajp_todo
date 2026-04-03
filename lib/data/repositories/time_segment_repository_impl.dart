@@ -1,17 +1,25 @@
+import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
+import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
-  TimeSegmentRepositoryImpl(this._timeSegmentDao, this._todoDao);
+  TimeSegmentRepositoryImpl(
+    this._timeSegmentDao,
+    this._todoDao,
+    this._databaseService,
+  );
 
   final TimeSegmentDao _timeSegmentDao;
   final TodoDao _todoDao;
+  final DatabaseService _databaseService;
 
   static const _uuid = Uuid();
 
@@ -19,6 +27,21 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
     if (status == TodoStatus.completed || status == TodoStatus.dropped) {
       throw const CompletedLockException();
     }
+  }
+
+  Future<void> _promoteTodoToWorking(
+    TodoEntity todo, {
+    required DatabaseExecutor executor,
+  }) async {
+    if (todo.status != TodoStatus.pending) {
+      return;
+    }
+
+    await _todoDao.updateStatus(
+      todo.id,
+      TodoStatus.working,
+      executor: executor,
+    );
   }
 
   @override
@@ -32,11 +55,6 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
 
     _checkTerminalStatus(todo.status);
 
-    final running = await _timeSegmentDao.findRunningSegment(todoId);
-    if (running != null) {
-      throw const SegmentAlreadyRunningException();
-    }
-
     final now = DateTime.now();
     final segment = TimeSegmentEntity(
       id: _uuid.v4(),
@@ -45,7 +63,19 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
       createdAt: now.toUtc().toIso8601String(),
     );
 
-    await _timeSegmentDao.insert(segment);
+    final db = await _databaseService.database;
+    await db.transaction((txn) async {
+      final running = await _timeSegmentDao.findRunningSegment(
+        todoId,
+        executor: txn,
+      );
+      if (running != null) {
+        throw const SegmentAlreadyRunningException();
+      }
+
+      await _timeSegmentDao.insert(segment, executor: txn);
+      await _promoteTodoToWorking(todo, executor: txn);
+    });
   }
 
   @override
@@ -81,16 +111,21 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
       throw ArgumentError('Manual segments must have an end time.');
     }
 
-    final overlaps = await _timeSegmentDao.hasOverlap(
-      todoId: segment.todoId,
-      startTime: segment.startTime,
-      endTime: segment.endTime!,
-    );
-    if (overlaps) {
-      throw const SegmentOverlapException();
-    }
+    final db = await _databaseService.database;
+    await db.transaction((txn) async {
+      final overlaps = await _timeSegmentDao.hasOverlap(
+        todoId: segment.todoId,
+        startTime: segment.startTime,
+        endTime: segment.endTime!,
+        executor: txn,
+      );
+      if (overlaps) {
+        throw const SegmentOverlapException();
+      }
 
-    await _timeSegmentDao.insert(segment);
+      await _timeSegmentDao.insert(segment, executor: txn);
+      await _promoteTodoToWorking(todo, executor: txn);
+    });
   }
 
   @override
