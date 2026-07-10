@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
@@ -29,8 +29,8 @@ class TimeSegmentsScreen extends ConsumerWidget {
       data: (todo) {
         if (todo == null) {
           return Scaffold(
-            appBar: AppBar(title: const Text(AppStrings.timeSegments)),
-            body: AppErrorState(message: AppStrings.errors.todoNotFound),
+            appBar: AppBar(title: Text(context.l10n.timeSegments)),
+            body: AppErrorState(message: context.l10n.errorTodoNotFound),
           );
         }
 
@@ -42,7 +42,7 @@ class TimeSegmentsScreen extends ConsumerWidget {
             !past && !isTerminal && todo.status != TodoStatus.ported;
 
         return Scaffold(
-          appBar: AppBar(title: const Text(AppStrings.timeSegments)),
+          appBar: AppBar(title: Text(context.l10n.timeSegments)),
           body: trackingState.isLoading
               ? const Center(child: CircularProgressIndicator())
               : _SegmentsBody(
@@ -58,18 +58,18 @@ class TimeSegmentsScreen extends ConsumerWidget {
               ? FloatingActionButton.extended(
                   onPressed: () => _showManualSegmentDialog(context, ref, todo),
                   icon: const Icon(Icons.add),
-                  label: const Text(AppStrings.addManualSegment),
+                  label: Text(context.l10n.addManualSegment),
                 )
               : null,
         );
       },
       loading: () => Scaffold(
-        appBar: AppBar(title: const Text(AppStrings.timeSegments)),
+        appBar: AppBar(title: Text(context.l10n.timeSegments)),
         body: const Center(child: CircularProgressIndicator()),
       ),
       error: (error, _) => Scaffold(
-        appBar: AppBar(title: const Text(AppStrings.timeSegments)),
-        body: AppErrorState(message: mapErrorToMessage(error)),
+        appBar: AppBar(title: Text(context.l10n.timeSegments)),
+        body: AppErrorState(message: mapErrorToMessage(context.l10n, error)),
       ),
     );
   }
@@ -95,7 +95,7 @@ class TimeSegmentsScreen extends ConsumerWidget {
           .addManualSegment(result);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text(AppStrings.manualSegmentAdded)),
+          SnackBar(content: Text(context.l10n.manualSegmentAdded)),
         );
       }
     }
@@ -142,14 +142,14 @@ class _SegmentsBody extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildHeader(theme, colorScheme, grandTotal),
+        _buildHeader(context, theme, colorScheme, grandTotal),
         const Divider(height: 1),
         if (segments.isEmpty)
-          const Expanded(
+          Expanded(
             child: AppEmptyState(
               icon: Icons.timer_off,
-              title: AppStrings.noSegments,
-              message: AppStrings.noSegmentsRecordedDetailed,
+              title: context.l10n.noSegments,
+              message: context.l10n.noSegmentsRecordedDetailed,
             ),
           )
         else
@@ -175,6 +175,7 @@ class _SegmentsBody extends ConsumerWidget {
   }
 
   Widget _buildHeader(
+    BuildContext context,
     ThemeData theme,
     ColorScheme colorScheme,
     int grandTotal,
@@ -199,7 +200,7 @@ class _SegmentsBody extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           Semantics(
-            label: AppStrings.totalTimeForTask(
+            label: context.l10n.totalTimeForTask(
               todo.title,
               formatDuration(grandTotal),
             ),
@@ -209,7 +210,7 @@ class _SegmentsBody extends ConsumerWidget {
                   Icon(Icons.access_time, size: 20, color: colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
-                    '${AppStrings.totalTime}: ${formatDuration(grandTotal)}',
+                    '${context.l10n.totalTime}: ${formatDuration(grandTotal)}',
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w700,
@@ -250,10 +251,10 @@ class _SegmentTile extends ConsumerWidget {
     String durationStr;
 
     if (isRunning) {
-      endStr = AppStrings.emptyValue;
+      endStr = context.l10n.emptyValue;
       final liveElapsed = ref.watch(liveTimerProvider(todoId));
       final elapsed = liveElapsed.valueOrNull ?? 0;
-      durationStr = AppStrings.segmentRunning;
+      durationStr = context.l10n.segmentRunning;
       if (elapsed > 0) {
         durationStr = formatDuration(elapsed);
       }
@@ -262,24 +263,24 @@ class _SegmentTile extends ConsumerWidget {
       endStr = _timeFormat.format(endDt);
       durationStr = formatDuration(segment.durationSeconds ?? 0);
     } else {
-      endStr = AppStrings.emptyValue;
-      durationStr = AppStrings.emptyValue;
+      endStr = context.l10n.emptyValue;
+      durationStr = context.l10n.emptyValue;
     }
 
     final typeLabel = segment.manual
-        ? AppStrings.segmentManual
-        : AppStrings.segmentAuto;
+        ? context.l10n.segmentManual
+        : context.l10n.segmentAuto;
 
     return Card(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Semantics(
-          label: AppStrings.segmentSemantics(
-            index: index,
-            start: startStr,
-            end: endStr,
-            duration: durationStr,
-            type: typeLabel,
+          label: context.l10n.segmentSemantics(
+            index,
+            startStr,
+            endStr,
+            durationStr,
+            typeLabel,
           ),
           child: ExcludeSemantics(
             child: Row(
@@ -297,7 +298,7 @@ class _SegmentTile extends ConsumerWidget {
                   _BlinkingDot(color: colorScheme.primary)
                 else if (segment.interrupted)
                   Tooltip(
-                    message: AppStrings.segmentInterruptedTooltip,
+                    message: context.l10n.segmentInterruptedTooltip,
                     child: Icon(
                       Icons.warning_amber,
                       size: 18,
@@ -385,7 +386,7 @@ class _TypeBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        isManual ? AppStrings.manualSegmentShort : label,
+        isManual ? context.l10n.manualSegmentShort : label,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: textColor,
           fontWeight: FontWeight.w700,

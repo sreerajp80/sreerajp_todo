@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
@@ -59,6 +59,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   Set<int> _customWeekDays = {};
   String? _customEndDate;
   bool _hasCustomEndDate = false;
+  _EndMode _customEndMode = _EndMode.never;
+  int _customEndDays = 7;
   RecurrenceRuleEntity? _existingRule;
 
   bool get _isPast => isPastDate(_effectiveDate);
@@ -104,6 +106,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
             _parseRruleIntoFields(rule.rrule);
             _hasCustomEndDate = rule.endDate != null;
             _customEndDate = rule.endDate;
+            _customEndMode = rule.endDate != null
+                ? _EndMode.onDate
+                : _EndMode.never;
           }
           _isLoading = false;
         });
@@ -134,7 +139,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         );
         if (mounted) {
           setState(() {
-            _uniquenessError = exists ? AppStrings.errors.duplicateTitle : null;
+            _uniquenessError = exists
+                ? context.l10n.errorDuplicateTitle
+                : null;
           });
         }
       },
@@ -257,10 +264,10 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           SnackBar(
             content: Text(
               widget.isEditing
-                  ? AppStrings.todoUpdated
+                  ? context.l10n.todoUpdated
                   : _repeatOption != SimpleRepeatOption.none
-                  ? AppStrings.recurrenceCreated
-                  : AppStrings.todoCreated,
+                  ? context.l10n.recurrenceCreated
+                  : context.l10n.todoCreated,
             ),
           ),
         );
@@ -270,7 +277,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(error))));
+        ).showSnackBar(
+          SnackBar(content: Text(mapErrorToMessage(context.l10n, error))),
+        );
       }
     } finally {
       if (mounted) {
@@ -290,8 +299,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     if (newStatus == TodoStatus.dropped) {
       final confirmed = await showConfirmDialog(
         context,
-        title: AppStrings.confirmDrop,
-        content: AppStrings.confirmDropBody,
+        title: context.l10n.confirmDrop,
+        content: context.l10n.confirmDropBody,
       );
       if (!confirmed || !mounted) {
         return;
@@ -301,8 +310,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     if (newStatus == TodoStatus.ported && widget.isEditing) {
       final confirmed = await showConfirmDialog(
         context,
-        title: AppStrings.confirmPort,
-        content: AppStrings.confirmPortBody,
+        title: context.l10n.confirmPort,
+        content: context.l10n.confirmPortBody,
       );
       if (!confirmed || !mounted) {
         return;
@@ -314,7 +323,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         initialDate: tomorrow,
         firstDate: tomorrow,
         lastDate: DateTime.now().add(const Duration(days: 365)),
-        helpText: AppStrings.selectTargetDate,
+        helpText: context.l10n.selectTargetDate,
       );
       if (picked == null || !mounted) {
         return;
@@ -327,14 +336,14 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         if (mounted) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(const SnackBar(content: Text(AppStrings.todoPorted)));
+          ).showSnackBar(SnackBar(content: Text(context.l10n.todoPorted)));
           context.pop();
         }
       } on Exception catch (error) {
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(error))));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(mapErrorToMessage(context.l10n, error))),
+          );
         }
       }
       return;
@@ -350,10 +359,10 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   @override
   Widget build(BuildContext context) {
     final title = _isReadOnly && widget.isEditing
-        ? AppStrings.viewTodo
+        ? context.l10n.viewTodo
         : widget.isEditing
-        ? AppStrings.editTodo
-        : AppStrings.createTodo;
+        ? context.l10n.editTodo
+        : context.l10n.createTodo;
     final theme = Theme.of(context);
 
     if (_isLoading) {
@@ -379,7 +388,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    AppStrings.readOnlyPastDate,
+                    context.l10n.readOnlyPastDate,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                     ),
@@ -395,7 +404,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           padding: const EdgeInsets.all(16),
           children: [
             AppSectionCard(
-              title: AppStrings.details,
+              title: context.l10n.details,
               subtitle: formatDateFromIso(_effectiveDate),
               child: Column(
                 children: [
@@ -406,7 +415,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                     onChanged: _checkTitleUniqueness,
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return AppStrings.titleRequired;
+                        return context.l10n.titleRequired;
                       }
                       if (_uniquenessError != null) {
                         return _uniquenessError;
@@ -434,7 +443,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        '${AppStrings.copiedFrom} ${_existingTodo!.sourceDate}',
+                        '${context.l10n.copiedFrom} ${_existingTodo!.sourceDate}',
                         style: theme.textTheme.bodySmall?.copyWith(
                           fontStyle: FontStyle.italic,
                           color: theme.colorScheme.onSurfaceVariant,
@@ -448,7 +457,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
             if (!_isReadOnly) ...[
               const SizedBox(height: 16),
               AppSectionCard(
-                title: AppStrings.repeat,
+                title: context.l10n.repeat,
                 child: RepeatOptionPicker(
                   selected: _repeatOption,
                   onChanged: (option) {
@@ -469,10 +478,10 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
             ],
             const SizedBox(height: 16),
             AppSectionCard(
-              title: AppStrings.taskStatus,
+              title: context.l10n.taskStatus,
               subtitle: widget.isEditing
-                  ? AppStrings.editTodo
-                  : AppStrings.createTodo,
+                  ? context.l10n.editTodo
+                  : context.l10n.createTodo,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -480,7 +489,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                   if (_status == TodoStatus.ported && _portedTo != null) ...[
                     const SizedBox(height: 10),
                     Text(
-                      '${AppStrings.portedTo}: $_portedTo',
+                      '${context.l10n.portedTo}: $_portedTo',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.tertiary,
                         fontWeight: FontWeight.w700,
@@ -501,7 +510,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.save_rounded),
-                label: const Text(AppStrings.save),
+                label: Text(context.l10n.save),
               ),
           ],
         ),
@@ -593,8 +602,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     var freq = _customFrequency;
     var interval = _customInterval;
     var weekDays = Set<int>.from(_customWeekDays);
-    var hasEnd = _hasCustomEndDate;
+    var endMode = _customEndMode;
     var endDate = _customEndDate;
+    var endDays = _customEndDays;
 
     if (freq == RruleFrequency.weekly && weekDays.isEmpty) {
       weekDays = {parseIsoDate(_effectiveDate).weekday};
@@ -608,10 +618,10 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           builder: (context, setSheetState) {
             final theme = Theme.of(context);
             final unitLabel = switch (freq) {
-              RruleFrequency.daily => AppStrings.days,
-              RruleFrequency.weekly => AppStrings.weeks,
-              RruleFrequency.monthly => AppStrings.months,
-              RruleFrequency.yearly => AppStrings.years,
+              RruleFrequency.daily => context.l10n.days,
+              RruleFrequency.weekly => context.l10n.weeks,
+              RruleFrequency.monthly => context.l10n.months,
+              RruleFrequency.yearly => context.l10n.years,
             };
 
             return Padding(
@@ -626,7 +636,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppStrings.frequency,
+                        context.l10n.frequency,
                         style: theme.textTheme.titleSmall,
                       ),
                       const SizedBox(height: 8),
@@ -643,7 +653,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                       Row(
                         children: [
                           Text(
-                            '${AppStrings.every} ',
+                            '${context.l10n.every} ',
                             style: theme.textTheme.bodyLarge,
                           ),
                           SizedBox(
@@ -667,41 +677,45 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                       if (freq == RruleFrequency.weekly) ...[
                         const SizedBox(height: 16),
                         Text(
-                          AppStrings.daysOfWeek,
+                          context.l10n.daysOfWeek,
                           style: theme.textTheme.titleSmall,
                         ),
                         const SizedBox(height: 8),
                         _buildSheetDayOfWeekPicker(weekDays, setSheetState),
                       ],
                       const SizedBox(height: 16),
-                      Row(
-                        children: [
-                          Text(
-                            AppStrings.endDate,
-                            style: theme.textTheme.titleSmall,
-                          ),
-                          const SizedBox(width: 8),
-                          Switch(
-                            value: hasEnd,
-                            onChanged: (v) {
-                              setSheetState(() {
-                                hasEnd = v;
-                                if (v && endDate == null) {
-                                  endDate = _effectiveDate;
-                                }
-                              });
-                            },
-                          ),
-                          if (!hasEnd)
-                            Text(
-                              AppStrings.noEndDate,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                        ],
+                      Text(
+                        context.l10n.ends,
+                        style: theme.textTheme.titleSmall,
                       ),
-                      if (hasEnd) ...[
+                      const SizedBox(height: 8),
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: SegmentedButton<_EndMode>(
+                          segments: [
+                            ButtonSegment(
+                              value: _EndMode.never,
+                              label: Text(context.l10n.endsNever),
+                            ),
+                            ButtonSegment(
+                              value: _EndMode.onDate,
+                              label: Text(context.l10n.endsOnDate),
+                            ),
+                            ButtonSegment(
+                              value: _EndMode.forDays,
+                              label: Text(context.l10n.endsAfterDays),
+                            ),
+                          ],
+                          selected: {endMode},
+                          onSelectionChanged: (s) => setSheetState(() {
+                            endMode = s.first;
+                            if (endMode == _EndMode.onDate && endDate == null) {
+                              endDate = _effectiveDate;
+                            }
+                          }),
+                        ),
+                      ),
+                      if (endMode == _EndMode.onDate) ...[
                         const SizedBox(height: 8),
                         InkWell(
                           onTap: () async {
@@ -730,12 +744,50 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                           ),
                         ),
                       ],
+                      if (endMode == _EndMode.forDays) ...[
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text(
+                              '${context.l10n.endsAfterDays} ',
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                            SizedBox(
+                              width: 64,
+                              child: TextFormField(
+                                initialValue: endDays.toString(),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                onChanged: (v) {
+                                  final n = int.tryParse(v);
+                                  if (n != null && n >= 1) {
+                                    setSheetState(() => endDays = n);
+                                  }
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              context.l10n.days,
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          '${context.l10n.endDate}: '
+                          '${formatDateFromIso(_resolveEndDays(endDays))}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 24),
                       SizedBox(
                         width: double.infinity,
                         child: FilledButton(
                           onPressed: () => Navigator.of(context).pop(true),
-                          child: const Text(AppStrings.save),
+                          child: Text(context.l10n.save),
                         ),
                       ),
                     ],
@@ -753,24 +805,42 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         _customFrequency = freq;
         _customInterval = interval;
         _customWeekDays = weekDays;
-        _hasCustomEndDate = hasEnd;
-        _customEndDate = endDate;
+        _customEndMode = endMode;
+        _customEndDays = endDays;
+        switch (endMode) {
+          case _EndMode.never:
+            _hasCustomEndDate = false;
+            _customEndDate = null;
+          case _EndMode.onDate:
+            _hasCustomEndDate = true;
+            _customEndDate = endDate ?? _effectiveDate;
+          case _EndMode.forDays:
+            _hasCustomEndDate = true;
+            _customEndDate = _resolveEndDays(endDays);
+        }
       });
     }
   }
+
+  /// Resolves a "for N days" end condition to an ISO end date. The window is
+  /// [days] calendar days starting on [_effectiveDate], so the inclusive end
+  /// date is start + (days - 1). "For 1 day" ends on the start date itself.
+  String _resolveEndDays(int days) => dateTimeToIso(
+    parseIsoDate(_effectiveDate).add(Duration(days: days - 1)),
+  );
 
   Widget _buildSheetDayOfWeekPicker(
     Set<int> weekDays,
     StateSetter setSheetState,
   ) {
-    const dayLabels = [
-      (DateTime.monday, AppStrings.monday),
-      (DateTime.tuesday, AppStrings.tuesday),
-      (DateTime.wednesday, AppStrings.wednesday),
-      (DateTime.thursday, AppStrings.thursday),
-      (DateTime.friday, AppStrings.friday),
-      (DateTime.saturday, AppStrings.saturday),
-      (DateTime.sunday, AppStrings.sunday),
+    final dayLabels = [
+      (DateTime.monday, context.l10n.monday),
+      (DateTime.tuesday, context.l10n.tuesday),
+      (DateTime.wednesday, context.l10n.wednesday),
+      (DateTime.thursday, context.l10n.thursday),
+      (DateTime.friday, context.l10n.friday),
+      (DateTime.saturday, context.l10n.saturday),
+      (DateTime.sunday, context.l10n.sunday),
     ];
 
     return Wrap(
@@ -802,9 +872,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         controller: _descriptionController,
         enabled: !_isReadOnly,
         maxLines: 4,
-        decoration: const InputDecoration(
-          labelText: AppStrings.descriptionHint,
-          prefixIcon: Icon(Icons.notes_rounded),
+        decoration: InputDecoration(
+          labelText: context.l10n.descriptionHint,
+          prefixIcon: const Icon(Icons.notes_rounded),
           alignLabelWithHint: true,
         ),
         onChanged: (_) => setState(() {}),
@@ -816,31 +886,31 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     final theme = Theme.of(context);
     final options = <_StatusOption>[
       if (_status == TodoStatus.working)
-        const _StatusOption(
+        _StatusOption(
           status: TodoStatus.working,
-          label: AppStrings.statusWorking,
+          label: context.l10n.statusWorking,
           icon: Icons.play_circle_fill_rounded,
         ),
       if (_status != TodoStatus.working)
-        const _StatusOption(
+        _StatusOption(
           status: TodoStatus.pending,
-          label: AppStrings.statusPending,
+          label: context.l10n.statusPending,
           icon: Icons.radio_button_unchecked,
         ),
-      const _StatusOption(
+      _StatusOption(
         status: TodoStatus.completed,
-        label: AppStrings.statusCompleted,
+        label: context.l10n.statusCompleted,
         icon: Icons.check_circle_outline,
       ),
-      const _StatusOption(
+      _StatusOption(
         status: TodoStatus.dropped,
-        label: AppStrings.statusDropped,
+        label: context.l10n.statusDropped,
         icon: Icons.cancel_outlined,
       ),
       if (widget.isEditing)
-        const _StatusOption(
+        _StatusOption(
           status: TodoStatus.ported,
-          label: AppStrings.statusPorted,
+          label: context.l10n.statusPorted,
           icon: Icons.arrow_forward,
         ),
     ];
@@ -948,6 +1018,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     );
   }
 }
+
+enum _EndMode { never, onDate, forDays }
 
 class _StatusOption {
   const _StatusOption({

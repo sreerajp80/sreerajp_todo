@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
+
+import '../helpers/test_l10n.dart';
 
 void main() {
   Future<void> pumpResponsiveScaffold(
@@ -18,11 +20,13 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: ResponsiveScaffold(
           currentDestination: AppScaffoldDestination.daily,
           appBar: PreferredSize(
             preferredSize: const Size.fromHeight(kToolbarHeight),
-            child: AppBar(title: const Text(AppStrings.dailyList)),
+            child: AppBar(title: Text(testL10n.dailyList)),
           ),
           body: const SizedBox.expand(child: Placeholder()),
         ),
@@ -54,20 +58,22 @@ void main() {
   ) async {
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: AppEmptyState(
             icon: Icons.inbox_outlined,
-            title: AppStrings.noTasksTodayTitle,
-            message: AppStrings.noTasksTodayMessage,
-            actionLabel: AppStrings.addFirstTask,
+            title: testL10n.noTasksTodayTitle,
+            message: testL10n.noTasksTodayMessage,
+            actionLabel: testL10n.addFirstTask,
             onAction: () {},
           ),
         ),
       ),
     );
 
-    expect(find.text(AppStrings.noTasksTodayTitle), findsOneWidget);
-    expect(find.text(AppStrings.noTasksTodayMessage), findsOneWidget);
-    expect(find.text(AppStrings.addFirstTask), findsOneWidget);
+    expect(find.text(testL10n.noTasksTodayTitle), findsOneWidget);
+    expect(find.text(testL10n.noTasksTodayMessage), findsOneWidget);
+    expect(find.text(testL10n.addFirstTask), findsOneWidget);
   });
 }

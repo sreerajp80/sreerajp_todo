@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 
 enum RruleFrequency { daily, weekly, monthly, yearly }
 
@@ -18,22 +18,22 @@ class RruleFrequencyPicker extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: SegmentedButton<RruleFrequency>(
-        segments: const [
+        segments: [
           ButtonSegment(
             value: RruleFrequency.daily,
-            label: Text(AppStrings.daily),
+            label: Text(context.l10n.daily),
           ),
           ButtonSegment(
             value: RruleFrequency.weekly,
-            label: Text(AppStrings.weekly),
+            label: Text(context.l10n.weekly),
           ),
           ButtonSegment(
             value: RruleFrequency.monthly,
-            label: Text(AppStrings.monthly),
+            label: Text(context.l10n.monthly),
           ),
           ButtonSegment(
             value: RruleFrequency.yearly,
-            label: Text(AppStrings.yearly),
+            label: Text(context.l10n.yearly),
           ),
         ],
         selected: {selected},

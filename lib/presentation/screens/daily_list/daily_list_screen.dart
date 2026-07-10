@@ -6,8 +6,8 @@ import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
@@ -57,7 +57,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   void _showError(Object error) {
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(error))));
+    ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(context.l10n, error))));
   }
 
   Future<void> _handleRecurringDelete(
@@ -68,20 +68,24 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     final choice = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text(AppStrings.confirmDeleteRecurring),
-        content: const Text(AppStrings.confirmDeleteRecurringBody),
+        title: Text(context.l10n.confirmDeleteRecurring),
+        content: Text(context.l10n.confirmDeleteRecurringBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(AppStrings.cancel),
+            child: Text(context.l10n.cancel),
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop('this'),
-            child: const Text(AppStrings.deleteOnlyThis),
+            child: Text(context.l10n.deleteOnlyThis),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop('future'),
+            child: Text(context.l10n.deleteThisAndFuture),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop('all'),
-            child: const Text(AppStrings.deleteAllOccurrences),
+            child: Text(context.l10n.deleteAllOccurrences),
           ),
         ],
       ),
@@ -95,7 +99,18 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('$count ${AppStrings.allOccurrencesDeleted}'),
+              content: Text('$count ${context.l10n.allOccurrencesDeleted}'),
+            ),
+          );
+        }
+      } else if (choice == 'future') {
+        final count = await notifier.deleteFutureByRecurrenceRuleId(
+          todo.recurrenceRuleId!,
+        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('$count ${context.l10n.futureOccurrencesDeleted}'),
             ),
           );
         }
@@ -104,7 +119,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         if (context.mounted) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(const SnackBar(content: Text(AppStrings.todoDeleted)));
+          ).showSnackBar(SnackBar(content: Text(context.l10n.todoDeleted)));
         }
       }
     } on Exception catch (error) {
@@ -121,7 +136,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       initialDate: tomorrow,
       firstDate: tomorrow,
       lastDate: DateTime.now().add(const Duration(days: 365)),
-      helpText: AppStrings.selectTargetDate,
+      helpText: context.l10n.selectTargetDate,
     );
     if (picked != null && mounted) {
       final targetDate = dateTimeToIso(picked);
@@ -132,7 +147,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         if (mounted) {
           showUndoSnackBar(
             context,
-            message: AppStrings.todoPorted,
+            message: context.l10n.todoPorted,
             onUndo: () {
               ref
                   .read(dailyTodoProvider(widget.date).notifier)
@@ -156,9 +171,11 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     if (result != null && mounted) {
       ref.read(dailyTodoProvider(widget.date).notifier).loadTodos();
       final message = StringBuffer();
-      message.write('${result.copied.length} ${AppStrings.todosCopied}');
+      message.write('${result.copied.length} ${context.l10n.todosCopied}');
       if (result.skipped.isNotEmpty) {
-        message.write(', ${result.skipped.length} ${AppStrings.todosSkipped}');
+        message.write(
+          ', ${result.skipped.length} ${context.l10n.todosSkipped}',
+        );
       }
       ScaffoldMessenger.of(
         context,
@@ -298,7 +315,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               showUndoSnackBar(
                 context,
                 message:
-                    '${AppStrings.statusChangedTo} ${AppStrings.statusCompleted}',
+                    '${context.l10n.statusChangedTo} ${context.l10n.statusCompleted}',
                 onUndo: () => notifier.undoLastStatusChange(),
               );
             }
@@ -311,8 +328,8 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         onDrop: () async {
           final confirmed = await showConfirmDialog(
             context,
-            title: AppStrings.confirmDrop,
-            content: AppStrings.confirmDropBody,
+            title: context.l10n.confirmDrop,
+            content: context.l10n.confirmDropBody,
           );
           if (confirmed && context.mounted) {
             try {
@@ -321,7 +338,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 showUndoSnackBar(
                   context,
                   message:
-                      '${AppStrings.statusChangedTo} ${AppStrings.statusDropped}',
+                      '${context.l10n.statusChangedTo} ${context.l10n.statusDropped}',
                   onUndo: () => notifier.undoLastStatusChange(),
                 );
               }
@@ -335,8 +352,8 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         onPort: () async {
           final confirmed = await showConfirmDialog(
             context,
-            title: AppStrings.confirmPort,
-            content: AppStrings.confirmPortBody,
+            title: context.l10n.confirmPort,
+            content: context.l10n.confirmPortBody,
           );
           if (confirmed) {
             await _showPortDatePicker(todo.id);
@@ -353,15 +370,15 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           } else {
             final confirmed = await showConfirmDialog(
               context,
-              title: AppStrings.confirmDelete,
-              content: AppStrings.confirmDeleteBody,
+              title: context.l10n.confirmDelete,
+              content: context.l10n.confirmDeleteBody,
             );
             if (confirmed && context.mounted) {
               try {
                 await notifier.deleteTodo(todo.id);
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text(AppStrings.todoDeleted)),
+                    SnackBar(content: Text(context.l10n.todoDeleted)),
                   );
                 }
               } on Exception catch (error) {
@@ -386,7 +403,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               onPressed: () {
                 context.push('${AppRoutes.createTodo}?date=${widget.date}');
               },
-              tooltip: AppStrings.createTodo,
+              tooltip: context.l10n.createTodo,
               child: const Icon(Icons.add),
             ),
       body: Column(
@@ -402,12 +419,12 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                       key: ValueKey('empty-${widget.date}'),
                       icon: Icons.task_alt,
                       title: isToday(widget.date)
-                          ? AppStrings.noTasksTodayTitle
-                          : AppStrings.noTodosForDay,
+                          ? context.l10n.noTasksTodayTitle
+                          : context.l10n.noTodosForDay,
                       message: _isPast
-                          ? AppStrings.noTasksForPastDayMessage
-                          : AppStrings.noTasksTodayMessage,
-                      actionLabel: _isPast ? null : AppStrings.addFirstTask,
+                          ? context.l10n.noTasksForPastDayMessage
+                          : context.l10n.noTasksTodayMessage,
+                      actionLabel: _isPast ? null : context.l10n.addFirstTask,
                       onAction: _isPast
                           ? null
                           : () => context.push(
@@ -456,7 +473,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           _buildDateNavigationButton(
             icon: Icons.chevron_left,
             onPressed: _goToPreviousDay,
-            tooltip: AppStrings.previousDay,
+            tooltip: context.l10n.previousDay,
           ),
           Flexible(
             child: InkWell(
@@ -476,7 +493,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           _buildDateNavigationButton(
             icon: Icons.chevron_right,
             onPressed: _goToNextDay,
-            tooltip: AppStrings.nextDay,
+            tooltip: context.l10n.nextDay,
           ),
         ],
       ),
@@ -485,24 +502,23 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           _buildActionIcon(
             icon: Icons.today,
             onPressed: _goToToday,
-            tooltip: AppStrings.today,
+            tooltip: context.l10n.today,
           ),
         _buildActionIcon(
           icon: Icons.calendar_month,
           onPressed: () => setState(() => _showCalendar = !_showCalendar),
-          tooltip: AppStrings.openCalendar,
+          tooltip: context.l10n.openCalendar,
         ),
         _buildActionIcon(
           icon: Icons.search,
           onPressed: () => context.push(AppRoutes.search),
-          tooltip: AppStrings.searchResults,
+          tooltip: context.l10n.searchResults,
         ),
-        if (!_isPast)
-          _buildActionIcon(
-            icon: Icons.copy_all,
-            onPressed: () => _openCopyWizard(),
-            tooltip: AppStrings.copyToAnotherDay,
-          ),
+        _buildActionIcon(
+          icon: Icons.copy_all,
+          onPressed: () => _openCopyWizard(),
+          tooltip: context.l10n.copyToAnotherDay,
+        ),
         if (hasUndoStack)
           _buildActionIcon(
             icon: Icons.undo,
@@ -511,10 +527,10 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                   .read(dailyTodoProvider(widget.date).notifier)
                   .undoLastStatusChange();
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text(AppStrings.undoStatusChange)),
+                SnackBar(content: Text(context.l10n.undoStatusChange)),
               );
             },
-            tooltip: AppStrings.undo,
+            tooltip: context.l10n.undo,
           ),
         PopupMenuButton<TodoSortOption>(
           icon: Icon(
@@ -525,52 +541,52 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 : null,
           ),
           padding: EdgeInsets.zero,
-          tooltip: AppStrings.sortTodos,
+          tooltip: context.l10n.sortTodos,
           onSelected: (option) => setState(() => _sortOption = option),
           itemBuilder: (context) => [
             _buildSortMenuItem(
               TodoSortOption.manual,
               Icons.reorder,
-              AppStrings.sortManual,
+              context.l10n.sortManual,
             ),
             const PopupMenuDivider(),
             _buildSortMenuItem(
               TodoSortOption.nameAsc,
               Icons.sort_by_alpha,
-              AppStrings.sortNameAZ,
+              context.l10n.sortNameAZ,
             ),
             _buildSortMenuItem(
               TodoSortOption.nameDesc,
               Icons.sort_by_alpha,
-              AppStrings.sortNameZA,
+              context.l10n.sortNameZA,
             ),
             const PopupMenuDivider(),
             _buildSortMenuItem(
               TodoSortOption.createdOldest,
               Icons.arrow_upward,
-              AppStrings.sortCreatedOldest,
+              context.l10n.sortCreatedOldest,
             ),
             _buildSortMenuItem(
               TodoSortOption.createdNewest,
               Icons.arrow_downward,
-              AppStrings.sortCreatedNewest,
+              context.l10n.sortCreatedNewest,
             ),
             const PopupMenuDivider(),
             _buildSortMenuItem(
               TodoSortOption.timeMost,
               Icons.timer,
-              AppStrings.sortTimeMost,
+              context.l10n.sortTimeMost,
             ),
             _buildSortMenuItem(
               TodoSortOption.timeLeast,
               Icons.timer_outlined,
-              AppStrings.sortTimeLeast,
+              context.l10n.sortTimeLeast,
             ),
             const PopupMenuDivider(),
             _buildSortMenuItem(
               TodoSortOption.status,
               Icons.flag_outlined,
-              AppStrings.sortByStatus,
+              context.l10n.sortByStatus,
             ),
           ],
         ),
@@ -634,13 +650,13 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         icon: const Icon(Icons.close),
         onPressed: () => notifier.clearSelection(),
       ),
-      title: Text(AppStrings.selectedCount(selectedCount)),
+      title: Text(context.l10n.selectedCount(selectedCount)),
       actions: [
         if (canComplete)
           TextButton.icon(
             icon: const Icon(Icons.check_circle_outline, size: 18),
-            label: const Text(
-              AppStrings.completeAll,
+            label: Text(
+              context.l10n.completeAll,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -650,7 +666,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               if (mounted) {
                 showUndoSnackBar(
                   context,
-                  message: '$selectedCount ${AppStrings.bulkStatusChanged}',
+                  message: '$selectedCount ${context.l10n.bulkStatusChanged}',
                   onUndo: () {
                     for (var i = 0; i < ids.length; i++) {
                       notifier.undoLastStatusChange();
@@ -662,16 +678,16 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           ),
         TextButton.icon(
           icon: const Icon(Icons.cancel_outlined, size: 18),
-          label: const Text(
-            AppStrings.markDropped,
+          label: Text(
+            context.l10n.markDropped,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           onPressed: () async {
             final confirmed = await showConfirmDialog(
               context,
-              title: AppStrings.confirmBulkDrop,
-              content: AppStrings.confirmBulkDropBody,
+              title: context.l10n.confirmBulkDrop,
+              content: context.l10n.confirmBulkDropBody,
             );
             if (confirmed && mounted) {
               final ids = Set<String>.from(selectedIds);
@@ -679,7 +695,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               if (mounted) {
                 showUndoSnackBar(
                   context,
-                  message: '$selectedCount ${AppStrings.bulkStatusChanged}',
+                  message: '$selectedCount ${context.l10n.bulkStatusChanged}',
                   onUndo: () {
                     for (var i = 0; i < ids.length; i++) {
                       notifier.undoLastStatusChange();
@@ -692,13 +708,13 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         ),
         IconButton(
           icon: const Icon(Icons.copy),
-          tooltip: AppStrings.copy,
+          tooltip: context.l10n.copy,
           onPressed: () =>
               _openCopyWizard(preSelectedIds: selectedIds.toList()),
         ),
         IconButton(
           icon: const Icon(Icons.select_all),
-          tooltip: AppStrings.selectAll,
+          tooltip: context.l10n.selectAll,
           onPressed: () => notifier.selectAll(),
         ),
       ],

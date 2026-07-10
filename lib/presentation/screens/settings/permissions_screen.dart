@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 
 class PermissionsScreen extends StatelessWidget {
@@ -8,55 +8,55 @@ class PermissionsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const strings = AppStrings.permissions;
+    final strings = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(title: Text(strings.label)),
+      appBar: AppBar(title: Text(strings.permissionsLabel)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           Text(
-            strings.summary,
+            strings.permissionsSummary,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 20),
           AppSectionCard(
-            title: strings.implicit,
+            title: strings.permissionsImplicit,
             child: Column(
               children: [
                 _PermissionTile(
                   icon: Icons.folder_outlined,
-                  title: strings.storageTitle,
-                  body: strings.storageBody,
+                  title: strings.permissionsStorageTitle,
+                  body: strings.permissionsStorageBody,
                 ),
                 const Divider(height: 24),
                 _PermissionTile(
                   icon: Icons.file_open_outlined,
-                  title: strings.filePickerTitle,
-                  body: strings.filePickerBody,
+                  title: strings.permissionsFilePickerTitle,
+                  body: strings.permissionsFilePickerBody,
                 ),
                 const Divider(height: 24),
                 _PermissionTile(
                   icon: Icons.schedule_outlined,
-                  title: strings.systemClockTitle,
-                  body: strings.systemClockBody,
+                  title: strings.permissionsSystemClockTitle,
+                  body: strings.permissionsSystemClockBody,
                 ),
                 const Divider(height: 24),
                 _PermissionTile(
                   icon: Icons.text_fields_outlined,
-                  title: strings.textProcessingTitle,
-                  body: strings.textProcessingBody,
+                  title: strings.permissionsTextProcessingTitle,
+                  body: strings.permissionsTextProcessingBody,
                 ),
               ],
             ),
           ),
           const SizedBox(height: 16),
           AppSectionCard(
-            title: strings.explicit,
+            title: strings.permissionsExplicit,
             child: Text(
-              strings.explicitNone,
+              strings.permissionsExplicitNone,
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),

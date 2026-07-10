@@ -8,6 +8,7 @@ import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
+import 'package:sreerajp_todo/domain/usecases/delete_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
 import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
@@ -20,6 +21,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     required MarkTodoDropped markTodoDropped,
     required PortTodo portTodo,
     required CopyTodos copyTodos,
+    required DeleteRecurringTodos deleteRecurringTodos,
     void Function()? onDataChanged,
     void Function(String todoId)? onTimerStopped,
   }) : _todoRepository = todoRepository,
@@ -27,6 +29,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
        _markTodoDropped = markTodoDropped,
        _portTodo = portTodo,
        _copyTodos = copyTodos,
+       _deleteRecurringTodos = deleteRecurringTodos,
        _onDataChanged = onDataChanged,
        _onTimerStopped = onTimerStopped,
        super(const DailyTodoState()) {
@@ -39,6 +42,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   final MarkTodoDropped _markTodoDropped;
   final PortTodo _portTodo;
   final CopyTodos _copyTodos;
+  final DeleteRecurringTodos _deleteRecurringTodos;
   final void Function()? _onDataChanged;
   final void Function(String todoId)? _onTimerStopped;
 
@@ -119,9 +123,19 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async {
     try {
-      final count = await _todoRepository.deleteAllByRecurrenceRuleId(
-        recurrenceRuleId,
-      );
+      final count = await _deleteRecurringTodos.all(recurrenceRuleId);
+      await loadTodos();
+      _onDataChanged?.call();
+      return count;
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+      return 0;
+    }
+  }
+
+  Future<int> deleteFutureByRecurrenceRuleId(String recurrenceRuleId) async {
+    try {
+      final count = await _deleteRecurringTodos.thisAndFuture(recurrenceRuleId);
       await loadTodos();
       _onDataChanged?.call();
       return count;

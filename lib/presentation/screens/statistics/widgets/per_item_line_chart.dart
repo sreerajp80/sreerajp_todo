@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
@@ -28,12 +28,12 @@ class PerItemLineChart extends StatelessWidget {
 
     if (selectedTitle == null || selectedTitle!.isEmpty) {
       return AppSectionCard(
-        title: AppStrings.stats.perItemOverview,
+        title: context.l10n.statsPerItemOverview,
         child: SizedBox(
           height: 320,
           child: Center(
             child: Text(
-              AppStrings.stats.selectTaskToViewHistory,
+              context.l10n.statsSelectTaskToViewHistory,
               style: theme.textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
@@ -44,7 +44,7 @@ class PerItemLineChart extends StatelessWidget {
 
     if (history.isEmpty) {
       return AppSectionCard(
-        title: AppStrings.stats.historyFor(selectedTitle!),
+        title: context.l10n.statsHistoryFor(selectedTitle!),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -56,7 +56,7 @@ class PerItemLineChart extends StatelessWidget {
               height: 320,
               child: Center(
                 child: Text(
-                  AppStrings.stats.noHistoryForTitle,
+                  context.l10n.statsNoHistoryForTitle,
                   style: theme.textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),
@@ -76,7 +76,7 @@ class PerItemLineChart extends StatelessWidget {
     final chartMaxY = _resolveChartMaxY(maxY, yAxisInterval);
 
     return AppSectionCard(
-      title: AppStrings.stats.historyFor(selectedTitle!),
+      title: context.l10n.statsHistoryFor(selectedTitle!),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -234,33 +234,33 @@ class _ChartLegend extends StatelessWidget {
           runSpacing: 8,
           children: [
             _LegendBadge(
-              label: AppStrings.stats.appearances,
+              label: context.l10n.statsAppearances,
               value: '${stat.appearances}',
               backgroundColor: theme.colorScheme.primaryContainer,
               foregroundColor: theme.colorScheme.onPrimaryContainer,
             ),
             _StatusLegendBadge(
-              label: AppStrings.statusPending,
+              label: context.l10n.statusPending,
               value: '${stat.pending}',
               status: TodoStatus.pending,
             ),
             _StatusLegendBadge(
-              label: AppStrings.statusWorking,
+              label: context.l10n.statusWorking,
               value: '${stat.working}',
               status: TodoStatus.working,
             ),
             _StatusLegendBadge(
-              label: AppStrings.statusCompleted,
+              label: context.l10n.statusCompleted,
               value: '${stat.completed}',
               status: TodoStatus.completed,
             ),
             _StatusLegendBadge(
-              label: AppStrings.statusDropped,
+              label: context.l10n.statusDropped,
               value: '${stat.dropped}',
               status: TodoStatus.dropped,
             ),
             _StatusLegendBadge(
-              label: AppStrings.statusPorted,
+              label: context.l10n.statusPorted,
               value: '${stat.ported}',
               status: TodoStatus.ported,
             ),
@@ -268,7 +268,7 @@ class _ChartLegend extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          '${AppStrings.totalTime}: ${formatDuration(stat.totalSeconds)}',
+          '${context.l10n.totalTime}: ${formatDuration(stat.totalSeconds)}',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),

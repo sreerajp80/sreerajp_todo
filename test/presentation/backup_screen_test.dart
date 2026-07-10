@@ -6,11 +6,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/data/backup/backup_service.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/backup_screen.dart';
 
 import '../helpers/test_fixtures.dart';
+import '../helpers/test_l10n.dart';
 
 class MockBackupService extends Mock implements BackupService {}
 
@@ -95,7 +96,11 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [backupServiceProvider.overrideWithValue(backupService)],
-        child: const MaterialApp(home: BackupScreen()),
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: BackupScreen(),
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -106,21 +111,21 @@ void main() {
   ) async {
     await pumpBackupScreen(tester);
 
-    expect(find.text(AppStrings.backup.exportTitle), findsOneWidget);
-    expect(find.text(AppStrings.backup.importTitle), findsOneWidget);
-    expect(find.text(AppStrings.backup.recentBackups), findsOneWidget);
+    expect(find.text(testL10n.backupExportTitle), findsOneWidget);
+    expect(find.text(testL10n.backupImportTitle), findsOneWidget);
+    expect(find.text(testL10n.backupRecentBackups), findsOneWidget);
     expect(find.text('backup_a.db'), findsOneWidget);
   });
 
   testWidgets('shows passphrase dialog when export is tapped', (tester) async {
     await pumpBackupScreen(tester);
 
-    await tester.tap(find.text(AppStrings.backup.exportTitle));
+    await tester.tap(find.text(testL10n.backupExportTitle));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.backup.passphraseLabel), findsOneWidget);
-    expect(find.text(AppStrings.backup.passphraseConfirmLabel), findsOneWidget);
-    expect(find.text(AppStrings.backup.passphraseWarning), findsOneWidget);
+    expect(find.text(testL10n.backupPassphraseLabel), findsOneWidget);
+    expect(find.text(testL10n.backupPassphraseConfirmLabel), findsOneWidget);
+    expect(find.text(testL10n.backupPassphraseWarning), findsOneWidget);
   });
 
   testWidgets('shows import confirmation dialog after passphrase entry', (
@@ -134,15 +139,15 @@ void main() {
 
     await pumpBackupScreen(tester);
 
-    await tester.tap(find.text(AppStrings.backup.importTitle));
+    await tester.tap(find.text(testL10n.backupImportTitle));
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField).first, 'testpass123');
-    await tester.tap(find.text(AppStrings.confirm));
+    await tester.tap(find.text(testL10n.confirm));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.backup.importConfirmTitle), findsOneWidget);
-    expect(find.text(AppStrings.backup.importConfirmMessage), findsOneWidget);
+    expect(find.text(testL10n.backupImportConfirmTitle), findsOneWidget);
+    expect(find.text(testL10n.backupImportConfirmMessage), findsOneWidget);
   });
 
   testWidgets('shows delete confirmation dialog for a listed backup', (
@@ -150,10 +155,10 @@ void main() {
   ) async {
     await pumpBackupScreen(tester);
 
-    await tester.tap(find.byTooltip(AppStrings.delete));
+    await tester.tap(find.byTooltip(testL10n.delete));
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.backup.deleteBackupConfirm), findsOneWidget);
+    expect(find.text(testL10n.backupDeleteBackupConfirm), findsOneWidget);
     expect(find.text('backup_a.db'), findsWidgets);
   });
 }

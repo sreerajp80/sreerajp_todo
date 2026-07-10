@@ -1,7 +1,7 @@
 name: sreerajp_todo
 description: "SreerajP ToDo — Personal offline-first daily ToDo and time-tracker."
 publish_to: 'none'
-version: 1.5.1+1
+version: 1.5.6+1
 
 environment:
   sdk: ^3.11.1
@@ -43,6 +43,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - assets/fonts/

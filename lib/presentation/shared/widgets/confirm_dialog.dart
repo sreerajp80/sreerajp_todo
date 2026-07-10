@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 
 Future<bool> showConfirmDialog(
   BuildContext context, {
@@ -14,11 +14,11 @@ Future<bool> showConfirmDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text(AppStrings.cancel),
+          child: Text(context.l10n.cancel),
         ),
         FilledButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text(AppStrings.confirm),
+          child: Text(context.l10n.confirm),
         ),
       ],
     ),

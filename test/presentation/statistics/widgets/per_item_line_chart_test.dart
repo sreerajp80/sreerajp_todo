@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/widgets/per_item_line_chart.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 
@@ -11,6 +12,8 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: const Scaffold(
           body: PerItemLineChart(
             selectedTitle: 'Test 12',

@@ -22,6 +22,7 @@ import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dar
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
+import 'package:sreerajp_todo/domain/usecases/delete_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/generate_recurring_tasks.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
@@ -114,6 +115,13 @@ final generateRecurringTasksProvider = Provider<GenerateRecurringTasks>((ref) {
   );
 });
 
+final deleteRecurringTodosProvider = Provider<DeleteRecurringTodos>((ref) {
+  return DeleteRecurringTodos(
+    ref.read(todoRepositoryProvider),
+    ref.read(recurrenceRuleRepositoryProvider),
+  );
+});
+
 final dailyTodoProvider =
     StateNotifierProvider.family<DailyTodoNotifier, DailyTodoState, String>((
       ref,
@@ -126,6 +134,7 @@ final dailyTodoProvider =
         markTodoDropped: ref.read(markTodoDroppedProvider),
         portTodo: ref.read(portTodoProvider),
         copyTodos: ref.read(copyTodosProvider),
+        deleteRecurringTodos: ref.read(deleteRecurringTodosProvider),
         onDataChanged: () => ref.invalidate(statisticsProvider),
         onTimerStopped: (id) => ref.invalidate(timeTrackingProvider(id)),
       );

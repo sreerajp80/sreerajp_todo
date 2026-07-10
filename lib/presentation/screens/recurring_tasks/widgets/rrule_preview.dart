@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rrule/rrule.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 
 class RrulePreview extends StatelessWidget {
@@ -48,11 +48,14 @@ class RrulePreview extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(AppStrings.nextOccurrences, style: theme.textTheme.titleSmall),
+            Text(
+              context.l10n.nextOccurrences,
+              style: theme.textTheme.titleSmall,
+            ),
             const SizedBox(height: 8),
             if (occurrences.isEmpty)
               Text(
-                AppStrings.noUpcomingOccurrences,
+                context.l10n.noUpcomingOccurrences,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),

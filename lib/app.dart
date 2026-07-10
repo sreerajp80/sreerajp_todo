@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/about/about_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/backup_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/copy_todos/copy_todos_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/create_edit_todo_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/daily_list_screen.dart';
-import 'package:sreerajp_todo/presentation/screens/recurring_tasks/recurrence_editor_screen.dart';
-import 'package:sreerajp_todo/presentation/screens/recurring_tasks/recurring_tasks_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/search_results/search_results_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/permissions_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/settings_screen.dart';
@@ -121,23 +120,6 @@ final _router = GoRouter(
           _buildPage(state, const PermissionsScreen()),
     ),
     GoRoute(
-      path: AppRoutes.recurring,
-      pageBuilder: (context, state) =>
-          _buildPage(state, const RecurringTasksScreen()),
-    ),
-    GoRoute(
-      path: AppRoutes.recurringNew,
-      pageBuilder: (context, state) =>
-          _buildPage(state, const RecurrenceEditorScreen()),
-    ),
-    GoRoute(
-      path: AppRoutes.recurringEdit,
-      pageBuilder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return _buildPage(state, RecurrenceEditorScreen(ruleId: id));
-      },
-    ),
-    GoRoute(
       path: AppRoutes.statistics,
       pageBuilder: (context, state) =>
           _buildPage(state, const StatisticsScreen()),
@@ -153,11 +135,13 @@ class TodoApp extends ConsumerWidget {
     final themeMode = ref.watch(themeModeProvider);
 
     return MaterialApp.router(
-      title: AppStrings.appName,
+      title: kAppName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: _router,
     );
   }

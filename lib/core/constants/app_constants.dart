@@ -1,3 +1,7 @@
+/// Application name. Proper noun, not localised. Used for the OS-level window /
+/// task title where no localized [BuildContext] is available.
+const String kAppName = 'SreerajP ToDo';
+
 const int kDatabaseVersion = 2;
 const String kDatabaseName = 'sreerajp_todo.db';
 

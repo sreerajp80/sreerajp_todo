@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 
 class TitleAutocompleteField extends ConsumerStatefulWidget {
@@ -89,9 +89,9 @@ class _TitleAutocompleteFieldState
                 controller: textController,
                 focusNode: fieldFocusNode,
                 enabled: widget.enabled,
-                decoration: const InputDecoration(
-                  labelText: AppStrings.titleHint,
-                  prefixIcon: Icon(Icons.title),
+                decoration: InputDecoration(
+                  labelText: context.l10n.titleHint,
+                  prefixIcon: const Icon(Icons.title),
                 ),
                 validator: widget.validator,
                 onChanged: (value) {

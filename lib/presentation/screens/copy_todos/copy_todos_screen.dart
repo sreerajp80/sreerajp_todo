@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
@@ -83,7 +83,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(e))));
+      ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(context.l10n, e))));
       setState(() => _isCopying = false);
     }
   }
@@ -101,7 +101,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AppStrings.copyTodos),
+        title: Text(context.l10n.copyTodos),
         leading: IconButton(
           icon: const Icon(Icons.close),
           onPressed: () => context.pop(),
@@ -127,16 +127,12 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
   }
 
   Widget _buildStepIndicator(ThemeData theme) {
-    const steps = [
-      AppStrings.stepSelectItems,
-      AppStrings.stepPickDate,
-      AppStrings.stepPreview,
-    ];
+    const stepCount = 3;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
-        children: List.generate(steps.length, (index) {
+        children: List.generate(stepCount, (index) {
           final isActive = index == _currentStep;
           final isDone = index < _currentStep;
           return Expanded(
@@ -172,7 +168,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                           ),
                         ),
                 ),
-                if (index < steps.length - 1)
+                if (index < stepCount - 1)
                   Expanded(
                     child: Container(
                       height: 2,
@@ -193,7 +189,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
     if (_sourceTodos.isEmpty) {
       return Center(
         child: Text(
-          AppStrings.noTodosForDay,
+          context.l10n.noTodosForDay,
           style: theme.textTheme.bodyLarge?.copyWith(
             color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
           ),
@@ -209,7 +205,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
           child: Row(
             children: [
               Text(
-                '${AppStrings.sourceDate}: ${formatDateFromIso(widget.fromDate ?? todayAsIso())}',
+                '${context.l10n.sourceDate}: ${formatDateFromIso(widget.fromDate ?? todayAsIso())}',
                 style: theme.textTheme.titleSmall,
               ),
               const Spacer(),
@@ -227,8 +223,8 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                 },
                 child: Text(
                   _selectedIds.length == _sourceTodos.length
-                      ? AppStrings.deselectAll
-                      : AppStrings.selectAll,
+                      ? context.l10n.deselectAll
+                      : context.l10n.selectAll,
                 ),
               ),
             ],
@@ -292,7 +288,10 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(AppStrings.selectTargetDate, style: theme.textTheme.titleMedium),
+          Text(
+            context.l10n.selectTargetDate,
+            style: theme.textTheme.titleMedium,
+          ),
           const SizedBox(height: 16),
           if (_targetDate != null)
             Card(
@@ -320,14 +319,14 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                   FilledButton.icon(
                     onPressed: _pickDate,
                     icon: const Icon(Icons.calendar_today),
-                    label: const Text(AppStrings.selectTargetDate),
+                    label: Text(context.l10n.selectTargetDate),
                   ),
                 ],
               ),
             ),
           const SizedBox(height: 16),
           Text(
-            '${_selectedIds.length} ${AppStrings.itemsToCopy}',
+            '${_selectedIds.length} ${context.l10n.itemsToCopy}',
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -344,7 +343,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       initialDate: _targetDate != null ? parseIsoDate(_targetDate!) : now,
       firstDate: now,
       lastDate: now.add(const Duration(days: 365)),
-      helpText: AppStrings.selectTargetDate,
+      helpText: context.l10n.selectTargetDate,
     );
     if (picked != null && mounted) {
       setState(() => _targetDate = dateTimeToIso(picked));
@@ -370,13 +369,13 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '${AppStrings.targetDate}: ${formatDateFromIso(_targetDate!)}',
+                '${context.l10n.targetDate}: ${formatDateFromIso(_targetDate!)}',
                 style: theme.textTheme.titleSmall,
               ),
               const SizedBox(height: 4),
               Text(
-                '$copyCount ${AppStrings.itemsToCopy}'
-                '${skipCount > 0 ? ', $skipCount ${AppStrings.itemsWillBeSkipped}' : ''}',
+                '$copyCount ${context.l10n.itemsToCopy}'
+                '${skipCount > 0 ? ', $skipCount ${context.l10n.itemsWillBeSkipped}' : ''}',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -414,7 +413,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                 ),
                 subtitle: isConflict
                     ? Text(
-                        AppStrings.willBeSkipped,
+                        context.l10n.willBeSkipped,
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.error,
                         ),
@@ -450,7 +449,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                 onPressed: _isCopying
                     ? null
                     : () => _goToStep(_currentStep - 1),
-                child: const Text(AppStrings.back),
+                child: Text(context.l10n.back),
               ),
             const Spacer(),
             if (_currentStep < 2)
@@ -458,7 +457,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                 onPressed: _canAdvance()
                     ? () => _goToStep(_currentStep + 1)
                     : null,
-                child: const Text(AppStrings.next),
+                child: Text(context.l10n.next),
               ),
             if (_currentStep == 2)
               FilledButton.icon(
@@ -471,7 +470,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                       )
                     : const Icon(Icons.copy),
                 label: Text(
-                  '${AppStrings.copyConfirm}'
+                  '${context.l10n.copyConfirm}'
                   ' (${_selectedIds.where((id) => !_conflictingTitles.contains(id)).length})',
                 ),
               ),

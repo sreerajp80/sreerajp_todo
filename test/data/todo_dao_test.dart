@@ -28,6 +28,7 @@ void main() {
     String? description,
     TodoStatus status = TodoStatus.pending,
     int sortOrder = 0,
+    String? recurrenceRuleId,
   }) {
     final now = DateTime.now().toUtc().toIso8601String();
     return TodoEntity(
@@ -37,6 +38,7 @@ void main() {
       description: description,
       status: status,
       sortOrder: sortOrder,
+      recurrenceRuleId: recurrenceRuleId,
       createdAt: now,
       updatedAt: now,
     );
@@ -263,6 +265,71 @@ void main() {
       }
       final results = await todoDao.searchByTitle('Task', limit: 3);
       expect(results, hasLength(3));
+    });
+  });
+
+  group('deleteByRecurrenceRuleIdFromDate', () {
+    Future<void> insertRule(String id) async {
+      final db = await databaseService.database;
+      final now = DateTime.now().toUtc().toIso8601String();
+      await db.insert('recurrence_rules', {
+        'id': id,
+        'title': 'Rule $id',
+        'rrule': 'FREQ=DAILY',
+        'start_date': '2026-03-01',
+        'active': 1,
+        'created_at': now,
+        'updated_at': now,
+      });
+    }
+
+    test('deletes occurrences on or after fromDate, preserves earlier', () async {
+      await insertRule('rule-1');
+      await todoDao.insert(
+        makeTodo(id: 'past', date: '2026-03-19', recurrenceRuleId: 'rule-1'),
+      );
+      await todoDao.insert(
+        makeTodo(id: 'on', date: '2026-03-21', recurrenceRuleId: 'rule-1'),
+      );
+      await todoDao.insert(
+        makeTodo(id: 'after', date: '2026-03-22', recurrenceRuleId: 'rule-1'),
+      );
+
+      final count = await todoDao.deleteByRecurrenceRuleIdFromDate(
+        'rule-1',
+        '2026-03-21',
+      );
+
+      expect(count, 2);
+      expect(await todoDao.findById('past'), isNotNull);
+      expect(await todoDao.findById('on'), isNull);
+      expect(await todoDao.findById('after'), isNull);
+    });
+
+    test('only affects the given rule', () async {
+      await insertRule('rule-1');
+      await insertRule('rule-2');
+      await todoDao.insert(
+        makeTodo(
+          id: 'a',
+          title: 'Rule 1 task',
+          date: '2026-03-22',
+          recurrenceRuleId: 'rule-1',
+        ),
+      );
+      await todoDao.insert(
+        makeTodo(
+          id: 'b',
+          title: 'Rule 2 task',
+          date: '2026-03-22',
+          recurrenceRuleId: 'rule-2',
+        ),
+      );
+
+      await todoDao.deleteByRecurrenceRuleIdFromDate('rule-1', '2026-03-21');
+
+      expect(await todoDao.findById('a'), isNull);
+      expect(await todoDao.findById('b'), isNotNull);
     });
   });
 

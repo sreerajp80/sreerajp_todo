@@ -58,6 +58,21 @@ class TodoDao {
     );
   }
 
+  /// Deletes occurrences of [recurrenceRuleId] on or after [fromDate]
+  /// (`YYYY-MM-DD`). `date` is stored as a sortable ISO string, so a
+  /// lexicographic `>=` comparison is also a chronological one.
+  Future<int> deleteByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async {
+    final db = await _databaseService.database;
+    return db.delete(
+      'todos',
+      where: 'recurrence_rule_id = ? AND date >= ?',
+      whereArgs: [recurrenceRuleId, fromDate],
+    );
+  }
+
   Future<List<TodoEntity>> findByDate(String date) async {
     final db = await _databaseService.database;
     final maps = await db.query(

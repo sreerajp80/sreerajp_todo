@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
@@ -53,13 +53,13 @@ class TodoListTile extends ConsumerWidget {
     return todo.status;
   }
 
-  String _statusLabel(TodoStatus status) {
+  String _statusLabel(BuildContext context, TodoStatus status) {
     return switch (status) {
-      TodoStatus.pending => AppStrings.statusPending,
-      TodoStatus.working => AppStrings.statusWorking,
-      TodoStatus.completed => AppStrings.statusCompleted,
-      TodoStatus.dropped => AppStrings.statusDropped,
-      TodoStatus.ported => AppStrings.statusPorted,
+      TodoStatus.pending => context.l10n.statusPending,
+      TodoStatus.working => context.l10n.statusWorking,
+      TodoStatus.completed => context.l10n.statusCompleted,
+      TodoStatus.dropped => context.l10n.statusDropped,
+      TodoStatus.ported => context.l10n.statusPorted,
     };
   }
 
@@ -225,60 +225,60 @@ class TodoListTile extends ConsumerWidget {
     TodoStatus displayStatus,
   ) {
     return PopupMenuButton<String>(
-      tooltip: AppStrings.openTaskActions,
+      tooltip: context.l10n.openTaskActions,
       icon: Icon(Icons.more_vert, color: colorScheme.onSurfaceVariant),
       padding: EdgeInsets.zero,
       constraints: const BoxConstraints(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       itemBuilder: (context) => [
         if (_canPort(displayStatus))
-          const PopupMenuItem(
+          PopupMenuItem(
             value: 'port',
             child: Row(
               children: [
-                Icon(Icons.arrow_forward, size: 20),
-                SizedBox(width: 8),
-                Text(AppStrings.port),
+                const Icon(Icons.arrow_forward, size: 20),
+                const SizedBox(width: 8),
+                Text(context.l10n.port),
               ],
             ),
           ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'segments',
           child: Row(
             children: [
-              Icon(Icons.timer_outlined, size: 20),
-              SizedBox(width: 8),
-              Text(AppStrings.viewSegments),
+              const Icon(Icons.timer_outlined, size: 20),
+              const SizedBox(width: 8),
+              Text(context.l10n.viewSegments),
             ],
           ),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'edit',
           child: Row(
             children: [
-              Icon(Icons.edit_outlined, size: 20),
-              SizedBox(width: 8),
-              Text(AppStrings.edit),
+              const Icon(Icons.edit_outlined, size: 20),
+              const SizedBox(width: 8),
+              Text(context.l10n.edit),
             ],
           ),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'copy',
           child: Row(
             children: [
-              Icon(Icons.copy_outlined, size: 20),
-              SizedBox(width: 8),
-              Text(AppStrings.copy),
+              const Icon(Icons.copy_outlined, size: 20),
+              const SizedBox(width: 8),
+              Text(context.l10n.copy),
             ],
           ),
         ),
-        const PopupMenuItem(
+        PopupMenuItem(
           value: 'delete',
           child: Row(
             children: [
-              Icon(Icons.delete_outline, size: 20),
-              SizedBox(width: 8),
-              Text(AppStrings.delete),
+              const Icon(Icons.delete_outline, size: 20),
+              const SizedBox(width: 8),
+              Text(context.l10n.delete),
             ],
           ),
         ),
@@ -365,7 +365,7 @@ class TodoListTile extends ConsumerWidget {
                                   padding: const EdgeInsets.only(right: 8),
                                   child: Semantics(
                                     button: true,
-                                    label: AppStrings.toggleSelection,
+                                    label: context.l10n.toggleSelection,
                                     child: Icon(
                                       isSelected
                                           ? Icons.check_circle
@@ -423,7 +423,7 @@ class TodoListTile extends ConsumerWidget {
                                 _buildCompactActionButton(
                                   context,
                                   icon: Icons.check_circle_outline,
-                                  tooltip: AppStrings.completeAction,
+                                  tooltip: context.l10n.completeAction,
                                   onPressed: onComplete,
                                   backgroundColor: AppTheme.statusColor(
                                     theme,
@@ -438,7 +438,7 @@ class TodoListTile extends ConsumerWidget {
                                 _buildCompactActionButton(
                                   context,
                                   icon: Icons.cancel_outlined,
-                                  tooltip: AppStrings.dropAction,
+                                  tooltip: context.l10n.dropAction,
                                   onPressed: onDrop,
                                   backgroundColor: AppTheme.statusColor(
                                     theme,
@@ -461,8 +461,8 @@ class TodoListTile extends ConsumerWidget {
                                           ? Icons.stop_circle_outlined
                                           : Icons.play_circle_fill_rounded,
                                       tooltip: isRunning
-                                          ? AppStrings.stopTimer
-                                          : AppStrings.startTimer,
+                                          ? context.l10n.stopTimer
+                                          : context.l10n.startTimer,
                                       onPressed: () {
                                         if (isRunning) {
                                           notifier.stopTimer();
@@ -486,7 +486,7 @@ class TodoListTile extends ConsumerWidget {
                                     padding: const EdgeInsets.only(left: 6),
                                     child: Semantics(
                                       button: true,
-                                      label: AppStrings.delete,
+                                      label: context.l10n.delete,
                                       child: IconButton(
                                         icon: Icon(
                                           Icons.delete_outline,
@@ -497,14 +497,14 @@ class TodoListTile extends ConsumerWidget {
                                         onPressed: onDelete,
                                         padding: EdgeInsets.zero,
                                         constraints: const BoxConstraints(),
-                                        tooltip: AppStrings.delete,
+                                        tooltip: context.l10n.delete,
                                       ),
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(left: 2),
                                     child: Semantics(
-                                      label: AppStrings.lockedTask,
+                                      label: context.l10n.lockedTask,
                                       child: Icon(
                                         Icons.lock_outline,
                                         size: 20,
@@ -531,7 +531,7 @@ class TodoListTile extends ConsumerWidget {
                             crossAxisAlignment: WrapCrossAlignment.center,
                             children: [
                               StatusBadge(
-                                label: _statusLabel(displayStatus),
+                                label: _statusLabel(context, displayStatus),
                                 status: displayStatus,
                               ),
                               if (displaySeconds > 0 || isRunning)
@@ -581,7 +581,7 @@ class TodoListTile extends ConsumerWidget {
                                 ),
                               if (todo.sourceDate != null)
                                 Text(
-                                  '${AppStrings.copiedFrom} ${todo.sourceDate}',
+                                  '${context.l10n.copiedFrom} ${todo.sourceDate}',
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: colorScheme.onSurfaceVariant,
                                     fontStyle: FontStyle.italic,
@@ -590,7 +590,7 @@ class TodoListTile extends ConsumerWidget {
                               if (todo.status == TodoStatus.ported &&
                                   todo.portedTo != null)
                                 Text(
-                                  '${AppStrings.portedTo}: ${todo.portedTo}',
+                                  '${context.l10n.portedTo}: ${todo.portedTo}',
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: statusColor,
                                     fontWeight: FontWeight.w700,

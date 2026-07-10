@@ -1,16 +1,16 @@
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
-String mapErrorToMessage(Object error) {
+String mapErrorToMessage(AppLocalizations l10n, Object error) {
   return switch (error) {
-    DayLockedException() => AppStrings.errors.dayLocked,
-    CompletedLockException() => AppStrings.errors.completedLocked,
-    DuplicateTitleException() => AppStrings.errors.duplicateTitle,
-    SegmentAlreadyRunningException() => AppStrings.errors.segmentAlreadyRunning,
-    SegmentOverlapException() => AppStrings.segmentOverlap,
-    TodoNotFoundException() => AppStrings.errors.todoNotFound,
-    BackupVersionTooNewException() => AppStrings.errors.backupVersionTooNew,
-    BackupCorruptedException() => AppStrings.errors.backupCorrupted,
-    _ => AppStrings.errors.generic,
+    DayLockedException() => l10n.errorDayLocked,
+    CompletedLockException() => l10n.errorCompletedLocked,
+    DuplicateTitleException() => l10n.errorDuplicateTitle,
+    SegmentAlreadyRunningException() => l10n.errorSegmentAlreadyRunning,
+    SegmentOverlapException() => l10n.segmentOverlap,
+    TodoNotFoundException() => l10n.errorTodoNotFound,
+    BackupVersionTooNewException() => l10n.errorBackupVersionTooNew,
+    BackupCorruptedException() => l10n.errorBackupCorrupted,
+    _ => l10n.errorGeneric,
   };
 }

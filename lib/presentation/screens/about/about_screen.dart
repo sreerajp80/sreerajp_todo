@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_version.g.dart';
 import 'package:sreerajp_todo/core/constants/build_date.g.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/screens/about/widgets/about_info_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 
@@ -14,15 +15,15 @@ class AboutScreen extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: Text(AppStrings.about.label)),
+      appBar: AppBar(title: Text(context.l10n.aboutLabel)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           AppSectionCard(
-            title: AppStrings.appName,
-            subtitle: AppStrings.about.headline,
+            title: kAppName,
+            subtitle: context.l10n.aboutHeadline,
             child: Text(
-              AppStrings.about.summary,
+              context.l10n.aboutSummary,
               style: theme.textTheme.bodyLarge,
             ),
           ),
@@ -32,30 +33,30 @@ class AboutScreen extends StatelessWidget {
               children: [
                 _AboutDetailRow(
                   icon: Icons.person_outline_rounded,
-                  label: AppStrings.about.author,
-                  value: AppStrings.about.authorName,
+                  label: context.l10n.aboutAuthor,
+                  value: context.l10n.aboutAuthorName,
                 ),
                 const SizedBox(height: 12),
                 _AboutDetailRow(
                   icon: Icons.auto_awesome_outlined,
-                  label: AppStrings.about.aiAssisted,
-                  value: AppStrings.about.aiModels,
+                  label: context.l10n.aboutAiAssisted,
+                  value: context.l10n.aboutAiModels,
                 ),
                 const SizedBox(height: 12),
                 _AboutDetailRow(
                   icon: Icons.info_outline_rounded,
-                  label: AppStrings.about.appVersion,
+                  label: context.l10n.aboutAppVersion,
                   value: kAppVersion,
                 ),
                 const SizedBox(height: 12),
                 _AboutDetailRow(
                   icon: Icons.calendar_today_outlined,
-                  label: AppStrings.about.buildDate,
+                  label: context.l10n.aboutBuildDate,
                   value: kBuildDate,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  AppStrings.about.madeWithLoveIn,
+                  context.l10n.aboutMadeWithLoveIn,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -69,26 +70,26 @@ class AboutScreen extends StatelessWidget {
               children: [
                 AboutInfoTile(
                   icon: Icons.lock_outline_rounded,
-                  title: AppStrings.about.localOnlyTitle,
-                  body: AppStrings.about.localOnlyBody,
+                  title: context.l10n.aboutLocalOnlyTitle,
+                  body: context.l10n.aboutLocalOnlyBody,
                 ),
                 const SizedBox(height: 16),
                 AboutInfoTile(
                   icon: Icons.key_rounded,
-                  title: AppStrings.about.backupTitle,
-                  body: AppStrings.about.backupBody,
+                  title: context.l10n.aboutBackupTitle,
+                  body: context.l10n.aboutBackupBody,
                 ),
                 const SizedBox(height: 16),
                 AboutInfoTile(
                   icon: Icons.translate_rounded,
-                  title: AppStrings.about.unicodeTitle,
-                  body: AppStrings.about.unicodeBody,
+                  title: context.l10n.aboutUnicodeTitle,
+                  body: context.l10n.aboutUnicodeBody,
                 ),
                 const SizedBox(height: 16),
                 AboutInfoTile(
                   icon: Icons.dashboard_customize_outlined,
-                  title: AppStrings.about.navigationTitle,
-                  body: AppStrings.about.navigationBody,
+                  title: context.l10n.aboutNavigationTitle,
+                  body: context.l10n.aboutNavigationBody,
                 ),
               ],
             ),

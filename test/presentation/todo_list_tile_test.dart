@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
 
 import '../helpers/test_fixtures.dart';
+import '../helpers/test_l10n.dart';
 
 class _FakeTodoRepository implements TodoRepository {
   _FakeTodoRepository(this._todos);
@@ -84,6 +85,12 @@ class _FakeTodoRepository implements TodoRepository {
 
   @override
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async => 0;
+
+  @override
+  Future<int> deleteByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async => 0;
 }
 
 class _FakeTimeSegmentRepository implements TimeSegmentRepository {
@@ -137,6 +144,8 @@ void main() {
           ),
         ],
         child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: TodoListTile(
               todo: todo,
@@ -196,13 +205,13 @@ void main() {
     expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
     expect(find.byIcon(Icons.cancel_outlined), findsOneWidget);
     expect(find.byIcon(Icons.play_circle_fill_rounded), findsOneWidget);
-    expect(find.bySemanticsLabel(AppStrings.completeAction), findsOneWidget);
-    expect(find.bySemanticsLabel(AppStrings.dropAction), findsOneWidget);
-    expect(find.bySemanticsLabel(AppStrings.startTimer), findsOneWidget);
+    expect(find.bySemanticsLabel(testL10n.completeAction), findsOneWidget);
+    expect(find.bySemanticsLabel(testL10n.dropAction), findsOneWidget);
+    expect(find.bySemanticsLabel(testL10n.startTimer), findsOneWidget);
 
-    await tester.tap(find.bySemanticsLabel(AppStrings.completeAction));
+    await tester.tap(find.bySemanticsLabel(testL10n.completeAction));
     await tester.pumpAndSettle();
-    await tester.tap(find.bySemanticsLabel(AppStrings.dropAction));
+    await tester.tap(find.bySemanticsLabel(testL10n.dropAction));
     await tester.pumpAndSettle();
 
     expect(completeCalls, 1);
@@ -237,7 +246,7 @@ void main() {
       expect(longPressCalls, 0);
       // No compact action buttons for past days
       expect(find.byIcon(Icons.check_circle_outline), findsNothing);
-      expect(find.byTooltip(AppStrings.openTaskActions), findsNothing);
+      expect(find.byTooltip(testL10n.openTaskActions), findsNothing);
       expect(find.byIcon(Icons.lock_outline), findsOneWidget);
     },
   );

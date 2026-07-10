@@ -8,6 +8,10 @@ abstract class TodoRepository {
   Future<void> updateTodo(TodoEntity todo, {bool bypassLock = false});
   Future<void> deleteTodo(String id, {bool bypassLock = false});
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId);
+  Future<int> deleteByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  );
   Future<void> updateStatus(
     String id,
     TodoStatus status, {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
@@ -29,10 +29,10 @@ class DailyStatsTable extends StatelessWidget {
   Widget build(BuildContext context) {
     if (stats.isEmpty) {
       return AppSectionCard(
-        title: AppStrings.stats.total,
+        title: context.l10n.statsTotal,
         child: SizedBox(
           height: 180,
-          child: Center(child: Text(AppStrings.stats.noDailyStats)),
+          child: Center(child: Text(context.l10n.statsNoDailyStats)),
         ),
       );
     }
@@ -44,7 +44,7 @@ class DailyStatsTable extends StatelessWidget {
         final isCompact = constraints.maxWidth < 560;
 
         return AppSectionCard(
-          title: AppStrings.stats.total,
+          title: context.l10n.statsTotal,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,14 +67,14 @@ class DailyStatsTable extends StatelessWidget {
                     dataRowMinHeight: 42,
                     dataRowMaxHeight: 46,
                     columns: [
-                      DataColumn(label: Text(AppStrings.stats.date)),
-                      DataColumn(label: Text(AppStrings.stats.total)),
-                      const DataColumn(label: Text(AppStrings.statusPending)),
-                      const DataColumn(label: Text(AppStrings.statusWorking)),
-                      const DataColumn(label: Text(AppStrings.statusCompleted)),
-                      const DataColumn(label: Text(AppStrings.statusDropped)),
-                      const DataColumn(label: Text(AppStrings.statusPorted)),
-                      const DataColumn(label: Text(AppStrings.totalTime)),
+                      DataColumn(label: Text(context.l10n.statsDate)),
+                      DataColumn(label: Text(context.l10n.statsTotal)),
+                      DataColumn(label: Text(context.l10n.statusPending)),
+                      DataColumn(label: Text(context.l10n.statusWorking)),
+                      DataColumn(label: Text(context.l10n.statusCompleted)),
+                      DataColumn(label: Text(context.l10n.statusDropped)),
+                      DataColumn(label: Text(context.l10n.statusPorted)),
+                      DataColumn(label: Text(context.l10n.totalTime)),
                     ],
                     rows: [
                       for (final stat in stats)
@@ -175,7 +175,7 @@ class _CompactDailyStatTile extends StatelessWidget {
                     ),
                   ),
                   _ValueBadge(
-                    label: AppStrings.stats.total,
+                    label: context.l10n.statsTotal,
                     value: '${stat.total}',
                   ),
                 ],
@@ -186,27 +186,27 @@ class _CompactDailyStatTile extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   _StatusPill(
-                    label: AppStrings.statusPending,
+                    label: context.l10n.statusPending,
                     value: '${stat.pending}',
                     status: TodoStatus.pending,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusWorking,
+                    label: context.l10n.statusWorking,
                     value: '${stat.working}',
                     status: TodoStatus.working,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusCompleted,
+                    label: context.l10n.statusCompleted,
                     value: '${stat.completed}',
                     status: TodoStatus.completed,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusDropped,
+                    label: context.l10n.statusDropped,
                     value: '${stat.dropped}',
                     status: TodoStatus.dropped,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusPorted,
+                    label: context.l10n.statusPorted,
                     value: '${stat.ported}',
                     status: TodoStatus.ported,
                   ),
@@ -214,7 +214,7 @@ class _CompactDailyStatTile extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                '${AppStrings.totalTime}: ${formatDuration(stat.totalSeconds)}',
+                '${context.l10n.totalTime}: ${formatDuration(stat.totalSeconds)}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -320,12 +320,14 @@ class _PaginationFooter extends StatelessWidget {
                   : OutlinedButton.icon(
                       onPressed: canGoBack ? onPrevious : null,
                       icon: const Icon(Icons.arrow_back_rounded),
-                      label: const Text(AppStrings.previous),
+                      label: Text(context.l10n.previous),
                     ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(AppStrings.stats.pageOf(currentPage + 1, pageCount)),
+              child: Text(
+                context.l10n.statsPageOf(currentPage + 1, pageCount),
+              ),
             ),
             Expanded(
               child: compact
@@ -336,7 +338,7 @@ class _PaginationFooter extends StatelessWidget {
                   : OutlinedButton.icon(
                       onPressed: canGoForward ? onNext : null,
                       icon: const Icon(Icons.arrow_forward_rounded),
-                      label: const Text(AppStrings.next),
+                      label: Text(context.l10n.next),
                     ),
             ),
           ],

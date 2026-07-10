@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/create_edit_todo_screen.dart';
 
 import '../helpers/test_fixtures.dart';
+import '../helpers/test_l10n.dart';
 
 class _FakeTodoRepository implements TodoRepository {
   _FakeTodoRepository(this.todo);
@@ -71,6 +73,12 @@ class _FakeTodoRepository implements TodoRepository {
 
   @override
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async => 0;
+
+  @override
+  Future<int> deleteByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async => 0;
 }
 
 void main() {
@@ -94,6 +102,8 @@ void main() {
           todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todo)),
         ],
         child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: CreateEditTodoScreen(todoId: 'active-todo'),
         ),
       ),
@@ -101,8 +111,8 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    final droppedRect = tester.getRect(find.text(AppStrings.statusDropped));
-    final portedRect = tester.getRect(find.text(AppStrings.statusPorted));
+    final droppedRect = tester.getRect(find.text(testL10n.statusDropped));
+    final portedRect = tester.getRect(find.text(testL10n.statusPorted));
 
     expect(droppedRect.right, lessThanOrEqualTo(320));
     expect(portedRect.right, lessThanOrEqualTo(320));
@@ -121,6 +131,8 @@ void main() {
           todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todo)),
         ],
         child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: CreateEditTodoScreen(todoId: 'past-todo'),
         ),
       ),
@@ -128,21 +140,59 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text(AppStrings.viewTodo), findsOneWidget);
-    expect(find.text(AppStrings.readOnlyPastDate), findsOneWidget);
+    expect(find.text(testL10n.viewTodo), findsOneWidget);
+    expect(find.text(testL10n.readOnlyPastDate), findsOneWidget);
     expect(
-      find.widgetWithText(TextFormField, AppStrings.titleHint),
+      find.widgetWithText(TextFormField, testL10n.titleHint),
       findsOneWidget,
     );
     expect(
-      find.widgetWithText(TextFormField, AppStrings.descriptionHint),
+      find.widgetWithText(TextFormField, testL10n.descriptionHint),
       findsOneWidget,
     );
-    expect(find.widgetWithText(FilledButton, AppStrings.save), findsNothing);
+    expect(find.widgetWithText(FilledButton, testL10n.save), findsNothing);
 
     final textFields = tester.widgetList<TextFormField>(
       find.byType(TextFormField),
     );
     expect(textFields.every((field) => field.enabled == false), isTrue);
+  });
+
+  testWidgets('repeat sheet "For N days" resolves to start + (N - 1)', (
+    tester,
+  ) async {
+    final todo = buildTodo(id: 'unused', date: dateOffsetIso(0));
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todo)),
+        ],
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: CreateEditTodoScreen(date: dateOffsetIso(0)),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Open the custom recurrence sheet via the "Repeat…" segment.
+    await tester.tap(find.text(testL10n.repeatConfigure));
+    await tester.pumpAndSettle();
+
+    // Default "Ends" mode is Never — no end-date helper text yet.
+    expect(find.textContaining('${testL10n.endDate}:'), findsNothing);
+
+    // Switch to the "For" (N days) end condition.
+    await tester.tap(find.text(testL10n.endsAfterDays).last);
+    await tester.pumpAndSettle();
+
+    // Default day count is 7, so the inclusive end date is start + 6 days.
+    final expectedEnd = formatDateFromIso(dateOffsetIso(6));
+    expect(
+      find.text('${testL10n.endDate}: $expectedEnd'),
+      findsOneWidget,
+    );
   });
 }

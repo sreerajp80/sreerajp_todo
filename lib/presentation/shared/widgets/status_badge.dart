@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 
@@ -21,7 +21,7 @@ class StatusBadge extends StatelessWidget {
     final color = AppTheme.statusColor(theme, status);
 
     return Semantics(
-      label: semanticLabel ?? AppStrings.statusSemantics(label),
+      label: semanticLabel ?? context.l10n.statusSemantics(label),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 220),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),

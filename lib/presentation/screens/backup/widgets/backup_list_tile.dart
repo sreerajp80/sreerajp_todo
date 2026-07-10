@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
 
 class BackupListTile extends StatelessWidget {
@@ -67,7 +67,7 @@ class BackupListTile extends StatelessWidget {
           IconButton.filledTonal(
             onPressed: onDelete,
             icon: const Icon(Icons.delete_outline),
-            tooltip: AppStrings.delete,
+            tooltip: context.l10n.delete,
           ),
         ],
       ),

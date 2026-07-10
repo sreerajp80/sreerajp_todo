@@ -5,12 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/search_results/search_results_screen.dart';
 
 import '../helpers/test_fixtures.dart';
+import '../helpers/test_l10n.dart';
 
 class MockTodoRepository extends Mock implements TodoRepository {}
 
@@ -44,7 +45,11 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [todoRepositoryProvider.overrideWithValue(repository)],
-        child: MaterialApp.router(routerConfig: router),
+        child: MaterialApp.router(
+          routerConfig: router,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
       ),
     );
     await tester.pumpAndSettle();
@@ -94,9 +99,9 @@ void main() {
 
     await pumpSearchScreen(tester, query: 'missing');
 
-    expect(find.text(AppStrings.noSearchResults), findsOneWidget);
+    expect(find.text(testL10n.noSearchResults), findsOneWidget);
     expect(
-      find.text(AppStrings.noSearchResultsForQuery('missing')),
+      find.text(testL10n.noSearchResultsForQuery('missing')),
       findsOneWidget,
     );
   });

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 
 /// Whether the user wants this todo to repeat.
 enum SimpleRepeatOption { none, repeat }
@@ -32,13 +32,13 @@ class RepeatOptionPicker extends StatelessWidget {
       children: [
         SegmentedButton<SimpleRepeatOption>(
           segments: [
-            const ButtonSegment(
+            ButtonSegment(
               value: SimpleRepeatOption.none,
-              label: Text(AppStrings.repeatNone),
+              label: Text(context.l10n.repeatNone),
             ),
-            const ButtonSegment(
+            ButtonSegment(
               value: SimpleRepeatOption.repeat,
-              label: Text(AppStrings.repeatConfigure),
+              label: Text(context.l10n.repeatConfigure),
             ),
           ],
           selected: {selected},

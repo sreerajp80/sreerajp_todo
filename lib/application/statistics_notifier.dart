@@ -1,11 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
+
+/// Non-localized marker stored in [StatisticsState.error] to signal that a load
+/// failed. The UI never displays this value; it localises its own message when
+/// `error` is non-null.
+const String _kErrorSentinel = 'error';
 
 class StatisticsNotifier extends StateNotifier<StatisticsState> {
   StatisticsNotifier(this._statisticsQueryService)
@@ -86,7 +90,7 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
         error: null,
       );
     } on Exception {
-      state = state.copyWith(error: AppStrings.errors.generic);
+      state = state.copyWith(error: _kErrorSentinel);
     }
   }
 
@@ -146,7 +150,7 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
         error: null,
       );
     } on Exception {
-      state = state.copyWith(error: AppStrings.errors.generic);
+      state = state.copyWith(error: _kErrorSentinel);
     }
   }
 
@@ -214,7 +218,7 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
         error: null,
       );
     } on Exception {
-      state = state.copyWith(error: AppStrings.errors.generic);
+      state = state.copyWith(error: _kErrorSentinel);
     }
   }
 

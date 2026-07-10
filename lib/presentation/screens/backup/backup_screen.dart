@@ -6,8 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_list_tile.dart';
@@ -52,6 +52,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   }
 
   Future<void> _handleExport() async {
+    final l10n = context.l10n;
     final passphrase = await _showPassphraseDialog(requireConfirmation: true);
     if (passphrase == null || !mounted) {
       return;
@@ -62,7 +63,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
         selectedDirectory ??
         await ref.read(backupServiceProvider).getDefaultBackupDirectory();
 
-    await _runBusyOperation(AppStrings.backup.exportInProgress, () async {
+    await _runBusyOperation(l10n.backupExportInProgress, () async {
       final path = await ref
           .read(backupServiceProvider)
           .exportDatabase(
@@ -73,7 +74,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
       if (!mounted) {
         return;
       }
-      _showSnackBar('${AppStrings.backup.exportSuccess} $path');
+      _showSnackBar('${l10n.backupExportSuccess} $path');
     }, retry: _handleExport);
   }
 
@@ -95,14 +96,14 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
 
     final confirmed = await showConfirmDialog(
       context,
-      title: AppStrings.backup.importConfirmTitle,
-      content: AppStrings.backup.importConfirmMessage,
+      title: context.l10n.backupImportConfirmTitle,
+      content: context.l10n.backupImportConfirmMessage,
     );
     if (!confirmed || !mounted) {
       return;
     }
 
-    await _runBusyOperation(AppStrings.backup.importInProgress, () async {
+    await _runBusyOperation(context.l10n.backupImportInProgress, () async {
       await ref
           .read(backupServiceProvider)
           .importDatabase(sourcePath: sourcePath, passphrase: passphrase);
@@ -113,7 +114,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
       if (!mounted) {
         return;
       }
-      _showSnackBar(AppStrings.backup.importSuccess);
+      _showSnackBar(context.l10n.backupImportSuccess);
       context.go(AppRoutes.dailyListPath(todayAsIso()));
     }, retry: _handleImport);
   }
@@ -121,20 +122,20 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   Future<void> _handleDelete(BackupFileInfo info) async {
     final confirmed = await showConfirmDialog(
       context,
-      title: AppStrings.backup.deleteBackupConfirm,
+      title: context.l10n.backupDeleteBackupConfirm,
       content: info.fileName,
     );
     if (!confirmed || !mounted) {
       return;
     }
 
-    await _runBusyOperation(AppStrings.backup.label, () async {
+    await _runBusyOperation(context.l10n.backupLabel, () async {
       await ref.read(backupServiceProvider).deleteBackup(info.filePath);
       await _loadBackups();
       if (!mounted) {
         return;
       }
-      _showSnackBar(AppStrings.backup.deleteSuccess);
+      _showSnackBar(context.l10n.backupDeleteSuccess);
     }, retry: () => _handleDelete(info));
   }
 
@@ -160,21 +161,21 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
 
   String _messageForError(Object error) {
     if (error is ArgumentError) {
-      return AppStrings.backup.passphraseMinLength;
+      return context.l10n.backupPassphraseMinLength;
     }
     if (error is BackupVersionTooNewException) {
-      return AppStrings.backup.importVersionTooNew;
+      return context.l10n.backupImportVersionTooNew;
     }
     if (error is BackupCorruptedException) {
       if (error.details == 'wrong_passphrase') {
-        return AppStrings.backup.importWrongPassphrase;
+        return context.l10n.backupImportWrongPassphrase;
       }
-      return AppStrings.backup.importCorrupted;
+      return context.l10n.backupImportCorrupted;
     }
     if (error is FileSystemException) {
-      return AppStrings.backup.importCorrupted;
+      return context.l10n.backupImportCorrupted;
     }
-    return AppStrings.errors.retryableGeneric;
+    return context.l10n.errorRetryableGeneric;
   }
 
   void _showSnackBar(String message, {Future<void> Function()? retry}) {
@@ -186,7 +187,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
         action: retry == null
             ? null
             : SnackBarAction(
-                label: AppStrings.retry,
+                label: context.l10n.retry,
                 onPressed: () {
                   retry();
                 },
@@ -209,12 +210,12 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppStrings.backup.label),
+        title: Text(context.l10n.backupLabel),
         actions: [
           IconButton(
             onPressed: _isBusy ? null : _loadBackups,
             icon: const Icon(Icons.refresh),
-            tooltip: AppStrings.retry,
+            tooltip: context.l10n.retry,
           ),
         ],
       ),
@@ -224,22 +225,22 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
             padding: const EdgeInsets.all(16),
             children: [
               AppSectionCard(
-                title: AppStrings.backup.label,
+                title: context.l10n.backupLabel,
                 subtitle: _backupDirectory == null
                     ? null
-                    : '${AppStrings.backupDirectory}: $_backupDirectory',
+                    : '${context.l10n.backupDirectory}: $_backupDirectory',
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final compact = constraints.maxWidth < 420;
                     final exportButton = FilledButton.icon(
                       onPressed: _isBusy ? null : _handleExport,
                       icon: const Icon(Icons.upload_file_outlined),
-                      label: Text(AppStrings.backup.exportTitle),
+                      label: Text(context.l10n.backupExportTitle),
                     );
                     final importButton = ElevatedButton.icon(
                       onPressed: _isBusy ? null : _handleImport,
                       icon: const Icon(Icons.download_for_offline_outlined),
-                      label: Text(AppStrings.backup.importTitle),
+                      label: Text(context.l10n.backupImportTitle),
                     );
 
                     if (compact) {
@@ -273,16 +274,16 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                 )
               else if (_backups.isEmpty)
                 AppSectionCard(
-                  title: AppStrings.backup.recentBackups,
+                  title: context.l10n.backupRecentBackups,
                   child: AppEmptyState(
                     icon: Icons.backup_outlined,
-                    title: AppStrings.backup.noBackupsFound,
-                    message: AppStrings.backup.noBackupsFoundDetailed,
+                    title: context.l10n.backupNoBackupsFound,
+                    message: context.l10n.backupNoBackupsFoundDetailed,
                   ),
                 )
               else
                 AppSectionCard(
-                  title: AppStrings.backup.recentBackups,
+                  title: context.l10n.backupRecentBackups,
                   child: Column(
                     children: [
                       for (var i = 0; i < _backups.length; i++) ...[
@@ -352,11 +353,11 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
   void _submit() {
     final passphrase = _passphraseController.text;
     if (passphrase.length < 8) {
-      setState(() => _errorText = AppStrings.backup.passphraseMinLength);
+      setState(() => _errorText = context.l10n.backupPassphraseMinLength);
       return;
     }
     if (widget.requireConfirmation && passphrase != _confirmController.text) {
-      setState(() => _errorText = AppStrings.backup.passphraseMismatch);
+      setState(() => _errorText = context.l10n.backupPassphraseMismatch);
       return;
     }
 
@@ -368,8 +369,8 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
     return AlertDialog(
       title: Text(
         widget.requireConfirmation
-            ? AppStrings.backup.exportTitle
-            : AppStrings.backup.importTitle,
+            ? context.l10n.backupExportTitle
+            : context.l10n.backupImportTitle,
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -380,7 +381,7 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
               controller: _passphraseController,
               obscureText: _obscureText,
               decoration: InputDecoration(
-                labelText: AppStrings.backup.passphraseLabel,
+                labelText: context.l10n.backupPassphraseLabel,
                 errorText: _errorText,
                 suffixIcon: IconButton(
                   onPressed: () {
@@ -403,7 +404,7 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
                 controller: _confirmController,
                 obscureText: _obscureText,
                 decoration: InputDecoration(
-                  labelText: AppStrings.backup.passphraseConfirmLabel,
+                  labelText: context.l10n.backupPassphraseConfirmLabel,
                 ),
                 onSubmitted: (_) => _submit(),
               ),
@@ -416,7 +417,7 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
                     child: Icon(Icons.warning_amber_rounded, size: 18),
                   ),
                   const SizedBox(width: 8),
-                  Expanded(child: Text(AppStrings.backup.passphraseWarning)),
+                  Expanded(child: Text(context.l10n.backupPassphraseWarning)),
                 ],
               ),
             ],
@@ -426,9 +427,9 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text(AppStrings.cancel),
+          child: Text(context.l10n.cancel),
         ),
-        FilledButton(onPressed: _submit, child: const Text(AppStrings.confirm)),
+        FilledButton(onPressed: _submit, child: Text(context.l10n.confirm)),
       ],
     );
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
@@ -30,10 +30,10 @@ class PerItemSelectorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (stats.isEmpty) {
       return AppSectionCard(
-        title: AppStrings.stats.chooseTask,
+        title: context.l10n.statsChooseTask,
         child: SizedBox(
           height: 180,
-          child: Center(child: Text(AppStrings.stats.noPerItemStats)),
+          child: Center(child: Text(context.l10n.statsNoPerItemStats)),
         ),
       );
     }
@@ -48,7 +48,7 @@ class PerItemSelectorCard extends StatelessWidget {
     }
 
     return AppSectionCard(
-      title: AppStrings.stats.chooseTask,
+      title: context.l10n.statsChooseTask,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -63,7 +63,7 @@ class PerItemSelectorCard extends StatelessWidget {
                 vertical: 14,
               ),
             ),
-            hint: Text(selectedTitle ?? AppStrings.stats.chooseTask),
+            hint: Text(selectedTitle ?? context.l10n.statsChooseTask),
             items: [
               for (final stat in stats)
                 DropdownMenuItem<String>(
@@ -80,8 +80,8 @@ class PerItemSelectorCard extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             selectedStat == null
-                ? AppStrings.stats.selectTaskToViewHistory
-                : '${AppStrings.totalTime}: ${formatDuration(selectedStat.totalSeconds)} / ${AppStrings.stats.appearances}: ${selectedStat.appearances}',
+                ? context.l10n.statsSelectTaskToViewHistory
+                : '${context.l10n.totalTime}: ${formatDuration(selectedStat.totalSeconds)} / ${context.l10n.statsAppearances}: ${selectedStat.appearances}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
@@ -123,10 +123,10 @@ class PerItemStatsTable extends StatelessWidget {
   Widget build(BuildContext context) {
     if (stats.isEmpty) {
       return AppSectionCard(
-        title: AppStrings.stats.perItemOverview,
+        title: context.l10n.statsPerItemOverview,
         child: SizedBox(
           height: 180,
-          child: Center(child: Text(AppStrings.stats.noPerItemStats)),
+          child: Center(child: Text(context.l10n.statsNoPerItemStats)),
         ),
       );
     }
@@ -138,7 +138,7 @@ class PerItemStatsTable extends StatelessWidget {
         final isCompact = constraints.maxWidth < 560;
 
         return AppSectionCard(
-          title: AppStrings.stats.perItemOverview,
+          title: context.l10n.statsPerItemOverview,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -161,14 +161,14 @@ class PerItemStatsTable extends StatelessWidget {
                     dataRowMinHeight: 42,
                     dataRowMaxHeight: 46,
                     columns: [
-                      DataColumn(label: Text(AppStrings.stats.title)),
-                      DataColumn(label: Text(AppStrings.stats.appearances)),
-                      const DataColumn(label: Text(AppStrings.statusPending)),
-                      const DataColumn(label: Text(AppStrings.statusWorking)),
-                      const DataColumn(label: Text(AppStrings.statusCompleted)),
-                      const DataColumn(label: Text(AppStrings.statusDropped)),
-                      const DataColumn(label: Text(AppStrings.statusPorted)),
-                      const DataColumn(label: Text(AppStrings.totalTime)),
+                      DataColumn(label: Text(context.l10n.statsTitle)),
+                      DataColumn(label: Text(context.l10n.statsAppearances)),
+                      DataColumn(label: Text(context.l10n.statusPending)),
+                      DataColumn(label: Text(context.l10n.statusWorking)),
+                      DataColumn(label: Text(context.l10n.statusCompleted)),
+                      DataColumn(label: Text(context.l10n.statusDropped)),
+                      DataColumn(label: Text(context.l10n.statusPorted)),
+                      DataColumn(label: Text(context.l10n.totalTime)),
                     ],
                     rows: [
                       for (final stat in stats)
@@ -264,7 +264,7 @@ class _CompactPerItemTile extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               _ValueBadge(
-                label: AppStrings.stats.appearances,
+                label: context.l10n.statsAppearances,
                 value: '${stat.appearances}',
               ),
               const SizedBox(height: 12),
@@ -273,27 +273,27 @@ class _CompactPerItemTile extends StatelessWidget {
                 runSpacing: 8,
                 children: [
                   _StatusPill(
-                    label: AppStrings.statusPending,
+                    label: context.l10n.statusPending,
                     value: '${stat.pending}',
                     status: TodoStatus.pending,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusWorking,
+                    label: context.l10n.statusWorking,
                     value: '${stat.working}',
                     status: TodoStatus.working,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusCompleted,
+                    label: context.l10n.statusCompleted,
                     value: '${stat.completed}',
                     status: TodoStatus.completed,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusDropped,
+                    label: context.l10n.statusDropped,
                     value: '${stat.dropped}',
                     status: TodoStatus.dropped,
                   ),
                   _StatusPill(
-                    label: AppStrings.statusPorted,
+                    label: context.l10n.statusPorted,
                     value: '${stat.ported}',
                     status: TodoStatus.ported,
                   ),
@@ -301,7 +301,7 @@ class _CompactPerItemTile extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                '${AppStrings.totalTime}: ${formatDuration(stat.totalSeconds)}',
+                '${context.l10n.totalTime}: ${formatDuration(stat.totalSeconds)}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),
@@ -407,12 +407,14 @@ class _PaginationFooter extends StatelessWidget {
                   : OutlinedButton.icon(
                       onPressed: canGoBack ? onPrevious : null,
                       icon: const Icon(Icons.arrow_back_rounded),
-                      label: const Text(AppStrings.previous),
+                      label: Text(context.l10n.previous),
                     ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(AppStrings.stats.pageOf(currentPage + 1, pageCount)),
+              child: Text(
+                context.l10n.statsPageOf(currentPage + 1, pageCount),
+              ),
             ),
             Expanded(
               child: compact
@@ -423,7 +425,7 @@ class _PaginationFooter extends StatelessWidget {
                   : OutlinedButton.icon(
                       onPressed: canGoForward ? onNext : null,
                       icon: const Icon(Icons.arrow_forward_rounded),
-                      label: const Text(AppStrings.next),
+                      label: Text(context.l10n.next),
                     ),
             ),
           ],

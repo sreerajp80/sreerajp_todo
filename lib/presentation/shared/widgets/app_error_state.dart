@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 
 class AppErrorState extends StatelessWidget {
   const AppErrorState({super.key, required this.message, this.onRetry});
@@ -40,7 +40,7 @@ class AppErrorState extends StatelessWidget {
                   FilledButton.icon(
                     onPressed: onRetry,
                     icon: const Icon(Icons.refresh),
-                    label: const Text(AppStrings.retry),
+                    label: Text(context.l10n.retry),
                   ),
                 ],
               ],

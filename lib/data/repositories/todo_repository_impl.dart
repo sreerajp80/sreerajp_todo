@@ -78,6 +78,17 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
+  Future<int> deleteByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) {
+    return _todoDao.deleteByRecurrenceRuleIdFromDate(
+      recurrenceRuleId,
+      fromDate,
+    );
+  }
+
+  @override
   Future<void> updateStatus(
     String id,
     TodoStatus status, {

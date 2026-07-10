@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
@@ -25,12 +25,12 @@ class DailyBarChart extends StatelessWidget {
 
     if (stats.isEmpty) {
       return AppSectionCard(
-        title: AppStrings.stats.dailyOverview,
+        title: context.l10n.statsDailyOverview,
         child: SizedBox(
           height: 260,
           child: Center(
             child: Text(
-              AppStrings.stats.noDailyStats,
+              context.l10n.statsNoDailyStats,
               style: theme.textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
@@ -54,7 +54,7 @@ class DailyBarChart extends StatelessWidget {
     final maxY = math.max(1.5, maxValue + 0.4);
 
     return AppSectionCard(
-      title: AppStrings.stats.dailyOverview,
+      title: context.l10n.statsDailyOverview,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -62,14 +62,23 @@ class DailyBarChart extends StatelessWidget {
             spacing: 10,
             runSpacing: 8,
             children: [
-              _LegendItem(color: pendingColor, label: AppStrings.statusPending),
-              _LegendItem(color: workingColor, label: AppStrings.statusWorking),
+              _LegendItem(
+                color: pendingColor,
+                label: context.l10n.statusPending,
+              ),
+              _LegendItem(
+                color: workingColor,
+                label: context.l10n.statusWorking,
+              ),
               _LegendItem(
                 color: completedColor,
-                label: AppStrings.statusCompleted,
+                label: context.l10n.statusCompleted,
               ),
-              _LegendItem(color: droppedColor, label: AppStrings.statusDropped),
-              _LegendItem(color: portedColor, label: AppStrings.statusPorted),
+              _LegendItem(
+                color: droppedColor,
+                label: context.l10n.statusDropped,
+              ),
+              _LegendItem(color: portedColor, label: context.l10n.statusPorted),
             ],
           ),
           const SizedBox(height: 16),
@@ -95,11 +104,11 @@ class DailyBarChart extends StatelessWidget {
                             getTooltipItem: (group, groupIndex, rod, rodIndex) {
                               final item = stats[group.x.toInt()];
                               final labels = [
-                                AppStrings.statusPending,
-                                AppStrings.statusWorking,
-                                AppStrings.statusCompleted,
-                                AppStrings.statusDropped,
-                                AppStrings.statusPorted,
+                                context.l10n.statusPending,
+                                context.l10n.statusWorking,
+                                context.l10n.statusCompleted,
+                                context.l10n.statusDropped,
+                                context.l10n.statusPorted,
                               ];
                               return BarTooltipItem(
                                 '${DateFormat.yMMMd().format(DateTime.parse(item.date))}\n${labels[rodIndex]}: ${rod.toY.toStringAsFixed(0)}',

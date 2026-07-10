@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 
 enum AppScaffoldDestination { daily, statistics, settings }
@@ -66,20 +66,20 @@ class ResponsiveScaffold extends StatelessWidget {
                                   AppScaffoldDestination.values[index],
                                 ),
                             destinations: [
-                              const NavigationRailDestination(
-                                icon: Icon(Icons.today_outlined),
-                                selectedIcon: Icon(Icons.today),
-                                label: Text(AppStrings.dailyList),
+                              NavigationRailDestination(
+                                icon: const Icon(Icons.today_outlined),
+                                selectedIcon: const Icon(Icons.today),
+                                label: Text(context.l10n.dailyList),
                               ),
-                              const NavigationRailDestination(
-                                icon: Icon(Icons.bar_chart_outlined),
-                                selectedIcon: Icon(Icons.bar_chart),
-                                label: Text(AppStrings.statistics),
+                              NavigationRailDestination(
+                                icon: const Icon(Icons.bar_chart_outlined),
+                                selectedIcon: const Icon(Icons.bar_chart),
+                                label: Text(context.l10n.statistics),
                               ),
                               NavigationRailDestination(
                                 icon: const Icon(Icons.settings_outlined),
                                 selectedIcon: const Icon(Icons.settings),
-                                label: Text(AppStrings.settings.label),
+                                label: Text(context.l10n.settingsLabel),
                               ),
                             ],
                           ),
@@ -122,20 +122,20 @@ class ResponsiveScaffold extends StatelessWidget {
                         AppScaffoldDestination.values[index],
                       ),
                       destinations: [
-                        const NavigationDestination(
-                          icon: Icon(Icons.today_outlined),
-                          selectedIcon: Icon(Icons.today),
-                          label: AppStrings.dailyList,
+                        NavigationDestination(
+                          icon: const Icon(Icons.today_outlined),
+                          selectedIcon: const Icon(Icons.today),
+                          label: context.l10n.dailyList,
                         ),
-                        const NavigationDestination(
-                          icon: Icon(Icons.bar_chart_outlined),
-                          selectedIcon: Icon(Icons.bar_chart),
-                          label: AppStrings.statistics,
+                        NavigationDestination(
+                          icon: const Icon(Icons.bar_chart_outlined),
+                          selectedIcon: const Icon(Icons.bar_chart),
+                          label: context.l10n.statistics,
                         ),
                         NavigationDestination(
                           icon: const Icon(Icons.settings_outlined),
                           selectedIcon: const Icon(Icons.settings),
-                          label: AppStrings.settings.label,
+                          label: context.l10n.settingsLabel,
                         ),
                       ],
                     ),

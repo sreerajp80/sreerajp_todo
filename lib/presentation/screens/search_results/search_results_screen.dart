@@ -6,8 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
@@ -68,10 +68,10 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
           child: TextField(
             controller: _searchController,
             autofocus: widget.query == null || widget.query!.isEmpty,
-            decoration: const InputDecoration(
-              hintText: AppStrings.searchHint,
+            decoration: InputDecoration(
+              hintText: context.l10n.searchHint,
               border: InputBorder.none,
-              prefixIcon: Icon(Icons.search),
+              prefixIcon: const Icon(Icons.search),
             ),
             onChanged: _onSearchChanged,
           ),
@@ -80,7 +80,7 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
           if (_searchController.text.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.clear),
-              tooltip: AppStrings.clearSearch,
+              tooltip: context.l10n.clearSearch,
               onPressed: () {
                 _searchController.clear();
                 setState(() => _currentQuery = '');
@@ -89,10 +89,10 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
         ],
       ),
       body: _currentQuery.isEmpty
-          ? const AppEmptyState(
+          ? AppEmptyState(
               icon: Icons.search,
-              title: AppStrings.searchTasksTitle,
-              message: AppStrings.searchTasksMessage,
+              title: context.l10n.searchTasksTitle,
+              message: context.l10n.searchTasksMessage,
             )
           : _buildResults(),
     );
@@ -104,15 +104,15 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
     return results.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (error, _) => AppErrorState(
-        message: mapErrorToMessage(error),
+        message: mapErrorToMessage(context.l10n, error),
         onRetry: () => ref.invalidate(searchResultsProvider(_currentQuery)),
       ),
       data: (todos) {
         if (todos.isEmpty) {
           return AppEmptyState(
             icon: Icons.search_off,
-            title: AppStrings.noSearchResults,
-            message: AppStrings.noSearchResultsForQuery(_currentQuery),
+            title: context.l10n.noSearchResults,
+            message: context.l10n.noSearchResultsForQuery(_currentQuery),
           );
         }
 
@@ -152,7 +152,7 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
                           )
                         : null,
                     trailing: StatusBadge(
-                      label: _statusLabel(todo.status),
+                      label: _statusLabel(context, todo.status),
                       status: todo.status,
                     ),
                     onTap: () => context.go(AppRoutes.dailyListPath(todo.date)),
@@ -175,13 +175,13 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
     return grouped;
   }
 
-  String _statusLabel(TodoStatus status) {
+  String _statusLabel(BuildContext context, TodoStatus status) {
     return switch (status) {
-      TodoStatus.pending => AppStrings.statusPending,
-      TodoStatus.working => AppStrings.statusWorking,
-      TodoStatus.completed => AppStrings.statusCompleted,
-      TodoStatus.dropped => AppStrings.statusDropped,
-      TodoStatus.ported => AppStrings.statusPorted,
+      TodoStatus.pending => context.l10n.statusPending,
+      TodoStatus.working => context.l10n.statusWorking,
+      TodoStatus.completed => context.l10n.statusCompleted,
+      TodoStatus.dropped => context.l10n.statusDropped,
+      TodoStatus.ported => context.l10n.statusPorted,
     };
   }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
@@ -47,7 +47,7 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
     final endMin = _timeOfDayToMinutes(_endTime!);
 
     if (startMin >= endMin) {
-      setState(() => _error = AppStrings.startBeforeEnd);
+      setState(() => _error = context.l10n.startBeforeEnd);
       return;
     }
 
@@ -61,7 +61,7 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
       final segEnd = DateTime.parse(seg.endTime!);
 
       if (newStart.isBefore(segEnd) && newEnd.isAfter(segStart)) {
-        setState(() => _error = AppStrings.segmentOverlap);
+        setState(() => _error = context.l10n.segmentOverlap);
         return;
       }
     }
@@ -133,13 +133,16 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(AppStrings.addManualSegment, style: theme.textTheme.titleLarge),
+          Text(
+            context.l10n.addManualSegment,
+            style: theme.textTheme.titleLarge,
+          ),
           const SizedBox(height: 24),
           Row(
             children: [
               Expanded(
                 child: _TimePickerField(
-                  label: AppStrings.segmentStart,
+                  label: context.l10n.segmentStart,
                   value: _startTime,
                   onTap: () => _pickTime(isStart: true),
                 ),
@@ -147,7 +150,7 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
               const SizedBox(width: 16),
               Expanded(
                 child: _TimePickerField(
-                  label: AppStrings.segmentEnd,
+                  label: context.l10n.segmentEnd,
                   value: _endTime,
                   onTap: () => _pickTime(isStart: false),
                 ),
@@ -165,7 +168,7 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  '${AppStrings.segmentDuration}: $durationPreview',
+                  '${context.l10n.segmentDuration}: $durationPreview',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -188,12 +191,12 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
             children: [
               TextButton(
                 onPressed: () => Navigator.of(context).pop(),
-                child: const Text(AppStrings.cancel),
+                child: Text(context.l10n.cancel),
               ),
               const SizedBox(width: 12),
               FilledButton(
                 onPressed: _isValid ? _submit : null,
-                child: const Text(AppStrings.save),
+                child: Text(context.l10n.save),
               ),
             ],
           ),

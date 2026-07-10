@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_link_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
@@ -17,30 +17,30 @@ class SettingsScreen extends ConsumerWidget {
 
     return ResponsiveScaffold(
       currentDestination: AppScaffoldDestination.settings,
-      appBar: AppBar(title: Text(AppStrings.settings.label)),
+      appBar: AppBar(title: Text(context.l10n.settingsLabel)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           AppSectionCard(
-            title: AppStrings.settings.appearance,
-            subtitle: AppStrings.settings.themeMode,
+            title: context.l10n.settingsAppearance,
+            subtitle: context.l10n.settingsThemeMode,
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SegmentedButton<ThemeMode>(
                 segments: [
                   ButtonSegment(
                     value: ThemeMode.system,
-                    label: Text(AppStrings.settings.followSystem),
+                    label: Text(context.l10n.settingsFollowSystem),
                     icon: const Icon(Icons.brightness_auto_outlined),
                   ),
                   ButtonSegment(
                     value: ThemeMode.light,
-                    label: Text(AppStrings.settings.light),
+                    label: Text(context.l10n.settingsLight),
                     icon: const Icon(Icons.light_mode_outlined),
                   ),
                   ButtonSegment(
                     value: ThemeMode.dark,
-                    label: Text(AppStrings.settings.dark),
+                    label: Text(context.l10n.settingsDark),
                     icon: const Icon(Icons.dark_mode_outlined),
                   ),
                 ],
@@ -53,24 +53,24 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           AppSectionCard(
-            title: AppStrings.settings.shortcuts,
+            title: context.l10n.settingsShortcuts,
             child: Column(
               children: [
                 SettingsLinkTile(
                   icon: Icons.backup_rounded,
-                  title: AppStrings.backup.label,
+                  title: context.l10n.backupLabel,
                   onTap: () => context.push(AppRoutes.backup),
                 ),
                 const Divider(height: 20),
                 SettingsLinkTile(
                   icon: Icons.shield_outlined,
-                  title: AppStrings.settings.permissions,
+                  title: context.l10n.settingsPermissions,
                   onTap: () => context.push(AppRoutes.permissions),
                 ),
                 const Divider(height: 20),
                 SettingsLinkTile(
                   icon: Icons.info_outline_rounded,
-                  title: AppStrings.settings.aboutApp,
+                  title: context.l10n.settingsAboutApp,
                   onTap: () => context.push(AppRoutes.about),
                 ),
               ],
@@ -78,8 +78,8 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 16),
           AppSectionCard(
-            title: AppStrings.settings.offlineTitle,
-            child: Text(AppStrings.settings.offlineBody),
+            title: context.l10n.settingsOfflineTitle,
+            child: Text(context.l10n.settingsOfflineBody),
           ),
         ],
       ),

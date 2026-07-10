@@ -6,7 +6,7 @@ import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/statistics_notifier.dart';
 import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
@@ -56,8 +56,8 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
       firstDate: DateTime(2020),
       lastDate: DateTime.now().add(const Duration(days: 365)),
       helpText: isStart
-          ? AppStrings.stats.selectStartDate
-          : AppStrings.stats.selectEndDate,
+          ? context.l10n.statsSelectStartDate
+          : context.l10n.statsSelectEndDate,
     );
     if (picked == null) {
       return;
@@ -111,29 +111,29 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
       child: ResponsiveScaffold(
         currentDestination: AppScaffoldDestination.statistics,
         appBar: AppBar(
-          title: const Text(AppStrings.statistics),
+          title: Text(context.l10n.statistics),
           actions: [
             IconButton(
               onPressed: () => notifier.refresh(force: true),
-              tooltip: AppStrings.stats.refresh,
+              tooltip: context.l10n.statsRefresh,
               icon: const Icon(Icons.refresh),
             ),
             IconButton(
               onPressed: () => context.push(AppRoutes.settings),
-              tooltip: AppStrings.settings.label,
+              tooltip: context.l10n.settingsLabel,
               icon: const Icon(Icons.settings_outlined),
             ),
           ],
           bottom: TabBar(
             tabs: [
-              Tab(text: AppStrings.stats.dailyOverview),
-              Tab(text: AppStrings.stats.perItemOverview),
+              Tab(text: context.l10n.statsDailyOverview),
+              Tab(text: context.l10n.statsPerItemOverview),
             ],
           ),
         ),
         body: showFullError
             ? AppErrorState(
-                message: AppStrings.errors.retryableGeneric,
+                message: context.l10n.errorRetryableGeneric,
                 onRetry: () => notifier.refresh(force: true),
               )
             : Column(
@@ -144,11 +144,11 @@ class _StatisticsScreenState extends ConsumerState<StatisticsScreen> {
                     const LinearProgressIndicator(),
                   if (state.error != null)
                     MaterialBanner(
-                      content: Text(AppStrings.errors.retryableGeneric),
+                      content: Text(context.l10n.errorRetryableGeneric),
                       actions: [
                         TextButton(
                           onPressed: () => notifier.refresh(force: true),
-                          child: const Text(AppStrings.retry),
+                          child: Text(context.l10n.retry),
                         ),
                       ],
                     ),
@@ -277,10 +277,10 @@ class _DailyOverviewTab extends StatelessWidget {
           ),
           const SizedBox(height: _sectionGap),
           if (!hasData)
-            const AppEmptyState(
+            AppEmptyState(
               icon: Icons.bar_chart_outlined,
-              title: AppStrings.statistics,
-              message: AppStrings.noStatisticsData,
+              title: context.l10n.statistics,
+              message: context.l10n.noStatisticsData,
             )
           else
             content,
@@ -400,14 +400,14 @@ class _PerItemOverviewTab extends StatelessWidget {
             child: TextField(
               controller: searchController,
               decoration: InputDecoration(
-                hintText: AppStrings.stats.searchHint,
+                hintText: context.l10n.statsSearchHint,
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (searchController.text.isNotEmpty)
                       IconButton(
-                        tooltip: AppStrings.clearSearch,
+                        tooltip: context.l10n.clearSearch,
                         onPressed: () {
                           searchController.clear();
                           notifier.setSearchQuery('');
@@ -415,7 +415,7 @@ class _PerItemOverviewTab extends StatelessWidget {
                         icon: const Icon(Icons.clear),
                       ),
                     IconButton(
-                      tooltip: AppStrings.stats.showHistory,
+                      tooltip: context.l10n.statsShowHistory,
                       onPressed: onSelectFromSearch,
                       icon: const Icon(Icons.insights_outlined),
                     ),
@@ -428,10 +428,10 @@ class _PerItemOverviewTab extends StatelessWidget {
           ),
           const SizedBox(height: _sectionGap),
           if (!hasData && searchController.text.isEmpty)
-            const AppEmptyState(
+            AppEmptyState(
               icon: Icons.insights_outlined,
-              title: AppStrings.statistics,
-              message: AppStrings.noStatisticsData,
+              title: context.l10n.statistics,
+              message: context.l10n.noStatisticsData,
             )
           else
             content,
@@ -463,12 +463,12 @@ class _DateRangeFilter extends StatelessWidget {
     );
   }
 
-  Widget _buildCompactRangeSelector() {
+  Widget _buildCompactRangeSelector(BuildContext context) {
     final ranges = [
-      (DateRange.last7Days, AppStrings.stats.last7Days),
-      (DateRange.last30Days, AppStrings.stats.last30Days),
-      (DateRange.allTime, AppStrings.stats.allTime),
-      (DateRange.custom, AppStrings.stats.customRange),
+      (DateRange.last7Days, context.l10n.statsLast7Days),
+      (DateRange.last30Days, context.l10n.statsLast30Days),
+      (DateRange.allTime, context.l10n.statsAllTime),
+      (DateRange.custom, context.l10n.statsCustomRange),
     ];
 
     return Wrap(
@@ -497,7 +497,7 @@ class _DateRangeFilter extends StatelessWidget {
   }) {
     final colorScheme = Theme.of(context).colorScheme;
     final headline = selectedDate == null
-        ? (isStartDate ? AppStrings.startDate : AppStrings.endDate)
+        ? (isStartDate ? context.l10n.startDate : context.l10n.endDate)
         : (isCompact
               ? DateFormat.MMMd().format(selectedDate)
               : DateFormat.yMMMd().format(selectedDate));
@@ -570,7 +570,7 @@ class _DateRangeFilter extends StatelessWidget {
             LayoutBuilder(
               builder: (context, constraints) {
                 if (constraints.maxWidth < _compactRangeSelectorBreakpoint) {
-                  return _buildCompactRangeSelector();
+                  return _buildCompactRangeSelector(context);
                 }
 
                 return SegmentedButton<DateRange>(
@@ -578,19 +578,19 @@ class _DateRangeFilter extends StatelessWidget {
                   segments: [
                     ButtonSegment(
                       value: DateRange.last7Days,
-                      label: _buildRangeLabel(AppStrings.stats.last7Days),
+                      label: _buildRangeLabel(context.l10n.statsLast7Days),
                     ),
                     ButtonSegment(
                       value: DateRange.last30Days,
-                      label: _buildRangeLabel(AppStrings.stats.last30Days),
+                      label: _buildRangeLabel(context.l10n.statsLast30Days),
                     ),
                     ButtonSegment(
                       value: DateRange.allTime,
-                      label: _buildRangeLabel(AppStrings.stats.allTime),
+                      label: _buildRangeLabel(context.l10n.statsAllTime),
                     ),
                     ButtonSegment(
                       value: DateRange.custom,
-                      label: _buildRangeLabel(AppStrings.stats.customRange),
+                      label: _buildRangeLabel(context.l10n.statsCustomRange),
                     ),
                   ],
                   selected: {state.dateRange},
@@ -646,27 +646,27 @@ class _SummaryCards extends StatelessWidget {
   Widget build(BuildContext context) {
     final cards = [
       (
-        AppStrings.stats.totalTodos,
+        context.l10n.statsTotalTodos,
         '${summaryStats.totalTodos}',
         Icons.checklist_rounded,
       ),
       (
-        AppStrings.stats.averageCompletedPerDay,
+        context.l10n.statsAverageCompletedPerDay,
         summaryStats.avgCompletedPerDay.toStringAsFixed(1),
         Icons.task_alt_rounded,
       ),
       (
-        AppStrings.stats.averageTimePerDay,
+        context.l10n.statsAverageTimePerDay,
         formatDuration(summaryStats.avgTimePerDaySeconds),
         Icons.schedule_rounded,
       ),
       (
-        AppStrings.stats.productiveTime,
+        context.l10n.statsProductiveTime,
         formatDuration(summaryStats.totalProductiveTimeSeconds),
         Icons.trending_up_rounded,
       ),
       (
-        AppStrings.stats.droppedTime,
+        context.l10n.statsDroppedTime,
         formatDuration(summaryStats.totalDroppedTimeSeconds),
         Icons.remove_circle_outline_rounded,
       ),

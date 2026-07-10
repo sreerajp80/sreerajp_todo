@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
 import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
@@ -18,6 +18,7 @@ import 'package:sreerajp_todo/presentation/screens/daily_list/daily_list_screen.
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
 
 import '../helpers/test_fixtures.dart';
+import '../helpers/test_l10n.dart';
 
 class InMemoryTodoRepository implements TodoRepository {
   InMemoryTodoRepository(List<TodoEntity> initialTodos)
@@ -123,6 +124,12 @@ class InMemoryTodoRepository implements TodoRepository {
 
   @override
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async => 0;
+
+  @override
+  Future<int> deleteByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async => 0;
 }
 
 class FakeTimeSegmentRepository implements TimeSegmentRepository {
@@ -153,6 +160,8 @@ class _UndoSnackBarHarness extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       home: MediaQuery(
         data: const MediaQueryData(accessibleNavigation: false),
         child: Scaffold(
@@ -211,14 +220,18 @@ void main() {
             StartTimeSegment(todoRepository, timeSegmentRepository),
           ),
         ],
-        child: MaterialApp(home: DailyListScreen(date: date)),
+        child: MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: DailyListScreen(date: date),
+        ),
       ),
     );
     await tester.pumpAndSettle();
   }
 
   Future<void> markTodoCompletedFromStrip(WidgetTester tester) async {
-    await tester.tap(find.bySemanticsLabel(AppStrings.completeAction));
+    await tester.tap(find.bySemanticsLabel(testL10n.completeAction));
     await tester.pumpAndSettle();
   }
 
@@ -228,7 +241,7 @@ void main() {
     await markTodoCompletedFromStrip(tester);
 
     expect(
-      find.text('${AppStrings.statusChangedTo} ${AppStrings.statusCompleted}'),
+      find.text('${testL10n.statusChangedTo} ${testL10n.statusCompleted}'),
       findsOneWidget,
     );
   });
@@ -237,12 +250,12 @@ void main() {
     await pumpDailyList(tester);
 
     await markTodoCompletedFromStrip(tester);
-    await tester.tap(find.text(AppStrings.undo));
+    await tester.tap(find.text(testL10n.undo));
     await tester.pumpAndSettle();
 
     final restored = await todoRepository.getTodoById(todo.id);
     expect(restored?.status, TodoStatus.pending);
-    expect(find.text(AppStrings.statusPending), findsOneWidget);
+    expect(find.text(testL10n.statusPending), findsOneWidget);
   });
 
   testWidgets('snackbar auto-dismisses after the configured timeout', (
@@ -270,5 +283,18 @@ void main() {
     await markTodoCompletedFromStrip(tester);
 
     expect(find.byIcon(Icons.undo), findsOneWidget);
+  });
+
+  testWidgets('past-day app bar keeps copy-to-another-day visible', (
+    tester,
+  ) async {
+    date = dateOffsetIso(-1);
+    todo = buildTodo(id: 'todo-1', date: date, title: 'Past task');
+    todoRepository = InMemoryTodoRepository([todo]);
+
+    await pumpDailyList(tester);
+
+    expect(find.byTooltip(testL10n.copyToAnotherDay), findsOneWidget);
+    expect(find.byTooltip(testL10n.createTodo), findsNothing);
   });
 }

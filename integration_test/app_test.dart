@@ -9,7 +9,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sreerajp_todo/app.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/core/constants/app_strings.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/backup/backup_service.dart';
@@ -23,6 +22,12 @@ import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
+import 'package:sreerajp_todo/l10n/app_localizations_en.dart';
+
+/// English localizations for asserting on UI text. The app under test resolves
+/// to `en` by default, so these match the rendered strings.
+final AppLocalizations testL10n = AppLocalizationsEn();
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -39,25 +44,25 @@ void main() {
         await _createTodoThroughUi(tester, title: 'Integration Test Task');
         expect(find.text('Integration Test Task'), findsOneWidget);
 
-        await tester.tap(find.byTooltip(AppStrings.startTimer));
+        await tester.tap(find.byTooltip(testL10n.startTimer));
         await tester.pump();
         await tester.pump(const Duration(seconds: 2));
-        await tester.tap(find.byTooltip(AppStrings.stopTimer));
+        await tester.tap(find.byTooltip(testL10n.stopTimer));
         await tester.pumpAndSettle();
 
         expect(find.text('00:00:02'), findsOneWidget);
 
         await _openTaskMenu(tester, itemIndex: 0);
-        await tester.tap(find.text(AppStrings.statusCompleted).last);
+        await tester.tap(find.text(testL10n.statusCompleted).last);
         await tester.pumpAndSettle();
 
-        expect(find.text(AppStrings.statusCompleted), findsOneWidget);
+        expect(find.text(testL10n.statusCompleted), findsOneWidget);
 
         await _openAppMenu(tester);
-        await tester.tap(find.text(AppStrings.statistics).last);
+        await tester.tap(find.text(testL10n.statistics).last);
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text(AppStrings.stats.perItemOverview));
+        await tester.tap(find.text(testL10n.statsPerItemOverview));
         await tester.pumpAndSettle();
 
         expect(find.text('Integration Test Task'), findsWidgets);
@@ -82,25 +87,25 @@ void main() {
         await harness.reloadToday(tester);
 
         await _openAppMenu(tester);
-        await tester.tap(find.text(AppStrings.copyToAnotherDay).last);
+        await tester.tap(find.text(testL10n.copyToAnotherDay).last);
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(CheckboxListTile).at(0));
         await tester.pumpAndSettle();
         await tester.tap(find.byType(CheckboxListTile).at(1));
         await tester.pumpAndSettle();
-        await tester.tap(find.text(AppStrings.next));
+        await tester.tap(find.text(testL10n.next));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.text(AppStrings.selectTargetDate));
+        await tester.tap(find.text(testL10n.selectTargetDate));
         await tester.pumpAndSettle();
         await _pickTomorrow(tester);
-        await tester.tap(find.text(AppStrings.next));
+        await tester.tap(find.text(testL10n.next));
         await tester.pumpAndSettle();
-        await tester.tap(find.textContaining(AppStrings.copyConfirm));
+        await tester.tap(find.textContaining(testL10n.copyConfirm));
         await tester.pumpAndSettle();
 
-        await tester.tap(find.byTooltip(AppStrings.nextDay));
+        await tester.tap(find.byTooltip(testL10n.nextDay));
         await tester.pumpAndSettle();
 
         expect(find.text('Copy A'), findsOneWidget);
@@ -132,12 +137,12 @@ void main() {
           ),
         );
 
-        await tester.tap(find.byTooltip(AppStrings.previousDay));
+        await tester.tap(find.byTooltip(testL10n.previousDay));
         await tester.pumpAndSettle();
 
         expect(find.byType(FloatingActionButton), findsNothing);
         expect(find.byIcon(Icons.lock_outline), findsWidgets);
-        expect(find.byTooltip(AppStrings.openTaskActions), findsNothing);
+        expect(find.byTooltip(testL10n.openTaskActions), findsNothing);
 
         expect(
           () => harness.todoRepository.createTodo(
@@ -171,7 +176,7 @@ void main() {
       );
       expect(editableText.textDirection, TextDirection.rtl);
 
-      await tester.tap(find.text(AppStrings.save));
+      await tester.tap(find.text(testL10n.save));
       await tester.pumpAndSettle();
 
       await harness.todoRepository.createTodo(
@@ -182,7 +187,7 @@ void main() {
       expect(find.text('المهمة العربية'), findsOneWidget);
       expect(find.text('日本語タスク'), findsOneWidget);
 
-      await tester.tap(find.byTooltip(AppStrings.searchResults));
+      await tester.tap(find.byTooltip(testL10n.searchResults));
       await tester.pumpAndSettle();
       await tester.enterText(find.byType(TextField).first, 'المهمة');
       await tester.pump(
@@ -203,9 +208,9 @@ void main() {
       await harness.reloadToday(tester);
 
       await _openTaskMenu(tester, itemIndex: 0);
-      await tester.tap(find.text(AppStrings.statusCompleted).last);
+      await tester.tap(find.text(testL10n.statusCompleted).last);
       await tester.pumpAndSettle();
-      await tester.tap(find.text(AppStrings.undo));
+      await tester.tap(find.text(testL10n.undo));
       await tester.pumpAndSettle();
 
       final restoredAfterComplete = await harness.todoRepository.getTodoById(
@@ -214,14 +219,14 @@ void main() {
       expect(restoredAfterComplete?.status, TodoStatus.pending);
 
       await _openTaskMenu(tester, itemIndex: 0);
-      await tester.tap(find.text(AppStrings.port).last);
+      await tester.tap(find.text(testL10n.port).last);
       await tester.pumpAndSettle();
-      await tester.tap(find.text(AppStrings.confirm));
+      await tester.tap(find.text(testL10n.confirm));
       await tester.pumpAndSettle();
       await tester.tap(find.text('OK'));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text(AppStrings.undo));
+      await tester.tap(find.text(testL10n.undo));
       await tester.pumpAndSettle();
 
       final sourceTodo = await harness.todoRepository.getTodoById('undo-1');
@@ -318,11 +323,11 @@ void main() {
       await harness.reloadToday(tester);
 
       await _openTaskMenu(tester, itemIndex: 0);
-      await tester.tap(find.text(AppStrings.viewSegments).last);
+      await tester.tap(find.text(testL10n.viewSegments).last);
       await tester.pumpAndSettle();
 
       expect(find.text('01:30:00'), findsOneWidget);
-      expect(find.text(AppStrings.manualSegmentShort), findsOneWidget);
+      expect(find.text(testL10n.manualSegmentShort), findsOneWidget);
 
       expect(
         () => harness.timeSegmentRepository.insertManualSegment(
@@ -361,9 +366,9 @@ void main() {
 
       await tester.longPress(find.text('Bulk 1'));
       await tester.pumpAndSettle();
-      await tester.tap(find.byTooltip(AppStrings.selectAll));
+      await tester.tap(find.byTooltip(testL10n.selectAll));
       await tester.pumpAndSettle();
-      await tester.tap(find.text(AppStrings.completeAll));
+      await tester.tap(find.text(testL10n.completeAll));
       await tester.pumpAndSettle();
 
       final completed = await harness.todoRepository.getTodosByDate(
@@ -374,7 +379,7 @@ void main() {
         isTrue,
       );
 
-      await tester.tap(find.text(AppStrings.undo));
+      await tester.tap(find.text(testL10n.undo));
       await tester.pumpAndSettle();
 
       final restored = await harness.todoRepository.getTodosByDate(
@@ -457,15 +462,15 @@ void main() {
 
       await _createTodoThroughUi(tester, title: 'Offline smoke task');
       await _openTaskMenu(tester, itemIndex: 0);
-      await tester.tap(find.text(AppStrings.statusCompleted).last);
+      await tester.tap(find.text(testL10n.statusCompleted).last);
       await tester.pumpAndSettle();
 
       await _openAppMenu(tester);
-      await tester.tap(find.text(AppStrings.statistics).last);
+      await tester.tap(find.text(testL10n.statistics).last);
       await tester.pumpAndSettle();
 
-      expect(find.text(AppStrings.statistics), findsWidgets);
-      expect(find.text(AppStrings.stats.dailyOverview), findsOneWidget);
+      expect(find.text(testL10n.statistics), findsWidgets);
+      expect(find.text(testL10n.statsDailyOverview), findsOneWidget);
     });
   });
 }
@@ -563,7 +568,7 @@ Future<void> _createTodoThroughUi(
     await tester.enterText(find.byType(TextFormField).at(1), description);
   }
 
-  await tester.tap(find.text(AppStrings.save));
+  await tester.tap(find.text(testL10n.save));
   await tester.pumpAndSettle();
 }
 
@@ -571,7 +576,7 @@ Future<void> _openTaskMenu(
   WidgetTester tester, {
   required int itemIndex,
 }) async {
-  await tester.tap(find.byTooltip(AppStrings.openTaskActions).at(itemIndex));
+  await tester.tap(find.byTooltip(testL10n.openTaskActions).at(itemIndex));
   await tester.pumpAndSettle();
 }
 
