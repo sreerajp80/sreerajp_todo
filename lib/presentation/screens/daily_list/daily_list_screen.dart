@@ -439,6 +439,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                       buildDefaultDragHandles: !_isPast,
                       padding: const EdgeInsets.only(bottom: 88),
                       itemCount: sortedTodos.length,
+                      // ignore: deprecated_member_use
                       onReorder: (oldIndex, newIndex) {
                         if (!_isPast) {
                           notifier.reorder(oldIndex, newIndex);
