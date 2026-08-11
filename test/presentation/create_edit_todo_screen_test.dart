@@ -72,6 +72,20 @@ class _FakeTodoRepository implements TodoRepository {
   Future<void> bulkCreateTodos(List<TodoEntity> todos) async {}
 
   @override
+  Future<void> toggleSubTask(
+    String todoId,
+    String subTaskId,
+    bool isCompleted, {
+    bool bypassLock = false,
+  }) async {}
+
+  @override
+  Future<List<TodoEntity>> getPendingPrerequisites(String todoId) async => [];
+
+  @override
+  Future<bool> isTodoBlocked(String todoId) async => false;
+
+  @override
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async => 0;
 
   @override
@@ -178,7 +192,13 @@ void main() {
     await tester.pumpAndSettle();
 
     // Open the custom recurrence sheet via the "Repeat…" segment.
-    await tester.tap(find.text(testL10n.repeatConfigure));
+    final repeatSegment = find.text(testL10n.repeatConfigure);
+    await tester.dragUntilVisible(
+      repeatSegment,
+      find.byType(ListView),
+      const Offset(0, -100),
+    );
+    await tester.tap(repeatSegment);
     await tester.pumpAndSettle();
 
     // Default "Ends" mode is Never — no end-date helper text yet.
@@ -190,9 +210,6 @@ void main() {
 
     // Default day count is 7, so the inclusive end date is start + 6 days.
     final expectedEnd = formatDateFromIso(dateOffsetIso(6));
-    expect(
-      find.text('${testL10n.endDate}: $expectedEnd'),
-      findsOneWidget,
-    );
+    expect(find.text('${testL10n.endDate}: $expectedEnd'), findsOneWidget);
   });
 }

@@ -53,7 +53,7 @@ lib/
 |   |-- errors/                     # exceptions, failures
 |   `-- utils/                      # date_utils, duration_utils, unicode_utils
 |-- data/
-|   |-- database/                   # database_service, migrations/
+|   |-- database/                   # database_service, database_key_service, migrations/
 |   |-- dao/                        # todo_dao, time_segment_dao, recurrence_rule_dao, statistics_query_service
 |   |-- repositories/               # todo_repository_impl, time_segment_repository_impl
 |   |-- backup/                     # backup_service

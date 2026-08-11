@@ -1,16 +1,59 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
+import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
+import 'package:sreerajp_todo/data/dao/sub_task_dao.dart';
+import 'package:sreerajp_todo/data/dao/task_dependency_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 
 class TodoDao {
-  TodoDao(this._databaseService);
+  TodoDao(
+    this._databaseService, {
+    SubTaskDao? subTaskDao,
+    TaskDependencyDao? taskDependencyDao,
+  })  : _subTaskDao = subTaskDao ?? SubTaskDao(_databaseService),
+        _taskDependencyDao =
+            taskDependencyDao ?? TaskDependencyDao(_databaseService);
 
   final DatabaseService _databaseService;
+  final SubTaskDao _subTaskDao;
+  final TaskDependencyDao _taskDependencyDao;
+
+  SubTaskDao get subTaskDao => _subTaskDao;
+  TaskDependencyDao get taskDependencyDao => _taskDependencyDao;
+
+  String _buildFtsQuery(String query) {
+    final normalized = nfcNormalize(query).trim();
+    if (normalized.isEmpty) return '';
+
+    if (normalized.startsWith('"') &&
+        normalized.endsWith('"') &&
+        normalized.length > 2) {
+      final phrase = normalized
+          .substring(1, normalized.length - 1)
+          .replaceAll('"', '""');
+      return '"$phrase"';
+    }
+
+    final cleaned = normalized.replaceAll(RegExp(r'["*\^:()\-+]'), ' ');
+    final words = cleaned.split(RegExp(r'\s+')).where((w) => w.isNotEmpty);
+    if (words.isEmpty) return '';
+    return words.map((w) => '$w*').join(' AND ');
+  }
 
   Future<void> insert(TodoEntity todo, {DatabaseExecutor? executor}) async {
     final db = executor ?? await _databaseService.database;
     await db.insert('todos', todo.toMap());
+    if (todo.subTasks.isNotEmpty) {
+      await _subTaskDao.saveAllForTodo(todo.id, todo.subTasks, executor: db);
+    }
+    if (todo.prerequisiteTodoIds.isNotEmpty) {
+      await _taskDependencyDao.setPrerequisitesForTodo(
+        todo.id,
+        todo.prerequisiteTodoIds,
+        executor: db,
+      );
+    }
   }
 
   Future<void> update(TodoEntity todo, {DatabaseExecutor? executor}) async {
@@ -22,6 +65,16 @@ class TodoDao {
       updated.toMap(),
       where: 'id = ?',
       whereArgs: [updated.id],
+    );
+    await _subTaskDao.saveAllForTodo(
+      updated.id,
+      updated.subTasks,
+      executor: db,
+    );
+    await _taskDependencyDao.setPrerequisitesForTodo(
+      updated.id,
+      updated.prerequisiteTodoIds,
+      executor: db,
     );
   }
 
@@ -58,9 +111,6 @@ class TodoDao {
     );
   }
 
-  /// Deletes occurrences of [recurrenceRuleId] on or after [fromDate]
-  /// (`YYYY-MM-DD`). `date` is stored as a sortable ISO string, so a
-  /// lexicographic `>=` comparison is also a chronological one.
   Future<int> deleteByRecurrenceRuleIdFromDate(
     String recurrenceRuleId,
     String fromDate,
@@ -81,7 +131,23 @@ class TodoDao {
       whereArgs: [date],
       orderBy: 'sort_order ASC, created_at ASC',
     );
-    return maps.map(TodoEntity.fromMap).toList();
+    final todos = <TodoEntity>[];
+    for (final map in maps) {
+      final id = map['id'] as String;
+      final subTasks = await _subTaskDao.findByTodoId(id, executor: db);
+      final prereqIds = await _taskDependencyDao.getPrerequisiteIdsForTodo(
+        id,
+        executor: db,
+      );
+      todos.add(
+        TodoEntity.fromMap(
+          map,
+          subTasks: subTasks,
+          prerequisiteTodoIds: prereqIds,
+        ),
+      );
+    }
+    return todos;
   }
 
   Future<TodoEntity?> findById(String id) async {
@@ -93,7 +159,16 @@ class TodoDao {
       limit: 1,
     );
     if (maps.isEmpty) return null;
-    return TodoEntity.fromMap(maps.first);
+    final subTasks = await _subTaskDao.findByTodoId(id, executor: db);
+    final prereqIds = await _taskDependencyDao.getPrerequisiteIdsForTodo(
+      id,
+      executor: db,
+    );
+    return TodoEntity.fromMap(
+      maps.first,
+      subTasks: subTasks,
+      prerequisiteTodoIds: prereqIds,
+    );
   }
 
   Future<bool> existsTitleOnDate(
@@ -126,16 +201,55 @@ class TodoDao {
     return maps.map((m) => m['title'] as String).toList();
   }
 
-  Future<List<TodoEntity>> searchByTitle(String query, {int limit = 50}) async {
+  Future<List<TodoEntity>> searchByTitle(
+    String query, {
+    int limit = 50,
+  }) async {
     final db = await _databaseService.database;
-    final maps = await db.query(
-      'todos',
-      where: 'title LIKE ?',
-      whereArgs: ['%$query%'],
-      limit: limit,
-      orderBy: 'date DESC, sort_order ASC',
-    );
-    return maps.map(TodoEntity.fromMap).toList();
+    final ftsQuery = _buildFtsQuery(query);
+    if (ftsQuery.isEmpty) return [];
+
+    List<Map<String, dynamic>> maps;
+    try {
+      maps = await db.rawQuery(
+        '''
+        SELECT t.*
+        FROM todos_fts fts
+        JOIN todos t ON t.id = fts.todo_id
+        WHERE todos_fts MATCH ?
+        ORDER BY t.date DESC, t.sort_order ASC
+        LIMIT ?
+        ''',
+        [ftsQuery, limit],
+      );
+    } catch (_) {
+      final normalized = nfcNormalize(query).trim();
+      maps = await db.query(
+        'todos',
+        where: 'title LIKE ? OR description LIKE ?',
+        whereArgs: ['%$normalized%', '%$normalized%'],
+        limit: limit,
+        orderBy: 'date DESC, sort_order ASC',
+      );
+    }
+
+    final todos = <TodoEntity>[];
+    for (final map in maps) {
+      final id = map['id'] as String;
+      final subTasks = await _subTaskDao.findByTodoId(id, executor: db);
+      final prereqIds = await _taskDependencyDao.getPrerequisiteIdsForTodo(
+        id,
+        executor: db,
+      );
+      todos.add(
+        TodoEntity.fromMap(
+          map,
+          subTasks: subTasks,
+          prerequisiteTodoIds: prereqIds,
+        ),
+      );
+    }
+    return todos;
   }
 
   Future<int> maxSortOrder(String date) async {
@@ -154,7 +268,7 @@ class TodoDao {
     final db = await _databaseService.database;
     await db.transaction((txn) async {
       for (final todo in todos) {
-        await txn.insert('todos', todo.toMap());
+        await insert(todo, executor: txn);
       }
     });
   }

@@ -23,6 +23,9 @@ class TodoRepositoryImpl implements TodoRepository {
       description: todo.description != null
           ? nfcNormalize(todo.description!)
           : null,
+      subTasks: todo.subTasks
+          .map((st) => st.copyWith(title: nfcNormalize(st.title)))
+          .toList(),
     );
   }
 
@@ -148,5 +151,32 @@ class TodoRepositoryImpl implements TodoRepository {
   Future<void> bulkCreateTodos(List<TodoEntity> todos) async {
     final normalized = todos.map(_normalize).toList();
     await _todoDao.bulkInsert(normalized);
+  }
+
+  @override
+  Future<void> toggleSubTask(
+    String todoId,
+    String subTaskId,
+    bool isCompleted, {
+    bool bypassLock = false,
+  }) async {
+    final todo = await _todoDao.findById(todoId);
+    if (todo == null) throw const TodoNotFoundException();
+    _checkDayLock(todo.date, bypassLock: bypassLock);
+    final now = DateTime.now().toUtc().toIso8601String();
+    await _todoDao.subTaskDao.toggleSubTask(subTaskId, isCompleted, now);
+  }
+
+  @override
+  Future<List<TodoEntity>> getPendingPrerequisites(String todoId) async {
+    return _todoDao.taskDependencyDao.getPendingPrerequisites(todoId);
+  }
+
+  @override
+  Future<bool> isTodoBlocked(String todoId) async {
+    final pending = await _todoDao.taskDependencyDao.getPendingPrerequisites(
+      todoId,
+    );
+    return pending.isNotEmpty;
   }
 }

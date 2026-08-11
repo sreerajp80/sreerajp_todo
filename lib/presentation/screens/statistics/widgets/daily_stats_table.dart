@@ -325,9 +325,7 @@ class _PaginationFooter extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Text(
-                context.l10n.statsPageOf(currentPage + 1, pageCount),
-              ),
+              child: Text(context.l10n.statsPageOf(currentPage + 1, pageCount)),
             ),
             Expanded(
               child: compact

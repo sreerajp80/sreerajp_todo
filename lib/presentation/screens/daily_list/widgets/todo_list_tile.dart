@@ -324,6 +324,14 @@ class TodoListTile extends ConsumerWidget {
 
     final isDark = theme.brightness == Brightness.dark;
 
+    final pendingPrereqs =
+        ref.watch(pendingPrerequisitesProvider(todo.id)).valueOrNull ?? [];
+    final isBlocked = pendingPrereqs.isNotEmpty;
+
+    final completedSubTasks =
+        todo.subTasks.where((st) => st.isCompleted).length;
+    final totalSubTasks = todo.subTasks.length;
+
     final tile = Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: AnimatedContainer(
@@ -467,14 +475,33 @@ class TodoListTile extends ConsumerWidget {
                                         if (isRunning) {
                                           notifier.stopTimer();
                                         } else {
+                                          if (isBlocked) {
+                                            ScaffoldMessenger.of(
+                                              context,
+                                            ).showSnackBar(
+                                              SnackBar(
+                                                content: Text(
+                                                  context.l10n.blockedWarning,
+                                                ),
+                                                backgroundColor:
+                                                    colorScheme.error,
+                                              ),
+                                            );
+                                          }
                                           notifier.startTimer();
                                         }
                                       },
                                       backgroundColor: isRunning
                                           ? colorScheme.errorContainer
+                                          : isBlocked
+                                          ? colorScheme.errorContainer.withValues(
+                                              alpha: 0.3,
+                                            )
                                           : colorScheme.primaryContainer,
                                       foregroundColor: isRunning
                                           ? colorScheme.onErrorContainer
+                                          : isBlocked
+                                          ? colorScheme.error
                                           : colorScheme.onPrimaryContainer,
                                     );
                                   },
@@ -523,7 +550,7 @@ class TodoListTile extends ConsumerWidget {
                               ],
                             ],
                           ),
-                          // Row 2: status badge + timer + metadata
+                          // Row 2: status badge + timer + subtask pill + blocked badge + metadata
                           const SizedBox(height: 6),
                           Wrap(
                             spacing: 8,
@@ -534,6 +561,88 @@ class TodoListTile extends ConsumerWidget {
                                 label: _statusLabel(context, displayStatus),
                                 status: displayStatus,
                               ),
+                              if (totalSubTasks > 0)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: completedSubTasks == totalSubTasks
+                                        ? colorScheme.primaryContainer
+                                        : colorScheme.surfaceContainerHigh,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: colorScheme.outlineVariant,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        completedSubTasks == totalSubTasks
+                                            ? Icons.check_circle_outline
+                                            : Icons.checklist_rounded,
+                                        size: 13,
+                                        color: completedSubTasks == totalSubTasks
+                                            ? colorScheme.primary
+                                            : colorScheme.onSurfaceVariant,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '$completedSubTasks/$totalSubTasks',
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  completedSubTasks ==
+                                                          totalSubTasks
+                                                      ? colorScheme.primary
+                                                      : colorScheme
+                                                            .onSurfaceVariant,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              if (isBlocked)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.errorContainer.withValues(
+                                      alpha: 0.6,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: colorScheme.error.withValues(
+                                        alpha: 0.4,
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.warning_amber_rounded,
+                                        size: 13,
+                                        color: colorScheme.onErrorContainer,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        '${context.l10n.blockedBy} ${pendingPrereqs.length}',
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color:
+                                                  colorScheme.onErrorContainer,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               if (displaySeconds > 0 || isRunning)
                                 Container(
                                   padding: const EdgeInsets.symmetric(

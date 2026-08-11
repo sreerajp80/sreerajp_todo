@@ -1,7 +1,7 @@
 # SreerajP ToDo — Project Plan
 
-**Flutter SDK:** 3.41.4 (stable) • rev `ff37bef603` • 2026-03-03
-**Dart SDK:** 3.11.1 • DevTools 2.54.1
+**Flutter SDK:** 3.44.8 (stable) • rev `058e0af2c2`
+**Dart SDK:** 3.12.2 • DevTools 2.57.0
 **IDE:** Visual Studio Code
 **Project Root:** `L:\Android\sreerajp_todo`
 **Date:** 2026-03-15
@@ -50,10 +50,10 @@ All text fields (title, description) must fully support **Unicode** characters i
 
 | Tool | Version | Purpose |
 |------|---------|---------|
-| Flutter SDK | 3.41.4 (stable) • channel stable • rev `ff37bef603` | Cross-platform UI framework |
-| Dart | 3.11.1 (bundled with Flutter 3.41.4) | Programming language |
-| Flutter Engine | rev `e4b8dca3f1` • hash `99578ad035` | Native rendering engine |
-| Dart DevTools | 2.54.1 | Performance profiling, widget inspector, DB viewer |
+| Flutter SDK | 3.44.8 (stable) • channel stable • rev `058e0af2c2` | Cross-platform UI framework |
+| Dart | 3.12.2 (bundled with Flutter 3.44.8) | Programming language |
+| Flutter Engine | rev `0cd610717b` • hash `13ffd72b2f9a5ca4db2a74ea52d5353ec2e8f939` | Native rendering engine |
+| Dart DevTools | 2.57.0 | Performance profiling, widget inspector, DB viewer |
 | Visual Studio Code | Latest stable | Primary IDE |
 | Dart & Flutter VS Code Extension | Latest | Syntax, debug, hot reload |
 

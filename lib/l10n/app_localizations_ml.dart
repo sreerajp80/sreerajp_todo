@@ -637,6 +637,34 @@ class AppLocalizationsMl extends AppLocalizations {
   String get backupImportInProgress => 'ബാക്കപ്പ് പുനഃസ്ഥാപിക്കുന്നു...';
 
   @override
+  String get backupHealthDashboardTitle => 'ബാക്കപ്പ് ഹെൽത്ത് ഡാഷ്‌ബോർഡ്';
+
+  @override
+  String get backupHealthStatusHealthy => 'ആരോഗ്യമുള്ളത്';
+
+  @override
+  String get backupHealthStatusWarning => 'ശ്രദ്ധ ആവശ്യമാണ്';
+
+  @override
+  String get backupHealthStatusNoBackups =>
+      'ബാക്കപ്പുകളൊന്നും സൃഷ്ടിച്ചിട്ടില്ല';
+
+  @override
+  String get backupHealthLogsTitle => 'എക്സിക്യൂഷൻ രോഗനിർണ്ണയ ലോഗുകൾ';
+
+  @override
+  String get backupHealthTriggerManual => 'മാനുവൽ';
+
+  @override
+  String get backupHealthTriggerScheduled => 'ഷെഡ്യൂൾ ചെയ്തത്';
+
+  @override
+  String get backupHealthStatusSuccess => 'വിജയിച്ചു';
+
+  @override
+  String get backupHealthStatusFailed => 'പരാജയപ്പെട്ടു';
+
+  @override
   String get settingsLabel => 'ക്രമീകരണങ്ങൾ';
 
   @override
@@ -653,6 +681,18 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get settingsDark => 'ഡാർക്ക്';
+
+  @override
+  String get settingsLanguage => 'ഭാഷ';
+
+  @override
+  String get settingsLanguageSystem => 'സിസ്റ്റം ഡിഫോൾട്ട്';
+
+  @override
+  String get settingsLanguageEnglish => 'ഇംഗ്ലീഷ്';
+
+  @override
+  String get settingsLanguageMalayalam => 'മലയാളം';
 
   @override
   String get settingsShortcuts => 'കുറുക്കുവഴികൾ';
@@ -903,4 +943,145 @@ class AppLocalizationsMl extends AppLocalizations {
   @override
   String get errorRetryableGeneric =>
       'എന്തോ കുഴപ്പം സംഭവിച്ചു. വീണ്ടും ശ്രമിക്കാൻ ടാപ്പ് ചെയ്യുക.';
+
+  @override
+  String get subTasks => 'സബ് ടാസ്കുകൾ';
+
+  @override
+  String get addSubTask => 'സബ് ടാസ്ക് ചേർക്കുക';
+
+  @override
+  String get blockedBy => 'തടസ്സപ്പെട്ടു';
+
+  @override
+  String get prerequisiteTasks => 'മുൻഗണനാ ടാസ്കുകൾ';
+
+  @override
+  String get blockedWarning =>
+      'മുന്നറിയിപ്പ്: പൂർത്തിയാകാത്ത മുൻഗണനാ ടാസ്കുകൾ ഉണ്ട്';
+
+  @override
+  String get morningIntention => 'രാവിലെ ഉദ്ദേശ്യം';
+
+  @override
+  String get eveningReflection => 'വൈകുന്നേരത്തെ പ്രതിഫലനം';
+
+  @override
+  String get eveningReflectionTitle => 'വൈകുന്നേരത്തെ പ്രതിഫലന ചടങ്ങ്';
+
+  @override
+  String get reflectionSummaryTitle => 'ഇന്നത്തെ ഉൽപ്പാദനക്ഷമതാ സംഗ്രഹം';
+
+  @override
+  String get completedTime => 'പൂർത്തിയാക്കിയ സമയം';
+
+  @override
+  String get droppedTime => 'ഉപേക്ഷിച്ച് സമയം';
+
+  @override
+  String get completionRatio => 'പൂർത്തീകരണ നിരക്ക്';
+
+  @override
+  String get reflectionNoteHint =>
+      'ഇന്നത്തെ ദിവസത്തെ കുറിച്ച് ഒരു ചെറിയ കുറിപ്പ് എഴുതുക...';
+
+  @override
+  String get reflectionSaved => 'പ്രതിഫലന കുറിപ്പ് സംരക്ഷിച്ചു.';
+
+  @override
+  String get cycleIntention => 'ഉദ്ദേശ്യം മാറ്റുക';
+
+  @override
+  String get startReflection => 'പ്രതിഫലനം ആരംഭിക്കുക';
+
+  @override
+  String get mindfulFocusRules => 'ദിനചര്യ ശ്രദ്ധാ നിയമങ്ങൾ';
+
+  @override
+  String get defaultIntention1 =>
+      'ഇന്ന് ഒരു സമയത്ത് ഒരു കാര്യത്തിൽ മാത്രം ശ്രദ്ധ കേന്ദ്രീകരിക്കുക; വൈകാരിക ശബ്ദമില്ലാതെ കടമ നിർവഹിക്കുക.';
+
+  @override
+  String get defaultIntention2 =>
+      'പൂർണ്ണതയേക്കാൾ സ്ഥിരമായ പുരോഗതിക്ക് മുൻഗണന നൽകുക; ശാന്തത പാലിക്കുക.';
+
+  @override
+  String get defaultIntention3 =>
+      'മാറുന്ന സാഹചര്യങ്ങളെ ശാന്തതയോടെ സ്വീകരിക്കുക; നിങ്ങളുടെ പ്രയത്നം കേന്ദ്രീകരിക്കുക.';
+
+  @override
+  String get defaultIntention4 =>
+      'നിങ്ങളുടെ നിയന്ത്രണത്തിലുള്ള കാര്യങ്ങളിൽ ശ്രദ്ധ തിരിക്കുക; ബാക്കിയുള്ളവ ഒഴിവാക്കുക.';
+
+  @override
+  String get defaultIntention5 =>
+      'അടുത്തതിലേക്ക് കടക്കുന്നതിന് മുമ്പ് ഓരോ ഭാഗവും പൂർണ്ണ സാന്നിധ്യത്തോടെ പൂർത്തിയാക്കുക.';
+
+  @override
+  String get dataHandoffTitle => 'Data Handoff (JSON & MD)';
+
+  @override
+  String get actionChange => 'Change';
+
+  @override
+  String get dataHandoffHeader => 'JSON & Markdown Data Handoff';
+
+  @override
+  String get dataHandoffSubtitle =>
+      'Ingest and export task lists, subtask checklists, and timecard summaries fully offline.';
+
+  @override
+  String get exportJsonLabel => 'Export JSON Data Payload';
+
+  @override
+  String get exportJsonDesc =>
+      'Exports tasks, subtasks, recurrence rules, time segments, and Markdown notes to a structured JSON file.';
+
+  @override
+  String get exportMarkdownLabel => 'Export Markdown Checklist';
+
+  @override
+  String get exportMarkdownDesc =>
+      'Generates a clean Markdown checklist file (- [ ] / - [x]) and timecard summary.';
+
+  @override
+  String get importFileLabel => 'Import JSON / Markdown File';
+
+  @override
+  String get importFileDesc =>
+      'Pick a .json or .md file from device storage to convert and merge into tasks.';
+
+  @override
+  String get pasteMarkdownLabel => 'Paste Raw Markdown Text';
+
+  @override
+  String get pasteMarkdownDesc =>
+      'Paste raw Markdown text containing - [ ] and - [x] checklist items to parse.';
+
+  @override
+  String get targetDateLabel => 'Target Date for Data Handoff';
+
+  @override
+  String get markdownImportTitle => 'Paste Markdown Checklist Text';
+
+  @override
+  String get parseMarkdownPreview => 'Parsed Tasks Preview';
+
+  @override
+  String get importSuccessMsg => 'Successfully imported tasks.';
+
+  @override
+  String get exportSuccessMsg => 'Export saved successfully to file.';
+
+  @override
+  String get wifiSyncTitle => 'ലോക്കൽ P2P വൈഫൈ സിങ്ക്';
+
+  @override
+  String get airQrShareTitle => 'AirQR ഷെയർ സ്ട്രീം';
+
+  @override
+  String get airQrScanTitle => 'AirQR സ്കാൻ ക്യാമറ';
+
+  @override
+  String get moreOptions => 'കൂടുതൽ ഓപ്ഷനുകൾ';
 }

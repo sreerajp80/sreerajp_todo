@@ -22,6 +22,8 @@ import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart'
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/core/utils/rrule_display_utils.dart';
 
+import 'package:sreerajp_todo/data/models/sub_task_item.dart';
+
 class CreateEditTodoScreen extends ConsumerStatefulWidget {
   const CreateEditTodoScreen({super.key, this.todoId, this.date});
 
@@ -41,6 +43,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _newSubTaskController = TextEditingController();
   final _titleFocusNode = FocusNode();
 
   TodoStatus _status = TodoStatus.pending;
@@ -51,6 +54,11 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   bool _isSaving = false;
   String? _uniquenessError;
   Timer? _uniquenessDebounce;
+
+  // Sub-task & Task dependency state
+  List<SubTaskItem> _subTasks = [];
+  List<String> _prerequisiteTodoIds = [];
+  List<TodoEntity> _availablePrerequisites = [];
 
   // Repeat / recurrence state
   SimpleRepeatOption _repeatOption = SimpleRepeatOption.none;
@@ -77,14 +85,19 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _newSubTaskController.dispose();
     _titleFocusNode.dispose();
     _uniquenessDebounce?.cancel();
     super.dispose();
   }
 
   Future<void> _loadData() async {
+    final repo = ref.read(todoRepositoryProvider);
+    final dayTodos = await repo.getTodosByDate(_effectiveDate);
+    _availablePrerequisites =
+        dayTodos.where((t) => t.id != widget.todoId).toList();
+
     if (widget.isEditing) {
-      final repo = ref.read(todoRepositoryProvider);
       final todo = await repo.getTodoById(widget.todoId!);
       if (todo != null && mounted) {
         RecurrenceRuleEntity? rule;
@@ -100,6 +113,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           _status = todo.status;
           _portedTo = todo.portedTo;
           _effectiveDate = todo.date;
+          _subTasks = List.from(todo.subTasks);
+          _prerequisiteTodoIds = List.from(todo.prerequisiteTodoIds);
           if (rule != null) {
             _existingRule = rule;
             _repeatOption = SimpleRepeatOption.repeat;
@@ -139,9 +154,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         );
         if (mounted) {
           setState(() {
-            _uniquenessError = exists
-                ? context.l10n.errorDuplicateTitle
-                : null;
+            _uniquenessError = exists ? context.l10n.errorDuplicateTitle : null;
           });
         }
       },
@@ -214,6 +227,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           status: _status,
           portedTo: _status == TodoStatus.ported ? _portedTo : null,
           recurrenceRuleId: recurrenceRuleId,
+          subTasks: _subTasks,
+          prerequisiteTodoIds: _prerequisiteTodoIds,
           updatedAt: now,
         );
         final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
@@ -247,6 +262,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           portedTo: _status == TodoStatus.ported ? _portedTo : null,
           recurrenceRuleId: recurrenceRuleId,
           sortOrder: 0,
+          subTasks: _subTasks,
+          prerequisiteTodoIds: _prerequisiteTodoIds,
           createdAt: now,
           updatedAt: now,
         );
@@ -275,9 +292,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       }
     } on Exception catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(mapErrorToMessage(context.l10n, error))),
         );
       }
@@ -454,6 +469,12 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 16),
+            _buildSubTaskCard(),
+            if (_availablePrerequisites.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              _buildPrerequisitesCard(),
+            ],
             if (!_isReadOnly) ...[
               const SizedBox(height: 16),
               AppSectionCard(
@@ -825,9 +846,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   /// Resolves a "for N days" end condition to an ISO end date. The window is
   /// [days] calendar days starting on [_effectiveDate], so the inclusive end
   /// date is start + (days - 1). "For 1 day" ends on the start date itself.
-  String _resolveEndDays(int days) => dateTimeToIso(
-    parseIsoDate(_effectiveDate).add(Duration(days: days - 1)),
-  );
+  String _resolveEndDays(int days) =>
+      dateTimeToIso(parseIsoDate(_effectiveDate).add(Duration(days: days - 1)));
 
   Widget _buildSheetDayOfWeekPicker(
     Set<int> weekDays,
@@ -1015,6 +1035,138 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildSubTaskCard() {
+    final theme = Theme.of(context);
+    final completedCount = _subTasks.where((st) => st.isCompleted).length;
+    return AppSectionCard(
+      title: context.l10n.subTasks,
+      subtitle: _subTasks.isNotEmpty ? '$completedCount/${_subTasks.length}' : null,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!_isReadOnly)
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _newSubTaskController,
+                    decoration: InputDecoration(
+                      hintText: context.l10n.addSubTask,
+                      isDense: true,
+                    ),
+                    onFieldSubmitted: (_) => _addSubTask(),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                IconButton.filledTonal(
+                  icon: const Icon(Icons.add_rounded),
+                  onPressed: _addSubTask,
+                ),
+              ],
+            ),
+          if (_subTasks.isNotEmpty) ...[
+            const SizedBox(height: 12),
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _subTasks.length,
+              separatorBuilder: (_, _) => const Divider(height: 8),
+              itemBuilder: (context, index) {
+                final item = _subTasks[index];
+                return Row(
+                  children: [
+                    Checkbox(
+                      value: item.isCompleted,
+                      onChanged: _isReadOnly
+                          ? null
+                          : (val) {
+                              setState(() {
+                                _subTasks[index] = item.copyWith(
+                                  isCompleted: val ?? false,
+                                );
+                              });
+                            },
+                    ),
+                    Expanded(
+                      child: Text(
+                        item.title,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          decoration: item.isCompleted
+                              ? TextDecoration.lineThrough
+                              : null,
+                        ),
+                      ),
+                    ),
+                    if (!_isReadOnly)
+                      IconButton(
+                        icon: const Icon(Icons.close_rounded, size: 18),
+                        onPressed: () {
+                          setState(() {
+                            _subTasks.removeAt(index);
+                          });
+                        },
+                      ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  void _addSubTask() {
+    final text = _newSubTaskController.text.trim();
+    if (text.isEmpty) return;
+    final now = DateTime.now().toUtc().toIso8601String();
+    setState(() {
+      _subTasks.add(
+        SubTaskItem(
+          id: _uuid.v4(),
+          todoId: widget.todoId ?? '',
+          title: unicode_utils.nfcNormalize(text),
+          sortOrder: _subTasks.length,
+          createdAt: now,
+          updatedAt: now,
+        ),
+      );
+      _newSubTaskController.clear();
+    });
+  }
+
+  Widget _buildPrerequisitesCard() {
+    return AppSectionCard(
+      title: context.l10n.prerequisiteTasks,
+      subtitle: '${_prerequisiteTodoIds.length} selected',
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        children: _availablePrerequisites.map((todo) {
+          final isSelected = _prerequisiteTodoIds.contains(todo.id);
+          return FilterChip(
+            selected: isSelected,
+            label: Text(todo.title),
+            avatar: isSelected
+                ? const Icon(Icons.check_rounded, size: 16)
+                : const Icon(Icons.link_rounded, size: 16),
+            onSelected: _isReadOnly
+                ? null
+                : (selected) {
+                    setState(() {
+                      if (selected) {
+                        _prerequisiteTodoIds.add(todo.id);
+                      } else {
+                        _prerequisiteTodoIds.remove(todo.id);
+                      }
+                    });
+                  },
+          );
+        }).toList(),
+      ),
     );
   }
 }

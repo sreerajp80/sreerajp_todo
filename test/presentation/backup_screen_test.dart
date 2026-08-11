@@ -95,7 +95,10 @@ void main() {
   Future<void> pumpBackupScreen(WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [backupServiceProvider.overrideWithValue(backupService)],
+        overrides: [
+          backupServiceProvider.overrideWithValue(backupService),
+          backupHealthLogsProvider.overrideWith((ref) async => []),
+        ],
         child: const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,

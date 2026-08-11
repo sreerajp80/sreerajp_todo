@@ -16,7 +16,7 @@
 - **App Name:** `SreerajP ToDo`
 - **Target Audience:** Daily planners, time-tracking professionals, multi-lingual users, and privacy-conscious individuals requiring 100% offline data security.
 - **Platforms:** Android, Windows (v1.0 active targets); iOS, Linux, macOS (planned targets)
-- **Framework & Language:** Flutter (`3.41.4 stable`) / Dart (`3.11.1`)
+- **Framework & Language:** Flutter (`3.44.8 stable`) / Dart (`3.12.2`)
 - **Database Storage:** Local SQLite database (`sreerajp_todo.db`) via `sqflite_sqlcipher` (mobile) / `sqflite_common_ffi` (desktop). The live database is currently opened **without** a password — device-key encryption (Android Keystore / Windows DPAPI) is a planned feature, not yet implemented. Only exported backup files are encrypted today (user passphrase, AES-256 ZIP encryption).
 - **Database PRAGMAs & Migrations:** `PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;` managed via `MigrationRunner` supporting incremental schema evolution (v1 baseline schema, v2 status sync for tasks with recorded time segments).
 - **State Management:** Riverpod (`flutter_riverpod`) with root `ProviderScope` and immutable `@freezed` state objects.

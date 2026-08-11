@@ -2,7 +2,7 @@
 /// task title where no localized [BuildContext] is available.
 const String kAppName = 'SreerajP ToDo';
 
-const int kDatabaseVersion = 2;
+const int kDatabaseVersion = 7;
 const String kDatabaseName = 'sreerajp_todo.db';
 
 const int kUndoTimeoutSeconds = 5;

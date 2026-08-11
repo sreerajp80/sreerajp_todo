@@ -5,7 +5,7 @@ import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 
-enum AppScaffoldDestination { daily, statistics, settings }
+enum AppScaffoldDestination { daily, masteryDeck, statistics }
 
 class ResponsiveScaffold extends StatelessWidget {
   const ResponsiveScaffold({
@@ -71,15 +71,15 @@ class ResponsiveScaffold extends StatelessWidget {
                                 selectedIcon: const Icon(Icons.today),
                                 label: Text(context.l10n.dailyList),
                               ),
+                              const NavigationRailDestination(
+                                icon: Icon(Icons.psychology_outlined),
+                                selectedIcon: Icon(Icons.psychology),
+                                label: Text('Mastery'),
+                              ),
                               NavigationRailDestination(
                                 icon: const Icon(Icons.bar_chart_outlined),
                                 selectedIcon: const Icon(Icons.bar_chart),
                                 label: Text(context.l10n.statistics),
-                              ),
-                              NavigationRailDestination(
-                                icon: const Icon(Icons.settings_outlined),
-                                selectedIcon: const Icon(Icons.settings),
-                                label: Text(context.l10n.settingsLabel),
                               ),
                             ],
                           ),
@@ -113,31 +113,43 @@ class ResponsiveScaffold extends StatelessWidget {
               ? null
               : SafeArea(
                   minimum: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(28),
-                    child: NavigationBar(
-                      selectedIndex: currentDestination.index,
-                      onDestinationSelected: (index) => _onDestinationSelected(
-                        context,
-                        AppScaffoldDestination.values[index],
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).navigationBarTheme.backgroundColor ??
+                          Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(28),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: NavigationBar(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          selectedIndex: currentDestination.index,
+                          onDestinationSelected: (index) => _onDestinationSelected(
+                            context,
+                            AppScaffoldDestination.values[index],
+                          ),
+                          destinations: [
+                            NavigationDestination(
+                              icon: const Icon(Icons.today_outlined),
+                              selectedIcon: const Icon(Icons.today),
+                              label: context.l10n.dailyList,
+                            ),
+                            const NavigationDestination(
+                              icon: Icon(Icons.psychology_outlined),
+                              selectedIcon: Icon(Icons.psychology),
+                              label: 'Mastery',
+                            ),
+                            NavigationDestination(
+                              icon: const Icon(Icons.bar_chart_outlined),
+                              selectedIcon: const Icon(Icons.bar_chart),
+                              label: context.l10n.statistics,
+                            ),
+                          ],
+                        ),
                       ),
-                      destinations: [
-                        NavigationDestination(
-                          icon: const Icon(Icons.today_outlined),
-                          selectedIcon: const Icon(Icons.today),
-                          label: context.l10n.dailyList,
-                        ),
-                        NavigationDestination(
-                          icon: const Icon(Icons.bar_chart_outlined),
-                          selectedIcon: const Icon(Icons.bar_chart),
-                          label: context.l10n.statistics,
-                        ),
-                        NavigationDestination(
-                          icon: const Icon(Icons.settings_outlined),
-                          selectedIcon: const Icon(Icons.settings),
-                          label: context.l10n.settingsLabel,
-                        ),
-                      ],
                     ),
                   ),
                 ),
@@ -157,10 +169,10 @@ class ResponsiveScaffold extends StatelessWidget {
     switch (destination) {
       case AppScaffoldDestination.daily:
         context.go(AppRoutes.dailyListPath(todayAsIso()));
+      case AppScaffoldDestination.masteryDeck:
+        context.go(AppRoutes.masteryDeck);
       case AppScaffoldDestination.statistics:
         context.go(AppRoutes.statistics);
-      case AppScaffoldDestination.settings:
-        context.go(AppRoutes.settings);
     }
   }
 }

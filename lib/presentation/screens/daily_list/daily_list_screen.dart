@@ -13,11 +13,17 @@ import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/todo_sort_option.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/evening_reflection_modal.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/morning_intention_card.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/recall_confidence_dialog.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
+import 'package:sreerajp_todo/presentation/widgets/air_qr_share_dialog.dart';
+import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
+import 'package:sreerajp_todo/presentation/widgets/air_qr_preview_sheet.dart';
 
 class DailyListScreen extends ConsumerStatefulWidget {
   const DailyListScreen({super.key, required this.date});
@@ -55,9 +61,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   }
 
   void _showError(Object error) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(context.l10n, error))));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(mapErrorToMessage(context.l10n, error))),
+    );
   }
 
   Future<void> _handleRecurringDelete(
@@ -180,6 +186,43 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(message.toString())));
+    }
+  }
+
+  Future<void> _handleAirQrScan() async {
+    final result = await context.push<Map<String, dynamic>>(
+      AppRoutes.airQrScan,
+    );
+    if (result != null && mounted) {
+      final payload = result['payload'] as AirQrParsedPayload?;
+      final decision = result['decision'] as AirQrMergeDecision?;
+      if (payload != null &&
+          decision != null &&
+          decision != AirQrMergeDecision.cancel &&
+          payload.todos.isNotEmpty) {
+        final repository = ref.read(todoRepositoryProvider);
+        int importedCount = 0;
+        for (final todo in payload.todos) {
+          try {
+            await repository.createTodo(
+              todo.copyWith(date: widget.date),
+            );
+            importedCount++;
+          } catch (_) {
+            // Ignore duplicate title lock exceptions if skip mode
+          }
+        }
+        if (mounted && importedCount > 0) {
+          ref.invalidate(dailyTodoProvider(widget.date));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'AirQR sync complete: Imported $importedCount tasks.',
+              ),
+            ),
+          );
+        }
+      }
     }
   }
 
@@ -310,7 +353,26 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         },
         onComplete: () async {
           try {
-            await notifier.markCompleted(todo.id);
+            final isSrs = todo.spacedRepetitionItemId != null ||
+                todo.title.contains('#mastery') ||
+                todo.title.contains('#spaced-repetition');
+
+            if (isSrs) {
+              final confidence = await RecallConfidenceDialog.show(
+                context,
+                todoTitle: todo.title,
+              );
+              if (confidence == null) return;
+
+              await notifier.markSrsCompleted(
+                todo.id,
+                confidence,
+                ref.read(completeSrsTodoProvider),
+              );
+            } else {
+              await notifier.markCompleted(todo.id);
+            }
+
             if (context.mounted) {
               showUndoSnackBar(
                 context,
@@ -396,7 +458,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       currentDestination: AppScaffoldDestination.daily,
       appBar: state.isMultiSelectMode
           ? _buildMultiSelectAppBar(state, notifier)
-          : _buildNormalAppBar(hasUndoStack, notifier),
+          : _buildNormalAppBar(hasUndoStack, notifier, state),
       floatingActionButton: _isPast
           ? null
           : FloatingActionButton(
@@ -409,6 +471,16 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       body: Column(
         children: [
           if (_showCalendar) _buildCalendar(),
+          MorningIntentionCard(
+            date: widget.date,
+            isPast: _isPast,
+            onOpenReflection: () => EveningReflectionModal.show(
+              context,
+              date: widget.date,
+              isPast: _isPast,
+              todos: state.todos,
+            ),
+          ),
           Expanded(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 220),
@@ -465,6 +537,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   PreferredSizeWidget _buildNormalAppBar(
     bool hasUndoStack,
     DailyTodoNotifier notifier,
+    DailyTodoState state,
   ) {
     return AppBar(
       titleSpacing: 0,
@@ -519,6 +592,16 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           icon: Icons.copy_all,
           onPressed: () => _openCopyWizard(),
           tooltip: context.l10n.copyToAnotherDay,
+        ),
+        _buildActionIcon(
+          icon: Icons.auto_awesome_outlined,
+          onPressed: () => EveningReflectionModal.show(
+            context,
+            date: widget.date,
+            isPast: _isPast,
+            todos: state.todos,
+          ),
+          tooltip: context.l10n.eveningReflection,
         ),
         if (hasUndoStack)
           _buildActionIcon(
@@ -588,6 +671,89 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               TodoSortOption.status,
               Icons.flag_outlined,
               context.l10n.sortByStatus,
+            ),
+          ],
+        ),
+        PopupMenuButton<_AppBarMoreOption>(
+          icon: const Icon(Icons.more_vert, size: 22),
+          padding: EdgeInsets.zero,
+          tooltip: context.l10n.moreOptions,
+          onSelected: (option) {
+            switch (option) {
+              case _AppBarMoreOption.settings:
+                context.push(AppRoutes.settings);
+                break;
+              case _AppBarMoreOption.wifiSync:
+                context.push(AppRoutes.wifiSync);
+                break;
+              case _AppBarMoreOption.airQrShare:
+                showAirQrShareDialog(
+                  context,
+                  title: 'AirQR Sync (${widget.date})',
+                  todos: state.todos,
+                  date: widget.date,
+                );
+                break;
+              case _AppBarMoreOption.airQrScan:
+                _handleAirQrScan();
+                break;
+              case _AppBarMoreOption.dataHandoff:
+                context.push(AppRoutes.dataHandoff);
+                break;
+            }
+          },
+          itemBuilder: (context) => [
+            PopupMenuItem(
+              value: _AppBarMoreOption.settings,
+              child: Row(
+                children: [
+                  const Icon(Icons.settings_outlined, size: 20),
+                  const SizedBox(width: 12),
+                  Text(context.l10n.settingsLabel),
+                ],
+              ),
+            ),
+            const PopupMenuDivider(),
+            PopupMenuItem(
+              value: _AppBarMoreOption.wifiSync,
+              child: Row(
+                children: [
+                  const Icon(Icons.wifi_tethering, size: 20),
+                  const SizedBox(width: 12),
+                  Text(context.l10n.wifiSyncTitle),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: _AppBarMoreOption.airQrShare,
+              child: Row(
+                children: [
+                  const Icon(Icons.qr_code_2, size: 20),
+                  const SizedBox(width: 12),
+                  Text(context.l10n.airQrShareTitle),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: _AppBarMoreOption.airQrScan,
+              child: Row(
+                children: [
+                  const Icon(Icons.qr_code_scanner, size: 20),
+                  const SizedBox(width: 12),
+                  Text(context.l10n.airQrScanTitle),
+                ],
+              ),
+            ),
+            const PopupMenuDivider(),
+            PopupMenuItem(
+              value: _AppBarMoreOption.dataHandoff,
+              child: Row(
+                children: [
+                  const Icon(Icons.import_export_rounded, size: 20),
+                  const SizedBox(width: 12),
+                  Text(context.l10n.dataHandoffTitle),
+                ],
+              ),
             ),
           ],
         ),
@@ -738,3 +904,12 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     );
   }
 }
+
+enum _AppBarMoreOption {
+  settings,
+  wifiSync,
+  airQrShare,
+  airQrScan,
+  dataHandoff,
+}
+

@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/config/app_config.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/core/constants/app_version.g.dart';
 import 'package:sreerajp_todo/core/constants/build_date.g.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/screens/about/widgets/about_info_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends ConsumerWidget {
   const AboutScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final configAsync = ref.watch(appConfigProvider);
+    final config = configAsync.value ?? AppConfig.fallback;
+
+    final detailEntries = config.details.entries
+        .where(
+          (e) => e.key.trim().isNotEmpty && e.value.trim().isNotEmpty,
+        )
+        .toList();
 
     return Scaffold(
       appBar: AppBar(title: Text(context.l10n.aboutLabel)),
@@ -20,10 +30,12 @@ class AboutScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         children: [
           AppSectionCard(
-            title: kAppName,
+            title: config.appName.isNotEmpty ? config.appName : kAppName,
             subtitle: context.l10n.aboutHeadline,
             child: Text(
-              context.l10n.aboutSummary,
+              config.description.isNotEmpty
+                  ? config.description
+                  : context.l10n.aboutSummary,
               style: theme.textTheme.bodyLarge,
             ),
           ),
@@ -32,21 +44,9 @@ class AboutScreen extends StatelessWidget {
             child: Column(
               children: [
                 _AboutDetailRow(
-                  icon: Icons.person_outline_rounded,
-                  label: context.l10n.aboutAuthor,
-                  value: context.l10n.aboutAuthorName,
-                ),
-                const SizedBox(height: 12),
-                _AboutDetailRow(
-                  icon: Icons.auto_awesome_outlined,
-                  label: context.l10n.aboutAiAssisted,
-                  value: context.l10n.aboutAiModels,
-                ),
-                const SizedBox(height: 12),
-                _AboutDetailRow(
                   icon: Icons.info_outline_rounded,
                   label: context.l10n.aboutAppVersion,
-                  value: kAppVersion,
+                  value: config.version,
                 ),
                 const SizedBox(height: 12),
                 _AboutDetailRow(
@@ -54,6 +54,14 @@ class AboutScreen extends StatelessWidget {
                   label: context.l10n.aboutBuildDate,
                   value: kBuildDate,
                 ),
+                for (final entry in detailEntries) ...[
+                  const SizedBox(height: 12),
+                  _AboutDetailRow(
+                    icon: _iconForDetailKey(entry.key),
+                    label: entry.key,
+                    value: entry.value,
+                  ),
+                ],
                 const SizedBox(height: 16),
                 Text(
                   context.l10n.aboutMadeWithLoveIn,
@@ -97,6 +105,15 @@ class AboutScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  IconData _iconForDetailKey(String key) {
+    final k = key.toLowerCase();
+    if (k.contains('author')) return Icons.person_outline_rounded;
+    if (k.contains('ai')) return Icons.auto_awesome_outlined;
+    if (k.contains('ide')) return Icons.code_rounded;
+    if (k.contains('license')) return Icons.description_outlined;
+    return Icons.label_outline_rounded;
   }
 }
 

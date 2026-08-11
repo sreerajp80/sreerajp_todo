@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:sreerajp_todo/data/models/sub_task_item.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 
 part 'todo_entity.freezed.dart';
@@ -16,7 +17,10 @@ class TodoEntity with _$TodoEntity {
     String? portedTo,
     String? sourceDate,
     String? recurrenceRuleId,
+    String? spacedRepetitionItemId,
     @Default(0) int sortOrder,
+    @Default([]) List<SubTaskItem> subTasks,
+    @Default([]) List<String> prerequisiteTodoIds,
     required String createdAt,
     required String updatedAt,
   }) = _TodoEntity;
@@ -30,12 +34,17 @@ class TodoEntity with _$TodoEntity {
     'ported_to': portedTo,
     'source_date': sourceDate,
     'recurrence_rule_id': recurrenceRuleId,
+    'spaced_repetition_item_id': spacedRepetitionItemId,
     'sort_order': sortOrder,
     'created_at': createdAt,
     'updated_at': updatedAt,
   };
 
-  factory TodoEntity.fromMap(Map<String, dynamic> map) => TodoEntity(
+  factory TodoEntity.fromMap(
+    Map<String, dynamic> map, {
+    List<SubTaskItem> subTasks = const [],
+    List<String> prerequisiteTodoIds = const [],
+  }) => TodoEntity(
     id: map['id'] as String,
     date: map['date'] as String,
     title: map['title'] as String,
@@ -44,7 +53,10 @@ class TodoEntity with _$TodoEntity {
     portedTo: map['ported_to'] as String?,
     sourceDate: map['source_date'] as String?,
     recurrenceRuleId: map['recurrence_rule_id'] as String?,
+    spacedRepetitionItemId: map['spaced_repetition_item_id'] as String?,
     sortOrder: map['sort_order'] as int,
+    subTasks: subTasks,
+    prerequisiteTodoIds: prerequisiteTodoIds,
     createdAt: map['created_at'] as String,
     updatedAt: map['updated_at'] as String,
   );

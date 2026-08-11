@@ -46,7 +46,7 @@ void main() {
       passphrase: 'correct horse battery staple',
     );
 
-    expect(backupPath, endsWith('sreerajp_todo_backup_20260322_103045.db'));
+    expect(backupPath, endsWith('sreerajp_todo_backup_20260322_103045.db.aes'));
     expect(await File(backupPath).exists(), isTrue);
   });
 

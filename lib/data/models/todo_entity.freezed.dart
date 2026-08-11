@@ -25,7 +25,10 @@ mixin _$TodoEntity {
   String? get portedTo => throw _privateConstructorUsedError;
   String? get sourceDate => throw _privateConstructorUsedError;
   String? get recurrenceRuleId => throw _privateConstructorUsedError;
+  String? get spacedRepetitionItemId => throw _privateConstructorUsedError;
   int get sortOrder => throw _privateConstructorUsedError;
+  List<SubTaskItem> get subTasks => throw _privateConstructorUsedError;
+  List<String> get prerequisiteTodoIds => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -52,7 +55,10 @@ abstract class $TodoEntityCopyWith<$Res> {
     String? portedTo,
     String? sourceDate,
     String? recurrenceRuleId,
+    String? spacedRepetitionItemId,
     int sortOrder,
+    List<SubTaskItem> subTasks,
+    List<String> prerequisiteTodoIds,
     String createdAt,
     String updatedAt,
   });
@@ -81,7 +87,10 @@ class _$TodoEntityCopyWithImpl<$Res, $Val extends TodoEntity>
     Object? portedTo = freezed,
     Object? sourceDate = freezed,
     Object? recurrenceRuleId = freezed,
+    Object? spacedRepetitionItemId = freezed,
     Object? sortOrder = null,
+    Object? subTasks = null,
+    Object? prerequisiteTodoIds = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -119,10 +128,22 @@ class _$TodoEntityCopyWithImpl<$Res, $Val extends TodoEntity>
                 ? _value.recurrenceRuleId
                 : recurrenceRuleId // ignore: cast_nullable_to_non_nullable
                       as String?,
+            spacedRepetitionItemId: freezed == spacedRepetitionItemId
+                ? _value.spacedRepetitionItemId
+                : spacedRepetitionItemId // ignore: cast_nullable_to_non_nullable
+                      as String?,
             sortOrder: null == sortOrder
                 ? _value.sortOrder
                 : sortOrder // ignore: cast_nullable_to_non_nullable
                       as int,
+            subTasks: null == subTasks
+                ? _value.subTasks
+                : subTasks // ignore: cast_nullable_to_non_nullable
+                      as List<SubTaskItem>,
+            prerequisiteTodoIds: null == prerequisiteTodoIds
+                ? _value.prerequisiteTodoIds
+                : prerequisiteTodoIds // ignore: cast_nullable_to_non_nullable
+                      as List<String>,
             createdAt: null == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
@@ -155,7 +176,10 @@ abstract class _$$TodoEntityImplCopyWith<$Res>
     String? portedTo,
     String? sourceDate,
     String? recurrenceRuleId,
+    String? spacedRepetitionItemId,
     int sortOrder,
+    List<SubTaskItem> subTasks,
+    List<String> prerequisiteTodoIds,
     String createdAt,
     String updatedAt,
   });
@@ -183,7 +207,10 @@ class __$$TodoEntityImplCopyWithImpl<$Res>
     Object? portedTo = freezed,
     Object? sourceDate = freezed,
     Object? recurrenceRuleId = freezed,
+    Object? spacedRepetitionItemId = freezed,
     Object? sortOrder = null,
+    Object? subTasks = null,
+    Object? prerequisiteTodoIds = null,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -221,10 +248,22 @@ class __$$TodoEntityImplCopyWithImpl<$Res>
             ? _value.recurrenceRuleId
             : recurrenceRuleId // ignore: cast_nullable_to_non_nullable
                   as String?,
+        spacedRepetitionItemId: freezed == spacedRepetitionItemId
+            ? _value.spacedRepetitionItemId
+            : spacedRepetitionItemId // ignore: cast_nullable_to_non_nullable
+                  as String?,
         sortOrder: null == sortOrder
             ? _value.sortOrder
             : sortOrder // ignore: cast_nullable_to_non_nullable
                   as int,
+        subTasks: null == subTasks
+            ? _value._subTasks
+            : subTasks // ignore: cast_nullable_to_non_nullable
+                  as List<SubTaskItem>,
+        prerequisiteTodoIds: null == prerequisiteTodoIds
+            ? _value._prerequisiteTodoIds
+            : prerequisiteTodoIds // ignore: cast_nullable_to_non_nullable
+                  as List<String>,
         createdAt: null == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
@@ -250,10 +289,15 @@ class _$TodoEntityImpl extends _TodoEntity {
     this.portedTo,
     this.sourceDate,
     this.recurrenceRuleId,
+    this.spacedRepetitionItemId,
     this.sortOrder = 0,
+    final List<SubTaskItem> subTasks = const [],
+    final List<String> prerequisiteTodoIds = const [],
     required this.createdAt,
     required this.updatedAt,
-  }) : super._();
+  }) : _subTasks = subTasks,
+       _prerequisiteTodoIds = prerequisiteTodoIds,
+       super._();
 
   @override
   final String id;
@@ -273,8 +317,29 @@ class _$TodoEntityImpl extends _TodoEntity {
   @override
   final String? recurrenceRuleId;
   @override
+  final String? spacedRepetitionItemId;
+  @override
   @JsonKey()
   final int sortOrder;
+  final List<SubTaskItem> _subTasks;
+  @override
+  @JsonKey()
+  List<SubTaskItem> get subTasks {
+    if (_subTasks is EqualUnmodifiableListView) return _subTasks;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_subTasks);
+  }
+
+  final List<String> _prerequisiteTodoIds;
+  @override
+  @JsonKey()
+  List<String> get prerequisiteTodoIds {
+    if (_prerequisiteTodoIds is EqualUnmodifiableListView)
+      return _prerequisiteTodoIds;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_prerequisiteTodoIds);
+  }
+
   @override
   final String createdAt;
   @override
@@ -282,7 +347,7 @@ class _$TodoEntityImpl extends _TodoEntity {
 
   @override
   String toString() {
-    return 'TodoEntity(id: $id, date: $date, title: $title, description: $description, status: $status, portedTo: $portedTo, sourceDate: $sourceDate, recurrenceRuleId: $recurrenceRuleId, sortOrder: $sortOrder, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'TodoEntity(id: $id, date: $date, title: $title, description: $description, status: $status, portedTo: $portedTo, sourceDate: $sourceDate, recurrenceRuleId: $recurrenceRuleId, spacedRepetitionItemId: $spacedRepetitionItemId, sortOrder: $sortOrder, subTasks: $subTasks, prerequisiteTodoIds: $prerequisiteTodoIds, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -302,8 +367,15 @@ class _$TodoEntityImpl extends _TodoEntity {
                 other.sourceDate == sourceDate) &&
             (identical(other.recurrenceRuleId, recurrenceRuleId) ||
                 other.recurrenceRuleId == recurrenceRuleId) &&
+            (identical(other.spacedRepetitionItemId, spacedRepetitionItemId) ||
+                other.spacedRepetitionItemId == spacedRepetitionItemId) &&
             (identical(other.sortOrder, sortOrder) ||
                 other.sortOrder == sortOrder) &&
+            const DeepCollectionEquality().equals(other._subTasks, _subTasks) &&
+            const DeepCollectionEquality().equals(
+              other._prerequisiteTodoIds,
+              _prerequisiteTodoIds,
+            ) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -321,7 +393,10 @@ class _$TodoEntityImpl extends _TodoEntity {
     portedTo,
     sourceDate,
     recurrenceRuleId,
+    spacedRepetitionItemId,
     sortOrder,
+    const DeepCollectionEquality().hash(_subTasks),
+    const DeepCollectionEquality().hash(_prerequisiteTodoIds),
     createdAt,
     updatedAt,
   );
@@ -345,7 +420,10 @@ abstract class _TodoEntity extends TodoEntity {
     final String? portedTo,
     final String? sourceDate,
     final String? recurrenceRuleId,
+    final String? spacedRepetitionItemId,
     final int sortOrder,
+    final List<SubTaskItem> subTasks,
+    final List<String> prerequisiteTodoIds,
     required final String createdAt,
     required final String updatedAt,
   }) = _$TodoEntityImpl;
@@ -368,7 +446,13 @@ abstract class _TodoEntity extends TodoEntity {
   @override
   String? get recurrenceRuleId;
   @override
+  String? get spacedRepetitionItemId;
+  @override
   int get sortOrder;
+  @override
+  List<SubTaskItem> get subTasks;
+  @override
+  List<String> get prerequisiteTodoIds;
   @override
   String get createdAt;
   @override

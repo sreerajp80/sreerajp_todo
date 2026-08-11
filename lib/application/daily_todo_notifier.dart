@@ -4,9 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
+import 'package:sreerajp_todo/data/models/recall_confidence.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
+import 'package:sreerajp_todo/domain/usecases/complete_srs_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/delete_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
@@ -16,35 +18,27 @@ import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
 class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   DailyTodoNotifier({
     required this.date,
-    required TodoRepository todoRepository,
-    required MarkTodoCompleted markTodoCompleted,
-    required MarkTodoDropped markTodoDropped,
-    required PortTodo portTodo,
-    required CopyTodos copyTodos,
-    required DeleteRecurringTodos deleteRecurringTodos,
-    void Function()? onDataChanged,
-    void Function(String todoId)? onTimerStopped,
-  }) : _todoRepository = todoRepository,
-       _markTodoCompleted = markTodoCompleted,
-       _markTodoDropped = markTodoDropped,
-       _portTodo = portTodo,
-       _copyTodos = copyTodos,
-       _deleteRecurringTodos = deleteRecurringTodos,
-       _onDataChanged = onDataChanged,
-       _onTimerStopped = onTimerStopped,
-       super(const DailyTodoState()) {
+    required this.todoRepository,
+    required this.markTodoCompleted,
+    required this.markTodoDropped,
+    required this.portTodoUseCase,
+    required this.copyTodosUseCase,
+    required this.deleteRecurringTodos,
+    this.onDataChanged,
+    this.onTimerStopped,
+  }) : super(const DailyTodoState()) {
     loadTodos();
   }
 
   final String date;
-  final TodoRepository _todoRepository;
-  final MarkTodoCompleted _markTodoCompleted;
-  final MarkTodoDropped _markTodoDropped;
-  final PortTodo _portTodo;
-  final CopyTodos _copyTodos;
-  final DeleteRecurringTodos _deleteRecurringTodos;
-  final void Function()? _onDataChanged;
-  final void Function(String todoId)? _onTimerStopped;
+  final TodoRepository todoRepository;
+  final MarkTodoCompleted markTodoCompleted;
+  final MarkTodoDropped markTodoDropped;
+  final PortTodo portTodoUseCase;
+  final CopyTodos copyTodosUseCase;
+  final DeleteRecurringTodos deleteRecurringTodos;
+  final void Function()? onDataChanged;
+  final void Function(String todoId)? onTimerStopped;
 
   Timer? _undoInactivityTimer;
 
@@ -78,7 +72,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> loadTodos() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final todos = await _todoRepository.getTodosByDate(date);
+      final todos = await todoRepository.getTodosByDate(date);
       state = state.copyWith(todos: todos, isLoading: false);
     } on Exception catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -87,7 +81,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<void> createTodo(TodoEntity todo) async {
     try {
-      await _todoRepository.createTodo(todo);
+      await todoRepository.createTodo(todo);
       await loadTodos();
     } on DuplicateTitleException {
       rethrow;
@@ -100,7 +94,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<void> updateTodo(TodoEntity todo) async {
     try {
-      await _todoRepository.updateTodo(todo);
+      await todoRepository.updateTodo(todo);
       await loadTodos();
     } on DuplicateTitleException {
       rethrow;
@@ -111,11 +105,26 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     }
   }
 
+  Future<void> toggleSubTask(
+    String todoId,
+    String subTaskId,
+    bool isCompleted,
+  ) async {
+    try {
+      await todoRepository.toggleSubTask(todoId, subTaskId, isCompleted);
+      await loadTodos();
+    } on DayLockedException {
+      rethrow;
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
+
   Future<void> deleteTodo(String id) async {
     try {
-      await _todoRepository.deleteTodo(id, bypassLock: true);
+      await todoRepository.deleteTodo(id, bypassLock: true);
       await loadTodos();
-      _onDataChanged?.call();
+      onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -123,9 +132,9 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async {
     try {
-      final count = await _deleteRecurringTodos.all(recurrenceRuleId);
+      final count = await deleteRecurringTodos.all(recurrenceRuleId);
       await loadTodos();
-      _onDataChanged?.call();
+      onDataChanged?.call();
       return count;
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
@@ -135,9 +144,9 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<int> deleteFutureByRecurrenceRuleId(String recurrenceRuleId) async {
     try {
-      final count = await _deleteRecurringTodos.thisAndFuture(recurrenceRuleId);
+      final count = await deleteRecurringTodos.thisAndFuture(recurrenceRuleId);
       await loadTodos();
-      _onDataChanged?.call();
+      onDataChanged?.call();
       return count;
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
@@ -147,8 +156,30 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<void> markCompleted(String todoId) async {
     try {
-      final oldStatus = await _markTodoCompleted(todoId);
-      _onTimerStopped?.call(todoId);
+      final oldStatus = await markTodoCompleted(todoId);
+      onTimerStopped?.call(todoId);
+      _pushUndo(
+        UndoEntry(
+          todoId: todoId,
+          oldStatus: oldStatus,
+          newStatus: TodoStatus.completed,
+          timestamp: DateTime.now(),
+        ),
+      );
+      await loadTodos();
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
+
+  Future<void> markSrsCompleted(
+    String todoId,
+    RecallConfidence confidence,
+    CompleteSrsTodo completeSrsTodo,
+  ) async {
+    try {
+      final oldStatus = await completeSrsTodo(todoId, confidence);
+      onTimerStopped?.call(todoId);
       _pushUndo(
         UndoEntry(
           todoId: todoId,
@@ -165,8 +196,8 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<void> markDropped(String todoId) async {
     try {
-      final oldStatus = await _markTodoDropped(todoId);
-      _onTimerStopped?.call(todoId);
+      final oldStatus = await markTodoDropped(todoId);
+      onTimerStopped?.call(todoId);
       _pushUndo(
         UndoEntry(
           todoId: todoId,
@@ -183,7 +214,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
   Future<void> portTodo(String todoId, String targetDate) async {
     try {
-      final result = await _portTodo(todoId, targetDate);
+      final result = await portTodoUseCase(todoId, targetDate);
       _pushUndo(
         UndoEntry(
           todoId: todoId,
@@ -207,14 +238,14 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     List<String> todoIds,
     String targetDate,
   ) async {
-    return _copyTodos(todoIds, targetDate);
+    return copyTodosUseCase(todoIds, targetDate);
   }
 
   Future<void> bulkMarkCompleted(Set<String> ids) async {
     try {
       for (final id in ids) {
-        final oldStatus = await _markTodoCompleted(id);
-        _onTimerStopped?.call(id);
+        final oldStatus = await markTodoCompleted(id);
+        onTimerStopped?.call(id);
         _pushUndo(
           UndoEntry(
             todoId: id,
@@ -234,8 +265,8 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> bulkMarkDropped(Set<String> ids) async {
     try {
       for (final id in ids) {
-        final oldStatus = await _markTodoDropped(id);
-        _onTimerStopped?.call(id);
+        final oldStatus = await markTodoDropped(id);
+        onTimerStopped?.call(id);
         _pushUndo(
           UndoEntry(
             todoId: id,
@@ -261,10 +292,10 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
 
     try {
       if (entry.copiedTodoId != null) {
-        await _todoRepository.deleteTodo(entry.copiedTodoId!, bypassLock: true);
+        await todoRepository.deleteTodo(entry.copiedTodoId!, bypassLock: true);
       }
 
-      await _todoRepository.updateStatus(
+      await todoRepository.updateStatus(
         entry.todoId,
         entry.oldStatus,
         portedTo: null,
@@ -293,7 +324,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     state = state.copyWith(todos: reordered);
 
     try {
-      await _todoRepository.reorderTodos(reordered);
+      await todoRepository.reorderTodos(reordered);
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
       await loadTodos();

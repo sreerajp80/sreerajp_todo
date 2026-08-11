@@ -10,10 +10,15 @@ import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
+import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_health_dashboard.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_list_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
+import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/presentation/widgets/air_qr_share_dialog.dart';
+import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
+import 'package:sreerajp_todo/presentation/widgets/air_qr_preview_sheet.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
   const BackupScreen({super.key});
@@ -71,6 +76,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
             passphrase: passphrase,
           );
       await _loadBackups();
+      ref.invalidate(backupHealthLogsProvider);
       if (!mounted) {
         return;
       }
@@ -81,7 +87,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   Future<void> _handleImport() async {
     final picked = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['db'],
+      allowedExtensions: ['db', 'aes'],
       withData: false,
     );
     final sourcePath = picked?.files.single.path;
@@ -111,6 +117,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
       await ref.read(generateRecurringTasksProvider).call();
       ref.invalidate(dailyTodoProvider(todayAsIso()));
       ref.invalidate(recurrenceRulesProvider);
+      ref.invalidate(backupHealthLogsProvider);
       if (!mounted) {
         return;
       }
@@ -132,6 +139,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     await _runBusyOperation(context.l10n.backupLabel, () async {
       await ref.read(backupServiceProvider).deleteBackup(info.filePath);
       await _loadBackups();
+      ref.invalidate(backupHealthLogsProvider);
       if (!mounted) {
         return;
       }
@@ -204,6 +212,15 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     );
   }
 
+  void _showAirQrDialog(List<TodoEntity> todos) {
+    showAirQrShareDialog(
+      context,
+      title: 'AirQR Backup Share',
+      todos: todos,
+      date: todayAsIso(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -213,7 +230,42 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
         title: Text(context.l10n.backupLabel),
         actions: [
           IconButton(
-            onPressed: _isBusy ? null : _loadBackups,
+            onPressed: () async {
+              final repository = ref.read(todoRepositoryProvider);
+              final todos = await repository.getTodosByDate(todayAsIso());
+              if (!mounted) return;
+              _showAirQrDialog(todos);
+            },
+            icon: const Icon(Icons.qr_code_2),
+            tooltip: 'AirQR Share Stream',
+          ),
+          IconButton(
+            onPressed: () async {
+              final result = await context.push<Map<String, dynamic>>(
+                AppRoutes.airQrScan,
+              );
+              if (result != null && mounted) {
+                final payload = result['payload'] as AirQrParsedPayload?;
+                final decision = result['decision'] as AirQrMergeDecision?;
+                if (payload != null &&
+                    decision != null &&
+                    decision != AirQrMergeDecision.cancel) {
+                  _showSnackBar(
+                    'AirQR backup payload received (${payload.todos.length} tasks).',
+                  );
+                }
+              }
+            },
+            icon: const Icon(Icons.qr_code_scanner),
+            tooltip: 'AirQR Scan Camera',
+          ),
+          IconButton(
+            onPressed: _isBusy
+                ? null
+                : () {
+                    _loadBackups();
+                    ref.invalidate(backupHealthLogsProvider);
+                  },
             icon: const Icon(Icons.refresh),
             tooltip: context.l10n.retry,
           ),
@@ -224,6 +276,8 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
           ListView(
             padding: const EdgeInsets.all(16),
             children: [
+              const BackupHealthDashboard(),
+              const SizedBox(height: 16),
               AppSectionCard(
                 title: context.l10n.backupLabel,
                 subtitle: _backupDirectory == null

@@ -1,314 +1,233 @@
-# AGENTS.md — Codex Rules For SreerajP ToDo
+# AGENTS.md — SreerajP ToDo
 
-This file is the Codex-facing rule file for this repository.
-It is generated from and must stay aligned with [CLAUDE.md](/l:/Android/sreerajp_todo/CLAUDE.md).
-If guidance diverges, update both files in the same change.
+This file is read by AI agents and LLM coding assistants (Gemini, Antigravity, Cursor, Windsurf, Codex, etc.) at the start of every session in this repository.
+Read it before making any change. See the docs table below for full detail.
 
-## Project Identity
+---
 
-- App: `SreerajP ToDo`
-- Type: personal offline-first daily todo and time-tracker
-- Root: `L:\Android\sreerajp_todo`
-- Flutter: `3.41.4 stable`
-- Dart: `3.11.1`
-- Platforms now: Android, Windows
-- Platforms later: iOS, Linux, macOS
-- Database: SQLite via `sqflite_sqlcipher` on mobile and `sqflite_common_ffi` with SQLCipher on desktop
-- State management: Riverpod
-- Navigation: `go_router`
-- Backend/cloud/analytics: none
-- Connectivity rule: fully offline, zero internet access required or permitted
+## Project identity
 
-## Non-Negotiable Rules
+| Field | Value |
+|-------|-------|
+| App name | SreerajP ToDo |
+| Type | Personal offline-first daily ToDo and time-tracker |
+| Platform(s) | Android (minSdk 21, targetSdk 34) + Windows desktop (v1.0 active); iOS, Linux, macOS (future) |
+| Package / org id | `in.sreerajp` |
+| Flutter SDK | 3.44.8 stable |
+| Dart SDK | 3.12.2 |
+| State management | Riverpod (`flutter_riverpod`) |
+| Navigation | `go_router` |
+| Database | SQLite via `sqflite_sqlcipher` (mobile, AES-256 encrypted) + `sqflite_common_ffi` with SQLCipher (desktop) |
+| Orientation | Both portrait and landscape supported |
+| Connectivity | **Fully offline — zero internet access required or permitted** |
 
-### 1. Fully Offline
+---
 
-- Never add networking, cloud, analytics, crash-reporting, telemetry, ad, or connectivity packages.
-- Before adding any package, audit transitive dependencies for networking.
-- `AndroidManifest.xml` must not contain `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, or similar permissions.
-- Windows builds must not register firewall rules or request network capabilities.
-- All data stays on the local filesystem only.
-- Runtime assets must be bundled. Use `AssetImage`, `Image.asset()`, or `Image.file()` only.
-- Never use `NetworkImage` or `Image.network()`.
-- Dependency audit command:
+## Read these docs before working
+
+| Document | Read when |
+|----------|-----------|
+| [docs/architecture.md](docs/architecture.md) | Changing structure, screens, state, services, models, repositories |
+| [docs/security.md](docs/security.md) | Touching permissions, logging, storage, crypto, manifest, backup encryption |
+| [docs/release_process.md](docs/release_process.md) | Building a release, versioning, release checklist, signing |
+| [docs/flutter_build_flavors_guide.md](docs/flutter_build_flavors_guide.md) | Build config, signing, flavors, Gradle, ProGuard |
+| [docs/flutter_project_engineering_standard.md](docs/flutter_project_engineering_standard.md) | Any code change — layers, naming, testing, DoD |
+| [docs/workflow_rules.md](docs/workflow_rules.md) | Planning changes, approval gates, logging changes |
+| [docs/dependencies.md](docs/dependencies.md) | Audited dependency inventory, prohibited package categories |
+| [docs/project_structure.md](docs/project_structure.md) | Directory tree layout and layer responsibilities |
+| [docs/features.md](docs/features.md) | Complete feature specification and UX requirements |
+| [docs/GUIDELINES_MANIFEST.md](docs/GUIDELINES_MANIFEST.md) | The shared Flutter guidelines index |
+
+---
+
+## Hard rules (must follow — these override convenience)
+
+1. **Fully Offline:** Zero network packages, zero cloud SDKs, zero analytics/crash reporting. `AndroidManifest.xml` must not contain `INTERNET` or network permissions. Runtime assets must be bundled (`AssetImage`, `Image.asset()`, `Image.file()`). Never use `NetworkImage`.
+2. **Unicode First:** NFC-normalize every string written to the database with `unicodeUtils.nfcNormalize(value)`. Use `unicodeUtils.detectTextDirection(value)` for dynamic text direction. Title uniqueness is enforced after NFC normalization.
+3. **Day Lock:** Any `TodoEntity` dated before today is read-only. Repository methods must enforce this and throw `DayLockedException`.
+4. **Terminal Status Lock:** `completed` and `dropped` todos cannot accept new time segments. Any open segment must be stopped when a todo becomes terminal. Repository throws `CompletedLockException`. UI hides start/stop controls for terminal todos.
+5. **One Open Segment Per Todo:** At most one open `TimeSegmentEntity` (`end_time IS NULL`) per `todo_id`. Repository throws `SegmentAlreadyRunningException` if violated.
+6. **Title Uniqueness Per Day:** No two todos on the same date may share an NFC-normalized title. Enforced in SQLite, repository checks, and UI validation. Repository throws `DuplicateTitleException`.
+7. **No Direct DB Access From Widgets:** Widgets consume Riverpod providers from `lib/application/providers.dart` only. Never call DAOs directly.
+8. **Immutable Models:** All domain entities and data models use `@freezed`. Never mutate in place; use `copyWith()`. Never edit generated `*.freezed.dart` or `*.g.dart` files manually.
+9. **Measurements & Metric Formatting:** Display durations as `HH:MM:SS` via `lib/core/utils/duration_utils.dart`. Use logical pixels (dp) only. Use metric terminology in comments and documentation.
+10. **Centralized User Strings:** All user-visible strings and error messages live in `lib/core/constants/app_strings.dart`. SQL strings belong in DAO classes only.
+
+---
+
+## Architecture rules
+
+- **Layer layout:** 5-layer architecture under `lib/`: Presentation (`lib/presentation/`), Application (`lib/application/`), Domain (`lib/domain/`), Data (`lib/data/`), Core (`lib/core/`).
+- **Layer boundaries:**
+  - `core/` is pure Dart with zero Flutter framework imports.
+  - `domain/` depends on `core/` only and never imports `sqflite` or data classes.
+  - `data/` implements domain repository interfaces and encapsulates DAOs, migrations, and storage.
+  - `presentation/` never imports `data/` directly.
+- **Dependency direction:** `presentation → application → domain/usecases → domain/repositories ← data`.
+- **State Management:** Use `StateNotifierProvider` for mutable screen state, `FutureProvider` for async reads, `FutureProvider.family` for parameterized queries, and `StreamProvider` only for the live timer. Declare providers in `lib/application/providers.dart`. Root `ProviderScope` lives in `main.dart`.
+- **Navigation:** Define routes in `lib/app.dart`, route paths in `lib/core/constants/app_routes.dart`. Use `go_router` exclusively (`context.go()`, `context.push()`, `context.pop()`). `/` resolves to today's daily list.
+- **Database:** `DatabaseService` singleton exposed via Riverpod. Storage path resolved via `path_provider`. AES-256 encrypted SQLite (`sqflite_sqlcipher` on mobile, SQLCipher FFI on desktop). Enable `PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;`.
+
+---
+
+## Build & run commands
 
 ```powershell
+# Install dependencies
+flutter pub get
+
+# Daily development (dev flavor)
+flutter run --flavor dev
+
+# Desktop development (Windows)
+flutter run -d windows
+
+# Static code analysis (must be 0 issues)
+flutter analyze
+
+# Run unit and widget tests
+flutter test
+
+# Format all Dart code
+dart format lib/ test/ integration_test/
+
+# Code generation for freezed and json_serializable
+dart run build_runner build --delete-conflicting-outputs
+
+# Production release APK (prod flavor, split per ABI)
+flutter build apk --flavor prod --release --split-per-abi
+
+# Production Play Store app bundle
+flutter build appbundle --flavor prod --release
+
+# Windows desktop release build
+flutter build windows --release
+
+# Dependency offline compliance audit
 flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics"
 ```
 
-### 2. Unicode First
+---
 
-- NFC-normalize every string written to the database with `unicodeUtils.nfcNormalize(value)`.
-- Assume full Unicode input support at all times.
-- Do not hardcode `TextDirection.ltr` on text inputs; use `unicodeUtils.detectTextDirection()`.
-- Title uniqueness is enforced after NFC normalization.
+## Build flavors
 
-### 3. Day Lock
+| Flavor | App ID | Display name | Signing |
+|--------|--------|--------------|---------|
+| dev | `in.sreerajp.dev` | SreerajP ToDo Dev | Debug keystore (automatic) |
+| prod | `in.sreerajp` | SreerajP ToDo | Release keystore (`L:\Android\key.properties`) |
 
-- Any `TodoEntity` dated before today is read-only.
-- Repository mutating methods must enforce this and throw `DayLockedException`.
-- UI must also show the lock state, but UI-only enforcement is insufficient.
+---
 
-### 4. Terminal Status Lock
+## Signing / keystore
 
-- `working` means the todo has at least one recorded time segment and is the in-progress state between `pending` and terminal statuses.
-- Allowed workflow: `pending -> working -> completed`, `pending -> completed`, `pending -> working -> dropped`, `pending -> dropped`. `ported` remains a separate explicit status.
-- `completed` and `dropped` todos cannot accept new time segments.
-- Any open segment must be stopped when a todo becomes terminal.
-- Repository throws `CompletedLockException` when violated.
-- Start/stop controls must be hidden for completed and dropped todos.
-- In statistics, completed time and dropped time are separate categories.
-- Changing status to `dropped` or `ported` requires confirmation.
-### 5. One Open Segment Per Todo
+- Keystore configuration file: `L:\Android\key.properties` (stored outside project root, never committed).
+- `.gitignore` MUST include: `key.properties`, `*.jks`, `*.keystore`, `build/symbols/`.
 
-- At most one open `TimeSegmentEntity` per `todo_id`.
-- Starting a second open segment must throw `SegmentAlreadyRunningException`.
-- Multiple different todos may run timers simultaneously.
-- On startup, `RepairOrphanedSegments` closes open segments on past-day todos with zero duration and `interrupted = 1`.
-- `interrupted` and `manual` belong in the initial schema.
+---
 
-### 6. Title Uniqueness Per Day
+## Security rules
 
-- No two todos on the same date may share the same title after NFC normalization.
-- Enforce this in SQLite, repository checks, and UI validation.
-- Pass `excludeId` when editing.
+- Never log secrets, keys, passwords, or decrypted user data.
+- 100% offline operational guarantee — zero network permissions in `AndroidManifest.xml`.
+- `android:allowBackup="false"` must remain set in `AndroidManifest.xml`.
+- Dual-key encryption design: live SQLite database encrypted with device-derived key; backup export files encrypted with user passphrase (AES-256 ZIP encryption).
 
-### 7. No Direct DB Access From Widgets
+---
 
-- Widgets consume only providers from `lib/application/providers.dart`.
-- Call flow:
-  - `Widget -> Provider/Notifier -> UseCase -> Repository -> DAO -> sqflite` for multi-step work
-  - `Widget -> Provider/Notifier -> Repository -> DAO -> sqflite` for simple CRUD
-- Use-cases exist only for multi-step orchestration.
+## Code style / naming
 
-### 8. Immutable Models
+- Files `snake_case.dart`; classes `PascalCase`; variables/methods `camelCase`; providers `camelCase` + `Provider` suffix.
+- Routes: `kebab-case` with `:param` (e.g. `/day/:date`).
+- Imports: Use `package:sreerajp_todo/...` package imports; prefer `const` constructors, `final` locals, single quotes.
+- Run `dart format` and ensure `flutter analyze` has zero warnings before committing.
 
-- All models/entities in `lib/data/models/` and `lib/domain/entities/` use `freezed`.
-- Never mutate in place; use `copyWith()`.
-- Never edit generated `*.freezed.dart` or `*.g.dart` files manually.
+---
 
-### 9. Measurements
+## Testing rules
 
-- Display durations as `HH:MM:SS` via `lib/core/utils/duration_utils.dart`.
-- Use logical pixels only.
-- Use metric wording in comments, docs, and identifiers.
-
-### 10. Strings
-
-- Every user-visible string lives in `lib/core/constants/app_strings.dart`.
-- User-facing error messages also live there.
-- SQL strings belong in DAO classes only.
-
-### 11. Shell And Path Conventions
-
-- All shell examples and commands in docs/comments use PowerShell syntax.
-- Use backslashes in Windows documentation paths.
-- In Dart code, use `/` or `path.join()`.
-
-## Architecture Rules
-
-### Layers
-
-```text
-Presentation  lib/presentation/   Widgets + Riverpod consumers
-Application   lib/application/    StateNotifiers, providers
-Domain        lib/domain/         Use-cases, repository interfaces, domain entities
-Data          lib/data/           Repository impls, DAOs, DB models, migrations, backup
-Core          lib/core/           Utils, constants, exceptions; no Flutter imports
-```
-
-- `core/` is pure Dart with zero Flutter imports.
-- `domain/` depends on `core/` only and never imports `sqflite`.
-- `data/` implements domain repository interfaces.
-- `presentation/` never imports `data/` directly.
-
-### State Management
-
-- Use `StateNotifierProvider` for mutable screen state.
-- Use `FutureProvider` for one-shot async reads.
-- Use `FutureProvider.family` for parameterized async queries.
-- Use `StreamProvider` only for the live timer.
-- Declare providers in `lib/application/providers.dart`.
-- Root `ProviderScope` lives in `main.dart`; do not nest extra scopes unless tests require it.
-
-### Navigation
-
-- Define routes in `lib/app.dart`.
-- Keep path constants in `lib/core/constants/app_routes.dart`.
-- Never use `Navigator.push()` directly; use `go_router`.
-- `/` resolves to today's daily list.
-
-### Database
-
-- `DatabaseService` is a singleton exposed by Riverpod.
-- Resolve DB location with `path_provider.getApplicationDocumentsDirectory()`.
-- Live DB uses a device-derived key; backups are re-encrypted with a user passphrase.
-- `migration_v1.dart` is append-only after first release. New schema changes go in new migration files.
-- Multi-row writes use transactions.
-- Enable:
-
-```sql
-PRAGMA journal_mode=WAL;
-PRAGMA foreign_keys=ON;
-```
-
-- Platform detection for `sqflite_common_ffi` happens only in `main.dart`.
-
-## Naming And File Rules
-
-- Dart files: `snake_case.dart`
-- Classes: `PascalCase`
-- Variables/methods: `camelCase`
-- Providers: `camelCaseProvider`
-- DB tables/columns: `snake_case`
-- Routes: kebab-case with `:param`
-- Tests mirror source path and end in `_test.dart`
-
-- New feature screens must include both the screen file and a `widgets/` subdirectory.
-- New DAO methods require tests in the same change.
-- New `freezed` or `json_serializable` models require code generation before use.
-- Migration files are append-only.
-- Never store `key.properties` inside the repo root; keep it at `L:\Android\key.properties`.
-
-## Code Generation
-
-```powershell
-dart run build_runner build --delete-conflicting-outputs
-dart run build_runner watch --delete-conflicting-outputs
-```
-
-Run code generation after adding or changing any `@freezed` or `@JsonSerializable` class.
-
-## Testing And Validation
-
-- Coverage target: at least `80%` for `lib/data/` and `lib/domain/`.
-- Write tests alongside features, not in a later batch.
-- DAO tests use in-memory SQLite.
-- Widget tests mock repositories, never DAOs.
+- Coverage target: at least **80%** on `lib/data/` and `lib/domain/`.
+- Tests are written alongside features in each development phase.
+- DAO tests use an **in-memory SQLite** database (`inMemoryDatabasePath`).
+- Widget tests mock the repository layer via `mocktail` — never mock DAOs directly.
 - Integration tests live in `integration_test/app_test.dart`.
-- Every new DAO method must have a test.
+- Every new DAO method must have a unit test added in the same change.
 - Do not use `print()` in tests.
 
-Commands:
+---
 
-```powershell
-flutter test
-flutter test test/data/todo_dao_test.dart
-flutter test integration_test/app_test.dart
-flutter analyze
-dart format lib/ test/ integration_test/
-flutter build apk --release
-flutter build appbundle --release
-flutter build windows --release
+## Dependency constraints
+
+- **Do not upgrade packages** without running `flutter analyze` and all tests afterwards.
+- **Android Gradle Plugin:** Stay on AGP **8.x**.
+- **Blocked package categories:** HTTP clients, WebSockets, Cloud/BaaS SDKs, Analytics, Crash reporting, Ads, Network status packages.
+- **Approved local-only packages:** `sqflite_sqlcipher`, `sqflite_common_ffi`, `path`, `path_provider`, `flutter_riverpod`, `go_router`, `intl`, `fl_chart`, `table_calendar`, `uuid`, `flutter_localizations`, `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner`, `mocktail`, `flutter_test`, `unorm_dart`, `file_picker`, `flutter_native_splash`, `rrule`, `shared_preferences`.
+
+---
+
+## Where things live
+
+```text
+AGENTS.md            # AI agent / LLM project rules (this file)
+CLAUDE.md            # Claude Code native project rules (synced with AGENTS.md)
+docs/                # Living & point-in-time project documentation suite
+plans/               # Dated workflow implementation plans
+change_log/          # Timestamped feature change logs
+lib/                 # Flutter application source code (5 layers)
+test/                # Unit, DAO, use-case, and widget tests
+integration_test/    # End-to-end integration tests
+android/             # Android host configuration
+windows/             # Windows desktop host configuration
 ```
 
-## Dependency Constraints
+---
 
-- Do not upgrade packages without rerunning analysis and tests.
-- Stay on Android Gradle Plugin `8.x`.
-- Hard-blocked package categories:
-  - HTTP clients
-  - WebSockets
-  - Cloud/BaaS SDKs
-  - Analytics
-  - Crash reporting
-  - Ads
-  - Network-status packages
-- Approved local-only packages include:
-  - `sqflite_sqlcipher`
-  - `sqflite_common_ffi`
-  - `path`
-  - `path_provider`
-  - `flutter_riverpod`
-  - `go_router`
-  - `intl`
-  - `fl_chart`
-  - `table_calendar`
-  - `uuid`
-  - `flutter_localizations`
-  - `freezed`
-  - `freezed_annotation`
-  - `json_serializable`
-  - `json_annotation`
-  - `build_runner`
-  - `mocktail`
-  - `flutter_test`
-  - `unorm_dart`
-  - `file_picker`
-  - `flutter_native_splash`
-  - `rrule`
+## Workflow rules (mandatory — from global rules)
 
-If a new package is proposed:
-1. State why it is needed.
-2. Confirm it is network-free.
-3. Run the dependency audit.
-4. Confirm analysis and tests afterwards.
+Every change follows plan-before-changing and log-after-changing:
 
-## Codex Must Always Do
+1. **Plan before changing.** Write a full plan to `plans/` named `yyyymmdd_hhMMss_<short-slug>.md` with a `**Status:**` line, the files to change, the issue, and the fix. Then **STOP and get explicit approval** before editing/creating/deleting any project file (other than the plan). A question or ambiguous reply is not approval.
+2. **Log after changing.** After implementing, write a change log to `change_log/` named `yyyymmdd_hhMMss_<short-slug>.md` describing what changed and referencing its plan.
+3. **Relative paths & privacy only.** All `plans/` and `change_log/` files MUST use relative repository paths only (never absolute system paths like `C:\...`, `l:\...`, or `file:///...`). They MUST NOT contain any sensitive or private information that cannot be shared publicly on the internet (secrets, API keys, tokens, passwords, keystore passphrases, local absolute paths, internal IPs, credentials, or PII).
 
-1. Read this file and [CLAUDE.md](/l:/Android/sreerajp_todo/CLAUDE.md) before making non-trivial changes.
+Create `plans/` and `change_log/` if they do not exist.
+
+---
+
+## Communication rules
+
+- **Always use simple English.** Write all responses, plans, change logs, and explanations in plain, simple English. Short sentences, common words. Explain any jargon you must use.
+
+---
+
+## What AI agents must always / never do
+
+**Always:**
+1. Read this file and `CLAUDE.md` before making non-trivial changes.
 2. State the target layer before adding a new class or feature slice.
-3. Enforce NFC normalization on every DB text write path.
+3. Enforce NFC normalization on every DB text write path (`unicodeUtils.nfcNormalize`).
 4. Enforce day-lock checks in every repository mutation.
-5. Add tests with every new DAO method.
-6. Keep user-visible strings in `app_strings.dart`.
-7. Route multi-step operations through domain use-cases.
-8. Use bundled assets only.
-9. Use PowerShell syntax in docs and command examples.
-10. After behavior changes, run `flutter analyze` and `flutter test` before considering the task complete.
-11. Preserve the undo UX: SnackBar with 5-second timeout and persistent app-bar undo for terminal status changes and bulk status changes; stack depth 5; clear on day navigation or 2 minutes inactivity.
+5. Add unit tests with every new DAO method.
+6. Keep user-visible strings in `lib/core/constants/app_strings.dart`.
+7. Route multi-step operations through domain use-cases (`lib/domain/usecases/`).
+8. Use bundled assets only (`AssetImage`, `Image.asset()`, `Image.file()`).
+9. Use PowerShell syntax in docs and command examples on Windows.
+10. Run `flutter analyze` and `flutter test` after behavior changes before considering work complete.
+11. Preserve the undo UX: SnackBar with 5-second timeout and persistent app-bar undo button for status changes.
 
-## Codex Must Never Do
-
-- Put business logic in widget files.
-- Call DAOs directly from widgets or notifiers.
-- Edit generated files manually.
-- Write directly to `todos` or `time_segments` outside the repository layer.
-- Expose raw `sqflite` `Database` objects outside `lib/data/`.
-- Skip NFC normalization before DB text writes.
-- Allow a second open time segment for the same todo.
-- Store secrets, keys, or signing credentials in the project root.
-- Use `Navigator.push()` instead of `go_router`.
-- Add cloud, analytics, networking, telemetry, or connectivity dependencies.
-- Add Android network permissions.
-- Use URL-based image loading.
-- Store or transmit data outside the local device filesystem.
-- Make outbound network calls from Dart for any reason.
-- Use `compute()` or `Isolate.spawn()` for `sqflite` queries.
-- Cache the full autocomplete title list in memory.
-
-## Key References
-
-- Full project rules: [CLAUDE.md](/l:/Android/sreerajp_todo/CLAUDE.md)
-- Engineering standard: [docs/flutter_project_engineering_standard.md](/l:/Android/sreerajp_todo/docs/flutter_project_engineering_standard.md)
-- Architecture overview: [docs/architecture.md](/l:/Android/sreerajp_todo/docs/architecture.md)
-- Security constraints: [docs/security.md](/l:/Android/sreerajp_todo/docs/security.md)
-
-## Quick Utility Reference
-
-- `lib/core/utils/unicode_utils.dart`
-  - `nfcNormalize(String s)`
-  - `detectTextDirection(String s)`
-- `lib/core/utils/date_utils.dart`
-  - `isToday(String date)`
-  - `isPastDate(String date)`
-  - `formatDate(DateTime d)`
-  - `todayAsIso()`
-- `lib/core/utils/duration_utils.dart`
-  - `formatDuration(int seconds)`
-
-## Exception Reference
-
-- `DayLockedException`
-- `CompletedLockException`
-- `DuplicateTitleException`
-- `SegmentAlreadyRunningException`
-- `TodoNotFoundException`
-- `BackupVersionTooNewException`
-- `BackupCorruptedException`
-
-All exceptions are defined in `lib/core/errors/exceptions.dart`.
-
-Last synced from `CLAUDE.md`: `2026-03-22`
-
-
+**Never:**
+1. Put business logic in widget files.
+2. Call DAOs directly from widgets or Notifiers.
+3. Edit generated `*.freezed.dart` or `*.g.dart` files manually.
+4. Write directly to SQLite tables outside the repository layer.
+5. Expose raw `sqflite` `Database` objects outside `lib/data/`.
+6. Skip NFC normalization before DB text writes.
+7. Allow a second open time segment (`end_time IS NULL`) for the same todo.
+8. Store secrets, keys, or signing credentials in the project root.
+9. Use `Navigator.push()` instead of `go_router`.
+10. Add cloud, analytics, networking, telemetry, or connectivity dependencies.
+11. Add Android network permissions (`INTERNET`, `ACCESS_NETWORK_STATE`).
+12. Use `NetworkImage` or URL-based image loading.
+13. Store or transmit data outside the local device filesystem.
+14. Make outbound network calls from Dart for any reason.
+15. Use `compute()` or `Isolate.spawn()` for `sqflite` queries.
+16. Cache the full autocomplete title list in memory.

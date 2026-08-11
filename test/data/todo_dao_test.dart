@@ -283,28 +283,31 @@ void main() {
       });
     }
 
-    test('deletes occurrences on or after fromDate, preserves earlier', () async {
-      await insertRule('rule-1');
-      await todoDao.insert(
-        makeTodo(id: 'past', date: '2026-03-19', recurrenceRuleId: 'rule-1'),
-      );
-      await todoDao.insert(
-        makeTodo(id: 'on', date: '2026-03-21', recurrenceRuleId: 'rule-1'),
-      );
-      await todoDao.insert(
-        makeTodo(id: 'after', date: '2026-03-22', recurrenceRuleId: 'rule-1'),
-      );
+    test(
+      'deletes occurrences on or after fromDate, preserves earlier',
+      () async {
+        await insertRule('rule-1');
+        await todoDao.insert(
+          makeTodo(id: 'past', date: '2026-03-19', recurrenceRuleId: 'rule-1'),
+        );
+        await todoDao.insert(
+          makeTodo(id: 'on', date: '2026-03-21', recurrenceRuleId: 'rule-1'),
+        );
+        await todoDao.insert(
+          makeTodo(id: 'after', date: '2026-03-22', recurrenceRuleId: 'rule-1'),
+        );
 
-      final count = await todoDao.deleteByRecurrenceRuleIdFromDate(
-        'rule-1',
-        '2026-03-21',
-      );
+        final count = await todoDao.deleteByRecurrenceRuleIdFromDate(
+          'rule-1',
+          '2026-03-21',
+        );
 
-      expect(count, 2);
-      expect(await todoDao.findById('past'), isNotNull);
-      expect(await todoDao.findById('on'), isNull);
-      expect(await todoDao.findById('after'), isNull);
-    });
+        expect(count, 2);
+        expect(await todoDao.findById('past'), isNotNull);
+        expect(await todoDao.findById('on'), isNull);
+        expect(await todoDao.findById('after'), isNull);
+      },
+    );
 
     test('only affects the given rule', () async {
       await insertRule('rule-1');
@@ -353,4 +356,77 @@ void main() {
       expect(updated[2].id, 'b');
     });
   });
+
+  group('FTS5 searchByTitle and trigger synchronization', () {
+    test('returns empty list for empty or whitespace query', () async {
+      await todoDao.insert(makeTodo(id: 'a', title: 'Buy milk'));
+      final results = await todoDao.searchByTitle('   ');
+      expect(results, isEmpty);
+    });
+
+    test('matches tokens using prefix matching', () async {
+      await todoDao.insert(makeTodo(id: 'a', title: 'Buying groceries'));
+      await todoDao.insert(makeTodo(id: 'b', title: 'Call dentist'));
+
+      final results = await todoDao.searchByTitle('buy');
+      expect(results, hasLength(1));
+      expect(results.first.id, 'a');
+    });
+
+    test('matches multi-word token queries', () async {
+      await todoDao.insert(
+        makeTodo(
+          id: 'a',
+          title: 'Buy fresh almond milk from store',
+          date: '2026-03-21',
+        ),
+      );
+      await todoDao.insert(
+        makeTodo(id: 'b', title: 'Buy cow milk', date: '2026-03-20'),
+      );
+
+      final results = await todoDao.searchByTitle('buy fresh milk');
+      expect(results, hasLength(1));
+      expect(results.first.id, 'a');
+    });
+
+    test('searches across description field', () async {
+      await todoDao.insert(
+        makeTodo(
+          id: 'a',
+          title: 'Weekly planning',
+          description: 'Remember to order organic vegetables',
+        ),
+      );
+
+      final results = await todoDao.searchByTitle('organic');
+      expect(results, hasLength(1));
+      expect(results.first.id, 'a');
+    });
+
+    test('triggers update todos_fts on update and delete', () async {
+      final initial = makeTodo(
+        id: 'a',
+        title: 'Original Title',
+        description: 'Old Note',
+      );
+      await todoDao.insert(initial);
+
+      expect(await todoDao.searchByTitle('Original'), hasLength(1));
+
+      final updated = initial.copyWith(
+        title: 'Updated Title',
+        description: 'New Note',
+      );
+      await todoDao.update(updated);
+
+      expect(await todoDao.searchByTitle('Original'), isEmpty);
+      expect(await todoDao.searchByTitle('Updated'), hasLength(1));
+      expect(await todoDao.searchByTitle('Note'), hasLength(1));
+
+      await todoDao.delete('a');
+      expect(await todoDao.searchByTitle('Updated'), isEmpty);
+    });
+  });
 }
+

@@ -1,0 +1,13 @@
+{
+  "appName": "SreerajP ToDo",
+  "description": "Personal offline-first daily ToDo and time-tracker.",
+  "version": "1.9.2",
+  "build": "17",
+  "details": {
+    "Author": "Sreeraj P",
+    "Email": "sreerajp@zohomail.in",
+    "License": "All libraries used are open source.",
+    "AI used": "Anthropic Claude, Google Gemini",
+    "IDE used": "VS Code / Antigravity"
+  }
+}

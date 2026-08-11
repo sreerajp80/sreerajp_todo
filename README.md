@@ -97,8 +97,8 @@ public-facing distribution:
 
 ### Prerequisites
 
-- Flutter `3.41.4` stable
-- Dart `3.11.1`
+- Flutter `3.44.8` stable
+- Dart `3.12.2`
 - Android release signing files at `L:\Android\key.properties` and `L:\Android\key.properties.jks`
 
 ### Android

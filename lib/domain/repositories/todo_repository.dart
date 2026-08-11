@@ -28,4 +28,12 @@ abstract class TodoRepository {
   Future<void> reorderTodos(List<TodoEntity> todos, {bool bypassLock = false});
   Future<int> maxSortOrder(String date);
   Future<void> bulkCreateTodos(List<TodoEntity> todos);
+  Future<void> toggleSubTask(
+    String todoId,
+    String subTaskId,
+    bool isCompleted, {
+    bool bypassLock = false,
+  });
+  Future<List<TodoEntity>> getPendingPrerequisites(String todoId);
+  Future<bool> isTodoBlocked(String todoId);
 }

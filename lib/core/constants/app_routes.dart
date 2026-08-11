@@ -11,6 +11,10 @@ abstract final class AppRoutes {
   static const String about = '/about';
   static const String permissions = '/permissions';
   static const String statistics = '/statistics';
+  static const String masteryDeck = '/mastery-deck';
+  static const String airQrScan = '/air-qr-scan';
+  static const String wifiSync = '/wifi-sync';
+  static const String dataHandoff = '/data-handoff';
 
   static String dailyListPath(String date) => '/day/$date';
   static String editTodoPath(String id) => '/todo/$id';

@@ -84,6 +84,20 @@ class _FakeTodoRepository implements TodoRepository {
   Future<void> bulkCreateTodos(List<TodoEntity> todos) async {}
 
   @override
+  Future<void> toggleSubTask(
+    String todoId,
+    String subTaskId,
+    bool isCompleted, {
+    bool bypassLock = false,
+  }) async {}
+
+  @override
+  Future<List<TodoEntity>> getPendingPrerequisites(String todoId) async => [];
+
+  @override
+  Future<bool> isTodoBlocked(String todoId) async => false;
+
+  @override
   Future<int> deleteAllByRecurrenceRuleId(String recurrenceRuleId) async => 0;
 
   @override

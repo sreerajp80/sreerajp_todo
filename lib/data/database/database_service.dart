@@ -6,16 +6,22 @@ import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart' as ffi;
 import 'package:sqflite_sqlcipher/sqflite.dart' as sqlcipher;
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
+import 'package:sreerajp_todo/data/database/database_key_service.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_runner.dart';
-import 'package:sreerajp_todo/data/database/migrations/migration_v1.dart';
 
 class DatabaseService {
-  DatabaseService();
+  DatabaseService({DatabaseKeyService? databaseKeyService})
+      : _databaseKeyService = databaseKeyService ?? DatabaseKeyService();
 
-  DatabaseService.forTesting(Database database, {String? databasePath})
-    : _database = database,
-      _resolvedDatabasePath = databasePath;
+  DatabaseService.forTesting(
+    Database database, {
+    String? databasePath,
+    DatabaseKeyService? databaseKeyService,
+  })  : _database = database,
+        _resolvedDatabasePath = databasePath,
+        _databaseKeyService = databaseKeyService ?? DatabaseKeyService();
 
+  final DatabaseKeyService _databaseKeyService;
   Database? _database;
   String? _resolvedDatabasePath;
 
@@ -25,21 +31,63 @@ class DatabaseService {
     }
 
     final path = await databasePath;
-    _database = await openDatabaseAt(
-      path,
-      version: kDatabaseVersion,
-      onCreate: (db, version) async {
-        await runMigrationV1(db);
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        await runDatabaseMigrations(db, oldVersion, newVersion);
-      },
-      onOpen: (db) async {
-        await db.rawQuery('PRAGMA journal_mode=WAL');
-        await db.rawQuery('PRAGMA foreign_keys=ON');
-      },
-      singleInstance: true,
-    );
+    final key = await _databaseKeyService.getOrCreateDatabaseKey();
+
+    try {
+      _database = await openDatabaseAt(
+        path,
+        version: kDatabaseVersion,
+        password: key,
+        onCreate: (db, version) async {
+          await runDatabaseMigrations(db, 0, version);
+        },
+        onUpgrade: (db, oldVersion, newVersion) async {
+          await runDatabaseMigrations(db, oldVersion, newVersion);
+        },
+        onOpen: (db) async {
+          await db.rawQuery('PRAGMA journal_mode=WAL');
+          await db.rawQuery('PRAGMA foreign_keys=ON');
+        },
+        singleInstance: true,
+      );
+    } catch (e) {
+      final dbFile = File(path);
+      if (await dbFile.exists()) {
+        try {
+          final unencryptedDb = await openDatabaseAt(
+            path,
+            singleInstance: false,
+          );
+          try {
+            await unencryptedDb.rawQuery("PRAGMA rekey = '$key'");
+          } finally {
+            await unencryptedDb.close();
+          }
+
+          _database = await openDatabaseAt(
+            path,
+            version: kDatabaseVersion,
+            password: key,
+            onCreate: (db, version) async {
+              await runDatabaseMigrations(db, 0, version);
+            },
+            onUpgrade: (db, oldVersion, newVersion) async {
+              await runDatabaseMigrations(db, oldVersion, newVersion);
+            },
+            onOpen: (db) async {
+              await db.rawQuery('PRAGMA journal_mode=WAL');
+              await db.rawQuery('PRAGMA foreign_keys=ON');
+            },
+            singleInstance: true,
+          );
+          return _database!;
+        } catch (_) {
+          rethrow;
+        }
+      }
+      rethrow;
+    }
+
     return _database!;
   }
 
@@ -71,10 +119,15 @@ class DatabaseService {
     String? password,
   }) async {
     if (_usesFfiRuntime) {
-      if (password != null && password.isNotEmpty) {
-        throw UnsupportedError(
-          'Password-protected SQLite databases are not supported by the current desktop runtime.',
-        );
+      Future<void> effectiveOnOpen(Database db) async {
+        if (password != null && password.isNotEmpty) {
+          try {
+            await db.rawQuery("PRAGMA key = '$password'");
+          } catch (_) {}
+        }
+        if (onOpen != null) {
+          await onOpen(db);
+        }
       }
 
       return ffi.databaseFactoryFfi.openDatabase(
@@ -85,7 +138,7 @@ class DatabaseService {
           onCreate: onCreate,
           onUpgrade: onUpgrade,
           onDowngrade: onDowngrade,
-          onOpen: onOpen,
+          onOpen: effectiveOnOpen,
           readOnly: readOnly,
           singleInstance: singleInstance,
         ),
@@ -119,7 +172,12 @@ class DatabaseService {
       return;
     }
 
-    final db = await openDatabaseAt(path, singleInstance: false);
+    final key = await _databaseKeyService.getOrCreateDatabaseKey();
+    final db = await openDatabaseAt(
+      path,
+      password: key,
+      singleInstance: false,
+    );
     try {
       await runDatabaseMigrations(db, fromVersion, kDatabaseVersion);
     } finally {
@@ -135,3 +193,4 @@ class DatabaseService {
     }
   }
 }
+

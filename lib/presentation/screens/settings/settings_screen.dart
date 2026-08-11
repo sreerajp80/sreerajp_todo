@@ -6,7 +6,6 @@ import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_link_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
-import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -14,9 +13,10 @@ class SettingsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final locale = ref.watch(localeProvider);
+    final selectedLanguageCode = locale?.languageCode ?? 'system';
 
-    return ResponsiveScaffold(
-      currentDestination: AppScaffoldDestination.settings,
+    return Scaffold(
       appBar: AppBar(title: Text(context.l10n.settingsLabel)),
       body: ListView(
         padding: const EdgeInsets.all(16),
@@ -47,6 +47,36 @@ class SettingsScreen extends ConsumerWidget {
                 selected: {themeMode},
                 onSelectionChanged: (selection) {
                   ref.read(themeModeProvider.notifier).state = selection.first;
+                },
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          AppSectionCard(
+            title: context.l10n.settingsLanguage,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SegmentedButton<String>(
+                segments: [
+                  ButtonSegment(
+                    value: 'system',
+                    label: Text(context.l10n.settingsLanguageSystem),
+                    icon: const Icon(Icons.language_outlined),
+                  ),
+                  ButtonSegment(
+                    value: 'en',
+                    label: Text(context.l10n.settingsLanguageEnglish),
+                    icon: const Icon(Icons.abc_outlined),
+                  ),
+                  ButtonSegment(
+                    value: 'ml',
+                    label: Text(context.l10n.settingsLanguageMalayalam),
+                    icon: const Icon(Icons.translate_outlined),
+                  ),
+                ],
+                selected: {selectedLanguageCode},
+                onSelectionChanged: (selection) {
+                  ref.read(localeProvider.notifier).setLocale(selection.first);
                 },
               ),
             ),

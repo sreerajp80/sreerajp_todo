@@ -4,7 +4,7 @@ import 'package:path/path.dart' as p;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/database/migrations/migration_v1.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_runner.dart';
 
 bool _ffiInitialized = false;
 
@@ -24,7 +24,7 @@ Future<DatabaseService> createTestDatabaseService() async {
       version: kDatabaseVersion,
       singleInstance: false,
       onCreate: (db, version) async {
-        await runMigrationV1(db);
+        await runDatabaseMigrations(db, 0, version);
       },
       onOpen: (db) async {
         await db.rawQuery('PRAGMA foreign_keys=ON');
@@ -47,7 +47,7 @@ Future<DatabaseService> createFileBackedTestDatabaseService(
       version: kDatabaseVersion,
       singleInstance: false,
       onCreate: (db, version) async {
-        await runMigrationV1(db);
+        await runDatabaseMigrations(db, 0, version);
       },
       onOpen: (db) async {
         await db.rawQuery('PRAGMA journal_mode=WAL');

@@ -81,9 +81,9 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
       context.pop<CopyTodosResult>(result);
     } on Exception catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(mapErrorToMessage(context.l10n, e))));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(mapErrorToMessage(context.l10n, e))),
+      );
       setState(() => _isCopying = false);
     }
   }

@@ -39,9 +39,7 @@ class DeleteRecurringTodos {
       final yesterday = dateTimeToIso(
         DateTime(now.year, now.month, now.day - 1),
       );
-      await _recurrenceRuleRepository.update(
-        rule.copyWith(endDate: yesterday),
-      );
+      await _recurrenceRuleRepository.update(rule.copyWith(endDate: yesterday));
     }
 
     return count;

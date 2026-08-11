@@ -14,6 +14,10 @@ import 'package:sreerajp_todo/presentation/screens/daily_list/daily_list_screen.
 import 'package:sreerajp_todo/presentation/screens/search_results/search_results_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/permissions_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/settings_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/mastery_deck/mastery_deck_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/air_qr_scan_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/p2p_wifi_sync/p2p_wifi_sync_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/data_handoff/data_handoff_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/statistics_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/time_segments/time_segments_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
@@ -124,6 +128,26 @@ final _router = GoRouter(
       pageBuilder: (context, state) =>
           _buildPage(state, const StatisticsScreen()),
     ),
+    GoRoute(
+      path: AppRoutes.masteryDeck,
+      pageBuilder: (context, state) =>
+          _buildPage(state, const MasteryDeckScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.airQrScan,
+      pageBuilder: (context, state) =>
+          _buildPage(state, const AirQrScanScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.wifiSync,
+      pageBuilder: (context, state) =>
+          _buildPage(state, const P2pWifiSyncScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.dataHandoff,
+      pageBuilder: (context, state) =>
+          _buildPage(state, const DataHandoffScreen()),
+    ),
   ],
 );
 
@@ -133,6 +157,7 @@ class TodoApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
+    final locale = ref.watch(localeProvider);
 
     return MaterialApp.router(
       title: kAppName,
@@ -140,6 +165,7 @@ class TodoApp extends ConsumerWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: themeMode,
+      locale: locale,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: _router,

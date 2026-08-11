@@ -105,12 +105,18 @@ void main() {
     () async {
       await ruleDao.insert(makeRule());
       final today = DateTime.now();
-      final past = dateTimeToIso(DateTime(today.year, today.month, today.day - 1));
+      final past = dateTimeToIso(
+        DateTime(today.year, today.month, today.day - 1),
+      );
       final todayIso = dateTimeToIso(
         DateTime(today.year, today.month, today.day),
       );
       final future = dateTimeToIso(
-        DateTime(today.year, today.month, today.day).add(const Duration(days: 1)),
+        DateTime(
+          today.year,
+          today.month,
+          today.day,
+        ).add(const Duration(days: 1)),
       );
       // bypassLock so the past-dated row can be seeded directly via the DAO.
       await todoDao.insert(makeTodo(id: 'past', date: past, ruleId: 'rule-1'));
@@ -130,25 +136,22 @@ void main() {
     },
   );
 
-  test(
-    'thisAndFuture() ends the rule so it stops regenerating',
-    () async {
-      await ruleDao.insert(makeRule());
-      final generate = GenerateRecurringTasks(ruleRepo, todoRepo);
-      await generate.call();
+  test('thisAndFuture() ends the rule so it stops regenerating', () async {
+    await ruleDao.insert(makeRule());
+    final generate = GenerateRecurringTasks(ruleRepo, todoRepo);
+    await generate.call();
 
-      await useCase.thisAndFuture('rule-1');
-      final regenerated = await generate.call();
+    await useCase.thisAndFuture('rule-1');
+    final regenerated = await generate.call();
 
-      expect(regenerated, 0);
+    expect(regenerated, 0);
 
-      final today = DateTime.now();
-      final expectedEnd = dateTimeToIso(
-        DateTime(today.year, today.month, today.day - 1),
-      );
-      final rule = await ruleRepo.findById('rule-1');
-      expect(rule, isNotNull);
-      expect(rule!.endDate, expectedEnd);
-    },
-  );
+    final today = DateTime.now();
+    final expectedEnd = dateTimeToIso(
+      DateTime(today.year, today.month, today.day - 1),
+    );
+    final rule = await ruleRepo.findById('rule-1');
+    expect(rule, isNotNull);
+    expect(rule!.endDate, expectedEnd);
+  });
 }

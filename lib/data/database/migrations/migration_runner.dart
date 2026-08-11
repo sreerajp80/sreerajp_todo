@@ -1,6 +1,11 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v1.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v2.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v3.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v4.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v5.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v6.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v7.dart';
 
 Future<void> runDatabaseMigrations(
   Database db,
@@ -33,4 +38,30 @@ Future<void> runDatabaseMigrations(
     await runMigrationV2(db);
     await db.execute('PRAGMA user_version = 2');
   }
+
+  if (oldVersion < 3 && newVersion >= 3) {
+    await runMigrationV3(db);
+    await db.execute('PRAGMA user_version = 3');
+  }
+
+  if (oldVersion < 4 && newVersion >= 4) {
+    await runMigrationV4(db);
+    await db.execute('PRAGMA user_version = 4');
+  }
+
+  if (oldVersion < 5 && newVersion >= 5) {
+    await runMigrationV5(db);
+    await db.execute('PRAGMA user_version = 5');
+  }
+
+  if (oldVersion < 6 && newVersion >= 6) {
+    await runMigrationV6(db);
+    await db.execute('PRAGMA user_version = 6');
+  }
+
+  if (oldVersion < 7 && newVersion >= 7) {
+    await runMigrationV7(db);
+    await db.execute('PRAGMA user_version = 7');
+  }
 }
+

@@ -218,7 +218,13 @@ abstract final class AppTheme {
           final color = states.contains(WidgetState.selected)
               ? scheme.onSurface
               : scheme.onSurfaceVariant;
-          return TextStyle(fontWeight: FontWeight.w600, color: color);
+          return TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w600,
+            color: color,
+            overflow: TextOverflow.ellipsis,
+            height: 1.15,
+          );
         }),
       ),
       navigationRailTheme: NavigationRailThemeData(
