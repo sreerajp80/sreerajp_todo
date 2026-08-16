@@ -1,81 +1,154 @@
 # SreerajP ToDo — Features & App Specification
 
+> Every item in this document is implemented in the current code base. Planned or
+> proposed ideas are kept out of this file on purpose.
+
 ## 1. App Overview & Identity
 
-**SreerajP ToDo** is a personal, fully offline, privacy-first daily todo and time-tracking application engineered for individuals, daily planners, time-tracking professionals, multi-lingual users, and privacy-conscious users across mobile and desktop platforms. It empowers users to organize daily tasks, track precise time spent using live concurrent timers or manual segment entries, defer unfinished work across days, automate recurring task schedules using an RFC 5545 iCalendar RRULE engine, analyze productivity trends with interactive charts and paginated tables, manage encrypted database backups locally, customize appearance (Light, Dark, or System theme), and operate seamlessly in multiple languages (English and Malayalam) with dynamic, per-field text direction handling (LTR and RTL).
+**SreerajP ToDo** is a personal, fully offline, privacy-first daily todo and time-tracking
+application for individuals, daily planners, time-tracking professionals, multi-lingual
+users, and privacy-conscious users on mobile and desktop. It lets you organise daily
+tasks, track exact time with live timers or manual entries, break tasks into sub-tasks,
+block a task until its prerequisites are done, defer unfinished work to another day,
+automate repeating tasks with an RFC 5545 iCalendar RRULE engine, revise things on a
+spaced-repetition schedule, set a morning intention and write an evening reflection,
+study productivity trends with charts and tables, search across all days with a full-text
+index, make encrypted local backups, move data between devices with QR codes, local Wi-Fi,
+or JSON/Markdown files, and switch theme and language inside the app.
 
 ### Inclusive Design & Accessibility Profile
-- **Multi-Lingual & Multi-Script Inclusion:** Native support for English (`en`) and Malayalam (`ml`), following the device's system language automatically (no in-app language switch), combined with per-field dynamic LTR/RTL text direction auto-detection (`unicodeUtils.detectTextDirection()`) wrapped via `AdaptiveDirectionality`. This ensures native script layout flow whether typing in Latin, Malayalam, Arabic, Hebrew, or mixed scripts.
-- **Visual & Colorblind Accessibility:** Modern, hand-crafted Light and Dark visual design systems (`AppTheme.light` and `AppTheme.dark`) paired with distinct iconography (check marks, alert flags, forward arrows, crosses) alongside custom color badges, ensuring status clarity for users with color vision deficiencies.
-- **Keyboard & Motor Accessibility:** Desktop and tablet keyboard focus traversal support (`FocusTraversalGroup`) enabling full Tab/Shift+Tab keyboard navigation across form fields, daily list tiles, dialogs, and navigation scaffolds for users with motor impairments or desktop productivity workflows.
-- **Screen-Reader Accessibility:** Interactive elements expose explicit `Semantics` roles and labels — task tiles, the select/toggle and delete actions, status badges, and the locked-day indicator all carry screen-reader-readable labels (e.g. for TalkBack on Android or Narrator on Windows), so blind and low-vision users can navigate the daily list and task actions non-visually.
-- **Cross-Device Adaptiveness:** Responsive navigation layout adapting dynamically to screen width (side `NavigationRail` for desktop/tablet screens `>=600dp` vs bottom `NavigationBar` for compact mobile screens `<600dp`), with main content width capped at `1440dp` (`kContentMaxWidthDp`) for optimal readability.
-- **Offline & Digital Inclusion:** 100% offline operational guarantee with zero network permissions, zero cloud dependencies, and zero analytics, ensuring individuals in low-connectivity areas or high-security environments have equal, unmonitored digital productivity capabilities.
+- **Multi-Lingual & Multi-Script Inclusion:** English (`en`) and Malayalam (`ml`). The app
+  follows the device language by default, and the Settings screen also has an in-app
+  language selector (System / English / Malayalam). Text direction is detected per field
+  with `unicodeUtils.detectTextDirection()` and applied through `AdaptiveDirectionality`,
+  so Latin, Malayalam, Arabic, Hebrew, and mixed text all flow correctly.
+- **Visual & Colorblind Accessibility:** Hand-made Light and Dark themes (`AppTheme.light`
+  and `AppTheme.dark`) with distinct icons (check marks, alert flags, forward arrows,
+  crosses) next to colour badges, so status is clear without relying on colour alone.
+- **Keyboard & Motor Accessibility:** Keyboard focus traversal (`FocusTraversalGroup`)
+  gives full Tab / Shift+Tab movement across form fields, list tiles, dialogs, and the
+  navigation scaffold on desktop and tablets.
+- **Screen-Reader Accessibility:** Task tiles, the select/toggle and delete actions, status
+  badges, and the locked-day indicator expose `Semantics` roles and labels, so TalkBack on
+  Android and Narrator on Windows can read them.
+- **Cross-Device Adaptiveness:** The layout changes with screen width — a side
+  `NavigationRail` at `>=600dp`, a bottom `NavigationBar` below that — and main content is
+  capped at `1440dp` (`kContentMaxWidthDp`) for readability.
+- **Offline & Digital Inclusion:** No internet use, no cloud account, no analytics, so the
+  app works the same in low-connectivity or high-security places.
 
 ### Technical Profile
-- **App Name:** `SreerajP ToDo`
-- **Target Audience:** Daily planners, time-tracking professionals, multi-lingual users, and privacy-conscious individuals requiring 100% offline data security.
-- **Platforms:** Android, Windows (v1.0 active targets); iOS, Linux, macOS (planned targets)
+- **App Name:** `SreerajP ToDo` (version and build come from `assets/config/app_config.json`
+  through `ConfigService`)
+- **Target Audience:** Daily planners, time-tracking professionals, multi-lingual users,
+  and privacy-conscious individuals who need fully local data.
+- **Platforms:** Android, Windows (v1.0 active targets); iOS, Linux, macOS (not built yet)
 - **Framework & Language:** Flutter (`3.44.8 stable`) / Dart (`3.12.2`)
-- **Database Storage:** Local SQLite database (`sreerajp_todo.db`) via `sqflite_sqlcipher` (mobile) / `sqflite_common_ffi` (desktop). The live database is currently opened **without** a password — device-key encryption (Android Keystore / Windows DPAPI) is a planned feature, not yet implemented. Only exported backup files are encrypted today (user passphrase, AES-256 ZIP encryption).
-- **Database PRAGMAs & Migrations:** `PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;` managed via `MigrationRunner` supporting incremental schema evolution (v1 baseline schema, v2 status sync for tasks with recorded time segments).
-- **State Management:** Riverpod (`flutter_riverpod`) with root `ProviderScope` and immutable `@freezed` state objects.
-- **Navigation & Routing:** `go_router` with custom cubic page transitions (`FadeTransition` + `SlideTransition` with `Curves.easeOutCubic`)
-- **Adaptive Layout:** Responsive scaffold adapting to screen width (side `NavigationRail` for desktop/tablet `>=600dp` vs bottom `NavigationBar` for compact mobile `<600dp`), with content width constrained to `1440dp` (`kContentMaxWidthDp`).
-- **Recurrence Engine:** iCalendar RRULE standard (RFC 5545 via `rrule` package) with human-readable sentence rendering via `describeRrule()`.
-- **Data Visualization:** `fl_chart` (Bar & Line charts for daily status breakdown and item duration trends)
-- **Localization:** `flutter_localizations` (Bilingual support: English `app_en.arb` & Malayalam `app_ml.arb`)
-- **Unicode & Text Handling:** `unorm_dart` (NFC Unicode normalization and per-field dynamic LTR/RTL text direction detection)
-- **Data & Security Policy:** 100% offline, zero network access, zero cloud synchronization, zero analytics, zero crash reporting, zero telemetry.
+- **Database Storage:** Local SQLite database (`sreerajp_todo.db`) via `sqflite_sqlcipher`
+  (mobile) and `sqflite_common_ffi` with SQLCipher (desktop). The live database is opened
+  **with a password** taken from `DatabaseKeyService`. See section 2.2.
+- **Database PRAGMAs & Migrations:** `PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;`
+  applied by `MigrationRunner`, which runs schema versions v1 to v7:
+  - v1 — baseline schema (todos, time segments, recurrence rules)
+  - v2 — status sync for tasks that already have time segments
+  - v3 — `todos_fts` FTS5 full-text search index
+  - v4 — `sub_tasks` and `task_dependencies` tables
+  - v5 — `daily_intentions` and `daily_reflections` tables
+  - v6 — `spaced_repetition_items` table and `todos.spaced_repetition_item_id`
+  - v7 — `backup_logs` table for backup history and the health dashboard
+- **State Management:** Riverpod (`flutter_riverpod`) with a root `ProviderScope` and
+  immutable `@freezed` state objects.
+- **Navigation & Routing:** `go_router` with custom page transitions (`FadeTransition` +
+  `SlideTransition`, `Curves.easeOutCubic`).
+- **Adaptive Layout:** Responsive scaffold (`NavigationRail` `>=600dp`, `NavigationBar`
+  `<600dp`), content width capped at `1440dp` (`kContentMaxWidthDp`).
+- **Recurrence Engine:** iCalendar RRULE (RFC 5545) through the `rrule` package, with
+  human-readable text from `describeRrule()`.
+- **Data Visualization:** `fl_chart` (bar chart for daily status counts, line chart for
+  per-title time trends).
+- **Localization:** `flutter_localizations` with `app_en.arb` and `app_ml.arb`; the chosen
+  language is stored with `shared_preferences`.
+- **Unicode & Text Handling:** `unorm_dart` for NFC normalization and per-field LTR/RTL
+  detection.
+- **Optical Transfer:** `qr_flutter` (showing QR frames) and `mobile_scanner` (camera
+  scanning) for the AirQR transfer feature.
+- **Backup Archiving:** ZIP creation and passphrase encryption using the `archive` package
+  plus helpers in `core/utils/crypto_utils.dart` and `core/utils/atomic_saver.dart`.
+- **Data & Security Policy:** No internet, no cloud sync, no analytics, no crash
+  reporting, no telemetry. The only network use is optional device-to-device sync over the
+  local network (section 2.1).
 - **Launch Experience:** Native splash screen on app start via `flutter_native_splash`.
 
 ---
 
 ## 2. Core Architectural Guarantees & Constraints
 
-1. **Strict Offline Enforcement:**
-   - No network permissions in `AndroidManifest.xml` (no `INTERNET`, `ACCESS_NETWORK_STATE`, or `ACCESS_WIFI_STATE`).
-   - No firewall rules or WinRT network capabilities requested or registered on Windows builds.
-   - All runtime assets are locally bundled (`AssetImage`, `Image.asset()`, `Image.file()`). `NetworkImage` and `Image.network()` are hard-prohibited.
-   - Zero external HTTP/WebSocket libraries, analytics SDKs, or telemetry tools permitted.
+1. **Offline Enforcement (No Internet, Local Network Only When You Ask):**
+   - `AndroidManifest.xml` has no `INTERNET`, `ACCESS_NETWORK_STATE`, or
+     `ACCESS_WIFI_STATE` permission. The only declared permission is `CAMERA`, used by the
+     AirQR scanner.
+   - No HTTP client, WebSocket client, cloud SDK, analytics SDK, or telemetry package is
+     used. The app never contacts a server on the internet.
+   - The optional Wi-Fi Sync feature (section 12) opens a plain TCP `ServerSocket` on the
+     device and connects to another device on the **same local network** only, and only
+     while you keep that screen open.
+   - All runtime assets are bundled (`AssetImage`, `Image.asset()`, `Image.file()`).
+     `NetworkImage` and `Image.network()` are not used.
 
-2. **Database Encryption Status (Live DB Not Yet Encrypted; Passphrase Backups Are):**
-   - **Live Database:** Currently stored as a **plain, unencrypted** SQLite file on device (`sqflite_sqlcipher` / `sqflite_common_ffi` are used, but no password is passed when opening it). Transparent device-key encryption (Android Keystore on Android, Windows DPAPI on Windows) is a planned enhancement, not yet built — the desktop (FFI) code path does not currently support opening a password-protected database at all.
-   - **Backup Archives:** Encrypted with a user-supplied passphrase (AES-256, minimum 8 characters). Exported backups (`sreerajp_todo_backup_YYYYMMDD_HHMMSS.db`) are standalone encrypted ZIP archives containing the database file, portable across devices and factory resets. This is the only encryption currently applied anywhere in the app.
+2. **Database Encryption:**
+   - **Live Database:** Opened with a password from `DatabaseKeyService`. The key is a
+     random 256-bit value created on first run and kept by the platform: on Android through
+     a `MethodChannel` (`in.sreerajp.todo/database_key`) backed by the Android Keystore in
+     `MainActivity.kt`, and on Windows through DPAPI (`core/utils/win32_dpapi.dart`), which
+     stores the protected key file in the app documents directory. If an older
+     plain database is found, `DatabaseService` opens it once, re-encrypts it with the
+     device key, and continues with the encrypted file.
+   - **Backup Archives:** Exported backups are ZIP archives encrypted with a passphrase you
+     type (AES-256, at least 8 characters), named
+     `sreerajp_todo_backup_YYYYMMDD_HHMMSS.db`. They can be carried to another device.
+   - **Wi-Fi Sync Payloads:** Encrypted in transit with AES-256-CTR plus HMAC-SHA256, using
+     a key derived from a 6-digit pairing PIN with PBKDF2-HMAC-SHA256 (300,000 iterations).
 
 3. **Immutable Past (Day Lock Constraint):**
-   - Tasks assigned to any date prior to today are automatically read-only.
-   - Creating new tasks backdated to past dates or mutating past-day tasks (editing title/description, changing status, toggling timers, adding manual time entries, or deleting) throws `DayLockedException` in the repository layer.
-   - UI reflects locked state with a padlock icon (`locked_overlay.dart`) and disabled action controls.
-   - Historical tasks remain readable, searchable, and copyable/portable to today or future dates.
+   - Tasks dated before today are read-only.
+   - Creating a backdated task or changing a past-day task (title/description, status,
+     timers, manual time entries, deletion) throws `DayLockedException` in the repository
+     layer.
+   - The UI shows the locked state with a padlock (`locked_overlay.dart`) and disabled
+     controls.
+   - Past tasks stay readable, searchable, and can still be copied to today or a later day.
 
 4. **Unicode-First & Right-to-Left (RTL) Support:**
-   - Every string written to SQLite is NFC-normalized using `unicodeUtils.nfcNormalize(value)`.
-   - Title uniqueness per day is enforced after NFC normalization to prevent visually identical duplicate entries.
-   - Text direction (LTR vs RTL) is dynamically auto-detected per text field using `unicodeUtils.detectTextDirection()` and rendered natively via `AdaptiveDirectionality`.
+   - Every string written to SQLite is NFC-normalized with `unicodeUtils.nfcNormalize()`.
+   - Title uniqueness per day is checked after NFC normalization.
+   - Text direction is detected per field and rendered through `AdaptiveDirectionality`.
 
 5. **Bilingual Localization (English & Malayalam):**
-   - Full user interface and system messages localized in English (`app_en.arb`) and Malayalam (`app_ml.arb`).
-   - The app language follows the device's system locale automatically. There is no in-app language switch — to change the app's language, the user changes their device's system language setting.
+   - The whole interface and its messages exist in `app_en.arb` and `app_ml.arb`.
+   - Default is the device language; Settings can override it to English or Malayalam and
+     the choice is remembered.
 
 6. **Domain Exception Mapping:**
-   - `DayLockedException`: Thrown on attempts to create or mutate tasks on past dates.
-   - `CompletedLockException`: Thrown on attempts to start/add time segments to completed or dropped tasks.
-   - `DuplicateTitleException`: Thrown on attempts to create/edit a task with a title already existing on the target date.
-   - `SegmentAlreadyRunningException`: Thrown on attempts to start a second active timer on the same task.
-   - `SegmentOverlapException`: Thrown on attempts to add a manual time segment overlapping an existing segment.
-   - `TodoNotFoundException`: Thrown when a task lookup fails.
-   - `BackupVersionTooNewException`: Thrown when attempting to restore a backup created by a newer database schema version.
-   - `BackupCorruptedException`: Thrown when backup passphrase verification, archive extraction, or SQLite integrity check fails.
+   - `DayLockedException`: creating or changing a task on a past date.
+   - `CompletedLockException`: adding or starting time on a completed or dropped task.
+   - `DuplicateTitleException`: a task with the same title already exists on that date.
+   - `SegmentAlreadyRunningException`: starting a second timer on the same task.
+   - `SegmentOverlapException`: a manual segment overlaps an existing one.
+   - `TodoNotFoundException`: task lookup failed.
+   - `BackupVersionTooNewException`: the backup was made by a newer schema version.
+   - `BackupCorruptedException`: wrong passphrase, broken archive, or failed integrity
+     check.
 
 ---
 
 ## 3. Daily Task Management & Lifecycle Features
 
 ### 3.1 Daily Task List
-- **Date Navigation:** Navigate across calendar dates using previous/next day arrows, a "Today" quick jump button, a date picker modal dialog, or an inline expandable calendar view (`table_calendar`).
-- **Drag-and-Drop Reordering:** Custom manual reordering of tasks within any given day's list using drag handles, updating `sortOrder` in SQLite. Drag handles are active in "Manual" sort mode and automatically hidden in auto-sort modes.
-- **Task Sorting Options:** Switch dynamically between 8 list sorting modes via the sort menu:
+- **Date Navigation:** Move between days with previous/next arrows, a "Today" button, a
+  date picker dialog, or the inline expandable calendar (`table_calendar`).
+- **Drag-and-Drop Reordering:** Reorder tasks with drag handles, saved to `sortOrder`.
+  Handles show in "Manual" sort mode and hide in the automatic sort modes.
+- **Task Sorting Options:** 8 sort modes in the sort menu:
   - Manual (custom drag-and-drop order)
   - Name A→Z
   - Name Z→A
@@ -90,69 +163,95 @@
   - `title`: Task title (NFC-normalized, unique per date).
   - `description`: Optional multi-line notes.
   - `status`: Lifecycle state (`pending`, `working`, `completed`, `dropped`, `ported`).
-  - `portedTo`: Target date reference for ported tasks (`YYYY-MM-DD`).
-  - `sourceDate`: Original date reference for copied/ported tasks (`YYYY-MM-DD`).
-  - `recurrenceRuleId`: Identifier linking task to its parent recurrence rule (if applicable).
-  - `sortOrder`: Integer position order in the daily list.
-  - `createdAt`: ISO 8601 creation timestamp.
-  - `updatedAt`: ISO 8601 modification timestamp.
-  - *Note:* Total tracked time (`HH:MM:SS`) shown on a task is **not** a stored
-    field — it is calculated on the fly from that task's time segments.
+  - `portedTo`: Target date for ported tasks (`YYYY-MM-DD`).
+  - `sourceDate`: Original date for copied/ported tasks (`YYYY-MM-DD`).
+  - `recurrenceRuleId`: Link to the recurrence rule that created it, if any.
+  - `spacedRepetitionItemId`: Link to the mastery-deck item that created it, if any.
+  - `subTasks`: Checklist items belonging to this task.
+  - `prerequisiteTodoIds`: Tasks that must be completed before this one.
+  - `sortOrder`: Position in the daily list.
+  - `createdAt` / `updatedAt`: ISO 8601 timestamps.
+  - *Note:* Total tracked time (`HH:MM:SS`) is **not** stored; it is calculated from the
+    task's time segments.
 
 ### 3.2 Task Lifecycle & Terminal Status Lock
-- **`pending`**: Default status upon creation. Timers can be started and stopped freely.
-- **`working`**: In-progress state assigned automatically when a task has at least one recorded time segment.
-- **`completed`**: Terminal state indicating completion. Running timers are automatically stopped and finalized. Timer controls are hidden and new time segments cannot be added (`CompletedLockException` enforced at repository level).
-- **`dropped`**: Terminal state indicating abandonment (e.g., priority shift or cancelled work). Running timers are automatically stopped. Tracked time is recorded separately as "dropped time" in analytics. Requires explicit confirmation dialog.
-- **`ported`**: State indicating the task was deferred/moved to a future date. Requires picking a target date and explicit confirmation dialog. Generates a fresh `pending` copy on the target date.
-- **Status Transitions:** Allowed transitions include `pending -> working -> completed`, `pending -> completed`, `pending -> working -> dropped`, `pending -> dropped`, `ported`. Terminal status changes can be modified between terminal states or reverted via Undo.
+- **`pending`**: Default on creation. Timers can start and stop freely.
+- **`working`**: Set automatically once the task has at least one time segment.
+- **`completed`**: Terminal. Running timers stop and close. Timer controls hide and new
+  segments are refused (`CompletedLockException`).
+- **`dropped`**: Terminal, for abandoned work. Running timers stop. The time already spent
+  is counted as "dropped time" in statistics. Needs a confirmation dialog.
+- **`ported`**: The task was moved to a later date. Needs a target date and a confirmation
+  dialog, and creates a fresh `pending` copy on that date.
+- **Status Transitions:** `pending -> working -> completed`, `pending -> completed`,
+  `pending -> working -> dropped`, `pending -> dropped`, and `ported`. A terminal status
+  can be changed to the other terminal status or reverted with Undo.
 
-### 3.3 Granular Deletion & Recurring Task Options
-- **Standard Task Deletion:** Single task deletion requires confirmation and cleans up associated time segments.
-- **Recurring Task Deletion:** Deleting a task generated by a recurrence rule presents granular options:
+### 3.3 Sub-Tasks (Checklists)
+- Each task can hold an ordered checklist of sub-tasks, edited in the Create/Edit ToDo
+  screen (add, tick, delete; the order follows the order they were added).
+- Sub-task fields (`SubTaskItem`): `id`, `todoId`, `title`, `isCompleted`, `sortOrder`,
+  `createdAt`, `updatedAt`.
+- The task tile shows a progress pill (for example `2/5`) when sub-tasks exist.
+- Deleting a task deletes its sub-tasks.
+
+### 3.4 Task Dependencies (Blocking)
+- A task can list other tasks of the same day as prerequisites, picked in the Create/Edit
+  ToDo screen.
+- While any prerequisite is still unfinished, the task tile shows a "Blocked by N" badge
+  and a warning line, so the order of work stays visible.
+- Stored in `task_dependencies` and served by `TaskDependencyDao.getPendingPrerequisites()`.
+
+### 3.5 Granular Deletion & Recurring Task Options
+- **Standard Task Deletion:** Asks for confirmation and cleans up the task's time
+  segments, sub-tasks, and dependency links.
+- **Recurring Task Deletion:** For a task made by a recurrence rule, three choices:
   - *Delete only this occurrence* (`deleteOnlyThis`)
   - *Delete this and future occurrences* (`deleteThisAndFuture`)
   - *Delete all occurrences and remove rule* (`deleteAllOccurrences`)
 
-### 3.4 Duplicate Detection & Real-time Validation
-- Enforces strict single-title uniqueness per calendar day.
-- Live debounced validation in task creation/editing form warns the user immediately if the NFC-normalized title matches an existing task on the selected date (`DuplicateTitleException`).
+### 3.6 Duplicate Detection & Real-time Validation
+- One title per calendar day, enforced in SQLite, the repository, and the form.
+- The create/edit form checks the NFC-normalized title while you type (debounced) and warns
+  before you save (`DuplicateTitleException`).
 
-### 3.5 History-Wide Title Autocomplete
-- When typing a task title, the app queries historical task titles across all dates.
-- Shows up to 20 prefix-matched autocomplete suggestions (with 300ms debouncing) to maintain naming consistency.
+### 3.7 History-Wide Title Autocomplete
+- While typing a title, the app looks up past titles from all dates.
+- Up to 20 prefix matches are offered, with 300 ms debouncing, to keep naming consistent.
 
 ---
 
 ## 4. Time Tracking & Segment Management
 
 ### 4.1 Live Timer
-- **Start / Stop Control:** Tap Start (▶) to begin tracking time; tap Stop (⏹) to end the active segment.
-- **Real-Time Display:** Displays live counting duration formatted as `HH:MM:SS` updated via `liveTimerProvider` stream ticks.
+- **Start / Stop Control:** Start (▶) begins a segment; Stop (⏹) closes it.
+- **Real-Time Display:** Live `HH:MM:SS` counter driven by `liveTimerProvider` ticks.
 - **Multi-Task Timer Concurrency:**
-  - Multiple *different* tasks can run active timers simultaneously.
-  - At most *one* open segment is permitted per task (attempting to start a second segment on the same task throws `SegmentAlreadyRunningException`).
+  - Different tasks may run timers at the same time.
+  - One task may have only one open segment (`SegmentAlreadyRunningException` otherwise).
 
 ### 4.2 Manual Time Entry & Segment Manager
-- Per-task **Time Segments Screen** (`/todo/:id/segments`) detailing all recorded time intervals.
-- Retroactively add manual time segments with start time, end time, non-overlapping interval validation (`SegmentOverlapException`), and same-day bounds checks.
+- Per-task **Time Segments Screen** (`/todo/:id/segments`) listing all recorded intervals.
+- Add a segment afterwards with start and end time, checked for overlap
+  (`SegmentOverlapException`) and same-day bounds.
 - **Time Segment Attributes (`TimeSegmentEntity`):**
   - `id`: Unique identifier (UUID v4).
-  - `todoId`: Foreign key reference to parent task `id`.
+  - `todoId`: Parent task id.
   - `startTime`: ISO 8601 start timestamp.
-  - `endTime`: ISO 8601 end timestamp (null while segment is actively running).
-  - `durationSeconds`: Calculated segment duration in seconds (null while running).
-  - `interrupted`: Boolean flag (`true` if segment was force-closed by startup repair or past-day lock).
-  - `manual`: Boolean flag (`true` for retroactive manual entries, `false` for live timer entries).
+  - `endTime`: ISO 8601 end timestamp (null while running).
+  - `durationSeconds`: Duration in seconds (null while running).
+  - `interrupted`: `true` if the segment was force-closed by startup repair or day lock.
+  - `manual`: `true` for entries typed afterwards, `false` for live timer entries.
   - `createdAt`: ISO 8601 creation timestamp.
 - **Visual Badges:**
-  - **"M" (Manual)** badge for retroactive manual entries.
-  - **Timestamped range** for auto-recorded live timer segments.
+  - **"M" (Manual)** for typed entries.
+  - **Timestamped range** for live timer entries.
   - **Warning indicator (!)** for interrupted or repaired segments.
 
 ### 4.3 Automatic Orphaned Segment Repair
-- On app launch, `RepairOrphanedSegments` scans for open segments on past-day tasks (e.g., left running when app/device closed unexpectedly).
-- Automatically closes orphaned past segments with 0 duration and sets `interrupted = 1`.
+- On app launch, `RepairOrphanedSegments` looks for open segments on past-day tasks (for
+  example, a timer left running when the app closed).
+- Such segments are closed with 0 duration and marked `interrupted = 1`.
 
 ---
 
@@ -160,132 +259,240 @@
 
 ### 5.1 Copy Tasks Wizard
 - **Screen:** `/copy`
-- Multi-step wizard to duplicate one or multiple selected tasks from any day to today or a future target date.
-- Supports pre-selected task lists passed via route arguments from bulk multi-selection.
-- Original tasks remain untouched in their existing state and day.
-- Target tasks are created as fresh `pending` tasks with zero time segments.
-- Automatically skips copying if a task with the exact NFC-normalized title already exists on the target date.
-- Displays an origin badge ("Copied from YYYY-MM-DD") on newly created tasks.
+- Step-by-step wizard to copy one or more tasks from any day to today or a later date.
+- Accepts a pre-selected task list handed over from bulk multi-selection.
+- Original tasks stay untouched on their own day.
+- New tasks are created as `pending` with no time segments.
+- A task is skipped if the same NFC-normalized title already exists on the target date.
+- New tasks show an origin badge ("Copied from YYYY-MM-DD").
 
 ### 5.2 Port Tasks
-- Atomic operation moving an active task forward to a target date (tomorrow or later).
-- Marks original task as `ported` with target date reference ("→ YYYY-MM-DD").
-- Creates a new `pending` task on target date ("Copied from YYYY-MM-DD").
-- Time segments remain on original task and start fresh on new target task.
+- One atomic action that moves an unfinished task to a later date (tomorrow or after).
+- The original task becomes `ported` with a target reference ("→ YYYY-MM-DD").
+- A new `pending` task is created on the target date ("Copied from YYYY-MM-DD").
+- Time segments stay with the original task; the new task starts at zero.
 
 ---
 
 ## 6. Recurring Tasks Engine (iCalendar RRULE)
 
-- **RFC 5545 Compliance:** Built on the iCalendar RRULE specification via `rrule` package.
-- **Integrated Recurrence Editor:** Configured directly inside the Create/Edit ToDo screen (`/todo/new`, `/todo/:id`) via `RepeatOptionPicker` and `rrule_frequency_picker` / `rrule_preview` modal bottom sheet.
-- **Natural Language Parsing:** Converts raw RRULE strings into human-readable descriptions (e.g., *"Every 2 weeks on Monday and Thursday"*, *"Monthly on day 15"*, *"Annually on March 22"*, *"Every weekday"*, *"Every weekend"*) via `describeRrule()`.
-- **Frequencies & Patterns:** Daily, Weekly, Monthly, Yearly with custom intervals (e.g., every 3 days, every 2 weeks), specific weekdays (e.g., Mon + Thu, Weekdays, Weekends), and ending criteria (*Never*, *On Date*, *After Days*).
+- **RFC 5545 Compliance:** Built on the iCalendar RRULE standard via the `rrule` package.
+- **Integrated Recurrence Editor:** Set inside the Create/Edit ToDo screen (`/todo/new`,
+  `/todo/:id`) using `RepeatOptionPicker` with the `rrule_frequency_picker` /
+  `rrule_preview` bottom sheet.
+- **Natural Language Text:** RRULE strings are shown as plain sentences (for example
+  *"Every 2 weeks on Monday and Thursday"*, *"Monthly on day 15"*, *"Annually on March 22"*,
+  *"Every weekday"*, *"Every weekend"*) by `describeRrule()`.
+- **Frequencies & Patterns:** Daily, Weekly, Monthly, Yearly with intervals (every 3 days,
+  every 2 weeks), chosen weekdays (Mon + Thu, Weekdays, Weekends), and end conditions
+  (*Never*, *On Date*, *After Days*).
 - **Recurrence Rule Attributes (`RecurrenceRuleEntity`):**
   - `id`: Unique identifier (UUID v4).
   - `title`: Template title for generated tasks.
   - `description`: Optional template notes.
-  - `rrule`: Standard RFC 5545 iCalendar recurrence rule string.
-  - `startDate`: ISO date string (`YYYY-MM-DD`) when recurrence rule becomes effective.
-  - `endDate`: Optional ISO date string (`YYYY-MM-DD`) when recurrence rule expires.
-  - `active`: Boolean flag indicating if rule actively generates tasks (`true`/`false`).
-  - `createdAt`: ISO 8601 creation timestamp.
-  - `updatedAt`: ISO 8601 modification timestamp.
-- **Real-Time Occurrence Preview:** Displays a live 5-date preview widget (`rrule_preview.dart`) calculating upcoming execution dates.
-- **Automatic Task Generation:** On app launch, backup restore, or task creation/update, `GenerateRecurringTasks` scans active rules and generates task instances for a 7-day look-ahead window (`[today, today + 7 days]`). Skips generation if title already exists on target date.
-- **Generated Task Indicator:** Tasks generated by recurrence rules display a repeat badge (🔁).
+  - `rrule`: RFC 5545 recurrence rule string.
+  - `startDate`: ISO date (`YYYY-MM-DD`) when the rule starts.
+  - `endDate`: Optional ISO date (`YYYY-MM-DD`) when the rule stops.
+  - `active`: Whether the rule still creates tasks.
+  - `createdAt` / `updatedAt`: ISO 8601 timestamps.
+- **Real-Time Occurrence Preview:** A live 5-date preview (`rrule_preview.dart`).
+- **Automatic Task Generation:** On app launch, after a backup restore, and on task
+  create/update, `GenerateRecurringTasks` reads the active rules and creates tasks for the
+  next 7 days (`[today, today + 7 days]`), skipping dates where the title already exists.
+- **Generated Task Indicator:** Tasks made by a rule carry a repeat badge (🔁).
 
 ---
 
-## 7. Bulk Operations & Multi-Select UX
+## 7. Spaced Repetition "Mastery Deck"
 
-- **Trigger:** Long-press any task on the daily list to activate selection mode.
+- **Screen:** `/mastery-deck`, also a destination in the bottom bar / navigation rail.
+- Keep a deck of things you want to revise. Each deck item creates a task on the day it is
+  due.
+- **Item attributes (`SpacedRepetitionItemEntity`):** `id`, `title`, `description`,
+  `level`, `easeFactor` (starts at 2.5), `intervalDays`, `nextReviewDate`, `active`,
+  `createdAt`, `updatedAt`.
+- **Automatic Generation:** On app launch, `GenerateSpacedRepetitionTasks` creates today's
+  task for every active item whose `nextReviewDate` is today or earlier.
+- **Recall Confidence:** Completing a mastery task opens a dialog with three answers —
+  *Hard*, *Revision*, *Easy*. `CompleteSrsTodo` uses the answer to update the ease factor
+  and interval, and to set the next review date.
+- **Tag Support:** A normal task whose title contains `#mastery` (or
+  `#spaced-repetition`) is treated as a mastery task as well.
+
+---
+
+## 8. Daily Intention & Evening Reflection
+
+- **Morning Intention Card:** At the top of the daily list, a card shows the intention for
+  the day. You can write your own or cycle through the built-in suggestions. Saved per date
+  in `daily_intentions`.
+- **Evening Reflection Modal:** Opened from the intention card. It shows the day's summary
+  — completed time, dropped time, task counts, and completion ratio — and takes a free-text
+  note. Saved per date in `daily_reflections` together with `completedSeconds` and
+  `droppedSeconds`.
+
+---
+
+## 9. Bulk Operations & Multi-Select UX
+
+- **Trigger:** Long-press any task in the daily list to start selection mode.
 - **Selection Actions:**
-  - **Bulk Complete:** Marks all selected tasks as `completed` and closes any open timers in a single transaction.
-  - **Bulk Drop:** Marks all selected tasks as `dropped` in a single transaction.
-  - **Bulk Copy:** Pre-loads selected tasks into the Copy Tasks wizard.
-- **Transactional Consistency:** All bulk status updates execute within a single SQLite transaction.
+  - **Bulk Complete:** Marks all selected tasks `completed` and closes their open timers in
+    one transaction.
+  - **Bulk Drop:** Marks all selected tasks `dropped` in one transaction.
+  - **Bulk Copy:** Sends the selected tasks into the Copy Tasks wizard.
+- **Transactional Consistency:** Bulk status updates run inside a single SQLite
+  transaction.
 
 ---
 
-## 8. Undo System & History Protection
+## 10. Undo System & History Protection
 
-- **5-Second Toast (SnackBar):** Immediate undo prompt following any status change, port action, or bulk operation. Undoing a port or copy operation automatically deletes the newly generated tasks.
-- **Persistent App-Bar Undo Button (`↩`):** Persistent undo button in the app bar managing an in-memory stack of up to 5 recent status modifications.
-- **Stack Invalidation:** Undo stack automatically clears upon date navigation or 2 minutes of user inactivity.
-
----
-
-## 9. Cross-Day History Search
-
-- **Screen:** `/search`
-- Substring search matching any part of a task title across all recorded dates (`/search?q=query`).
-- Search results grouped chronologically by date.
-- Full Unicode, multi-script, and bilingual search capability.
-- Tapping a search result navigates directly to that date's Daily List screen.
+- **5-Second Toast (SnackBar):** An undo prompt appears after any status change, port, or
+  bulk action. Undoing a port or copy deletes the tasks that action created.
+- **Persistent App-Bar Undo Button (`↩`):** Keeps an in-memory stack of the last 5 status
+  changes.
+- **Stack Invalidation:** The undo stack clears when you change date or after 2 minutes of
+  inactivity.
 
 ---
 
-## 10. Statistics & Productivity Analytics Dashboard
+## 11. Cross-Day Full-Text Search
 
-### 10.1 Daily Overview Tab
+- **Screen:** `/search` (`/search?q=query`)
+- Search runs against the FTS5 index `todos_fts` (`MATCH`), covering task titles and
+  descriptions across all dates, with a `LIKE` query as a fallback when the index cannot
+  serve the term.
+- Results are grouped by date, in date order.
+- Full Unicode, multi-script, and bilingual search.
+- Tapping a result opens that date's Daily List screen.
+
+---
+
+## 12. Device-to-Device Transfer (No Internet)
+
+### 12.1 AirQR Optical Transfer
+- **Share:** From the daily list overflow menu or the Backup screen, the app turns the
+  chosen data (today's tasks, a daily timecard summary, or a database backup) into a
+  stream of QR frames shown one after another on screen (`qr_flutter`). Extra parity frames
+  (an LT fountain code) are added so the receiver can rebuild the data even if some frames
+  are missed.
+- **Scan:** `/air-qr-scan` uses the camera (`mobile_scanner`) to read the frame stream,
+  shows live progress, checks a CRC32 checksum, and rebuilds the payload.
+- **Import:** After a successful scan you can *Import All* or *Skip Duplicates*.
+- This is the only feature that needs the `CAMERA` permission.
+
+### 12.2 Peer-to-Peer Wi-Fi Sync
+- **Screen:** `/wifi-sync`
+- One device hosts a plain TCP server on a random port on the local network; the other
+  device connects to it. Nothing leaves the local network and no server on the internet is
+  involved.
+- Pairing uses a 6-digit PIN, shown as a QR / link string
+  (`wifi_sync://<ip>:<port>?pin=<pin>&salt=<salt_hex>`).
+- The payload is encrypted with AES-256-CTR + HMAC-SHA256, keyed by PBKDF2-HMAC-SHA256
+  (300,000 iterations) over the PIN and salt.
+- You choose what to send (sync scope categories), and the merge on the receiving side is
+  **add-only**: records are matched by date plus NFC-normalized title, and nothing existing
+  is overwritten or deleted.
+
+### 12.3 Multi-Format Data Handoff
+- **Screen:** `/data-handoff`
+- **Export JSON:** Tasks, sub-tasks, time segments, and recurrence rules as a readable JSON
+  payload (`DataHandoffPayload`, version 1).
+- **Export Markdown:** A formatted daily document with tasks and timecard figures.
+- **Import:** Pick a `.json`, `.md`, or `.txt` file. Markdown checklists (`- [ ]` /
+  `- [x]`) are parsed into tasks. Import into a past date is refused with
+  `DayLockedException`.
+
+---
+
+## 13. Statistics & Productivity Analytics Dashboard
+
+### 13.1 Daily Overview Tab
 - **Date Range Filters:** Last 7 days, Last 30 days, All time, Custom date range.
-- **Status Breakdown Bar Chart (`fl_chart`):** Visual distribution of task counts by status (`pending`, `working`, `completed`, `dropped`, `ported`) — five bars per day.
-- **Summary Metrics Cards:** Five cards — total task count, average completed tasks per day, average time spent per day, total productive time (time on completed tasks), and total dropped time (time on dropped tasks).
-- **Daily Metrics Data Table:** Paginated table (20 rows/page) with one row per day, columns: Date, Total, Pending, Working, Completed, Dropped, Ported, and combined Total Time. (The productive-vs-dropped time split is shown only as the two aggregate summary cards above, not as per-day table columns.)
+- **Status Breakdown Bar Chart (`fl_chart`):** Task counts by status (`pending`, `working`,
+  `completed`, `dropped`, `ported`) — five bars per day.
+- **Summary Metrics Cards:** Five cards — total tasks, average completed tasks per day,
+  average time per day, total productive time (time on completed tasks), and total dropped
+  time (time on dropped tasks).
+- **Daily Metrics Data Table:** Paginated table (20 rows per page), one row per day, with
+  columns Date, Total, Pending, Working, Completed, Dropped, Ported, and total time. (The
+  productive-vs-dropped split appears only in the two summary cards, not as table columns.)
 
-### 10.2 Per-Item Overview Tab
-- **Task Title Selector:** Dropdown to pick a specific task title, filtering the chart and table below to that title.
-- **Time Trend Line Chart (`fl_chart`):** Visualizes tracked time (minutes) per task title over time across dates.
-- **Title Summary Table:** Paginated table (20 rows/page) showing task appearance count, pending count, working count, completion count, dropped count, ported count, and total accumulated time.
-
----
-
-## 11. Database Backup, Restore & Data Portability
-
-### 11.1 Export Backup
-- Creates a portable, standalone passphrase-encrypted ZIP archive containing SQLite database (`sreerajp_todo_backup_YYYYMMDD_HHMMSS.db`).
-- Encrypts the archive using a user-defined passphrase (AES-256 / ZIP password encryption, minimum 8 characters).
-- Performs WAL checkpointing, temporary copy generation, archive password encryption, and SQLite integrity validation before final write.
-
-### 11.2 Import Restore
-- Restores an exported backup file selected via system file picker.
-- Validates user passphrase, checks schema version compatibility (runs automatic migrations for older versions, rejects newer versions via `BackupVersionTooNewException`), executes `PRAGMA integrity_check` validation, replaces the live database atomically with the restored (currently unencrypted) database file, and triggers automatic recurring task generation.
-
-### 11.3 Local Backup Management
-- View, inspect (date, file size), and delete stored local backup files directly within the Backup screen (`/backup`).
+### 13.2 Per-Item Overview Tab
+- **Task Title Selector:** Choose one task title to filter the chart and table below.
+- **Time Trend Line Chart (`fl_chart`):** Tracked minutes for that title over time.
+- **Title Summary Table:** Paginated table (20 rows per page) with appearance count,
+  pending, working, completed, dropped and ported counts, and total time.
 
 ---
 
-## 12. Application Screens & Navigation Map
+## 14. Database Backup, Restore & Data Portability
+
+### 14.1 Export Backup
+- Creates a standalone passphrase-encrypted ZIP archive holding the SQLite database, named
+  `sreerajp_todo_backup_YYYYMMDD_HHMMSS.db`.
+- The passphrase is yours (AES-256 ZIP encryption, at least 8 characters).
+- Export runs a WAL checkpoint, writes to a temporary copy, encrypts the archive, and runs
+  an integrity check before the final file is written.
+- The default destination is a `SreerajP ToDo/Backups` folder under the platform downloads
+  or documents directory.
+
+### 14.2 Import Restore
+- Restores a backup file chosen with the system file picker.
+- Checks the passphrase, checks the schema version (older versions are migrated forward,
+  newer versions are refused with `BackupVersionTooNewException`), runs
+  `PRAGMA integrity_check`, replaces the live database atomically, and then regenerates
+  recurring tasks.
+
+### 14.3 Local Backup Management & Health
+- The Backup screen (`/backup`) lists stored backup files with date and size, and lets you
+  delete them.
+- Every export and restore is written to `backup_logs`, and the **Backup Health Dashboard**
+  on the same screen shows the latest status (healthy / warning / no backups), the last run
+  and its trigger, the archive size, and an expandable log list.
+
+---
+
+## 15. Application Screens & Navigation Map
 
 | Screen | Route Path | Purpose & Capabilities |
 |--------|------------|------------------------|
-| *(redirect)* | `/` | Root route — redirects to today's Daily List (`/day/<today>`). No dedicated screen; defined as a `GoRouter` redirect in `lib/app.dart`. |
-| **Daily List** | `/day/:date` | Main screen showing daily tasks, live timers, status updates, date navigation, drag reordering, dynamic sorting, inline calendar view, and bulk selection. |
-| **Create / Edit ToDo** | `/todo/new`, `/todo/:id` | Task form with real-time duplicate validation, NFC title normalization, history title autocomplete, and integrated iCalendar RRULE recurrence editor. |
-| **Time Segments** | `/todo/:id/segments` | Per-task list of tracked time intervals (Auto vs Manual vs Interrupted badges) and retroactive manual segment entry form. |
-| **Copy ToDos** | `/copy?from=:date` | Multi-step wizard to select tasks, target date, preview duplicate skips, and copy tasks. |
-| **Search Results** | `/search?q=:query` | Cross-day title search results grouped chronologically by date with direct navigation. |
-| **Statistics Dashboard** | `/statistics` | Productivity metrics with Daily Overview and Per-Item Overview tabs (`fl_chart` bar/line charts, paginated tables, title selector). |
-| **Backup & Restore** | `/backup` | Passphrase-encrypted export/import backup system and local backup file manager. |
-| **Settings** | `/settings` | System/Light/Dark theme selector, navigation shortcuts, and offline security policy info. |
-| **Permissions Info** | `/permissions` | Transparency screen listing implicit local permission categories used (storage, file picker access, system clock, text processing) and confirming no explicit network/privacy permissions are required. |
-| **About App** | `/about` | Displays app version, build date, author metadata, AI pair-programming attribution, offline guarantees, a Unicode-first input note, and a "built for daily navigation flow" note. |
+| *(redirect)* | `/` | Root route — redirects to today's Daily List (`/day/<today>`). Defined as a `GoRouter` redirect in `lib/app.dart`. |
+| **Daily List** | `/day/:date` | Main screen: daily tasks, live timers, status changes, date navigation, drag reorder, sorting, inline calendar, morning intention card, bulk selection, and the overflow menu (Settings, Wi-Fi Sync, AirQR share, AirQR scan, Data Handoff). |
+| **Create / Edit ToDo** | `/todo/new`, `/todo/:id` | Task form with live duplicate check, NFC title normalization, title autocomplete, sub-task checklist, prerequisite picker, and the RRULE recurrence editor. |
+| **Time Segments** | `/todo/:id/segments` | Per-task time intervals (Auto / Manual / Interrupted badges) and the manual segment form. |
+| **Copy ToDos** | `/copy?from=:date` | Wizard to pick tasks and a target date, preview skipped duplicates, and copy. |
+| **Search Results** | `/search?q=:query` | FTS5 cross-day search results grouped by date, with direct navigation. |
+| **Mastery Deck** | `/mastery-deck` | Spaced-repetition deck: create items, see next review dates, track levels. |
+| **Statistics Dashboard** | `/statistics` | Daily Overview and Per-Item Overview tabs (`fl_chart` bar/line charts, paginated tables, title selector). |
+| **Backup & Restore** | `/backup` | Passphrase-encrypted export/import, local backup file manager, and backup health dashboard. |
+| **Wi-Fi Sync** | `/wifi-sync` | Host or join an encrypted local-network sync session with PIN pairing and add-only merge. |
+| **AirQR Scan** | `/air-qr-scan` | Camera scanner that rebuilds a QR frame stream and imports the data. |
+| **Data Handoff** | `/data-handoff` | JSON and Markdown export and import. |
+| **Settings** | `/settings` | Theme selector (System/Light/Dark), language selector (System/English/Malayalam), shortcuts, and offline policy info. |
+| **Permissions Info** | `/permissions` | Transparency screen listing the local permission categories used (storage, file picker, system clock, text processing). |
+| **About App** | `/about` | App version and build from `app_config.json`, author details, AI and IDE attribution, offline guarantees, and a Unicode-first note. |
+
+Bottom bar / navigation rail destinations: **Daily List**, **Mastery**, **Statistics**.
+Everything else is reached from the app bar, the overflow menu, or Settings.
 
 ---
 
-## 13. Summary Matrix of App Capabilities
+## 16. Summary Matrix of App Capabilities
 
 | Feature Category | Included Capabilities |
 |------------------|-----------------------|
-| **Task Management** | Daily list, drag reorder, dynamic sorting (manual, name A→Z/Z→A, created oldest/newest, most/least time tracked, status), NFC title normalization, duplicate prevention, history autocomplete, inline calendar view |
+| **Task Management** | Daily list, drag reorder, 8 sort modes, NFC title normalization, duplicate prevention, history autocomplete, inline calendar, sub-task checklists, task dependencies with blocked badge |
 | **Task Statuses** | Pending, Working, Completed (locked), Dropped (sunk time), Ported (moved) |
-| **Time Tracking** | Live timer (`HH:MM:SS`), multi-task concurrency, manual segment entry, automatic startup orphaned segment repair, segment manager screen |
-| **Task Movement** | Task copy wizard, atomic port to future date, origin/destination tracking badges |
-| **Recurrence** | iCalendar RFC 5545 RRULE engine (daily, weekly, monthly, yearly), natural language parser (`describeRrule()`), integrated editor in task form, 7-day auto-generation on launch/restore, 5-date preview, granular deletion options |
-| **Bulk Operations** | Multi-select long-press, bulk complete, bulk drop, bulk copy, single transaction execution |
-| **Undo System** | 5-second SnackBar undo, 5-depth app-bar undo history, auto-clears on date change / 2-min idle |
-| **Search & Stats** | Cross-day search, status bar charts (`fl_chart`), title time line charts, paginated tables, per-title selector |
-| **Security & Backup**| Passphrase-protected AES-256 backup encryption (live database is not yet encrypted), backup integrity check, zero network/telemetry |
-| **UI & UX** | Light/Dark/System theme, auto RTL/LTR text direction (`AdaptiveDirectionality`), English/Malayalam localization, keyboard focus traversal, responsive navigation, custom page transitions |
+| **Time Tracking** | Live timer (`HH:MM:SS`), multi-task concurrency, manual segment entry, startup orphaned-segment repair, segment manager screen |
+| **Task Movement** | Copy wizard, atomic port to a later date, origin/destination badges |
+| **Recurrence** | RFC 5545 RRULE engine (daily, weekly, monthly, yearly), `describeRrule()` text, editor inside the task form, 7-day auto-generation on launch/restore, 5-date preview, granular deletion options |
+| **Spaced Repetition** | Mastery deck screen, ease factor and interval scheduling, Hard/Revision/Easy recall dialog, daily auto-generation, `#mastery` tag |
+| **Daily Practice** | Morning intention card with suggestion cycling, evening reflection modal with day summary and note |
+| **Bulk Operations** | Long-press multi-select, bulk complete, bulk drop, bulk copy, single transaction |
+| **Undo System** | 5-second SnackBar undo, 5-deep app-bar undo history, clears on date change or 2-minute idle |
+| **Search & Stats** | FTS5 cross-day search, status bar chart, per-title time line chart, paginated tables, title selector |
+| **Transfer** | AirQR optical frame streaming with parity frames and CRC32, encrypted local-network Wi-Fi sync with PIN pairing and add-only merge, JSON/Markdown data handoff |
+| **Security & Backup** | Device-key encrypted live database (Android Keystore / Windows DPAPI), passphrase AES-256 backup archives, integrity checks, backup logs and health dashboard, no internet or telemetry |
+| **UI & UX** | Light/Dark/System theme, in-app language selector, auto RTL/LTR direction (`AdaptiveDirectionality`), English/Malayalam localization, keyboard focus traversal, responsive navigation, custom page transitions |
