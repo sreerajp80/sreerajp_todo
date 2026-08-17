@@ -48,6 +48,14 @@ class AboutScreen extends ConsumerWidget {
                   label: context.l10n.aboutAppVersion,
                   value: config.version,
                 ),
+                if (config.build.trim().isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  _AboutDetailRow(
+                    icon: Icons.tag_rounded,
+                    label: context.l10n.aboutBuildNumber,
+                    value: config.build,
+                  ),
+                ],
                 const SizedBox(height: 12),
                 _AboutDetailRow(
                   icon: Icons.calendar_today_outlined,

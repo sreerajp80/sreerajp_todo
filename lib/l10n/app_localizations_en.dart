@@ -806,6 +806,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aboutAppVersion => 'Version';
 
   @override
+  String get aboutBuildNumber => 'Build';
+
+  @override
   String get aboutMadeWithLoveIn => 'Made with ❤ in India';
 
   @override

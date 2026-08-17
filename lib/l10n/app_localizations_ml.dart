@@ -812,6 +812,9 @@ class AppLocalizationsMl extends AppLocalizations {
   String get aboutAppVersion => 'പതിപ്പ്';
 
   @override
+  String get aboutBuildNumber => 'ബിൽഡ്';
+
+  @override
   String get aboutMadeWithLoveIn => 'ഇന്ത്യയിൽ ❤ യോടെ നിർമ്മിച്ചത്';
 
   @override

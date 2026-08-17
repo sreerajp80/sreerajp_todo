@@ -539,6 +539,8 @@
   "@aboutBuildDate": { "description": "Label for build date metadata field." },
   "aboutAppVersion": "Version",
   "@aboutAppVersion": { "description": "Label for version string." },
+  "aboutBuildNumber": "Build",
+  "@aboutBuildNumber": { "description": "Label for the build number metadata field." },
   "aboutMadeWithLoveIn": "Made with ❤ in India",
   "@aboutMadeWithLoveIn": { "description": "Footer message celebrating origin." },
 

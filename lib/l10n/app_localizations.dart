@@ -1598,6 +1598,12 @@ abstract class AppLocalizations {
   /// **'Version'**
   String get aboutAppVersion;
 
+  /// Label for the build number metadata field.
+  ///
+  /// In en, this message translates to:
+  /// **'Build'**
+  String get aboutBuildNumber;
+
   /// Footer message celebrating origin.
   ///
   /// In en, this message translates to:
