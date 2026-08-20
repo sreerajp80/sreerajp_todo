@@ -1,5 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.CAMERA" />
+    <!--
+        Needed only by the voice task sheet, which is off until the user turns
+        "Voice input" on in Settings. The recognised words are parsed on this
+        device and nothing is recorded or kept. No network permission is
+        declared anywhere in this file, and none may ever be added.
+    -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <application
         android:label="@string/app_name"
         android:allowBackup="false"
@@ -32,6 +39,14 @@
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
+        </intent>
+        <!--
+            From API 30 an app cannot see another app unless it says so here.
+            Without this the speech recogniser looks missing and the voice sheet
+            would always fall back to typing.
+        -->
+        <intent>
+            <action android:name="android.speech.RecognitionService"/>
         </intent>
     </queries>
 </manifest>

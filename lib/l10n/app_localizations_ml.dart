@@ -290,6 +290,20 @@ class AppLocalizationsMl extends AppLocalizations {
   String get segmentDuration => 'ദൈർഘ്യം';
 
   @override
+  String get segmentNoteLabel => 'കുറിപ്പ്';
+
+  @override
+  String get segmentNoteHint => 'എന്താണ് ചെയ്തത്?';
+
+  @override
+  String get editSegmentNote => 'കുറിപ്പ് തിരുത്തുക';
+
+  @override
+  String matchedInNote(String note) {
+    return 'കുറിപ്പ്: $note';
+  }
+
+  @override
   String get segmentAuto => 'ഓട്ടോ';
 
   @override
@@ -711,6 +725,378 @@ class AppLocalizationsMl extends AppLocalizations {
       'ഈ ആപ്പ് പൂർണ്ണമായും ഓഫ്‌ലൈനായി പ്രവർത്തിക്കുന്നു. നിങ്ങൾ ഒരു ലോക്കൽ ബാക്കപ്പ് ഫയൽ എക്സ്പോർട്ട് ചെയ്യുന്നില്ലെങ്കിൽ ടാസ്കുകൾ, ബാക്കപ്പുകൾ, സ്ഥിതിവിവരക്കണക്കുകൾ എന്നിവ ഈ ഉപകരണത്തിൽ തന്നെ തുടരും.';
 
   @override
+  String get settingsAppearanceSubtitle =>
+      'തീം മോഡ്, ടൈപോഗ്രാഫി, ആക്സന്റ് നിറം';
+
+  @override
+  String get settingsLanguageSubtitle =>
+      'ആപ്പിൽ ഉപയോഗിക്കേണ്ട ഭാഷ തിരഞ്ഞെടുക്കുക';
+
+  @override
+  String get settingsBackupSubtitle =>
+      'എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പ് ഫയൽ എക്സ്‌പോർട്ട് അല്ലേൽ ഇംപോർട്ട് ചെയ്യുക';
+
+  @override
+  String get settingsFeatures => 'സവിശേഷതകൾ';
+
+  @override
+  String get settingsFeaturesSubtitle =>
+      'ശ്രീരാജ്‌പി ടുഡുവിന്റെ എല്ലാ സവിശേഷതകളും അറിയുക';
+
+  @override
+  String get settingsHelp => 'സഹായവും മാർഗ്ഗനിർദ്ദേശങ്ങളും';
+
+  @override
+  String get settingsHelpSubtitle =>
+      'ടൈം ട്രാക്കിംഗ്, സിങ്ക്, ബാക്കപ്പ്, ചോദ്യോത്തരങ്ങൾ';
+
+  @override
+  String get settingsAboutSubtitle => 'പതിപ്പ്, ക്രെഡിറ്റ്, ആപ്പ് വിവരങ്ങൾ';
+
+  @override
+  String get settingsTimeTracking => 'സമയ ട്രാക്കിംഗ്';
+
+  @override
+  String get settingsTimeTrackingSubtitle =>
+      'ഓട്ടോ-സ്റ്റോപ്പ്, പോസ്, പൊമോഡോറോ, സമയം കാണിക്കുന്ന രീതി';
+
+  @override
+  String get trackingAutoStop => 'ടൈമർ സ്വയം നിർത്തുക';
+
+  @override
+  String get trackingAutoStopSubtitle => 'ഓടിക്കൊണ്ടിരിക്കുന്ന ടൈമർ നിർത്തുക';
+
+  @override
+  String get trackingAutoStopOff => 'ഒരിക്കലും വേണ്ട';
+
+  @override
+  String get trackingAutoStopOffDetail =>
+      'നിങ്ങൾ നിർത്തുന്നതുവരെ ടൈമർ ഓടിക്കൊണ്ടിരിക്കും.';
+
+  @override
+  String get trackingAutoStopMidnight => 'അർദ്ധരാത്രിയിൽ';
+
+  @override
+  String get trackingAutoStopMidnightDetail =>
+      'ദിവസം അവസാനിക്കുമ്പോൾ നിർത്തും, അതിനാൽ ട്രാക്ക് ചെയ്ത സമയം നഷ്ടപ്പെടില്ല.';
+
+  @override
+  String get trackingAutoStopCustom => 'നിശ്ചിത സമയത്ത്';
+
+  @override
+  String get trackingAutoStopCustomDetail =>
+      'താഴെ നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന സമയത്ത് നിർത്തും.';
+
+  @override
+  String get trackingAutoStopTime => 'നിർത്തേണ്ട സമയം';
+
+  @override
+  String get trackingAutoStopNote =>
+      'ആപ്പ് അടച്ചിരിക്കുമ്പോൾ കൃത്യം ആ നിമിഷത്തിൽ ടൈമർ നിർത്താൻ കഴിയില്ല. അടുത്ത തവണ ആപ്പ് തുറക്കുമ്പോൾ അത് ശരിയാക്കും.';
+
+  @override
+  String get trackingAutoStopped => 'ടൈമർ സ്വയം നിർത്തി';
+
+  @override
+  String get trackingTimerBehaviour => 'ടൈമർ പ്രവർത്തനരീതി';
+
+  @override
+  String get trackingTimerBehaviourSubtitle =>
+      'ഒരു സമയത്ത് ഒരു ടൈമർ, പോസ്, സ്ക്രീൻ, ചെറിയ സെഗ്‌മെന്റുകൾ';
+
+  @override
+  String get trackingSingleTimer => 'ഒരു സമയത്ത് ഒരു ടൈമർ മാത്രം';
+
+  @override
+  String get trackingSingleTimerDetail =>
+      'ഒരു ടൈമർ തുടങ്ങുമ്പോൾ മറ്റൊരു ടാസ്കിൽ ഓടുന്ന ടൈമർ നിർത്തും.';
+
+  @override
+  String trackingStoppedOtherCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ഓടിക്കൊണ്ടിരുന്ന $count ടൈമറുകൾ നിർത്തി',
+      one: 'ഓടിക്കൊണ്ടിരുന്ന $count ടൈമർ നിർത്തി',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get trackingAutoPause => 'ആപ്പ് അടയ്ക്കുമ്പോൾ പോസ് ചെയ്യുക';
+
+  @override
+  String get trackingAutoPauseDetail =>
+      'ആപ്പിൽ നിന്ന് പുറത്തുപോകുമ്പോൾ ടൈമർ പോസ് ചെയ്യും. ട്രാക്ക് ചെയ്ത സമയം നിലനിർത്തും.';
+
+  @override
+  String get trackingKeepScreenAwake => 'സ്ക്രീൻ ഓണായി നിർത്തുക';
+
+  @override
+  String get trackingKeepScreenAwakeDetail =>
+      'ടൈമർ ഓടുമ്പോൾ സ്ക്രീൻ ഓണായിരിക്കും. ആൻഡ്രോയിഡിൽ മാത്രം.';
+
+  @override
+  String get trackingMinimumLength => 'സൂക്ഷിക്കേണ്ട ഏറ്റവും ചെറിയ സെഗ്‌മെന്റ്';
+
+  @override
+  String get trackingMinimumLengthDetail =>
+      'ഇതിലും വേഗം നിർത്തുന്ന ടൈമർ ഒഴിവാക്കും, അതിനാൽ അബദ്ധത്തിലുള്ള ടാപ്പ് നിങ്ങളുടെ ലോഗ് കുഴപ്പത്തിലാക്കില്ല. നേരിട്ട് ചേർത്ത സമയം ഒരിക്കലും മാറ്റില്ല.';
+
+  @override
+  String get trackingMinimumOff => 'എല്ലാം സൂക്ഷിക്കുക';
+
+  @override
+  String get trackingMinimum10s => '10 സെക്കൻഡിൽ താഴെ';
+
+  @override
+  String get trackingMinimum30s => '30 സെക്കൻഡിൽ താഴെ';
+
+  @override
+  String get trackingMinimum1m => '1 മിനിറ്റിൽ താഴെ';
+
+  @override
+  String get trackingMinimum5m => '5 മിനിറ്റിൽ താഴെ';
+
+  @override
+  String get trackingSegmentDiscarded =>
+      'സെഗ്‌മെന്റ് വളരെ ചെറുതായതിനാൽ സേവ് ചെയ്തില്ല';
+
+  @override
+  String get trackingPomodoro => 'പൊമോഡോറോ';
+
+  @override
+  String get trackingPomodoroSubtitle => 'ഫോക്കസ് ബ്ലോക്കുകളും ഇടവേളകളും';
+
+  @override
+  String get trackingPomodoroEnabled => 'ഫോക്കസ് ബ്ലോക്കുകൾ ഉപയോഗിക്കുക';
+
+  @override
+  String get trackingPomodoroEnabledDetail =>
+      'ഓടുന്ന ടൈമർ സ്വയം അവസാനിക്കുന്ന ഒരു വർക്ക് ബ്ലോക്ക് ആകും.';
+
+  @override
+  String get trackingPomodoroWork => 'വർക്ക് ബ്ലോക്ക്';
+
+  @override
+  String get trackingPomodoroShortBreak => 'ചെറിയ ഇടവേള';
+
+  @override
+  String get trackingPomodoroLongBreak => 'നീണ്ട ഇടവേള';
+
+  @override
+  String get trackingPomodoroBlocks => 'നീണ്ട ഇടവേള ഇത്രയും കഴിഞ്ഞ്';
+
+  @override
+  String get trackingPomodoroAutoStart => 'അടുത്ത ബ്ലോക്ക് സ്വയം തുടങ്ങുക';
+
+  @override
+  String get trackingPomodoroAutoStartDetail =>
+      'ഓഫ് ആണെങ്കിൽ ഓരോ ബ്ലോക്കും നിങ്ങൾ ടാപ്പ് ചെയ്യുന്നതുവരെ കാത്തിരിക്കും.';
+
+  @override
+  String get trackingPomodoroNote =>
+      'ആപ്പ് തുറന്നിരിക്കുമ്പോൾ മാത്രമേ അറിയിപ്പ് ശബ്ദം കേൾക്കൂ. ഈ ആപ്പ് നോട്ടിഫിക്കേഷനുകൾ അയയ്ക്കുന്നില്ല, അതിനാൽ പശ്ചാത്തലത്തിൽ അവസാനിക്കുന്ന ബ്ലോക്ക് ശബ്ദമുണ്ടാക്കില്ല. സമയം ശരിയായി തന്നെ കണക്കാക്കും.';
+
+  @override
+  String trackingMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count മിനിറ്റ്',
+      one: '$count മിനിറ്റ്',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String trackingBlocks(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count വർക്ക് ബ്ലോക്കുകൾ',
+      one: '$count വർക്ക് ബ്ലോക്ക്',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get trackingBlockWork => 'ഫോക്കസ്';
+
+  @override
+  String get trackingBlockShortBreak => 'ചെറിയ ഇടവേള';
+
+  @override
+  String get trackingBlockLongBreak => 'നീണ്ട ഇടവേള';
+
+  @override
+  String get trackingBlockDone => 'ബ്ലോക്ക് പൂർത്തിയായി';
+
+  @override
+  String get trackingStartNextBlock => 'അടുത്ത ബ്ലോക്ക് തുടങ്ങുക';
+
+  @override
+  String get trackingTimeDisplay => 'സമയ പ്രദർശനം';
+
+  @override
+  String get trackingTimeDisplaySubtitle =>
+      'റൗണ്ടിംഗ്, ഫോർമാറ്റ്, നേരിട്ട് ചേർക്കുന്ന സമയത്തിന്റെ സ്ഥിരസ്ഥിതി';
+
+  @override
+  String get trackingRounding => 'റിപ്പോർട്ടുകളിലെ റൗണ്ടിംഗ്';
+
+  @override
+  String get trackingRoundingDetail =>
+      'കാണിക്കുന്നത് മാത്രമേ മാറൂ. സേവ് ചെയ്ത സമയം ഒരിക്കലും മാറ്റില്ല.';
+
+  @override
+  String get trackingRoundingOff => 'കൃത്യമായി';
+
+  @override
+  String get trackingRounding1m => 'അടുത്ത മിനിറ്റിലേക്ക്';
+
+  @override
+  String get trackingRounding5m => 'അടുത്ത 5 മിനിറ്റിലേക്ക്';
+
+  @override
+  String get trackingRounding15m => 'അടുത്ത 15 മിനിറ്റിലേക്ക്';
+
+  @override
+  String get trackingFormat => 'സമയം എഴുതുന്ന രീതി';
+
+  @override
+  String get trackingFormatHhmmss => 'മണിക്കൂർ, മിനിറ്റ്, സെക്കൻഡ്';
+
+  @override
+  String get trackingFormatHhmm => 'മണിക്കൂറും മിനിറ്റും';
+
+  @override
+  String get trackingFormatDecimal => 'ദശാംശ മണിക്കൂർ';
+
+  @override
+  String get trackingFormatNote => 'ഓടുന്ന ടൈമർ എപ്പോഴും സെക്കൻഡ് കാണിക്കും.';
+
+  @override
+  String get trackingManualDefault => 'നേരിട്ട് ചേർക്കുന്ന സമയത്തിന്റെ ദൈർഘ്യം';
+
+  @override
+  String get trackingManualDefaultDetail =>
+      'തുടങ്ങുന്ന സമയം തിരഞ്ഞെടുക്കുമ്പോൾ അവസാന സമയം ഇത്രയും മുന്നോട്ട് നിറയ്ക്കും. നിങ്ങൾക്ക് അത് മാറ്റാം.';
+
+  @override
+  String get trackingManual15m => '15 മിനിറ്റ്';
+
+  @override
+  String get trackingManual30m => '30 മിനിറ്റ്';
+
+  @override
+  String get trackingManual1h => '1 മണിക്കൂർ';
+
+  @override
+  String get trackingManual2h => '2 മണിക്കൂർ';
+
+  @override
+  String get pauseTimer => 'ടൈമർ പോസ് ചെയ്യുക';
+
+  @override
+  String get resumeTimer => 'ടൈമർ തുടരുക';
+
+  @override
+  String get timerPaused => 'പോസ് ചെയ്തു';
+
+  @override
+  String get settingsPermissionsSubtitle =>
+      'ഈ ആപ്പിന് എന്തെല്ലാം ഉപയോഗിക്കാം, എന്തെല്ലാം പാടില്ല';
+
+  @override
+  String get appearanceThemeModeSubtitle =>
+      'ലൈറ്റ്, ഡാർക്ക്, അല്ലെങ്കിൽ സിസ്റ്റം തിരഞ്ഞെടുക്കുക';
+
+  @override
+  String get appearanceTypography => 'ടൈപോഗ്രാഫിയും ടെക്സ്റ്റ് വലിപ്പവും';
+
+  @override
+  String get appearanceTypographySubtitle =>
+      'ആപ്പിന്റെ ഫോണ്ട് കുടുംബവും ടെക്സ്റ്റ് വലിപ്പവും';
+
+  @override
+  String get appearanceAccentColor => 'ആക്സന്റ് നിറം';
+
+  @override
+  String get appearanceAccentColorSubtitle =>
+      'പ്രീസെറ്റുകൾ, കലർ വീൽ, തത്സമയ പ്രിവ്യൂ';
+
+  @override
+  String get themeModeHelp =>
+      'സിസ്റ്റം മോഡ് ഉപകരണത്തിലെ ഡാർക്ക് മോഡ് ക്രമീകരണം അനുസരിക്കും.';
+
+  @override
+  String get typographyFontLabel => 'ഫോണ്ട്';
+
+  @override
+  String get typographyTextSizeLabel => 'ടെക്സ്റ്റ് വലിപ്പം';
+
+  @override
+  String get typographySampleLatin => 'The quick brown fox 0123';
+
+  @override
+  String get typographySampleMalayalam => 'മലയാളം സുന്ദരമാണ്';
+
+  @override
+  String get fontSystemDefault => 'സിസ്റ്റം സ്ഥിരസ്ഥിതി';
+
+  @override
+  String get fontManjari => 'Manjari';
+
+  @override
+  String get fontAnekMalayalam => 'Anek Malayalam';
+
+  @override
+  String get fontNotoSansMalayalam => 'Noto Sans Malayalam';
+
+  @override
+  String get textSizeSmall => 'ചെറുത്';
+
+  @override
+  String get textSizeDefault => 'സ്ഥിരസ്ഥിതി';
+
+  @override
+  String get textSizeLarge => 'വലുത്';
+
+  @override
+  String get textSizeLarger => 'കൂടുതൽ വലുത്';
+
+  @override
+  String get accentLivePreview => 'തത്സമയ പ്രിവ്യൂ';
+
+  @override
+  String get accentPresets => 'പ്രീസെറ്റുകൾ';
+
+  @override
+  String get accentCustomWheel => 'സ്വന്തം കലർ വീൽ';
+
+  @override
+  String get accentSampleText => 'മാതൃകാ ടെക്സ്റ്റ്';
+
+  @override
+  String get accentAppliesToLight =>
+      'ആപ്പ് ലൈറ്റ് മോഡിലായിരിക്കുമ്പോൾ ഈ നിറം ഉപയോഗിക്കുന്നു.';
+
+  @override
+  String get accentAppliesToDark =>
+      'ആപ്പ് ഡാർക്ക് മോഡിലായിരിക്കുമ്പോൾ ഈ നിറം ഉപയോഗിക്കുന്നു.';
+
+  @override
+  String get accentResetLight => 'ലൈറ്റ് മോഡിന്റെ നിറം പഴയതാക്കുക';
+
+  @override
+  String get accentResetDark => 'ഡാർക്ക് മോഡിന്റെ നിറം പഴയതാക്കുക';
+
+  @override
+  String get accentContrastNote =>
+      'വായനാസുഖത്തിനായി ടെക്സ്റ്റിന്റെ കോൺട്രാസ്റ്റ് സ്വയം ക്രമീകരിക്കും.';
+
+  @override
   String get permissionsLabel => 'അനുമതികൾ';
 
   @override
@@ -722,10 +1108,6 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get permissionsExplicit => 'വ്യക്തം';
-
-  @override
-  String get permissionsExplicitNone =>
-      'ഈ ആപ്പ് റിലീസ് ബിൽഡുകൾക്കായി Android മാനിഫെസ്റ്റിൽ പൂജ്യം അനുമതികളാണ് പ്രഖ്യാപിക്കുന്നത്. റൺടൈം അനുമതി ഡയലോഗുകളൊന്നും കാണിക്കില്ല.';
 
   @override
   String get permissionsStorageTitle => 'ആപ്പ്-സ്വകാര്യ സംഭരണം';
@@ -1021,7 +1403,7 @@ class AppLocalizationsMl extends AppLocalizations {
       'അടുത്തതിലേക്ക് കടക്കുന്നതിന് മുമ്പ് ഓരോ ഭാഗവും പൂർണ്ണ സാന്നിധ്യത്തോടെ പൂർത്തിയാക്കുക.';
 
   @override
-  String get dataHandoffTitle => 'Data Handoff (JSON & MD)';
+  String get dataHandoffTitle => 'ഡാറ്റ ഹാൻഡോഫ് (JSON & MD)';
 
   @override
   String get actionChange => 'Change';
@@ -1087,4 +1469,803 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get moreOptions => 'കൂടുതൽ ഓപ്ഷനുകൾ';
+
+  @override
+  String get settingsTaskDefaults => 'ടാസ്ക് ഡിഫോൾട്ടുകൾ';
+
+  @override
+  String get settingsTaskDefaultsSubtitle =>
+      'പുതിയ ടാസ്കിന്റെ മൂല്യങ്ങൾ, ദിന പട്ടികയുടെ ക്രമം, സ്ഥിരീകരണങ്ങൾ, കാരി-ഓവർ';
+
+  @override
+  String get defaultsNewTask => 'പുതിയ ടാസ്ക്';
+
+  @override
+  String get defaultsNewTaskSubtitle =>
+      'പുതിയ ടാസ്ക് തുടങ്ങുന്ന സ്റ്റാറ്റസ്, മുൻഗണന, ലക്ഷ്യ സമയം';
+
+  @override
+  String get defaultsDayList => 'ദിന പട്ടിക';
+
+  @override
+  String get defaultsDayListSubtitle =>
+      'ക്രമം, തീർന്ന ടാസ്കുകൾ കാണിക്കണോ എന്നത്';
+
+  @override
+  String get defaultsTaskActions => 'ടാസ്ക് പ്രവർത്തനങ്ങൾ';
+
+  @override
+  String get defaultsTaskActionsSubtitle =>
+      'സ്ഥിരീകരണങ്ങളും ടാസ്കുകൾ പുതിയ ദിവസത്തിലേക്ക് കൊണ്ടുപോകലും';
+
+  @override
+  String get defaultsAutocomplete => 'ഓട്ടോകംപ്ലീറ്റ്';
+
+  @override
+  String get defaultsAutocompleteSubtitle =>
+      'ടൈപ്പ് ചെയ്യുമ്പോൾ തലക്കെട്ട് നിർദ്ദേശങ്ങൾ';
+
+  @override
+  String get defaultsStatusTitle => 'ഡിഫോൾട്ട് സ്റ്റാറ്റസ്';
+
+  @override
+  String get defaultsStatusSubtitle => 'പുതിയ ടാസ്ക് തുടങ്ങുന്ന സ്റ്റാറ്റസ്.';
+
+  @override
+  String get defaultsStatusPendingDetail =>
+      'സാധാരണ തിരഞ്ഞെടുപ്പ്. നിങ്ങൾ തുടങ്ങുന്നത് വരെ ടാസ്ക് കാത്തിരിക്കും.';
+
+  @override
+  String get defaultsStatusWorkingDetail =>
+      'ടാസ്ക് വർക്കിംഗ് ആയി തുറക്കും. ടൈമർ തുടങ്ങില്ല.';
+
+  @override
+  String get defaultsPriorityTitle => 'ഡിഫോൾട്ട് മുൻഗണന';
+
+  @override
+  String get defaultsPrioritySubtitle => 'പുതിയ ടാസ്ക് തുടങ്ങുന്ന മുൻഗണന.';
+
+  @override
+  String get defaultsTargetTitle => 'ഡിഫോൾട്ട് ലക്ഷ്യ സമയം';
+
+  @override
+  String get defaultsTargetSubtitle =>
+      'പുതിയ ടാസ്കിന് എത്ര സമയം വേണ്ടിവരും എന്ന കണക്ക്. ഏത് ടാസ്കിലും ഇത് മാറ്റാം.';
+
+  @override
+  String get defaultsTargetNone => 'ലക്ഷ്യമില്ല';
+
+  @override
+  String get priorityLow => 'കുറഞ്ഞത്';
+
+  @override
+  String get priorityNormal => 'സാധാരണം';
+
+  @override
+  String get priorityHigh => 'ഉയർന്നത്';
+
+  @override
+  String get priorityUrgent => 'അടിയന്തിരം';
+
+  @override
+  String get priorityLabel => 'മുൻഗണന';
+
+  @override
+  String get targetTimeLabel => 'ലക്ഷ്യ സമയം';
+
+  @override
+  String get targetTimeHint => 'ലക്ഷ്യം വേണ്ടെങ്കിൽ രണ്ടും പൂജ്യമായി വെക്കുക.';
+
+  @override
+  String get targetHoursLabel => 'മണിക്കൂർ';
+
+  @override
+  String get targetMinutesLabel => 'മിനിറ്റ്';
+
+  @override
+  String targetProgressLabel(String target, String tracked) {
+    return '$target ൽ $tracked';
+  }
+
+  @override
+  String targetOverBy(String amount) {
+    return '$amount കൂടുതൽ';
+  }
+
+  @override
+  String get defaultsSortTitle => 'ഡിഫോൾട്ട് ക്രമം';
+
+  @override
+  String get defaultsSortSubtitle => 'ദിന പട്ടിക തുറക്കുന്ന ക്രമം.';
+
+  @override
+  String get defaultsRememberSort => 'ഞാൻ അവസാനം തിരഞ്ഞെടുത്ത ക്രമം ഓർക്കുക';
+
+  @override
+  String get defaultsRememberSortDetail =>
+      'ദിന പട്ടികയിൽ ക്രമം മാറ്റുമ്പോൾ അത് ഡിഫോൾട്ടായും സേവ് ചെയ്യും.';
+
+  @override
+  String get defaultsShowCompleted => 'പൂർത്തിയായ ടാസ്കുകൾ കാണിക്കുക';
+
+  @override
+  String get defaultsShowCompletedDetail =>
+      'തീർത്ത ടാസ്കുകൾ മറയ്ക്കാൻ ഇത് ഓഫ് ചെയ്യുക.';
+
+  @override
+  String get defaultsShowDropped => 'ഉപേക്ഷിച്ച ടാസ്കുകൾ കാണിക്കുക';
+
+  @override
+  String get defaultsShowDroppedDetail =>
+      'ഉപേക്ഷിച്ച ടാസ്കുകൾ മറയ്ക്കാൻ ഇത് ഓഫ് ചെയ്യുക.';
+
+  @override
+  String get defaultsSinkFinished => 'തീർന്ന ടാസ്കുകൾ താഴേക്ക് മാറ്റുക';
+
+  @override
+  String get defaultsSinkFinishedDetail =>
+      'പൂർത്തിയായ, ഉപേക്ഷിച്ച, മാറ്റിയ ടാസ്കുകൾ മറ്റുള്ളവയ്ക്ക് താഴെ വരും. അപ്പോൾ വലിച്ചു ക്രമം മാറ്റൽ തീരാത്ത ടാസ്കുകൾക്കിടയിൽ മാത്രമേ പ്രവർത്തിക്കൂ.';
+
+  @override
+  String hiddenTasksCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString തീർന്ന ടാസ്കുകൾ മറച്ചിരിക്കുന്നു',
+      one: '1 തീർന്ന ടാസ്ക് മറച്ചിരിക്കുന്നു',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get showHiddenTasks => 'കാണിക്കുക';
+
+  @override
+  String get defaultsConfirmComplete => 'പൂർത്തിയാക്കുന്നതിന് മുൻപ് ചോദിക്കുക';
+
+  @override
+  String get defaultsConfirmCompleteDetail =>
+      'ഒരു ടാസ്ക് പൂർത്തിയായി അടയാളപ്പെടുത്തും മുൻപ് ചെറിയൊരു ചോദ്യം കാണിക്കും.';
+
+  @override
+  String get defaultsConfirmDrop => 'ഉപേക്ഷിക്കുന്നതിന് മുൻപ് ചോദിക്കുക';
+
+  @override
+  String get defaultsConfirmDropDetail =>
+      'ഒരു ടാസ്ക് ഉപേക്ഷിക്കും മുൻപ് ചെറിയൊരു ചോദ്യം കാണിക്കും.';
+
+  @override
+  String get confirmCompleteTitle => 'പൂർത്തിയായി അടയാളപ്പെടുത്തണോ?';
+
+  @override
+  String get confirmCompleteBody =>
+      'ഈ ടാസ്ക് പൂർത്തിയായി അടയാളപ്പെടുത്തും. ഓടുന്ന ടൈമർ നിർത്തും.';
+
+  @override
+  String get defaultsCarryOver => 'തീരാത്ത ടാസ്കുകൾ കൊണ്ടുവരാൻ ചോദിക്കുക';
+
+  @override
+  String get defaultsCarryOverDetail =>
+      'പുതിയ ദിവസം ആദ്യമായി തുറക്കുമ്പോൾ, തീരാത്ത ടാസ്കുകൾ പകർത്താൻ ചോദിക്കും.';
+
+  @override
+  String get defaultsCarryOverLookBackTitle => 'എത്ര പിന്നിലേക്ക് നോക്കണം';
+
+  @override
+  String get defaultsCarryOverPreviousDay => 'തലേ ദിവസം മാത്രം';
+
+  @override
+  String get defaultsCarryOverLastSevenDays => 'കഴിഞ്ഞ 7 ദിവസം';
+
+  @override
+  String get carryOverTitle => 'തീരാത്ത ടാസ്കുകൾ കൊണ്ടുവരിക';
+
+  @override
+  String get carryOverBody =>
+      'ഈ ടാസ്കുകൾ തീർന്നിട്ടില്ല. ഇന്നത്തേക്ക് പകർത്തേണ്ടവ തിരഞ്ഞെടുക്കുക.';
+
+  @override
+  String get carryOverAction => 'കൊണ്ടുവരിക';
+
+  @override
+  String get carryOverNotNow => 'ഇപ്പോൾ വേണ്ട';
+
+  @override
+  String get carryOverNeverAsk => 'ഇനി ചോദിക്കേണ്ട';
+
+  @override
+  String get carryOverSelectAll => 'എല്ലാം തിരഞ്ഞെടുക്കുക';
+
+  @override
+  String get carryOverClearAll => 'എല്ലാം ഒഴിവാക്കുക';
+
+  @override
+  String carryOverDone(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString ടാസ്കുകൾ കൊണ്ടുവന്നു',
+      one: '1 ടാസ്ക് കൊണ്ടുവന്നു',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String carryOverSkipped(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString ടാസ്കുകൾ ഒഴിവാക്കി, അവ ഇന്ന് ഇതിനകം ഉണ്ട്',
+      one: '1 ടാസ്ക് ഒഴിവാക്കി, അത് ഇന്ന് ഇതിനകം ഉണ്ട്',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get defaultsAutocompleteEnabled =>
+      'ടൈപ്പ് ചെയ്യുമ്പോൾ തലക്കെട്ടുകൾ നിർദ്ദേശിക്കുക';
+
+  @override
+  String get defaultsAutocompleteEnabledDetail =>
+      'ടൈപ്പ് ചെയ്യുമ്പോൾ പഴയ തലക്കെട്ടുകൾ വായിക്കുന്നത് നിർത്താൻ ഓഫ് ചെയ്യുക.';
+
+  @override
+  String get defaultsSuggestionCountTitle => 'എത്ര നിർദ്ദേശങ്ങൾ';
+
+  @override
+  String suggestionCountValue(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString നിർദ്ദേശങ്ങൾ';
+  }
+
+  @override
+  String get sortPriorityHigh => 'മുൻഗണന (ഉയർന്നത് ആദ്യം)';
+
+  @override
+  String get settingsDateTime => 'തീയതിയും സമയവും';
+
+  @override
+  String get settingsDateTimeSubtitle =>
+      'ആഴ്ചയുടെ തുടക്കം, ക്ലോക്ക്, തീയതി രൂപം, ദിവസാരംഭം, ജോലിദിവസങ്ങൾ';
+
+  @override
+  String get dateTimeWeekStart => 'ആഴ്ചയിലെ ആദ്യ ദിവസം';
+
+  @override
+  String get dateTimeWeekStartSubtitle => 'കലണ്ടർ ഏത് ദിവസത്തിൽ തുടങ്ങണം';
+
+  @override
+  String get dateTimeClock => 'ക്ലോക്ക്';
+
+  @override
+  String get dateTimeClockSubtitle => '12 മണിക്കൂർ അല്ലെങ്കിൽ 24 മണിക്കൂർ സമയം';
+
+  @override
+  String get dateTimeDateFormat => 'തീയതി രൂപം';
+
+  @override
+  String get dateTimeDateFormatSubtitle => 'തീയതി എങ്ങനെ എഴുതണം';
+
+  @override
+  String get dateTimeDayStart => 'ദിവസാരംഭം';
+
+  @override
+  String get dateTimeDayStartSubtitle =>
+      'നിങ്ങൾക്ക് പുതിയ ദിവസം എപ്പോൾ തുടങ്ങുന്നു';
+
+  @override
+  String get dateTimeWorkingDays => 'ജോലിദിവസങ്ങൾ';
+
+  @override
+  String get dateTimeWorkingDaysSubtitle => 'സ്ഥിതിവിവരത്തിൽ എണ്ണുന്ന ദിവസങ്ങൾ';
+
+  @override
+  String get weekStartTitle => 'ആഴ്ചയിലെ ആദ്യ ദിവസം';
+
+  @override
+  String get weekStartSubtitle => 'ദിവസപ്പട്ടികയിലെ കലണ്ടർ ഇത് ഉപയോഗിക്കുന്നു.';
+
+  @override
+  String get weekStartSystem => 'ഉപകരണം പിന്തുടരുക';
+
+  @override
+  String get clockFormatTitle => 'ക്ലോക്ക്';
+
+  @override
+  String get clockFormatSubtitle =>
+      'സമയം കാണിക്കുന്ന എല്ലായിടത്തും ഇത് ഉപയോഗിക്കുന്നു.';
+
+  @override
+  String get clockFormatSystem => 'ഉപകരണം പിന്തുടരുക';
+
+  @override
+  String get clockFormat12 => '12 മണിക്കൂർ';
+
+  @override
+  String get clockFormat24 => '24 മണിക്കൂർ';
+
+  @override
+  String get dateFormatTitle => 'തീയതി രൂപം';
+
+  @override
+  String get dateFormatSubtitle =>
+      'തീയതി കാണിക്കുന്ന എല്ലായിടത്തും ഇത് ഉപയോഗിക്കുന്നു.';
+
+  @override
+  String get dateFormatSystem => 'ഉപകരണം പിന്തുടരുക (നീളം)';
+
+  @override
+  String get dateFormatSystemShort => 'ഉപകരണം പിന്തുടരുക (ചെറുത്)';
+
+  @override
+  String get dateFormatDayMonthYear => 'ദിവസം/മാസം/വർഷം';
+
+  @override
+  String get dateFormatMonthDayYear => 'മാസം/ദിവസം/വർഷം';
+
+  @override
+  String get dateFormatDayMonthNameYear => 'ദിവസം മാസം വർഷം';
+
+  @override
+  String get dateFormatIso => 'വർഷം-മാസം-ദിവസം';
+
+  @override
+  String get dayStartTitle => 'പുതിയ ദിവസം തുടങ്ങുന്നത്';
+
+  @override
+  String get dayStartSubtitle =>
+      'അർധരാത്രി കഴിഞ്ഞും ജോലി ചെയ്യാറുണ്ടെങ്കിൽ വൈകിയ ഒരു മണിക്കൂർ തിരഞ്ഞെടുക്കുക.';
+
+  @override
+  String get dayStartMidnight => 'അർധരാത്രി (സാധാരണം)';
+
+  @override
+  String get dayStartExplainTitle => 'ഇത് എന്ത് മാറ്റുന്നു';
+
+  @override
+  String get dayStartExplainBody =>
+      'ദിവസാരംഭം വൈകിയാൽ, അർധരാത്രിക്ക് ശേഷമുള്ള മണിക്കൂറുകൾ തലേ ദിവസമായി തന്നെ കണക്കാക്കും. നിങ്ങളുടെ ജോലിപ്പട്ടിക, ദിവസപ്പൂട്ട്, സമയക്കണക്ക് എല്ലാം ഇത് പിന്തുടരും. ഇതിനകം സേവ് ചെയ്ത ഒന്നും മാറ്റുന്നില്ല.';
+
+  @override
+  String dayStartCurrentDay(String date) {
+    return 'ഇപ്പോൾ ആപ്പ് ഇന്നായി കണക്കാക്കുന്നത് $date ആണ്.';
+  }
+
+  @override
+  String get workingDaysTitle => 'ജോലിദിവസങ്ങൾ';
+
+  @override
+  String get workingDaysSubtitle =>
+      'ശരാശരി കണക്കാക്കുമ്പോൾ സ്ഥിതിവിവരം ഈ ദിവസങ്ങൾ മാത്രം ഉപയോഗിക്കുന്നു.';
+
+  @override
+  String get workingDaysReset => 'തിങ്കൾ മുതൽ വെള്ളി വരെ പുനഃസ്ഥാപിക്കുക';
+
+  @override
+  String get workingDaysNoneWarning =>
+      'ഒരു ജോലിദിവസവും തിരഞ്ഞെടുത്തിട്ടില്ല, അതിനാൽ ശരാശരി ഏഴു ദിവസവും ഉപയോഗിക്കും.';
+
+  @override
+  String get settingsSecurity => 'സുരക്ഷയും സ്വകാര്യതയും';
+
+  @override
+  String get settingsSecuritySubtitle =>
+      'ആപ്പ് പൂട്ട്, സ്വയം പൂട്ടൽ, സ്ക്രീൻ സ്വകാര്യത, ഡാറ്റാബേസ് കീ';
+
+  @override
+  String get securityAppLock => 'ആപ്പ് പൂട്ട്';
+
+  @override
+  String get securityAppLockSubtitle =>
+      'പിൻ, പാസ്‌വേഡ് അല്ലെങ്കിൽ ഫോൺ പൂട്ട് ചോദിക്കുക';
+
+  @override
+  String get securityAutoLock => 'സ്വയം പൂട്ടൽ';
+
+  @override
+  String get securityAutoLockSubtitle =>
+      'പശ്ചാത്തലത്തിൽ ആപ്പ് എത്ര നേരം തുറന്നിരിക്കാം';
+
+  @override
+  String get securityDatabaseKey => 'ഡാറ്റാബേസ് കീ';
+
+  @override
+  String get securityDatabaseKeySubtitle =>
+      'നിങ്ങളുടെ ഡാറ്റയ്ക്ക് പുതിയ എൻക്രിപ്ഷൻ കീ നൽകുക';
+
+  @override
+  String get securityScreenPrivacy => 'സ്ക്രീൻ സ്വകാര്യത';
+
+  @override
+  String get securitySecureScreen => 'സമീപകാല ആപ്പുകളിൽ ആപ്പ് മറയ്ക്കുക';
+
+  @override
+  String get securitySecureScreenDetail =>
+      'ആപ്പുകൾ മാറുമ്പോൾ ആപ്പിന്റെ ചിത്രം ശൂന്യമായിരിക്കും, സ്ക്രീൻഷോട്ട് തടയും. ആൻഡ്രോയിഡിൽ മാത്രം.';
+
+  @override
+  String get securitySecureScreenUnsupported =>
+      'ഇത് ഒരു ആൻഡ്രോയിഡ് ക്രമീകരണമാണ്. ഈ ഉപകരണത്തിൽ ഇത് ഒന്നും ചെയ്യുന്നില്ല.';
+
+  @override
+  String get securityNotificationsNote =>
+      'ആപ്പ് ഒരു അറിയിപ്പും അയയ്ക്കുന്നില്ല, അതിനാൽ അവിടെ മറയ്ക്കാൻ ജോലിപ്പേരുകളില്ല. മുകളിലുള്ള ക്രമീകരണം സമീപകാല ആപ്പുകളിലെ ചിത്രം മറയ്ക്കുന്നു.';
+
+  @override
+  String get appLockModeTitle => 'എങ്ങനെ തുറക്കണം';
+
+  @override
+  String get appLockModeSubtitle => 'ആപ്പ് തുറക്കുമ്പോൾ ഇത് ചോദിക്കും.';
+
+  @override
+  String get appLockOff => 'പൂട്ടില്ല';
+
+  @override
+  String get appLockPin => 'പിൻ';
+
+  @override
+  String get appLockPassword => 'പാസ്‌വേഡ്';
+
+  @override
+  String get appLockDeviceCredential => 'ഫോൺ സ്ക്രീൻ പൂട്ട്';
+
+  @override
+  String get appLockDeviceCredentialDetail =>
+      'നിങ്ങളുടെ വിരലടയാളം, മുഖം അല്ലെങ്കിൽ ഫോൺ പിൻ ഉപയോഗിക്കുന്നു.';
+
+  @override
+  String get appLockDeviceUnavailable =>
+      'ആദ്യം ഫോണിൽ ഒരു സ്ക്രീൻ പൂട്ട് സജ്ജമാക്കുക.';
+
+  @override
+  String get appLockSetPin => 'ഒരു പിൻ സജ്ജമാക്കുക';
+
+  @override
+  String get appLockSetPassword => 'ഒരു പാസ്‌വേഡ് സജ്ജമാക്കുക';
+
+  @override
+  String get appLockNewSecret => 'പുതിയത്';
+
+  @override
+  String get appLockConfirmSecret => 'വീണ്ടും ടൈപ്പ് ചെയ്യുക';
+
+  @override
+  String get appLockChange => 'മാറ്റുക';
+
+  @override
+  String get appLockSaved => 'ആപ്പ് പൂട്ട് ഓണാണ്.';
+
+  @override
+  String get appLockRemoved => 'ആപ്പ് പൂട്ട് ഓഫാണ്.';
+
+  @override
+  String get appLockWarningTitle => 'തിരികെ കയറാൻ വഴിയില്ല';
+
+  @override
+  String get appLockWarningBody =>
+      'നിങ്ങളുടെ പിൻ അല്ലെങ്കിൽ പാസ്‌വേഡ് ഈ ഉപകരണം വിട്ടുപോകുന്നില്ല, അത് വീണ്ടെടുക്കാൻ ഒരു വഴിയുമില്ല. മറന്നാൽ ആപ്പ് വീണ്ടും ഇൻസ്റ്റാൾ ചെയ്യുകയേ വഴിയുള്ളൂ, അത് ഡാറ്റ മായ്ക്കും. ഒരു ബാക്കപ്പ് സൂക്ഷിക്കുക.';
+
+  @override
+  String get appLockErrorEmpty => 'ആദ്യം എന്തെങ്കിലും ടൈപ്പ് ചെയ്യുക.';
+
+  @override
+  String get appLockErrorNotDigits => 'പിന്നിൽ അക്കങ്ങൾ മാത്രമേ പാടുള്ളൂ.';
+
+  @override
+  String get appLockErrorPinTooShort => 'പിന്നിന് കുറഞ്ഞത് 4 അക്കം വേണം.';
+
+  @override
+  String get appLockErrorPinTooLong => 'പിന്നിൽ പരമാവധി 8 അക്കമേ പാടുള്ളൂ.';
+
+  @override
+  String get appLockErrorPasswordTooShort =>
+      'പാസ്‌വേഡിന് കുറഞ്ഞത് 6 അക്ഷരം വേണം.';
+
+  @override
+  String get appLockErrorMismatch => 'രണ്ട് എൻട്രികളും യോജിക്കുന്നില്ല.';
+
+  @override
+  String get autoLockTitle => 'ഇത്ര കഴിഞ്ഞ് വീണ്ടും പൂട്ടുക';
+
+  @override
+  String get autoLockSubtitle => 'ആപ്പ് വിട്ടുപോകുന്ന നിമിഷം മുതൽ എണ്ണുന്നു.';
+
+  @override
+  String get autoLockImmediately => 'ഉടനെ';
+
+  @override
+  String get autoLock30Seconds => '30 സെക്കൻഡ്';
+
+  @override
+  String get autoLock1Minute => '1 മിനിറ്റ്';
+
+  @override
+  String get autoLock5Minutes => '5 മിനിറ്റ്';
+
+  @override
+  String get autoLock15Minutes => '15 മിനിറ്റ്';
+
+  @override
+  String get autoLockNever => 'ആപ്പ് വീണ്ടും തുടങ്ങുമ്പോൾ മാത്രം';
+
+  @override
+  String get autoLockNeedsLock => 'ആദ്യം ആപ്പ് പൂട്ട് ഓണാക്കുക.';
+
+  @override
+  String get databaseKeyTitle => 'പുതിയ ഡാറ്റാബേസ് കീ';
+
+  @override
+  String get databaseKeyBody =>
+      'നിങ്ങളുടെ ഡാറ്റ ഈ ഉപകരണത്തിലുള്ള ഒരു കീ ഉപയോഗിച്ച് എൻക്രിപ്റ്റ് ചെയ്ത് സൂക്ഷിക്കുന്നു. കീ മാറ്റുമ്പോൾ ഡാറ്റാബേസ് മുഴുവൻ പുതിയ കീയിൽ വീണ്ടും എഴുതും.';
+
+  @override
+  String get databaseKeyBackupFirst =>
+      'തുടങ്ങുന്നതിന് മുൻപ് ഒരു ബാക്കപ്പ് എടുക്കുക. ഇടയ്ക്ക് എന്തെങ്കിലും പിഴച്ചാൽ ബാക്കപ്പ് മാത്രമാണ് വഴി.';
+
+  @override
+  String get databaseKeyOldBackups =>
+      'ബാക്കപ്പ് ഫയലുകളെ ഇത് ബാധിക്കില്ല. അവ കയറ്റുമതി ചെയ്ത പാസ്‌ഫ്രെയ്സ് തന്നെ നിലനിർത്തും.';
+
+  @override
+  String get databaseKeyRotate => 'ഇപ്പോൾ കീ മാറ്റുക';
+
+  @override
+  String get databaseKeyConfirmTitle => 'ഡാറ്റാബേസ് കീ മാറ്റണോ?';
+
+  @override
+  String get databaseKeyConfirmBody =>
+      'ഇത് ഡാറ്റാബേസ് മുഴുവൻ പുതിയ കീയിൽ വീണ്ടും എഴുതും. നടക്കുമ്പോൾ ആപ്പ് അടയ്ക്കരുത്.';
+
+  @override
+  String get databaseKeyWorking => 'കീ മാറ്റുന്നു. കാത്തിരിക്കുക.';
+
+  @override
+  String get databaseKeyDone => 'ഡാറ്റാബേസിന് പുതിയ കീ ലഭിച്ചു.';
+
+  @override
+  String get databaseKeyFailed =>
+      'കീ മാറിയില്ല. നിങ്ങളുടെ ഡാറ്റയ്ക്ക് കുഴപ്പമില്ല, പഴയ കീയിൽ തന്നെ തുറക്കും.';
+
+  @override
+  String get lockScreenTitle => 'പൂട്ടിയിരിക്കുന്നു';
+
+  @override
+  String get lockScreenEnterPin => 'നിങ്ങളുടെ പിൻ നൽകുക';
+
+  @override
+  String get lockScreenEnterPassword => 'നിങ്ങളുടെ പാസ്‌വേഡ് നൽകുക';
+
+  @override
+  String get lockScreenUnlock => 'തുറക്കുക';
+
+  @override
+  String get lockScreenWrong => 'അത് യോജിച്ചില്ല. വീണ്ടും ശ്രമിക്കുക.';
+
+  @override
+  String lockScreenWait(int seconds) {
+    return 'വളരെയധികം ശ്രമങ്ങൾ. $seconds സെക്കൻഡ് കാത്തിരിക്കുക.';
+  }
+
+  @override
+  String get lockScreenUseDeviceLock => 'എന്റെ ഫോൺ പൂട്ട് ഉപയോഗിക്കുക';
+
+  @override
+  String get lockScreenDevicePrompt => 'SreerajP ToDo തുറക്കുക';
+
+  @override
+  String get lockScreenDeviceDescription =>
+      'നിങ്ങളുടെ ജോലികൾ തുറക്കാൻ നിങ്ങളാണെന്ന് ഉറപ്പിക്കുക.';
+
+  @override
+  String get lockScreenDeviceFailed => 'അത് ആപ്പ് തുറന്നില്ല.';
+
+  @override
+  String get focusTitle => 'ഫോക്കസ്';
+
+  @override
+  String get focusOpen => 'ഫോക്കസ് കാഴ്ച തുറക്കുക';
+
+  @override
+  String get focusLeave => 'ഫോക്കസിൽ നിന്ന് പുറത്ത് കടക്കുക';
+
+  @override
+  String get focusRunningNow => 'ഇപ്പോൾ ഓടുന്നത്';
+
+  @override
+  String get focusTotalTracked => 'ആകെ രേഖപ്പെടുത്തിയത്';
+
+  @override
+  String get focusSteps => 'ഘട്ടങ്ങൾ';
+
+  @override
+  String get focusNoSteps => 'ഈ ജോലിക്ക് ഘട്ടങ്ങളൊന്നുമില്ല.';
+
+  @override
+  String get focusNotRunning => 'ടൈമർ ഓടുന്നില്ല.';
+
+  @override
+  String focusNextNudge(String time) {
+    return 'അടുത്ത ഓർമ്മപ്പെടുത്തൽ $time കഴിഞ്ഞ്';
+  }
+
+  @override
+  String get focusNudgesOff => 'ഓർമ്മപ്പെടുത്തലുകൾ ഓഫാണ്';
+
+  @override
+  String get trackingFocusMode => 'ഫോക്കസ് മോഡ്';
+
+  @override
+  String get trackingFocusModeSubtitle =>
+      'മുഴുവൻ സ്ക്രീൻ ഫോക്കസ് കാഴ്ചയും ടൈമർ ഓടുമ്പോഴുള്ള ഓർമ്മപ്പെടുത്തലും';
+
+  @override
+  String get trackingFocusPulse => 'ടൈമർ ഓടുമ്പോൾ ഓർമ്മപ്പെടുത്തുക';
+
+  @override
+  String get trackingFocusPulseOff => 'ഓഫ്';
+
+  @override
+  String get trackingFocusPulseVibration => 'വൈബ്രേഷൻ മാത്രം';
+
+  @override
+  String get trackingFocusPulseSound => 'ശബ്ദം മാത്രം';
+
+  @override
+  String get trackingFocusPulseBoth => 'വൈബ്രേഷനും ശബ്ദവും';
+
+  @override
+  String get trackingFocusPulseEvery => 'ഓർമ്മപ്പെടുത്തുന്ന ഇടവേള';
+
+  @override
+  String get trackingFocusView => 'ഫോക്കസ് കാഴ്ച';
+
+  @override
+  String get trackingFocusImmersive => 'മുഴുവൻ സ്ക്രീൻ കാഴ്ച';
+
+  @override
+  String get trackingFocusImmersiveDetail =>
+      'ഫോക്കസ് കാഴ്ച തുറന്നിരിക്കുമ്പോൾ സ്റ്റാറ്റസ് ബാർ മറയ്ക്കുക.';
+
+  @override
+  String get trackingFocusNote =>
+      'ആപ്പ് തുറന്നിരിക്കുമ്പോൾ മാത്രമേ ഓർമ്മപ്പെടുത്തൽ പ്രവർത്തിക്കൂ. ഈ ആപ്പ് നോട്ടിഫിക്കേഷനുകൾ അയയ്ക്കുന്നില്ല, അതിനാൽ പശ്ചാത്തലത്തിൽ ഒന്നും ശബ്ദിക്കില്ല. സമയം ശരിയായി തന്നെ കണക്കാക്കും.';
+
+  @override
+  String get trackingFocusPomodoroNote =>
+      'ഫോക്കസ് ബ്ലോക്കുകൾ ഓണായതിനാൽ ഓർമ്മപ്പെടുത്തൽ ശബ്ദിക്കില്ല. ഓരോ ബ്ലോക്ക് അവസാനിക്കുമ്പോഴും പോമോഡോറോ സ്വന്തം അറിയിപ്പ് നൽകുന്നുണ്ട്.';
+
+  @override
+  String get voiceSheetTitle => 'ശബ്ദം കൊണ്ട് ടാസ്ക്';
+
+  @override
+  String get voiceSheetOfflineNote =>
+      'എല്ലാം ഈ ഫോണിൽ തന്നെ നടക്കുന്നു. ഒന്നും റെക്കോർഡ് ചെയ്യുന്നില്ല, എങ്ങോട്ടും അയയ്ക്കുന്നില്ല.';
+
+  @override
+  String get voiceSheetFieldLabel =>
+      'ഒരു വാചകം പറയുക അല്ലെങ്കിൽ ടൈപ്പ് ചെയ്യുക';
+
+  @override
+  String get voiceSheetExample =>
+      'ഉദാഹരണം: നാളെ പത്തു മണിക്ക് ബാങ്കിൽ വിളിക്കണം 30 മിനിറ്റ്';
+
+  @override
+  String get voiceLanguageEnglish => 'ഇംഗ്ലീഷ്';
+
+  @override
+  String get voiceLanguageMalayalam => 'മലയാളം';
+
+  @override
+  String get voiceTapToSpeak => 'സംസാരിക്കാൻ അമർത്തുക';
+
+  @override
+  String get voiceListening => 'കേൾക്കുന്നു';
+
+  @override
+  String get voiceClear => 'മായ്ക്കുക';
+
+  @override
+  String get voiceUnderstoodHeading => 'മനസ്സിലായത്';
+
+  @override
+  String get voiceNoTitle => 'പേര് ഇല്ല';
+
+  @override
+  String get voiceCreateTask => 'ടാസ്ക് ഉണ്ടാക്കുക';
+
+  @override
+  String get voiceDateMovedToToday =>
+      'ആ ദിവസം കഴിഞ്ഞു പോയി, അതിനാൽ ഇന്നത്തെ ദിവസമാണ് എടുത്തത്.';
+
+  @override
+  String get voiceErrorPermission =>
+      'മൈക്രോഫോണിന് അനുമതി കിട്ടിയില്ല. വാചകം ടൈപ്പ് ചെയ്യാം.';
+
+  @override
+  String get voiceErrorNoMatch =>
+      'ഒന്നും കേട്ടില്ല. വീണ്ടും ശ്രമിക്കുക, അല്ലെങ്കിൽ വാചകം ടൈപ്പ് ചെയ്യുക.';
+
+  @override
+  String get voiceErrorNoOfflineLanguage =>
+      'ഈ ഫോണിൽ ആ ഭാഷയ്ക്ക് ഓഫ്‌ലൈൻ ഭാഷാ പാക്ക് ഇല്ല. ഫോൺ ക്രമീകരണങ്ങളിൽ അത് ഇൻസ്റ്റാൾ ചെയ്യുക, അല്ലെങ്കിൽ വാചകം ടൈപ്പ് ചെയ്യുക.';
+
+  @override
+  String get voiceErrorBusy =>
+      'ശബ്ദം തിരിച്ചറിയൽ ഇപ്പോൾ തിരക്കിലാണ്. അല്പം കഴിഞ്ഞ് ശ്രമിക്കുക.';
+
+  @override
+  String get voiceErrorUnknown =>
+      'മൈക്രോഫോൺ ഉപയോഗിക്കാനായില്ല. വാചകം ടൈപ്പ് ചെയ്യാം.';
+
+  @override
+  String get voiceUnavailableDevice =>
+      'ഈ ഉപകരണത്തിൽ ശബ്ദ ഇൻപുട്ട് ഇല്ല. വാചകം ടൈപ്പ് ചെയ്യുക.';
+
+  @override
+  String get voiceUnavailableNoRecogniser =>
+      'ഈ ഫോണിൽ ശബ്ദം തിരിച്ചറിയുന്ന ആപ്പ് കണ്ടില്ല. വാചകം ടൈപ്പ് ചെയ്യുക.';
+
+  @override
+  String get voiceUnavailableNoOffline =>
+      'ഇന്റർനെറ്റ് ഇല്ലാതെ ഈ ഉപകരണത്തിന് ശബ്ദം തിരിച്ചറിയാൻ കഴിയില്ല, അതിനാൽ മൈക്രോഫോൺ ഓഫായി തുടരും. വാചകം ടൈപ്പ് ചെയ്യുക.';
+
+  @override
+  String get voiceUnavailableNoPermission =>
+      'മൈക്രോഫോൺ ഉപയോഗിക്കാൻ നിങ്ങളുടെ അനുമതി വേണം. മൈക്ക് അമർത്തിയാൽ അനുമതി ചോദിക്കും.';
+
+  @override
+  String get voiceOpenTooltip => 'ശബ്ദം കൊണ്ട് പുതിയ ടാസ്ക്';
+
+  @override
+  String get voiceInputSetting => 'ശബ്ദ ഇൻപുട്ട്';
+
+  @override
+  String get voiceInputSettingDetail =>
+      'ദിവസ പട്ടികയിൽ ഒരു മൈക്രോഫോൺ ബട്ടൺ കാണിക്കുക. ഇത് ഫോണിൽ തന്നെയുള്ള ഓഫ്‌ലൈൻ ശബ്ദ തിരിച്ചറിയൽ ഉപയോഗിക്കുന്നു, ആദ്യ തവണ മൈക്രോഫോണിന് അനുമതി ചോദിക്കും. വാചകം ഈ ഉപകരണത്തിൽ തന്നെ വായിക്കുന്നു.';
+
+  @override
+  String get voiceInputTypingNote =>
+      'നിങ്ങൾ പറഞ്ഞാലും ടൈപ്പ് ചെയ്താലും വാചകം ഈ ഉപകരണത്തിൽ തന്നെയാണ് വായിക്കുന്നത്. ശബ്ദ ഇൻപുട്ട് മൈക്രോഫോൺ മാത്രമേ ചേർക്കുന്നുള്ളൂ.';
+
+  @override
+  String get permissionsCameraTitle => 'ക്യാമറ';
+
+  @override
+  String get permissionsCameraBody =>
+      'നിങ്ങളുടെ സ്വന്തം ഉപകരണങ്ങൾക്കിടയിൽ വിവരം കൈമാറാൻ QR കോഡ് സ്കാൻ ചെയ്യുമ്പോൾ മാത്രമേ ഇത് ചോദിക്കൂ. ഒരു ഫോട്ടോയും സൂക്ഷിക്കുന്നില്ല.';
+
+  @override
+  String get permissionsMicrophoneTitle => 'മൈക്രോഫോൺ';
+
+  @override
+  String get permissionsMicrophoneBody =>
+      'ശബ്ദ ഇൻപുട്ട് ഓണാക്കി മൈക്ക് അമർത്തിയ ശേഷം മാത്രമേ ഇത് ചോദിക്കൂ. ഫോണിലെ ശബ്ദ തിരിച്ചറിയലിനോട് എപ്പോഴും അതിന്റെ ഓഫ്‌ലൈൻ എൻജിൻ ചോദിക്കുന്നു, ഓൺലൈനിൽ പോകുന്നതിനു പകരം കേൾക്കൽ നിരസിക്കുന്നു. ശബ്ദം ഒന്നും റെക്കോർഡ് ചെയ്യുകയോ സൂക്ഷിക്കുകയോ ഇല്ല.';
+
+  @override
+  String get permissionsExplicitNote =>
+      'ഈ ആപ്പ് ചോദിക്കുന്ന അനുമതികൾ ഇവ രണ്ടു മാത്രമാണ്, അവ വേണ്ട സൗകര്യം ഉപയോഗിക്കുമ്പോൾ മാത്രമേ ചോദിക്കൂ. ഇന്റർനെറ്റ് അല്ലെങ്കിൽ നെറ്റ്‌വർക്ക് അനുമതി ഒന്നും ആപ്പ് പ്രഖ്യാപിക്കുന്നില്ല, അതിനാൽ ഇതിലുള്ള വിവരം സ്വയം ഈ ഉപകരണം വിട്ടു പോകില്ല.';
+
+  @override
+  String voiceTimeNote(String time) {
+    return 'സമയം $time';
+  }
 }

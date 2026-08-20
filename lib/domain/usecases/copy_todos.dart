@@ -55,6 +55,10 @@ class CopyTodos {
         title: source.title,
         description: source.description,
         status: TodoStatus.pending,
+        // Priority and target time describe the task itself, not how it went,
+        // so a copy keeps both. Only the status is reset.
+        priority: source.priority,
+        targetSeconds: source.targetSeconds,
         sourceDate: source.date,
         recurrenceRuleId: null,
         sortOrder: nextSortOrder,

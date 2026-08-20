@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
@@ -30,8 +33,10 @@ class _FakeTodoRepository implements TodoRepository {
   }
 
   @override
-  Future<List<String>> getAutocompleteSuggestions(String prefix) async =>
-      const [];
+  Future<List<String>> getAutocompleteSuggestions(
+    String prefix, {
+    int limit = kAutocompleteLimit,
+  }) async => const [];
 
   @override
   Future<TodoEntity?> getTodoById(String id) async {
@@ -59,6 +64,14 @@ class _FakeTodoRepository implements TodoRepository {
   }) async =>
       _todos.where((todo) => todo.title.contains(query)).take(limit).toList();
 
+  @override
+  Future<List<TodoSearchResult>> searchWithMatchedNotes(
+    String query, {
+    int limit = 50,
+  }) async => (await searchByTitle(
+    query,
+    limit: limit,
+  )).map((todo) => TodoSearchResult(todo: todo)).toList();
   @override
   Future<bool> titleExistsOnDate(
     String title,
@@ -118,13 +131,36 @@ class _FakeTimeSegmentRepository implements TimeSegmentRepository {
   Future<void> insertManualSegment(TimeSegmentEntity segment) async {}
 
   @override
-  Future<void> repairOrphanedSegments(String todayDate) async {}
+  Future<void> updateSegmentNotes(String segmentId, String? notes) async {}
+
+  @override
+  Future<void> repairOrphanedSegments(
+    String todayDate, {
+    DateTime? Function(DateTime segmentStart)? closeAt,
+  }) async {}
 
   @override
   Future<void> startSegment(String todoId) async {}
 
   @override
-  Future<void> stopSegment(String todoId) async {}
+  Future<TimeSegmentEntity?> stopSegment(String todoId) async => null;
+
+  @override
+  Future<TimeSegmentEntity?> closeSegmentAt(String todoId, DateTime at) async =>
+      null;
+
+  @override
+  Future<List<TimeSegmentEntity>> getAllRunningSegments() async => const [];
+
+  @override
+  Future<List<String>> stopAllRunningSegments({String? exceptTodoId}) async =>
+      const [];
+
+  @override
+  Future<void> deleteSegment(String segmentId) async {}
+
+  @override
+  Future<void> restoreSegment(TimeSegmentEntity segment) async {}
 }
 
 void main() {
@@ -132,10 +168,14 @@ void main() {
   late _FakeTodoRepository todoRepository;
   late _FakeTimeSegmentRepository timeSegmentRepository;
 
-  setUp(() {
+  late SharedPreferences prefs;
+
+  setUp(() async {
     todo = buildTodo(id: 'todo-1', title: 'Locked task');
     todoRepository = _FakeTodoRepository([todo]);
     timeSegmentRepository = _FakeTimeSegmentRepository();
+    SharedPreferences.setMockInitialValues(const {});
+    prefs = await SharedPreferences.getInstance();
   });
 
   Future<void> pumpTile(
@@ -149,6 +189,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+          sharedPreferencesProvider.overrideWithValue(prefs),
           todoRepositoryProvider.overrideWithValue(todoRepository),
           timeSegmentRepositoryProvider.overrideWithValue(
             timeSegmentRepository,

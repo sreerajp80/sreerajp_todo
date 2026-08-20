@@ -56,7 +56,10 @@ void main() {
       final found = await dao.findIntentionByDate('2026-08-10');
       expect(found, isNotNull);
       expect(found!.date, '2026-08-10');
-      expect(found.intentionText, 'Prioritize steady progress over perfection.');
+      expect(
+        found.intentionText,
+        'Prioritize steady progress over perfection.',
+      );
     });
 
     test('saveReflection overwrites existing record on same date', () async {

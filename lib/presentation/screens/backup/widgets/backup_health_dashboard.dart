@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
@@ -13,8 +13,7 @@ class BackupHealthDashboard extends ConsumerStatefulWidget {
       _BackupHealthDashboardState();
 }
 
-class _BackupHealthDashboardState
-    extends ConsumerState<BackupHealthDashboard> {
+class _BackupHealthDashboardState extends ConsumerState<BackupHealthDashboard> {
   bool _isExpanded = false;
 
   @override
@@ -34,19 +33,19 @@ class _BackupHealthDashboardState
 
         final statusColor = !hasLogs
             ? theme.colorScheme.secondary
-            : (isHealthy
-                ? Colors.green.shade700
-                : theme.colorScheme.error);
+            : (isHealthy ? Colors.green.shade700 : theme.colorScheme.error);
 
         final statusText = !hasLogs
             ? l10n.backupHealthStatusNoBackups
             : (isHealthy
-                ? l10n.backupHealthStatusHealthy
-                : l10n.backupHealthStatusWarning);
+                  ? l10n.backupHealthStatusHealthy
+                  : l10n.backupHealthStatusWarning);
 
         final statusIcon = !hasLogs
             ? Icons.info_outline
-            : (isHealthy ? Icons.check_circle_outline : Icons.warning_amber_rounded);
+            : (isHealthy
+                  ? Icons.check_circle_outline
+                  : Icons.warning_amber_rounded);
 
         return AppSectionCard(
           title: l10n.backupHealthDashboardTitle,
@@ -63,7 +62,9 @@ class _BackupHealthDashboardState
                     decoration: BoxDecoration(
                       color: statusColor.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: statusColor.withValues(alpha: 0.4)),
+                      border: Border.all(
+                        color: statusColor.withValues(alpha: 0.4),
+                      ),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -92,7 +93,9 @@ class _BackupHealthDashboardState
                             : Icons.keyboard_arrow_down,
                       ),
                       label: Text(
-                        _isExpanded ? 'Hide Logs' : 'View Logs (${logs.length})',
+                        _isExpanded
+                            ? 'Hide Logs'
+                            : 'View Logs (${logs.length})',
                       ),
                     ),
                 ],
@@ -153,8 +156,8 @@ class _BackupHealthDashboardState
                           log.diagnosticMessage.isNotEmpty
                               ? log.diagnosticMessage
                               : (isSuccess
-                                  ? l10n.backupHealthStatusSuccess
-                                  : l10n.backupHealthStatusFailed),
+                                    ? l10n.backupHealthStatusSuccess
+                                    : l10n.backupHealthStatusFailed),
                         ),
                         trailing: Text(
                           _formatBytes(log.fileSizeBytes),
@@ -188,7 +191,7 @@ class _BackupHealthDashboardState
   String _formatTimestamp(String timestampStr) {
     final dt = DateTime.tryParse(timestampStr);
     if (dt == null) return timestampStr;
-    return DateFormat('yyyy-MM-dd HH:mm:ss').format(dt.toLocal());
+    return formatDateTime(dt.toLocal(), withSeconds: true);
   }
 
   String _formatBytes(int bytes) {

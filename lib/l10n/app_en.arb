@@ -1,718 +1,2804 @@
 {
   "@@locale": "en",
-
   "appName": "SreerajP ToDo",
-  "@appName": { "description": "Application name. Proper noun, not translated." },
-
+  "@appName": {
+    "description": "Application name. Proper noun, not translated."
+  },
   "dailyList": "My ToDos",
-  "@dailyList": { "description": "Title for daily todo list screen." },
+  "@dailyList": {
+    "description": "Title for daily todo list screen."
+  },
   "createTodo": "New Todo",
-  "@createTodo": { "description": "Button label for creating a new todo." },
+  "@createTodo": {
+    "description": "Button label for creating a new todo."
+  },
   "editTodo": "Edit Todo",
-  "@editTodo": { "description": "Screen title for editing a todo." },
+  "@editTodo": {
+    "description": "Screen title for editing a todo."
+  },
   "timeSegments": "Time Segments",
-  "@timeSegments": { "description": "Label for time segments section or screen." },
+  "@timeSegments": {
+    "description": "Label for time segments section or screen."
+  },
   "copyTodos": "Copy Todos",
-  "@copyTodos": { "description": "Action label for copying todos to another date." },
+  "@copyTodos": {
+    "description": "Action label for copying todos to another date."
+  },
   "searchResults": "Search Results",
-  "@searchResults": { "description": "Header title for search results." },
+  "@searchResults": {
+    "description": "Header title for search results."
+  },
   "recurringTasks": "Recurring Tasks",
-  "@recurringTasks": { "description": "Title for recurring tasks screen or section." },
+  "@recurringTasks": {
+    "description": "Title for recurring tasks screen or section."
+  },
   "newRecurrence": "New Recurrence Rule",
-  "@newRecurrence": { "description": "Screen title for creating a new recurrence rule." },
+  "@newRecurrence": {
+    "description": "Screen title for creating a new recurrence rule."
+  },
   "editRecurrence": "Edit Recurrence Rule",
-  "@editRecurrence": { "description": "Screen title for editing a recurrence rule." },
+  "@editRecurrence": {
+    "description": "Screen title for editing a recurrence rule."
+  },
   "statistics": "Statistics",
-  "@statistics": { "description": "Title for statistics dashboard screen." },
-
+  "@statistics": {
+    "description": "Title for statistics dashboard screen."
+  },
   "titleHint": "Enter task title",
-  "@titleHint": { "description": "TextField placeholder hint for task title." },
+  "@titleHint": {
+    "description": "TextField placeholder hint for task title."
+  },
   "descriptionHint": "Enter description (optional)",
-  "@descriptionHint": { "description": "TextField placeholder hint for task description." },
+  "@descriptionHint": {
+    "description": "TextField placeholder hint for task description."
+  },
   "searchHint": "Search todos...",
-  "@searchHint": { "description": "SearchBar placeholder text." },
+  "@searchHint": {
+    "description": "SearchBar placeholder text."
+  },
   "noTodosForDay": "No tasks for this day",
-  "@noTodosForDay": { "description": "Empty state title for a day with no tasks." },
+  "@noTodosForDay": {
+    "description": "Empty state title for a day with no tasks."
+  },
   "noSearchResults": "No results found",
-  "@noSearchResults": { "description": "Empty state message when search yields no matches." },
+  "@noSearchResults": {
+    "description": "Empty state message when search yields no matches."
+  },
   "titleRequired": "Title is required",
-  "@titleRequired": { "description": "Form validation error when title is left empty." },
+  "@titleRequired": {
+    "description": "Form validation error when title is left empty."
+  },
   "addFirstTask": "Add your first task",
-  "@addFirstTask": { "description": "Action text suggesting adding a task." },
+  "@addFirstTask": {
+    "description": "Action text suggesting adding a task."
+  },
   "noTasksTodayTitle": "No tasks today",
-  "@noTasksTodayTitle": { "description": "Empty state header title for today." },
+  "@noTasksTodayTitle": {
+    "description": "Empty state header title for today."
+  },
   "noTasksTodayMessage": "Add your first task to start planning this day.",
-  "@noTasksTodayMessage": { "description": "Empty state body text encouraging task creation for today." },
+  "@noTasksTodayMessage": {
+    "description": "Empty state body text encouraging task creation for today."
+  },
   "noTasksForPastDayMessage": "No tasks were recorded for this day.",
-  "@noTasksForPastDayMessage": { "description": "Empty state body text for past days without tasks." },
+  "@noTasksForPastDayMessage": {
+    "description": "Empty state body text for past days without tasks."
+  },
   "searchTasksTitle": "Search your tasks",
-  "@searchTasksTitle": { "description": "Header title on search screen." },
+  "@searchTasksTitle": {
+    "description": "Header title on search screen."
+  },
   "searchTasksMessage": "Enter a title or description to search across days.",
-  "@searchTasksMessage": { "description": "Instructional subtitle on search screen." },
+  "@searchTasksMessage": {
+    "description": "Instructional subtitle on search screen."
+  },
   "noStatisticsData": "Start tracking tasks to see your statistics",
-  "@noStatisticsData": { "description": "Empty state message on statistics screen." },
+  "@noStatisticsData": {
+    "description": "Empty state message on statistics screen."
+  },
   "noRecurringTasksDetailed": "No recurring tasks. Create one to automate task creation.",
-  "@noRecurringTasksDetailed": { "description": "Empty state detailed message for recurring tasks screen." },
+  "@noRecurringTasksDetailed": {
+    "description": "Empty state detailed message for recurring tasks screen."
+  },
   "noSegmentsRecordedDetailed": "Track time or add a manual segment to see history here.",
-  "@noSegmentsRecordedDetailed": { "description": "Empty state message on time segments screen." },
+  "@noSegmentsRecordedDetailed": {
+    "description": "Empty state message on time segments screen."
+  },
   "backupDirectory": "Backup folder",
-  "@backupDirectory": { "description": "Label for backup destination directory picker." },
+  "@backupDirectory": {
+    "description": "Label for backup destination directory picker."
+  },
   "previousDay": "Previous day",
-  "@previousDay": { "description": "Tooltip/button label for navigating to previous day." },
+  "@previousDay": {
+    "description": "Tooltip/button label for navigating to previous day."
+  },
   "nextDay": "Next day",
-  "@nextDay": { "description": "Tooltip/button label for navigating to next day." },
+  "@nextDay": {
+    "description": "Tooltip/button label for navigating to next day."
+  },
   "openCalendar": "Open calendar",
-  "@openCalendar": { "description": "Tooltip/button label for opening calendar date picker." },
+  "@openCalendar": {
+    "description": "Tooltip/button label for opening calendar date picker."
+  },
   "clearSearch": "Clear search",
-  "@clearSearch": { "description": "Tooltip/button label to clear search query." },
+  "@clearSearch": {
+    "description": "Tooltip/button label to clear search query."
+  },
   "toggleSelection": "Toggle selection",
-  "@toggleSelection": { "description": "Tooltip/button label to toggle bulk selection mode." },
+  "@toggleSelection": {
+    "description": "Tooltip/button label to toggle bulk selection mode."
+  },
   "openTaskActions": "Open task actions",
-  "@openTaskActions": { "description": "Tooltip/accessibility label for task action menu." },
+  "@openTaskActions": {
+    "description": "Tooltip/accessibility label for task action menu."
+  },
   "lockedTask": "Locked task",
-  "@lockedTask": { "description": "Label or tooltip for read-only past day task." },
+  "@lockedTask": {
+    "description": "Label or tooltip for read-only past day task."
+  },
   "manualSegmentShort": "M",
-  "@manualSegmentShort": { "description": "Single-letter badge for a manual segment." },
+  "@manualSegmentShort": {
+    "description": "Single-letter badge for a manual segment."
+  },
   "emptyValue": "—",
-  "@emptyValue": { "description": "Em dash placeholder for an empty value." },
+  "@emptyValue": {
+    "description": "Em dash placeholder for an empty value."
+  },
   "day": "Day",
-  "@day": { "description": "Label for calendar day." },
+  "@day": {
+    "description": "Label for calendar day."
+  },
   "details": "Details",
-  "@details": { "description": "Label for task details section." },
+  "@details": {
+    "description": "Label for task details section."
+  },
   "taskStatus": "Status",
-  "@taskStatus": { "description": "Label for task status field." },
-
+  "@taskStatus": {
+    "description": "Label for task status field."
+  },
   "statusPending": "Pending",
-  "@statusPending": { "description": "Task status label for pending state." },
+  "@statusPending": {
+    "description": "Task status label for pending state."
+  },
   "statusWorking": "Working",
-  "@statusWorking": { "description": "Task status label for in-progress working state." },
+  "@statusWorking": {
+    "description": "Task status label for in-progress working state."
+  },
   "statusCompleted": "Completed",
-  "@statusCompleted": { "description": "Task status label for completed state." },
+  "@statusCompleted": {
+    "description": "Task status label for completed state."
+  },
   "statusDropped": "Dropped",
-  "@statusDropped": { "description": "Task status label for dropped state." },
+  "@statusDropped": {
+    "description": "Task status label for dropped state."
+  },
   "statusPorted": "Ported",
-  "@statusPorted": { "description": "Task status label for ported state." },
+  "@statusPorted": {
+    "description": "Task status label for ported state."
+  },
   "completeAction": "Complete",
-  "@completeAction": { "description": "Button/action label to mark a task completed." },
+  "@completeAction": {
+    "description": "Button/action label to mark a task completed."
+  },
   "dropAction": "Drop",
-  "@dropAction": { "description": "Button/action label to mark a task dropped." },
-
+  "@dropAction": {
+    "description": "Button/action label to mark a task dropped."
+  },
   "confirmDrop": "Drop this task?",
-  "@confirmDrop": { "description": "Confirmation dialog title for dropping a task." },
+  "@confirmDrop": {
+    "description": "Confirmation dialog title for dropping a task."
+  },
   "confirmDropBody": "This task will be marked as dropped. Time spent will be categorised as dropped time.",
-  "@confirmDropBody": { "description": "Confirmation dialog body text when dropping a task." },
+  "@confirmDropBody": {
+    "description": "Confirmation dialog body text when dropping a task."
+  },
   "confirmPort": "Port this task?",
-  "@confirmPort": { "description": "Confirmation dialog title for porting a task." },
+  "@confirmPort": {
+    "description": "Confirmation dialog title for porting a task."
+  },
   "confirmPortBody": "This task will be moved to the selected date.",
-  "@confirmPortBody": { "description": "Confirmation dialog body text when porting a task." },
+  "@confirmPortBody": {
+    "description": "Confirmation dialog body text when porting a task."
+  },
   "confirmDelete": "Delete this task?",
-  "@confirmDelete": { "description": "Confirmation dialog title for deleting a task." },
+  "@confirmDelete": {
+    "description": "Confirmation dialog title for deleting a task."
+  },
   "confirmDeleteBody": "This task and all its time segments will be permanently deleted.",
-  "@confirmDeleteBody": { "description": "Confirmation dialog body text when deleting a task." },
+  "@confirmDeleteBody": {
+    "description": "Confirmation dialog body text when deleting a task."
+  },
   "confirmDeleteRecurring": "Delete recurring task?",
-  "@confirmDeleteRecurring": { "description": "Confirmation dialog title for deleting a task from a recurrence rule." },
+  "@confirmDeleteRecurring": {
+    "description": "Confirmation dialog title for deleting a task from a recurrence rule."
+  },
   "confirmDeleteRecurringBody": "This task was created by a recurrence rule.",
-  "@confirmDeleteRecurringBody": { "description": "Confirmation dialog body text when deleting a recurring task occurrence." },
+  "@confirmDeleteRecurringBody": {
+    "description": "Confirmation dialog body text when deleting a recurring task occurrence."
+  },
   "deleteOnlyThis": "Delete only this one",
-  "@deleteOnlyThis": { "description": "Option label to delete single occurrence of recurring task." },
+  "@deleteOnlyThis": {
+    "description": "Option label to delete single occurrence of recurring task."
+  },
   "deleteThisAndFuture": "Delete this and future",
-  "@deleteThisAndFuture": { "description": "Option label to delete current and future occurrences of recurring task." },
+  "@deleteThisAndFuture": {
+    "description": "Option label to delete current and future occurrences of recurring task."
+  },
   "deleteAllOccurrences": "Delete all occurrences",
-  "@deleteAllOccurrences": { "description": "Option label to delete all occurrences of recurring task." },
+  "@deleteAllOccurrences": {
+    "description": "Option label to delete all occurrences of recurring task."
+  },
   "allOccurrencesDeleted": "All occurrences deleted",
-  "@allOccurrencesDeleted": { "description": "SnackBar message when all occurrences of recurring task are deleted." },
+  "@allOccurrencesDeleted": {
+    "description": "SnackBar message when all occurrences of recurring task are deleted."
+  },
   "futureOccurrencesDeleted": "This and future occurrences deleted",
-  "@futureOccurrencesDeleted": { "description": "SnackBar message when future occurrences of recurring task are deleted." },
+  "@futureOccurrencesDeleted": {
+    "description": "SnackBar message when future occurrences of recurring task are deleted."
+  },
   "confirmBulkDrop": "Drop selected tasks?",
-  "@confirmBulkDrop": { "description": "Confirmation dialog title for bulk dropping tasks." },
+  "@confirmBulkDrop": {
+    "description": "Confirmation dialog title for bulk dropping tasks."
+  },
   "confirmBulkDropBody": "All selected tasks will be marked as dropped.",
-  "@confirmBulkDropBody": { "description": "Confirmation dialog body text when bulk dropping tasks." },
+  "@confirmBulkDropBody": {
+    "description": "Confirmation dialog body text when bulk dropping tasks."
+  },
   "confirm": "Confirm",
-  "@confirm": { "description": "Generic dialog positive confirmation button label." },
+  "@confirm": {
+    "description": "Generic dialog positive confirmation button label."
+  },
   "cancel": "Cancel",
-  "@cancel": { "description": "Generic dialog cancellation button label." },
+  "@cancel": {
+    "description": "Generic dialog cancellation button label."
+  },
   "save": "Save",
-  "@save": { "description": "Generic form save button label." },
+  "@save": {
+    "description": "Generic form save button label."
+  },
   "delete": "Delete",
-  "@delete": { "description": "Generic deletion action label." },
+  "@delete": {
+    "description": "Generic deletion action label."
+  },
   "undo": "Undo",
-  "@undo": { "description": "Action label for undoing an operation." },
+  "@undo": {
+    "description": "Action label for undoing an operation."
+  },
   "edit": "Edit",
-  "@edit": { "description": "Action label for editing." },
+  "@edit": {
+    "description": "Action label for editing."
+  },
   "port": "Port",
-  "@port": { "description": "Action label for porting task to future date." },
+  "@port": {
+    "description": "Action label for porting task to future date."
+  },
   "copy": "Copy",
-  "@copy": { "description": "Action label for copying items." },
+  "@copy": {
+    "description": "Action label for copying items."
+  },
   "retry": "Retry",
-  "@retry": { "description": "Action label for retrying an operation." },
+  "@retry": {
+    "description": "Action label for retrying an operation."
+  },
   "today": "Today",
-  "@today": { "description": "Label for current date or today button." },
+  "@today": {
+    "description": "Label for current date or today button."
+  },
   "selectTargetDate": "Select target date",
-  "@selectTargetDate": { "description": "Label or header when picking target date." },
+  "@selectTargetDate": {
+    "description": "Label or header when picking target date."
+  },
   "completeAll": "Complete All",
-  "@completeAll": { "description": "Bulk action label to complete all selected tasks." },
+  "@completeAll": {
+    "description": "Bulk action label to complete all selected tasks."
+  },
   "markDropped": "Mark Dropped",
-  "@markDropped": { "description": "Bulk action label to drop all selected tasks." },
+  "@markDropped": {
+    "description": "Bulk action label to drop all selected tasks."
+  },
   "selectAll": "Select All",
-  "@selectAll": { "description": "Bulk selection action to select all items." },
+  "@selectAll": {
+    "description": "Bulk selection action to select all items."
+  },
   "deselectAll": "Deselect All",
-  "@deselectAll": { "description": "Bulk selection action to deselect all items." },
+  "@deselectAll": {
+    "description": "Bulk selection action to deselect all items."
+  },
   "copyToAnotherDay": "Copy to another day",
-  "@copyToAnotherDay": { "description": "Action label to initiate copying tasks to another date." },
+  "@copyToAnotherDay": {
+    "description": "Action label to initiate copying tasks to another date."
+  },
   "previous": "Previous",
-  "@previous": { "description": "Step navigation back/previous button label." },
-
+  "@previous": {
+    "description": "Step navigation back/previous button label."
+  },
   "copiedFrom": "Copied from",
-  "@copiedFrom": { "description": "Prefix label for task copied from source date." },
+  "@copiedFrom": {
+    "description": "Prefix label for task copied from source date."
+  },
   "portedTo": "Ported to",
-  "@portedTo": { "description": "Prefix label for task ported to target date." },
+  "@portedTo": {
+    "description": "Prefix label for task ported to target date."
+  },
   "noDescription": "No description",
-  "@noDescription": { "description": "Placeholder when task description is empty." },
-
+  "@noDescription": {
+    "description": "Placeholder when task description is empty."
+  },
   "startTimer": "Start timer",
-  "@startTimer": { "description": "Action button label to start live timer segment." },
+  "@startTimer": {
+    "description": "Action button label to start live timer segment."
+  },
   "stopTimer": "Stop timer",
-  "@stopTimer": { "description": "Action button label to stop active timer segment." },
+  "@stopTimer": {
+    "description": "Action button label to stop active timer segment."
+  },
   "timerRunning": "Timer running",
-  "@timerRunning": { "description": "Status badge label indicating timer is currently tracking." },
+  "@timerRunning": {
+    "description": "Status badge label indicating timer is currently tracking."
+  },
   "addManualSegment": "Add Manual Segment",
-  "@addManualSegment": { "description": "Button label to add manual time segment." },
+  "@addManualSegment": {
+    "description": "Button label to add manual time segment."
+  },
   "manualSegmentAdded": "Manual segment added",
-  "@manualSegmentAdded": { "description": "SnackBar confirmation when manual time segment is added." },
+  "@manualSegmentAdded": {
+    "description": "SnackBar confirmation when manual time segment is added."
+  },
   "segmentStart": "Start time",
-  "@segmentStart": { "description": "Label for segment start time field." },
+  "@segmentStart": {
+    "description": "Label for segment start time field."
+  },
   "segmentEnd": "End time",
-  "@segmentEnd": { "description": "Label for segment end time field." },
+  "@segmentEnd": {
+    "description": "Label for segment end time field."
+  },
   "segmentType": "Type",
-  "@segmentType": { "description": "Label for time segment type column/field." },
+  "@segmentType": {
+    "description": "Label for time segment type column/field."
+  },
   "segmentDuration": "Duration",
-  "@segmentDuration": { "description": "Label for time segment duration column/field." },
+  "@segmentDuration": {
+    "description": "Label for time segment duration column/field."
+  },
+  "segmentNoteLabel": "Note",
+  "@segmentNoteLabel": {
+    "description": "Label for the optional note attached to a time segment."
+  },
+  "segmentNoteHint": "What did you work on?",
+  "@segmentNoteHint": {
+    "description": "Placeholder text for the time segment note field."
+  },
+  "editSegmentNote": "Edit note",
+  "@editSegmentNote": {
+    "description": "Tooltip and dialog title for editing a time segment note."
+  },
+  "matchedInNote": "Note: {note}",
+  "@matchedInNote": {
+    "description": "Search result subtitle shown when the match came from a time segment note.",
+    "placeholders": {
+      "note": {
+        "type": "String"
+      }
+    }
+  },
   "segmentAuto": "Auto",
-  "@segmentAuto": { "description": "Label for automatically recorded time segment." },
+  "@segmentAuto": {
+    "description": "Label for automatically recorded time segment."
+  },
   "segmentManual": "Manual",
-  "@segmentManual": { "description": "Label for manually added time segment." },
+  "@segmentManual": {
+    "description": "Label for manually added time segment."
+  },
   "segmentRunning": "running...",
-  "@segmentRunning": { "description": "Duration placeholder for currently active segment." },
+  "@segmentRunning": {
+    "description": "Duration placeholder for currently active segment."
+  },
   "segmentInterruptedTooltip": "Auto-closed on app restart",
-  "@segmentInterruptedTooltip": { "description": "Tooltip explaining an interrupted auto-closed time segment." },
+  "@segmentInterruptedTooltip": {
+    "description": "Tooltip explaining an interrupted auto-closed time segment."
+  },
   "totalTime": "Total time",
-  "@totalTime": { "description": "Label for accumulated total time duration." },
+  "@totalTime": {
+    "description": "Label for accumulated total time duration."
+  },
   "viewSegments": "Time Segments",
-  "@viewSegments": { "description": "Button label to open time segments view." },
+  "@viewSegments": {
+    "description": "Button label to open time segments view."
+  },
   "noSegments": "No time segments recorded",
-  "@noSegments": { "description": "Empty state text on time segments list." },
+  "@noSegments": {
+    "description": "Empty state text on time segments list."
+  },
   "startBeforeEnd": "Start time must be before end time",
-  "@startBeforeEnd": { "description": "Validation error message when segment start is equal or after end time." },
+  "@startBeforeEnd": {
+    "description": "Validation error message when segment start is equal or after end time."
+  },
   "segmentOverlap": "This segment overlaps with an existing one",
-  "@segmentOverlap": { "description": "Validation error message when time segment overlaps existing segment." },
+  "@segmentOverlap": {
+    "description": "Validation error message when time segment overlaps existing segment."
+  },
   "segmentMustBeSameDay": "Both times must fall within the same calendar day",
-  "@segmentMustBeSameDay": { "description": "Validation error message when segment spans across midnight." },
-
+  "@segmentMustBeSameDay": {
+    "description": "Validation error message when segment spans across midnight."
+  },
   "statusChangedTo": "Status changed to",
-  "@statusChangedTo": { "description": "SnackBar notification prefix when task status changes." },
+  "@statusChangedTo": {
+    "description": "SnackBar notification prefix when task status changes."
+  },
   "undoStatusChange": "Status change undone",
-  "@undoStatusChange": { "description": "SnackBar notification when status change is reverted via undo." },
+  "@undoStatusChange": {
+    "description": "SnackBar notification when status change is reverted via undo."
+  },
   "bulkStatusChanged": "tasks updated",
-  "@bulkStatusChanged": { "description": "SnackBar message after updating status of multiple tasks." },
+  "@bulkStatusChanged": {
+    "description": "SnackBar message after updating status of multiple tasks."
+  },
   "todoCreated": "Task created",
-  "@todoCreated": { "description": "SnackBar notification when a new todo task is created." },
+  "@todoCreated": {
+    "description": "SnackBar notification when a new todo task is created."
+  },
   "todoUpdated": "Task updated",
-  "@todoUpdated": { "description": "SnackBar notification when a todo task is edited/updated." },
+  "@todoUpdated": {
+    "description": "SnackBar notification when a todo task is edited/updated."
+  },
   "todoDeleted": "Task deleted",
-  "@todoDeleted": { "description": "SnackBar notification when a task is deleted." },
+  "@todoDeleted": {
+    "description": "SnackBar notification when a task is deleted."
+  },
   "todoPorted": "Task ported",
-  "@todoPorted": { "description": "SnackBar notification when a task is ported." },
+  "@todoPorted": {
+    "description": "SnackBar notification when a task is ported."
+  },
   "todosCopied": "tasks copied",
-  "@todosCopied": { "description": "SnackBar notification count of copied tasks." },
+  "@todosCopied": {
+    "description": "SnackBar notification count of copied tasks."
+  },
   "todosSkipped": "skipped (duplicate title)",
-  "@todosSkipped": { "description": "SnackBar notification suffix for duplicate skipped tasks." },
-
+  "@todosSkipped": {
+    "description": "SnackBar notification suffix for duplicate skipped tasks."
+  },
   "stepSelectItems": "Select Items",
-  "@stepSelectItems": { "description": "Wizard step title for selecting items to copy." },
+  "@stepSelectItems": {
+    "description": "Wizard step title for selecting items to copy."
+  },
   "stepPickDate": "Pick Date",
-  "@stepPickDate": { "description": "Wizard step title for selecting destination date." },
+  "@stepPickDate": {
+    "description": "Wizard step title for selecting destination date."
+  },
   "stepPreview": "Preview",
-  "@stepPreview": { "description": "Wizard step title for previewing items to copy." },
+  "@stepPreview": {
+    "description": "Wizard step title for previewing items to copy."
+  },
   "next": "Next",
-  "@next": { "description": "Button label to move to next wizard step." },
+  "@next": {
+    "description": "Button label to move to next wizard step."
+  },
   "back": "Back",
-  "@back": { "description": "Button label to move to previous wizard step." },
+  "@back": {
+    "description": "Button label to move to previous wizard step."
+  },
   "copyConfirm": "Copy",
-  "@copyConfirm": { "description": "Final confirmation action label in copy wizard." },
+  "@copyConfirm": {
+    "description": "Final confirmation action label in copy wizard."
+  },
   "noItemsSelected": "Select at least one item",
-  "@noItemsSelected": { "description": "Validation warning when no items are checked in copy wizard." },
+  "@noItemsSelected": {
+    "description": "Validation warning when no items are checked in copy wizard."
+  },
   "willBeSkipped": "Already exists - will be skipped",
-  "@willBeSkipped": { "description": "Preview badge for duplicate task that will be skipped." },
+  "@willBeSkipped": {
+    "description": "Preview badge for duplicate task that will be skipped."
+  },
   "itemsToCopy": "items to copy",
-  "@itemsToCopy": { "description": "Count summary label of valid tasks ready to copy." },
+  "@itemsToCopy": {
+    "description": "Count summary label of valid tasks ready to copy."
+  },
   "itemsWillBeSkipped": "will be skipped",
-  "@itemsWillBeSkipped": { "description": "Count summary label of duplicate tasks that will be skipped." },
+  "@itemsWillBeSkipped": {
+    "description": "Count summary label of duplicate tasks that will be skipped."
+  },
   "targetDate": "Target Date",
-  "@targetDate": { "description": "Label for destination target date." },
+  "@targetDate": {
+    "description": "Label for destination target date."
+  },
   "sourceDate": "Source Date",
-  "@sourceDate": { "description": "Label for origin source date." },
+  "@sourceDate": {
+    "description": "Label for origin source date."
+  },
   "selectDateFirst": "Select a target date first",
-  "@selectDateFirst": { "description": "Validation instruction to choose target date in copy wizard." },
-
+  "@selectDateFirst": {
+    "description": "Validation instruction to choose target date in copy wizard."
+  },
   "viewTodo": "View Todo",
-  "@viewTodo": { "description": "Screen title for viewing read-only past todo." },
+  "@viewTodo": {
+    "description": "Screen title for viewing read-only past todo."
+  },
   "readOnlyPastDate": "Past date - read only",
-  "@readOnlyPastDate": { "description": "Header badge indicating past date is locked against edits." },
-
+  "@readOnlyPastDate": {
+    "description": "Header badge indicating past date is locked against edits."
+  },
   "selectedCount": "{count} selected",
   "@selectedCount": {
-    "placeholders": { "count": { "type": "int" } }
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   },
   "noSearchResultsForQuery": "No tasks found matching '{query}'",
   "@noSearchResultsForQuery": {
-    "placeholders": { "query": { "type": "String" } }
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
   },
   "statusSemantics": "Status: {status}",
   "@statusSemantics": {
-    "placeholders": { "status": { "type": "String" } }
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
   },
   "totalTimeForTask": "Total time for {title}: {duration}",
   "@totalTimeForTask": {
-    "placeholders": { "title": { "type": "String" }, "duration": { "type": "String" } }
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      }
+    }
   },
   "startTimerForTask": "Start timer for {title}",
   "@startTimerForTask": {
-    "placeholders": { "title": { "type": "String" } }
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   },
   "stopTimerForTask": "Stop timer for {title}",
   "@stopTimerForTask": {
-    "placeholders": { "title": { "type": "String" } }
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   },
   "runningTimerForTask": "Timer running for {title}",
   "@runningTimerForTask": {
-    "placeholders": { "title": { "type": "String" } }
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
   },
   "segmentSemantics": "Segment {index}. {start} to {end}. Duration {duration}. Type {type}.",
   "@segmentSemantics": {
     "placeholders": {
-      "index": { "type": "int" },
-      "start": { "type": "String" },
-      "end": { "type": "String" },
-      "duration": { "type": "String" },
-      "type": { "type": "String" }
+      "index": {
+        "type": "int"
+      },
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      },
+      "duration": {
+        "type": "String"
+      },
+      "type": {
+        "type": "String"
+      }
     }
   },
-
   "repeat": "Repeat",
-  "@repeat": { "description": "Label for task repetition setting." },
+  "@repeat": {
+    "description": "Label for task repetition setting."
+  },
   "repeatNone": "None",
-  "@repeatNone": { "description": "Option label for no recurrence rule." },
+  "@repeatNone": {
+    "description": "Option label for no recurrence rule."
+  },
   "repeatConfigure": "Repeat…",
-  "@repeatConfigure": { "description": "Action label to open recurrence configuration." },
+  "@repeatConfigure": {
+    "description": "Action label to open recurrence configuration."
+  },
   "recurrenceCreated": "Task and recurrence rule created",
-  "@recurrenceCreated": { "description": "SnackBar message when a task with recurrence is created." },
-
+  "@recurrenceCreated": {
+    "description": "SnackBar message when a task with recurrence is created."
+  },
   "startDate": "Start date",
-  "@startDate": { "description": "Label for recurrence start date." },
+  "@startDate": {
+    "description": "Label for recurrence start date."
+  },
   "endDate": "End date",
-  "@endDate": { "description": "Label for recurrence end date." },
+  "@endDate": {
+    "description": "Label for recurrence end date."
+  },
   "ends": "Ends",
-  "@ends": { "description": "Label for recurrence end condition." },
+  "@ends": {
+    "description": "Label for recurrence end condition."
+  },
   "endsNever": "Never",
-  "@endsNever": { "description": "Option label for indefinite recurrence." },
+  "@endsNever": {
+    "description": "Option label for indefinite recurrence."
+  },
   "endsOnDate": "On date",
-  "@endsOnDate": { "description": "Option label for recurrence ending on specific date." },
+  "@endsOnDate": {
+    "description": "Option label for recurrence ending on specific date."
+  },
   "endsAfterDays": "For",
-  "@endsAfterDays": { "description": "Option label for recurrence ending after fixed count." },
+  "@endsAfterDays": {
+    "description": "Option label for recurrence ending after fixed count."
+  },
   "frequency": "Frequency",
-  "@frequency": { "description": "Label for recurrence frequency picker." },
+  "@frequency": {
+    "description": "Label for recurrence frequency picker."
+  },
   "daily": "Daily",
-  "@daily": { "description": "Option label for daily frequency." },
+  "@daily": {
+    "description": "Option label for daily frequency."
+  },
   "weekly": "Weekly",
-  "@weekly": { "description": "Option label for weekly frequency." },
+  "@weekly": {
+    "description": "Option label for weekly frequency."
+  },
   "monthly": "Monthly",
-  "@monthly": { "description": "Option label for monthly frequency." },
+  "@monthly": {
+    "description": "Option label for monthly frequency."
+  },
   "yearly": "Yearly",
-  "@yearly": { "description": "Option label for yearly frequency." },
+  "@yearly": {
+    "description": "Option label for yearly frequency."
+  },
   "every": "Every",
-  "@every": { "description": "Prefix label for recurrence interval (e.g. Every 2 weeks)." },
+  "@every": {
+    "description": "Prefix label for recurrence interval (e.g. Every 2 weeks)."
+  },
   "days": "days",
-  "@days": { "description": "Plural unit label for days interval." },
+  "@days": {
+    "description": "Plural unit label for days interval."
+  },
   "weeks": "weeks",
-  "@weeks": { "description": "Plural unit label for weeks interval." },
+  "@weeks": {
+    "description": "Plural unit label for weeks interval."
+  },
   "months": "months",
-  "@months": { "description": "Plural unit label for months interval." },
+  "@months": {
+    "description": "Plural unit label for months interval."
+  },
   "years": "years",
-  "@years": { "description": "Plural unit label for years interval." },
+  "@years": {
+    "description": "Plural unit label for years interval."
+  },
   "daysOfWeek": "Days of week",
-  "@daysOfWeek": { "description": "Label for weekday selector." },
+  "@daysOfWeek": {
+    "description": "Label for weekday selector."
+  },
   "nextOccurrences": "Next 5 occurrences",
-  "@nextOccurrences": { "description": "Header for upcoming recurrence preview dates." },
+  "@nextOccurrences": {
+    "description": "Header for upcoming recurrence preview dates."
+  },
   "noUpcomingOccurrences": "No upcoming occurrences",
-  "@noUpcomingOccurrences": { "description": "Empty state text for recurrence rule preview." },
-
+  "@noUpcomingOccurrences": {
+    "description": "Empty state text for recurrence rule preview."
+  },
   "monday": "Mon",
-  "@monday": { "description": "Short abbreviation for Monday." },
+  "@monday": {
+    "description": "Short abbreviation for Monday."
+  },
   "tuesday": "Tue",
-  "@tuesday": { "description": "Short abbreviation for Tuesday." },
+  "@tuesday": {
+    "description": "Short abbreviation for Tuesday."
+  },
   "wednesday": "Wed",
-  "@wednesday": { "description": "Short abbreviation for Wednesday." },
+  "@wednesday": {
+    "description": "Short abbreviation for Wednesday."
+  },
   "thursday": "Thu",
-  "@thursday": { "description": "Short abbreviation for Thursday." },
+  "@thursday": {
+    "description": "Short abbreviation for Thursday."
+  },
   "friday": "Fri",
-  "@friday": { "description": "Short abbreviation for Friday." },
+  "@friday": {
+    "description": "Short abbreviation for Friday."
+  },
   "saturday": "Sat",
-  "@saturday": { "description": "Short abbreviation for Saturday." },
+  "@saturday": {
+    "description": "Short abbreviation for Saturday."
+  },
   "sunday": "Sun",
-  "@sunday": { "description": "Short abbreviation for Sunday." },
-
+  "@sunday": {
+    "description": "Short abbreviation for Sunday."
+  },
   "sortTodos": "Sort",
-  "@sortTodos": { "description": "Action/menu label for sorting task list." },
+  "@sortTodos": {
+    "description": "Action/menu label for sorting task list."
+  },
   "sortManual": "Manual order",
-  "@sortManual": { "description": "Sort option for custom drag manual reordering." },
+  "@sortManual": {
+    "description": "Sort option for custom drag manual reordering."
+  },
   "sortNameAZ": "Name A→Z",
-  "@sortNameAZ": { "description": "Sort option for title alphabetical ascending." },
+  "@sortNameAZ": {
+    "description": "Sort option for title alphabetical ascending."
+  },
   "sortNameZA": "Name Z→A",
-  "@sortNameZA": { "description": "Sort option for title alphabetical descending." },
+  "@sortNameZA": {
+    "description": "Sort option for title alphabetical descending."
+  },
   "sortCreatedOldest": "Created (oldest first)",
-  "@sortCreatedOldest": { "description": "Sort option for creation timestamp ascending." },
+  "@sortCreatedOldest": {
+    "description": "Sort option for creation timestamp ascending."
+  },
   "sortCreatedNewest": "Created (newest first)",
-  "@sortCreatedNewest": { "description": "Sort option for creation timestamp descending." },
+  "@sortCreatedNewest": {
+    "description": "Sort option for creation timestamp descending."
+  },
   "sortTimeMost": "Time spent (most first)",
-  "@sortTimeMost": { "description": "Sort option for duration descending." },
+  "@sortTimeMost": {
+    "description": "Sort option for duration descending."
+  },
   "sortTimeLeast": "Time spent (least first)",
-  "@sortTimeLeast": { "description": "Sort option for duration ascending." },
+  "@sortTimeLeast": {
+    "description": "Sort option for duration ascending."
+  },
   "sortByStatus": "By status",
-  "@sortByStatus": { "description": "Sort option grouping by task status." },
-
+  "@sortByStatus": {
+    "description": "Sort option grouping by task status."
+  },
   "backupLabel": "Backup",
-  "@backupLabel": { "description": "Navigation label or screen title for Backup." },
+  "@backupLabel": {
+    "description": "Navigation label or screen title for Backup."
+  },
   "backupExportTitle": "Export Backup",
-  "@backupExportTitle": { "description": "Screen/dialog title for exporting backup." },
+  "@backupExportTitle": {
+    "description": "Screen/dialog title for exporting backup."
+  },
   "backupImportTitle": "Restore from Backup",
-  "@backupImportTitle": { "description": "Screen/dialog title for importing backup." },
+  "@backupImportTitle": {
+    "description": "Screen/dialog title for importing backup."
+  },
   "backupPassphraseLabel": "Backup Passphrase",
-  "@backupPassphraseLabel": { "description": "Field label for backup encryption passphrase." },
+  "@backupPassphraseLabel": {
+    "description": "Field label for backup encryption passphrase."
+  },
   "backupPassphraseConfirmLabel": "Confirm Passphrase",
-  "@backupPassphraseConfirmLabel": { "description": "Field label for confirming backup encryption passphrase." },
+  "@backupPassphraseConfirmLabel": {
+    "description": "Field label for confirming backup encryption passphrase."
+  },
   "backupPassphraseMinLength": "Passphrase must be at least 8 characters",
-  "@backupPassphraseMinLength": { "description": "Validation error when passphrase is shorter than 8 characters." },
+  "@backupPassphraseMinLength": {
+    "description": "Validation error when passphrase is shorter than 8 characters."
+  },
   "backupPassphraseMismatch": "Passphrases do not match",
-  "@backupPassphraseMismatch": { "description": "Validation error when passphrase confirmation does not match." },
+  "@backupPassphraseMismatch": {
+    "description": "Validation error when passphrase confirmation does not match."
+  },
   "backupPassphraseWarning": "If you forget this passphrase, the backup cannot be recovered. Write it down.",
-  "@backupPassphraseWarning": { "description": "Warning banner reminding user to preserve backup passphrase." },
+  "@backupPassphraseWarning": {
+    "description": "Warning banner reminding user to preserve backup passphrase."
+  },
   "backupExportSuccess": "Backup saved to",
-  "@backupExportSuccess": { "description": "Success notification prefix after export finishes." },
+  "@backupExportSuccess": {
+    "description": "Success notification prefix after export finishes."
+  },
   "backupImportConfirmTitle": "Replace All Data?",
-  "@backupImportConfirmTitle": { "description": "Confirmation title when restoring backup over existing local data." },
+  "@backupImportConfirmTitle": {
+    "description": "Confirmation title when restoring backup over existing local data."
+  },
   "backupImportConfirmMessage": "This will replace ALL current data. This action cannot be undone.",
-  "@backupImportConfirmMessage": { "description": "Warning message when restoring backup over existing local data." },
+  "@backupImportConfirmMessage": {
+    "description": "Warning message when restoring backup over existing local data."
+  },
   "backupImportSuccess": "Data restored successfully",
-  "@backupImportSuccess": { "description": "Success notification after data restoration." },
+  "@backupImportSuccess": {
+    "description": "Success notification after data restoration."
+  },
   "backupImportWrongPassphrase": "Incorrect passphrase or corrupted backup file",
-  "@backupImportWrongPassphrase": { "description": "Error message when backup decryption fails due to invalid passphrase." },
+  "@backupImportWrongPassphrase": {
+    "description": "Error message when backup decryption fails due to invalid passphrase."
+  },
   "backupImportVersionTooNew": "This backup was created by a newer version of the app. Please update.",
-  "@backupImportVersionTooNew": { "description": "Error message when importing backup file schema from newer app release." },
+  "@backupImportVersionTooNew": {
+    "description": "Error message when importing backup file schema from newer app release."
+  },
   "backupImportCorrupted": "The backup file is corrupted and cannot be restored",
-  "@backupImportCorrupted": { "description": "Error message when backup file format check fails." },
+  "@backupImportCorrupted": {
+    "description": "Error message when backup file format check fails."
+  },
   "backupDeleteBackupConfirm": "Delete this backup?",
-  "@backupDeleteBackupConfirm": { "description": "Confirmation dialog title for deleting a local backup file." },
+  "@backupDeleteBackupConfirm": {
+    "description": "Confirmation dialog title for deleting a local backup file."
+  },
   "backupNoBackupsFound": "No backups found",
-  "@backupNoBackupsFound": { "description": "Empty state title when no local backups exist." },
+  "@backupNoBackupsFound": {
+    "description": "Empty state title when no local backups exist."
+  },
   "backupNoBackupsFoundDetailed": "No backups found. Export your first backup to keep your data safe.",
-  "@backupNoBackupsFoundDetailed": { "description": "Detailed empty state text for backup list." },
+  "@backupNoBackupsFoundDetailed": {
+    "description": "Detailed empty state text for backup list."
+  },
   "backupRecentBackups": "Recent Backups",
-  "@backupRecentBackups": { "description": "Section header for list of recent backup files." },
+  "@backupRecentBackups": {
+    "description": "Section header for list of recent backup files."
+  },
   "backupChooseDestination": "Choose backup folder",
-  "@backupChooseDestination": { "description": "Button label to pick destination directory for backup." },
+  "@backupChooseDestination": {
+    "description": "Button label to pick destination directory for backup."
+  },
   "backupSelectBackupFile": "Select Backup File",
-  "@backupSelectBackupFile": { "description": "Button label to pick backup archive file for restore." },
+  "@backupSelectBackupFile": {
+    "description": "Button label to pick backup archive file for restore."
+  },
   "backupDeleteSuccess": "Backup deleted",
-  "@backupDeleteSuccess": { "description": "SnackBar notification when backup file is deleted." },
+  "@backupDeleteSuccess": {
+    "description": "SnackBar notification when backup file is deleted."
+  },
   "backupExportInProgress": "Exporting backup...",
-  "@backupExportInProgress": { "description": "Progress dialog label during backup export." },
+  "@backupExportInProgress": {
+    "description": "Progress dialog label during backup export."
+  },
   "backupImportInProgress": "Restoring backup...",
-  "@backupImportInProgress": { "description": "Progress dialog label during backup restore." },
+  "@backupImportInProgress": {
+    "description": "Progress dialog label during backup restore."
+  },
   "backupHealthDashboardTitle": "Backup Health Dashboard",
-  "@backupHealthDashboardTitle": { "description": "Title for backup health dashboard." },
+  "@backupHealthDashboardTitle": {
+    "description": "Title for backup health dashboard."
+  },
   "backupHealthStatusHealthy": "Healthy",
-  "@backupHealthStatusHealthy": { "description": "Status badge label for healthy backup system." },
+  "@backupHealthStatusHealthy": {
+    "description": "Status badge label for healthy backup system."
+  },
   "backupHealthStatusWarning": "Needs Attention",
-  "@backupHealthStatusWarning": { "description": "Status badge label when backup needs attention." },
+  "@backupHealthStatusWarning": {
+    "description": "Status badge label when backup needs attention."
+  },
   "backupHealthStatusNoBackups": "No Backups Created",
-  "@backupHealthStatusNoBackups": { "description": "Status badge label when no backups have been created." },
+  "@backupHealthStatusNoBackups": {
+    "description": "Status badge label when no backups have been created."
+  },
   "backupHealthLogsTitle": "Execution Diagnostic Logs",
-  "@backupHealthLogsTitle": { "description": "Header for backup execution diagnostic logs." },
+  "@backupHealthLogsTitle": {
+    "description": "Header for backup execution diagnostic logs."
+  },
   "backupHealthTriggerManual": "Manual",
-  "@backupHealthTriggerManual": { "description": "Label for manually triggered backup execution." },
+  "@backupHealthTriggerManual": {
+    "description": "Label for manually triggered backup execution."
+  },
   "backupHealthTriggerScheduled": "Scheduled",
-  "@backupHealthTriggerScheduled": { "description": "Label for scheduled automated backup execution." },
+  "@backupHealthTriggerScheduled": {
+    "description": "Label for scheduled automated backup execution."
+  },
   "backupHealthStatusSuccess": "Success",
-  "@backupHealthStatusSuccess": { "description": "Log entry status label for successful backup operation." },
+  "@backupHealthStatusSuccess": {
+    "description": "Log entry status label for successful backup operation."
+  },
   "backupHealthStatusFailed": "Failed",
-  "@backupHealthStatusFailed": { "description": "Log entry status label for failed backup operation." },
-
+  "@backupHealthStatusFailed": {
+    "description": "Log entry status label for failed backup operation."
+  },
   "settingsLabel": "Settings",
-  "@settingsLabel": { "description": "Navigation label or screen title for Settings." },
+  "@settingsLabel": {
+    "description": "Navigation label or screen title for Settings."
+  },
   "settingsAppearance": "Appearance",
-  "@settingsAppearance": { "description": "Section header for theme and visual settings." },
+  "@settingsAppearance": {
+    "description": "Section header for theme and visual settings."
+  },
   "settingsThemeMode": "Theme mode",
-  "@settingsThemeMode": { "description": "Label for light/dark theme selection setting." },
+  "@settingsThemeMode": {
+    "description": "Label for light/dark theme selection setting."
+  },
   "settingsFollowSystem": "System",
-  "@settingsFollowSystem": { "description": "Option label to follow system theme." },
+  "@settingsFollowSystem": {
+    "description": "Option label to follow system theme."
+  },
   "settingsLight": "Light",
-  "@settingsLight": { "description": "Option label for explicit light theme." },
+  "@settingsLight": {
+    "description": "Option label for explicit light theme."
+  },
   "settingsDark": "Dark",
-  "@settingsDark": { "description": "Option label for explicit dark theme." },
+  "@settingsDark": {
+    "description": "Option label for explicit dark theme."
+  },
   "settingsLanguage": "Language",
-  "@settingsLanguage": { "description": "Label for app language setting." },
+  "@settingsLanguage": {
+    "description": "Label for app language setting."
+  },
   "settingsLanguageSystem": "System Default",
-  "@settingsLanguageSystem": { "description": "Option label for system default locale." },
+  "@settingsLanguageSystem": {
+    "description": "Option label for system default locale."
+  },
   "settingsLanguageEnglish": "English",
-  "@settingsLanguageEnglish": { "description": "Option label for English language." },
+  "@settingsLanguageEnglish": {
+    "description": "Option label for English language."
+  },
   "settingsLanguageMalayalam": "Malayalam",
-  "@settingsLanguageMalayalam": { "description": "Option label for Malayalam language." },
+  "@settingsLanguageMalayalam": {
+    "description": "Option label for Malayalam language."
+  },
   "settingsShortcuts": "Shortcuts",
-  "@settingsShortcuts": { "description": "Label for keyboard shortcuts settings." },
+  "@settingsShortcuts": {
+    "description": "Label for keyboard shortcuts settings."
+  },
   "settingsAboutApp": "About this app",
-  "@settingsAboutApp": { "description": "Menu label navigating to About screen." },
+  "@settingsAboutApp": {
+    "description": "Menu label navigating to About screen."
+  },
   "settingsPermissions": "Permissions",
-  "@settingsPermissions": { "description": "Menu label navigating to Permissions disclosure screen." },
+  "@settingsPermissions": {
+    "description": "Menu label navigating to Permissions disclosure screen."
+  },
   "settingsOfflineTitle": "Offline and private",
-  "@settingsOfflineTitle": { "description": "Section header emphasizing offline architecture." },
+  "@settingsOfflineTitle": {
+    "description": "Section header emphasizing offline architecture."
+  },
   "settingsOfflineBody": "This app works fully offline. Tasks, backups, and statistics stay on this device unless you export a local backup file.",
-  "@settingsOfflineBody": { "description": "Explanatory text describing local-only zero-network operational model." },
-
+  "@settingsOfflineBody": {
+    "description": "Explanatory text describing local-only zero-network operational model."
+  },
+  "settingsAppearanceSubtitle": "Theme mode, typography, and accent color",
+  "@settingsAppearanceSubtitle": {
+    "description": "Subtitle on the Appearance card in Settings."
+  },
+  "settingsLanguageSubtitle": "Choose the language used across the app",
+  "@settingsLanguageSubtitle": {
+    "description": "Subtitle on the Language card in Settings."
+  },
+  "settingsBackupSubtitle": "Export or import an encrypted backup file",
+  "@settingsBackupSubtitle": {
+    "description": "Subtitle on the Backup card in Settings."
+  },
+  "settingsFeatures": "Features",
+  "@settingsFeatures": {
+    "description": "Menu label navigating to Features showcase screen."
+  },
+  "settingsFeaturesSubtitle": "Explore all features of SreerajP ToDo",
+  "@settingsFeaturesSubtitle": {
+    "description": "Subtitle on the Features card in Settings."
+  },
+  "settingsHelp": "Help & User Guides",
+  "@settingsHelp": {
+    "description": "Menu label navigating to Help Center screen."
+  },
+  "settingsHelpSubtitle": "Guides on time tracking, sync, backups, and FAQs",
+  "@settingsHelpSubtitle": {
+    "description": "Subtitle on the Help card in Settings."
+  },
+  "settingsAboutSubtitle": "Version, credits, and app details",
+  "@settingsAboutSubtitle": {
+    "description": "Subtitle on the About card in Settings."
+  },
+  "settingsTimeTracking": "Time tracking",
+  "@settingsTimeTracking": {
+    "description": "Title of the Time tracking settings hub."
+  },
+  "settingsTimeTrackingSubtitle": "Auto-stop, pause, Pomodoro, and how time is shown",
+  "@settingsTimeTrackingSubtitle": {
+    "description": "Subtitle on the Time tracking card in Settings."
+  },
+  "trackingAutoStop": "Auto-stop the timer",
+  "@trackingAutoStop": {
+    "description": "Title of the auto-stop settings page."
+  },
+  "trackingAutoStopSubtitle": "Stop a timer that was left running",
+  "@trackingAutoStopSubtitle": {
+    "description": "Subtitle on the auto-stop card."
+  },
+  "trackingAutoStopOff": "Never",
+  "@trackingAutoStopOff": {
+    "description": "Auto-stop option: never stop on its own."
+  },
+  "trackingAutoStopOffDetail": "A running timer keeps going until you stop it.",
+  "@trackingAutoStopOffDetail": {
+    "description": "Explains the never option."
+  },
+  "trackingAutoStopMidnight": "At midnight",
+  "@trackingAutoStopMidnight": {
+    "description": "Auto-stop option: stop at the end of the day."
+  },
+  "trackingAutoStopMidnightDetail": "Stops at the end of the day so tracked time is not lost.",
+  "@trackingAutoStopMidnightDetail": {
+    "description": "Explains the midnight option."
+  },
+  "trackingAutoStopCustom": "At a set time",
+  "@trackingAutoStopCustom": {
+    "description": "Auto-stop option: stop at a chosen time."
+  },
+  "trackingAutoStopCustomDetail": "Stops at the time you pick below.",
+  "@trackingAutoStopCustomDetail": {
+    "description": "Explains the custom time option."
+  },
+  "trackingAutoStopTime": "Stop at",
+  "@trackingAutoStopTime": {
+    "description": "Label for the custom auto-stop time picker."
+  },
+  "trackingAutoStopNote": "While the app is closed the timer cannot be stopped at that exact moment. It is corrected the next time you open the app.",
+  "@trackingAutoStopNote": {
+    "description": "Honest note about the offline limit of auto-stop."
+  },
+  "trackingAutoStopped": "Timer stopped automatically",
+  "@trackingAutoStopped": {
+    "description": "Message shown when a timer was auto-stopped."
+  },
+  "trackingTimerBehaviour": "Timer behaviour",
+  "@trackingTimerBehaviour": {
+    "description": "Title of the timer behaviour settings page."
+  },
+  "trackingTimerBehaviourSubtitle": "One timer at a time, pause, screen, short segments",
+  "@trackingTimerBehaviourSubtitle": {
+    "description": "Subtitle on the timer behaviour card."
+  },
+  "trackingSingleTimer": "Only one timer at a time",
+  "@trackingSingleTimer": {
+    "description": "Switch label for the single timer rule."
+  },
+  "trackingSingleTimerDetail": "Starting a timer stops any timer running on another task.",
+  "@trackingSingleTimerDetail": {
+    "description": "Explains the single timer rule."
+  },
+  "trackingStoppedOtherCount": "{count, plural, one{Stopped {count} other running timer} other{Stopped {count} other running timers}}",
+  "@trackingStoppedOtherCount": {
+    "description": "Message saying how many other timers were stopped to make room for a new one.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trackingAutoPause": "Pause when the app is closed",
+  "@trackingAutoPause": {
+    "description": "Switch label for auto-pause on background."
+  },
+  "trackingAutoPauseDetail": "Leaving the app pauses a running timer. Time already tracked is kept.",
+  "@trackingAutoPauseDetail": {
+    "description": "Explains auto-pause on background."
+  },
+  "trackingKeepScreenAwake": "Keep the screen on",
+  "@trackingKeepScreenAwake": {
+    "description": "Switch label for the keep-screen-awake setting."
+  },
+  "trackingKeepScreenAwakeDetail": "The screen stays on while a timer runs. Android only.",
+  "@trackingKeepScreenAwakeDetail": {
+    "description": "Explains the keep-screen-awake setting."
+  },
+  "trackingMinimumLength": "Shortest segment to keep",
+  "@trackingMinimumLength": {
+    "description": "Title for the minimum segment length choice."
+  },
+  "trackingMinimumLengthDetail": "A timer you stop sooner than this is thrown away, so a mis-tap does not clutter your log. Manual entries are never touched.",
+  "@trackingMinimumLengthDetail": {
+    "description": "Explains the minimum segment length rule."
+  },
+  "trackingMinimumOff": "Keep everything",
+  "@trackingMinimumOff": {
+    "description": "Minimum segment length option: no limit."
+  },
+  "trackingMinimum10s": "Under 10 seconds",
+  "@trackingMinimum10s": {
+    "description": "Minimum segment length option: 10 seconds."
+  },
+  "trackingMinimum30s": "Under 30 seconds",
+  "@trackingMinimum30s": {
+    "description": "Minimum segment length option: 30 seconds."
+  },
+  "trackingMinimum1m": "Under 1 minute",
+  "@trackingMinimum1m": {
+    "description": "Minimum segment length option: 1 minute."
+  },
+  "trackingMinimum5m": "Under 5 minutes",
+  "@trackingMinimum5m": {
+    "description": "Minimum segment length option: 5 minutes."
+  },
+  "trackingSegmentDiscarded": "Segment was too short and was not saved",
+  "@trackingSegmentDiscarded": {
+    "description": "Message when a short segment was dropped."
+  },
+  "trackingPomodoro": "Pomodoro",
+  "@trackingPomodoro": {
+    "description": "Title of the Pomodoro settings page."
+  },
+  "trackingPomodoroSubtitle": "Focus blocks and breaks",
+  "@trackingPomodoroSubtitle": {
+    "description": "Subtitle on the Pomodoro card."
+  },
+  "trackingPomodoroEnabled": "Use focus blocks",
+  "@trackingPomodoroEnabled": {
+    "description": "Switch label turning Pomodoro on."
+  },
+  "trackingPomodoroEnabledDetail": "A running timer becomes a work block that ends on its own.",
+  "@trackingPomodoroEnabledDetail": {
+    "description": "Explains the Pomodoro switch."
+  },
+  "trackingPomodoroWork": "Work block",
+  "@trackingPomodoroWork": {
+    "description": "Label for the Pomodoro work block length."
+  },
+  "trackingPomodoroShortBreak": "Short break",
+  "@trackingPomodoroShortBreak": {
+    "description": "Label for the Pomodoro short break length."
+  },
+  "trackingPomodoroLongBreak": "Long break",
+  "@trackingPomodoroLongBreak": {
+    "description": "Label for the Pomodoro long break length."
+  },
+  "trackingPomodoroBlocks": "Long break after",
+  "@trackingPomodoroBlocks": {
+    "description": "Label for how many work blocks precede a long break."
+  },
+  "trackingPomodoroAutoStart": "Start the next block on its own",
+  "@trackingPomodoroAutoStart": {
+    "description": "Switch label for Pomodoro auto-start."
+  },
+  "trackingPomodoroAutoStartDetail": "When off, each block waits for you to tap start.",
+  "@trackingPomodoroAutoStartDetail": {
+    "description": "Explains Pomodoro auto-start."
+  },
+  "trackingPomodoroNote": "The alert only sounds while the app is open. This app sends no notifications, so a block that ends in the background makes no sound. The time is still counted correctly.",
+  "@trackingPomodoroNote": {
+    "description": "Honest note about the in-app-only Pomodoro alert."
+  },
+  "trackingMinutes": "{count, plural, one{{count} minute} other{{count} minutes}}",
+  "@trackingMinutes": {
+    "description": "A length written in minutes.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trackingBlocks": "{count, plural, one{{count} work block} other{{count} work blocks}}",
+  "@trackingBlocks": {
+    "description": "A count of Pomodoro work blocks.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "trackingBlockWork": "Focus",
+  "@trackingBlockWork": {
+    "description": "Badge shown during a Pomodoro work block."
+  },
+  "trackingBlockShortBreak": "Short break",
+  "@trackingBlockShortBreak": {
+    "description": "Badge shown during a Pomodoro short break."
+  },
+  "trackingBlockLongBreak": "Long break",
+  "@trackingBlockLongBreak": {
+    "description": "Badge shown during a Pomodoro long break."
+  },
+  "trackingBlockDone": "Block finished",
+  "@trackingBlockDone": {
+    "description": "Shown when a Pomodoro block ended and waits for a tap."
+  },
+  "trackingStartNextBlock": "Start next block",
+  "@trackingStartNextBlock": {
+    "description": "Button that starts the waiting Pomodoro block."
+  },
+  "trackingTimeDisplay": "Time display",
+  "@trackingTimeDisplay": {
+    "description": "Title of the time display settings page."
+  },
+  "trackingTimeDisplaySubtitle": "Rounding, format, and manual entry default",
+  "@trackingTimeDisplaySubtitle": {
+    "description": "Subtitle on the time display card."
+  },
+  "trackingRounding": "Rounding in reports",
+  "@trackingRounding": {
+    "description": "Title for the rounding choice."
+  },
+  "trackingRoundingDetail": "Changes only what is shown. Your saved times are never altered.",
+  "@trackingRoundingDetail": {
+    "description": "Explains that rounding is display only."
+  },
+  "trackingRoundingOff": "Exact",
+  "@trackingRoundingOff": {
+    "description": "Rounding option: no rounding."
+  },
+  "trackingRounding1m": "Nearest minute",
+  "@trackingRounding1m": {
+    "description": "Rounding option: nearest minute."
+  },
+  "trackingRounding5m": "Nearest 5 minutes",
+  "@trackingRounding5m": {
+    "description": "Rounding option: nearest 5 minutes."
+  },
+  "trackingRounding15m": "Nearest 15 minutes",
+  "@trackingRounding15m": {
+    "description": "Rounding option: nearest 15 minutes."
+  },
+  "trackingFormat": "How times are written",
+  "@trackingFormat": {
+    "description": "Title for the duration format choice."
+  },
+  "trackingFormatHhmmss": "Hours, minutes, seconds",
+  "@trackingFormatHhmmss": {
+    "description": "Duration format option HH:MM:SS."
+  },
+  "trackingFormatHhmm": "Hours and minutes",
+  "@trackingFormatHhmm": {
+    "description": "Duration format option HH:MM."
+  },
+  "trackingFormatDecimal": "Decimal hours",
+  "@trackingFormatDecimal": {
+    "description": "Duration format option decimal hours."
+  },
+  "trackingFormatNote": "A running timer always shows seconds.",
+  "@trackingFormatNote": {
+    "description": "Note that the live timer keeps seconds."
+  },
+  "trackingManualDefault": "Manual entry length",
+  "@trackingManualDefault": {
+    "description": "Title for the manual entry default duration."
+  },
+  "trackingManualDefaultDetail": "Picking a start time fills the end time this far ahead. You can still change it.",
+  "@trackingManualDefaultDetail": {
+    "description": "Explains the manual entry default."
+  },
+  "trackingManual15m": "15 minutes",
+  "@trackingManual15m": {
+    "description": "Manual entry default option: 15 minutes."
+  },
+  "trackingManual30m": "30 minutes",
+  "@trackingManual30m": {
+    "description": "Manual entry default option: 30 minutes."
+  },
+  "trackingManual1h": "1 hour",
+  "@trackingManual1h": {
+    "description": "Manual entry default option: 1 hour."
+  },
+  "trackingManual2h": "2 hours",
+  "@trackingManual2h": {
+    "description": "Manual entry default option: 2 hours."
+  },
+  "pauseTimer": "Pause timer",
+  "@pauseTimer": {
+    "description": "Tooltip on the pause button."
+  },
+  "resumeTimer": "Resume timer",
+  "@resumeTimer": {
+    "description": "Tooltip on the resume button."
+  },
+  "timerPaused": "Paused",
+  "@timerPaused": {
+    "description": "Badge shown on a task whose timer is paused."
+  },
+  "settingsPermissionsSubtitle": "What this app can and cannot access",
+  "@settingsPermissionsSubtitle": {
+    "description": "Subtitle on the Permissions card in Settings."
+  },
+  "appearanceThemeModeSubtitle": "Choose Light, Dark, or follow the system",
+  "@appearanceThemeModeSubtitle": {
+    "description": "Subtitle on the Theme Mode card."
+  },
+  "appearanceTypography": "Typography & Text Size",
+  "@appearanceTypography": {
+    "description": "Title of the typography settings page and card."
+  },
+  "appearanceTypographySubtitle": "App font family and text size",
+  "@appearanceTypographySubtitle": {
+    "description": "Subtitle on the Typography card."
+  },
+  "appearanceAccentColor": "Accent Color",
+  "@appearanceAccentColor": {
+    "description": "Title of the accent colour settings page and card."
+  },
+  "appearanceAccentColorSubtitle": "Presets, color wheel, and live preview",
+  "@appearanceAccentColorSubtitle": {
+    "description": "Subtitle on the Accent Color card."
+  },
+  "themeModeHelp": "System mode follows the dark mode setting of your device.",
+  "@themeModeHelp": {
+    "description": "Helper text on the Theme Mode page."
+  },
+  "typographyFontLabel": "Font",
+  "@typographyFontLabel": {
+    "description": "Section label above the font list."
+  },
+  "typographyTextSizeLabel": "Text size",
+  "@typographyTextSizeLabel": {
+    "description": "Section label above the text size choice."
+  },
+  "typographySampleLatin": "The quick brown fox 0123",
+  "@typographySampleLatin": {
+    "description": "Latin sample text shown in the font preview."
+  },
+  "typographySampleMalayalam": "മലയാളം സുന്ദരമാണ്",
+  "@typographySampleMalayalam": {
+    "description": "Malayalam sample text shown in the font preview."
+  },
+  "fontSystemDefault": "System default",
+  "@fontSystemDefault": {
+    "description": "Font option that keeps the platform default font."
+  },
+  "fontManjari": "Manjari",
+  "@fontManjari": {
+    "description": "Font family name. Proper noun, not translated."
+  },
+  "fontAnekMalayalam": "Anek Malayalam",
+  "@fontAnekMalayalam": {
+    "description": "Font family name. Proper noun, not translated."
+  },
+  "fontNotoSansMalayalam": "Noto Sans Malayalam",
+  "@fontNotoSansMalayalam": {
+    "description": "Font family name. Proper noun, not translated."
+  },
+  "textSizeSmall": "Small",
+  "@textSizeSmall": {
+    "description": "Text size option, 0.85x."
+  },
+  "textSizeDefault": "Default",
+  "@textSizeDefault": {
+    "description": "Text size option, 1.0x."
+  },
+  "textSizeLarge": "Large",
+  "@textSizeLarge": {
+    "description": "Text size option, 1.15x."
+  },
+  "textSizeLarger": "Larger",
+  "@textSizeLarger": {
+    "description": "Text size option, 1.30x."
+  },
+  "accentLivePreview": "Live preview",
+  "@accentLivePreview": {
+    "description": "Section label above the accent colour preview."
+  },
+  "accentPresets": "Presets",
+  "@accentPresets": {
+    "description": "Section label above the preset colour swatches."
+  },
+  "accentCustomWheel": "Custom color wheel",
+  "@accentCustomWheel": {
+    "description": "Section label above the HSV colour wheel."
+  },
+  "accentSampleText": "Sample text",
+  "@accentSampleText": {
+    "description": "Text shown inside the accent colour preview chip."
+  },
+  "accentAppliesToLight": "This color is used while the app is in light mode.",
+  "@accentAppliesToLight": {
+    "description": "Note telling which theme the edited accent applies to."
+  },
+  "accentAppliesToDark": "This color is used while the app is in dark mode.",
+  "@accentAppliesToDark": {
+    "description": "Note telling which theme the edited accent applies to."
+  },
+  "accentResetLight": "Reset light mode color",
+  "@accentResetLight": {
+    "description": "Button that clears the light mode accent override."
+  },
+  "accentResetDark": "Reset dark mode color",
+  "@accentResetDark": {
+    "description": "Button that clears the dark mode accent override."
+  },
+  "accentContrastNote": "Text contrast is adjusted automatically for readability.",
+  "@accentContrastNote": {
+    "description": "Helper note under the accent colour controls."
+  },
   "permissionsLabel": "Permissions",
-  "@permissionsLabel": { "description": "Title for permissions disclosure screen." },
+  "@permissionsLabel": {
+    "description": "Title for permissions disclosure screen."
+  },
   "permissionsSummary": "This app requires no explicit permissions. All access is implicit and confined to app-private directories or user-initiated actions.",
-  "@permissionsSummary": { "description": "Summary paragraph explaining permission model." },
+  "@permissionsSummary": {
+    "description": "Summary paragraph explaining permission model."
+  },
   "permissionsImplicit": "Implicit",
-  "@permissionsImplicit": { "description": "Category title for implicit permissions." },
+  "@permissionsImplicit": {
+    "description": "Category title for implicit permissions."
+  },
   "permissionsExplicit": "Explicit",
-  "@permissionsExplicit": { "description": "Category title for explicit runtime permissions." },
-  "permissionsExplicitNone": "This app declares zero permissions in the Android manifest for release builds. No runtime permission dialogs are shown.",
-  "@permissionsExplicitNone": { "description": "Statement confirming zero manifest network or intrusive runtime permissions." },
+  "@permissionsExplicit": {
+    "description": "Category title for explicit runtime permissions."
+  },
   "permissionsStorageTitle": "App-private storage",
-  "@permissionsStorageTitle": { "description": "Item title explaining app-private storage access." },
+  "@permissionsStorageTitle": {
+    "description": "Item title explaining app-private storage access."
+  },
   "permissionsStorageBody": "The SQLite database is stored in the app-private directory. No storage permission is needed because Android grants every app access to its own data folder.",
-  "@permissionsStorageBody": { "description": "Detailed explanation of sandbox database storage." },
+  "@permissionsStorageBody": {
+    "description": "Detailed explanation of sandbox database storage."
+  },
   "permissionsFilePickerTitle": "File picker access",
-  "@permissionsFilePickerTitle": { "description": "Item title explaining SAF system file picker integration." },
+  "@permissionsFilePickerTitle": {
+    "description": "Item title explaining SAF system file picker integration."
+  },
   "permissionsFilePickerBody": "Backup export and import use the system file picker dialog. Access is granted per file by the user through the picker and requires no persistent permission.",
-  "@permissionsFilePickerBody": { "description": "Detailed explanation of file picker permission model." },
+  "@permissionsFilePickerBody": {
+    "description": "Detailed explanation of file picker permission model."
+  },
   "permissionsSystemClockTitle": "System clock",
-  "@permissionsSystemClockTitle": { "description": "Item title explaining clock reading." },
+  "@permissionsSystemClockTitle": {
+    "description": "Item title explaining clock reading."
+  },
   "permissionsSystemClockBody": "Used for time tracking, timestamps, and date calculations. Reading the system clock requires no permission.",
-  "@permissionsSystemClockBody": { "description": "Detailed explanation of system clock access." },
+  "@permissionsSystemClockBody": {
+    "description": "Detailed explanation of system clock access."
+  },
   "permissionsTextProcessingTitle": "Text processing",
-  "@permissionsTextProcessingTitle": { "description": "Item title explaining system text selection intent." },
+  "@permissionsTextProcessingTitle": {
+    "description": "Item title explaining system text selection intent."
+  },
   "permissionsTextProcessingBody": "Declared as an intent query so the system can handle text selection actions. This is a standard Flutter framework registration and requires no permission.",
-  "@permissionsTextProcessingBody": { "description": "Detailed explanation of text intent processing." },
-
+  "@permissionsTextProcessingBody": {
+    "description": "Detailed explanation of text intent processing."
+  },
   "aboutLabel": "About",
-  "@aboutLabel": { "description": "Title for About app screen." },
+  "@aboutLabel": {
+    "description": "Title for About app screen."
+  },
   "aboutHeadline": "Private daily planning",
-  "@aboutHeadline": { "description": "Headline banner text on About screen." },
+  "@aboutHeadline": {
+    "description": "Headline banner text on About screen."
+  },
   "aboutSummary": "SreerajP ToDo is an offline-first daily task list and time tracker designed to keep your data on this device.",
-  "@aboutSummary": { "description": "Summary paragraph describing app intent." },
+  "@aboutSummary": {
+    "description": "Summary paragraph describing app intent."
+  },
   "aboutLocalOnlyTitle": "Local-only data",
-  "@aboutLocalOnlyTitle": { "description": "Feature card title for local storage." },
+  "@aboutLocalOnlyTitle": {
+    "description": "Feature card title for local storage."
+  },
   "aboutLocalOnlyBody": "Tasks, recurrence rules, backups, and statistics stay on local storage. No cloud sync or telemetry is used.",
-  "@aboutLocalOnlyBody": { "description": "Feature description emphasizing zero-telemetry." },
+  "@aboutLocalOnlyBody": {
+    "description": "Feature description emphasizing zero-telemetry."
+  },
   "aboutBackupTitle": "Portable encrypted backups",
-  "@aboutBackupTitle": { "description": "Feature card title for encrypted backups." },
+  "@aboutBackupTitle": {
+    "description": "Feature card title for encrypted backups."
+  },
   "aboutBackupBody": "Backup export creates encrypted files that you can store anywhere you choose and restore later with your passphrase.",
-  "@aboutBackupBody": { "description": "Feature description for AES-256 ZIP backups." },
+  "@aboutBackupBody": {
+    "description": "Feature description for AES-256 ZIP backups."
+  },
   "aboutUnicodeTitle": "Unicode-first input",
-  "@aboutUnicodeTitle": { "description": "Feature card title for Unicode normalization." },
+  "@aboutUnicodeTitle": {
+    "description": "Feature card title for Unicode normalization."
+  },
   "aboutUnicodeBody": "Titles and descriptions accept full Unicode text, including RTL scripts, emoji, and composed characters.",
-  "@aboutUnicodeBody": { "description": "Feature description for NFC Unicode handling." },
+  "@aboutUnicodeBody": {
+    "description": "Feature description for NFC Unicode handling."
+  },
   "aboutNavigationTitle": "Built for daily flow",
-  "@aboutNavigationTitle": { "description": "Feature card title for daily task workflow." },
+  "@aboutNavigationTitle": {
+    "description": "Feature card title for daily task workflow."
+  },
   "aboutNavigationBody": "Daily planning, statistics, recurring rules, and backups are available from the main navigation with no account setup.",
-  "@aboutNavigationBody": { "description": "Feature description for account-free daily navigation." },
+  "@aboutNavigationBody": {
+    "description": "Feature description for account-free daily navigation."
+  },
   "aboutAuthor": "Author",
-  "@aboutAuthor": { "description": "Label for author metadata field." },
+  "@aboutAuthor": {
+    "description": "Label for author metadata field."
+  },
   "aboutAuthorName": "Sreeraj P",
-  "@aboutAuthorName": { "description": "Author name. Proper noun, not translated." },
+  "@aboutAuthorName": {
+    "description": "Author name. Proper noun, not translated."
+  },
   "aboutAiAssisted": "AI assisted by",
-  "@aboutAiAssisted": { "description": "Label for AI assistant credit." },
+  "@aboutAiAssisted": {
+    "description": "Label for AI assistant credit."
+  },
   "aboutAiModels": "Claude 4.6 & GPT 5.4",
-  "@aboutAiModels": { "description": "Model names. Proper nouns, not translated." },
+  "@aboutAiModels": {
+    "description": "Model names. Proper nouns, not translated."
+  },
   "aboutBuildDate": "Build date",
-  "@aboutBuildDate": { "description": "Label for build date metadata field." },
+  "@aboutBuildDate": {
+    "description": "Label for build date metadata field."
+  },
   "aboutAppVersion": "Version",
-  "@aboutAppVersion": { "description": "Label for version string." },
+  "@aboutAppVersion": {
+    "description": "Label for version string."
+  },
   "aboutBuildNumber": "Build",
-  "@aboutBuildNumber": { "description": "Label for the build number metadata field." },
+  "@aboutBuildNumber": {
+    "description": "Label for the build number metadata field."
+  },
   "aboutMadeWithLoveIn": "Made with ❤ in India",
-  "@aboutMadeWithLoveIn": { "description": "Footer message celebrating origin." },
-
+  "@aboutMadeWithLoveIn": {
+    "description": "Footer message celebrating origin."
+  },
   "statsDailyOverview": "Daily Overview",
-  "@statsDailyOverview": { "description": "Tab label for daily aggregated overview on statistics screen." },
+  "@statsDailyOverview": {
+    "description": "Tab label for daily aggregated overview on statistics screen."
+  },
   "statsPerItemOverview": "Per-Item Overview",
-  "@statsPerItemOverview": { "description": "Tab label for task specific overview on statistics screen." },
+  "@statsPerItemOverview": {
+    "description": "Tab label for task specific overview on statistics screen."
+  },
   "statsChooseTask": "Choose task",
-  "@statsChooseTask": { "description": "Dropdown label to filter statistics by task." },
+  "@statsChooseTask": {
+    "description": "Dropdown label to filter statistics by task."
+  },
   "statsLast7Days": "Last 7 days",
-  "@statsLast7Days": { "description": "Filter preset option for 7-day range." },
+  "@statsLast7Days": {
+    "description": "Filter preset option for 7-day range."
+  },
   "statsLast30Days": "Last 30 days",
-  "@statsLast30Days": { "description": "Filter preset option for 30-day range." },
+  "@statsLast30Days": {
+    "description": "Filter preset option for 30-day range."
+  },
   "statsAllTime": "All time",
-  "@statsAllTime": { "description": "Filter preset option for all historical data." },
+  "@statsAllTime": {
+    "description": "Filter preset option for all historical data."
+  },
   "statsCustomRange": "Custom range",
-  "@statsCustomRange": { "description": "Filter preset option for custom date range picker." },
+  "@statsCustomRange": {
+    "description": "Filter preset option for custom date range picker."
+  },
   "statsRefresh": "Refresh statistics",
-  "@statsRefresh": { "description": "Tooltip/button label to recalculate statistics." },
+  "@statsRefresh": {
+    "description": "Tooltip/button label to recalculate statistics."
+  },
   "statsTotalTodos": "Total todos",
-  "@statsTotalTodos": { "description": "Stat card label for total task count." },
+  "@statsTotalTodos": {
+    "description": "Stat card label for total task count."
+  },
   "statsTotal": "Total",
-  "@statsTotal": { "description": "Label for total accumulated duration." },
+  "@statsTotal": {
+    "description": "Label for total accumulated duration."
+  },
   "statsDate": "Date",
-  "@statsDate": { "description": "Table column header for date." },
+  "@statsDate": {
+    "description": "Table column header for date."
+  },
   "statsTitle": "Title",
-  "@statsTitle": { "description": "Table column header for task title." },
+  "@statsTitle": {
+    "description": "Table column header for task title."
+  },
   "statsAppearances": "Appearances",
-  "@statsAppearances": { "description": "Stat card label for number of days task appeared." },
+  "@statsAppearances": {
+    "description": "Stat card label for number of days task appeared."
+  },
   "statsAverageCompletedPerDay": "Average completed/day",
-  "@statsAverageCompletedPerDay": { "description": "Stat card label for average completed tasks per day." },
+  "@statsAverageCompletedPerDay": {
+    "description": "Stat card label for average completed tasks per day."
+  },
   "statsAverageTimePerDay": "Average time/day",
-  "@statsAverageTimePerDay": { "description": "Stat card label for average tracked time per day." },
+  "@statsAverageTimePerDay": {
+    "description": "Stat card label for average tracked time per day."
+  },
   "statsProductiveTime": "Productive time",
-  "@statsProductiveTime": { "description": "Stat card label for completed tasks total time." },
+  "@statsProductiveTime": {
+    "description": "Stat card label for completed tasks total time."
+  },
   "statsDroppedTime": "Dropped time",
-  "@statsDroppedTime": { "description": "Stat card label for dropped tasks total time." },
+  "@statsDroppedTime": {
+    "description": "Stat card label for dropped tasks total time."
+  },
   "statsSearchHint": "Search task titles",
-  "@statsSearchHint": { "description": "Filter input hint on statistics screen." },
+  "@statsSearchHint": {
+    "description": "Filter input hint on statistics screen."
+  },
   "statsNoDailyStats": "No statistics available for this date range",
-  "@statsNoDailyStats": { "description": "Empty state text on daily statistics overview." },
+  "@statsNoDailyStats": {
+    "description": "Empty state text on daily statistics overview."
+  },
   "statsNoPerItemStats": "No tracked tasks match the current filter",
-  "@statsNoPerItemStats": { "description": "Empty state text on per-item statistics overview." },
+  "@statsNoPerItemStats": {
+    "description": "Empty state text on per-item statistics overview."
+  },
   "statsSelectTaskToViewHistory": "Select a task to view its time history",
-  "@statsSelectTaskToViewHistory": { "description": "Instructional placeholder in task detail view." },
+  "@statsSelectTaskToViewHistory": {
+    "description": "Instructional placeholder in task detail view."
+  },
   "statsNoHistoryForTitle": "No time history recorded for this task",
-  "@statsNoHistoryForTitle": { "description": "Empty state message when selected task has zero tracked time segments." },
+  "@statsNoHistoryForTitle": {
+    "description": "Empty state message when selected task has zero tracked time segments."
+  },
   "statsMinutes": "Minutes",
-  "@statsMinutes": { "description": "Chart Y-axis label unit." },
+  "@statsMinutes": {
+    "description": "Chart Y-axis label unit."
+  },
   "statsSelectStartDate": "Select start date",
-  "@statsSelectStartDate": { "description": "Button label for picking custom range start date." },
+  "@statsSelectStartDate": {
+    "description": "Button label for picking custom range start date."
+  },
   "statsSelectEndDate": "Select end date",
-  "@statsSelectEndDate": { "description": "Button label for picking custom range end date." },
+  "@statsSelectEndDate": {
+    "description": "Button label for picking custom range end date."
+  },
   "statsShowHistory": "Show history",
-  "@statsShowHistory": { "description": "Button label to display time segment log." },
+  "@statsShowHistory": {
+    "description": "Button label to display time segment log."
+  },
   "statsPageOf": "Page {currentPage} of {totalPages}",
   "@statsPageOf": {
-    "placeholders": { "currentPage": { "type": "int" }, "totalPages": { "type": "int" } }
+    "placeholders": {
+      "currentPage": {
+        "type": "int"
+      },
+      "totalPages": {
+        "type": "int"
+      }
+    }
   },
   "statsHistoryFor": "Time history: {title}",
   "@statsHistoryFor": {
-    "placeholders": { "title": { "type": "String" } }
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "errorDayLocked": "Cannot modify tasks from past dates.",
+  "@errorDayLocked": {
+    "description": "Error message when attempting to modify a past day task."
+  },
+  "errorCompletedLocked": "Cannot add time segments to a completed or dropped task.",
+  "@errorCompletedLocked": {
+    "description": "Error message when attempting to track time on a terminal state task."
+  },
+  "errorDuplicateTitle": "A task with this title already exists for this date.",
+  "@errorDuplicateTitle": {
+    "description": "Error message when title conflicts with an existing task on the same date."
+  },
+  "errorSegmentAlreadyRunning": "A time segment is already running for this task.",
+  "@errorSegmentAlreadyRunning": {
+    "description": "Error message when starting a second open timer segment for a task."
+  },
+  "errorTodoNotFound": "Task not found.",
+  "@errorTodoNotFound": {
+    "description": "Error message when task lookup fails."
+  },
+  "errorBackupVersionTooNew": "This backup was created by a newer version of the app. Please update.",
+  "@errorBackupVersionTooNew": {
+    "description": "Error message when backup schema is incompatible due to app version."
+  },
+  "errorBackupCorrupted": "The backup file is corrupted and cannot be restored.",
+  "@errorBackupCorrupted": {
+    "description": "Error message when backup archive verification fails."
+  },
+  "errorPortTargetMustBeFuture": "Port target date must be tomorrow or later.",
+  "@errorPortTargetMustBeFuture": {
+    "description": "Error message when attempting to port task to today or past date."
+  },
+  "errorGeneric": "An unexpected error occurred.",
+  "@errorGeneric": {
+    "description": "Fallback error message for unexpected exceptions."
+  },
+  "errorRetryableGeneric": "Something went wrong. Tap to retry.",
+  "@errorRetryableGeneric": {
+    "description": "Retryable inline error banner message."
+  },
+  "subTasks": "Sub-tasks",
+  "@subTasks": {
+    "description": "Section title for sub-task checklist."
+  },
+  "addSubTask": "Add sub-task",
+  "@addSubTask": {
+    "description": "Action button label to add a new sub-task item."
+  },
+  "blockedBy": "Blocked by",
+  "@blockedBy": {
+    "description": "Label prefix for task prerequisites."
+  },
+  "prerequisiteTasks": "Prerequisite Tasks",
+  "@prerequisiteTasks": {
+    "description": "Header for prerequisite tasks list."
+  },
+  "blockedWarning": "Warning: Task is blocked by pending prerequisites",
+  "@blockedWarning": {
+    "description": "Warning message when starting/completing a blocked task."
+  },
+  "morningIntention": "Morning Intention",
+  "@morningIntention": {
+    "description": "Title for morning intention setting section."
+  },
+  "eveningReflection": "Evening Reflection",
+  "@eveningReflection": {
+    "description": "Title for evening reflection ritual section."
+  },
+  "eveningReflectionTitle": "Evening Reflection Ritual",
+  "@eveningReflectionTitle": {
+    "description": "Header title on evening reflection screen."
+  },
+  "reflectionSummaryTitle": "Today's Productivity Summary",
+  "@reflectionSummaryTitle": {
+    "description": "Header for reflection screen productivity stats."
+  },
+  "completedTime": "Completed Time",
+  "@completedTime": {
+    "description": "Stat card label for total time on completed tasks."
+  },
+  "droppedTime": "Dropped Time",
+  "@droppedTime": {
+    "description": "Stat card label for total time on dropped tasks."
+  },
+  "completionRatio": "Completion Ratio",
+  "@completionRatio": {
+    "description": "Stat card label for task completion percentage."
+  },
+  "reflectionNoteHint": "Write a brief reflection on your day...",
+  "@reflectionNoteHint": {
+    "description": "TextField placeholder for evening reflection notes."
+  },
+  "reflectionSaved": "Daily reflection saved.",
+  "@reflectionSaved": {
+    "description": "SnackBar confirmation when reflection note is saved."
+  },
+  "cycleIntention": "Cycle Intention",
+  "@cycleIntention": {
+    "description": "Button label to cycle to next daily focus rule/intention."
+  },
+  "startReflection": "Start Reflection",
+  "@startReflection": {
+    "description": "Button label to launch evening reflection modal."
+  },
+  "mindfulFocusRules": "Daily Focus Rules",
+  "@mindfulFocusRules": {
+    "description": "Section header for daily mindful intentions."
+  },
+  "defaultIntention1": "Focus on single-tasking today; handle duty without extra emotional noise.",
+  "@defaultIntention1": {
+    "description": "Default intention option 1."
+  },
+  "defaultIntention2": "Prioritize steady progress over perfection; remain calm and persistent.",
+  "@defaultIntention2": {
+    "description": "Default intention option 2."
+  },
+  "defaultIntention3": "Accept changing circumstances with composure; single-thread your effort.",
+  "@defaultIntention3": {
+    "description": "Default intention option 3."
+  },
+  "defaultIntention4": "Direct your attention to what is within your control; release the rest.",
+  "@defaultIntention4": {
+    "description": "Default intention option 4."
+  },
+  "defaultIntention5": "Complete each segment with full presence before stepping to the next.",
+  "@defaultIntention5": {
+    "description": "Default intention option 5."
+  },
+  "dataHandoffTitle": "Data Handoff (JSON & MD)",
+  "@dataHandoffTitle": {
+    "description": "Title for data handoff screen and menu item."
+  },
+  "actionChange": "Change",
+  "@actionChange": {
+    "description": "Button label to change date or setting."
+  },
+  "dataHandoffHeader": "JSON & Markdown Data Handoff",
+  "@dataHandoffHeader": {
+    "description": "Header title on data handoff screen."
+  },
+  "dataHandoffSubtitle": "Ingest and export task lists, subtask checklists, and timecard summaries fully offline.",
+  "@dataHandoffSubtitle": {
+    "description": "Sub-header summary on data handoff screen."
+  },
+  "exportJsonLabel": "Export JSON Data Payload",
+  "@exportJsonLabel": {
+    "description": "Button label for JSON payload export."
+  },
+  "exportJsonDesc": "Exports tasks, subtasks, recurrence rules, time segments, and Markdown notes to a structured JSON file.",
+  "@exportJsonDesc": {
+    "description": "Description text for JSON payload export."
+  },
+  "exportMarkdownLabel": "Export Markdown Checklist",
+  "@exportMarkdownLabel": {
+    "description": "Button label for Markdown checklist export."
+  },
+  "exportMarkdownDesc": "Generates a clean Markdown checklist file (- [ ] / - [x]) and timecard summary.",
+  "@exportMarkdownDesc": {
+    "description": "Description text for Markdown checklist export."
+  },
+  "importFileLabel": "Import JSON / Markdown File",
+  "@importFileLabel": {
+    "description": "Button label for picking and importing JSON or Markdown file."
+  },
+  "importFileDesc": "Pick a .json or .md file from device storage to convert and merge into tasks.",
+  "@importFileDesc": {
+    "description": "Description text for file picker import."
+  },
+  "pasteMarkdownLabel": "Paste Raw Markdown Text",
+  "@pasteMarkdownLabel": {
+    "description": "Button label to open raw Markdown text paste dialog."
+  },
+  "pasteMarkdownDesc": "Paste raw Markdown text containing - [ ] and - [x] checklist items to parse.",
+  "@pasteMarkdownDesc": {
+    "description": "Description text for raw Markdown text paste."
+  },
+  "targetDateLabel": "Target Date for Data Handoff",
+  "@targetDateLabel": {
+    "description": "Label for target date selector on data handoff screen."
+  },
+  "markdownImportTitle": "Paste Markdown Checklist Text",
+  "@markdownImportTitle": {
+    "description": "Title for Markdown text import dialog."
+  },
+  "parseMarkdownPreview": "Parsed Tasks Preview",
+  "@parseMarkdownPreview": {
+    "description": "Section header for live preview of parsed Markdown tasks."
+  },
+  "importSuccessMsg": "Successfully imported tasks.",
+  "@importSuccessMsg": {
+    "description": "SnackBar success notification after importing payload."
+  },
+  "exportSuccessMsg": "Export saved successfully to file.",
+  "@exportSuccessMsg": {
+    "description": "SnackBar success notification after saving export file."
+  },
+  "wifiSyncTitle": "Local P2P Wi-Fi Sync",
+  "@wifiSyncTitle": {
+    "description": "Title for local peer-to-peer Wi-Fi sync screen and menu item."
+  },
+  "airQrShareTitle": "AirQR Share Stream",
+  "@airQrShareTitle": {
+    "description": "Title for AirQR animated share screen and menu item."
+  },
+  "airQrScanTitle": "AirQR Scan Camera",
+  "@airQrScanTitle": {
+    "description": "Title for AirQR scan camera scanner and menu item."
+  },
+  "moreOptions": "More options",
+  "@moreOptions": {
+    "description": "Tooltip for overflow dotted menu."
+  },
+  "settingsTaskDefaults": "Task defaults",
+  "@settingsTaskDefaults": {
+    "description": "Title of the Task defaults settings hub."
+  },
+  "settingsTaskDefaultsSubtitle": "New task values, day list order, confirmations and carry-over",
+  "@settingsTaskDefaultsSubtitle": {
+    "description": "Subtitle on the Task defaults card in Settings."
+  },
+  "defaultsNewTask": "New task",
+  "@defaultsNewTask": {
+    "description": "Title of the New task defaults page."
+  },
+  "defaultsNewTaskSubtitle": "Status, priority and target time a new task starts with",
+  "@defaultsNewTaskSubtitle": {
+    "description": "Subtitle of the New task defaults page."
+  },
+  "defaultsDayList": "Day list",
+  "@defaultsDayList": {
+    "description": "Title of the Day list defaults page."
+  },
+  "defaultsDayListSubtitle": "Order, and whether finished tasks are shown",
+  "@defaultsDayListSubtitle": {
+    "description": "Subtitle of the Day list defaults page."
+  },
+  "defaultsTaskActions": "Task actions",
+  "@defaultsTaskActions": {
+    "description": "Title of the Task actions defaults page."
+  },
+  "defaultsTaskActionsSubtitle": "Confirmations and carrying tasks over to a new day",
+  "@defaultsTaskActionsSubtitle": {
+    "description": "Subtitle of the Task actions defaults page."
+  },
+  "defaultsAutocomplete": "Autocomplete",
+  "@defaultsAutocomplete": {
+    "description": "Title of the Autocomplete defaults page."
+  },
+  "defaultsAutocompleteSubtitle": "Title suggestions while you type",
+  "@defaultsAutocompleteSubtitle": {
+    "description": "Subtitle of the Autocomplete defaults page."
+  },
+  "defaultsStatusTitle": "Default status",
+  "@defaultsStatusTitle": {
+    "description": "Header of the default status choice list."
+  },
+  "defaultsStatusSubtitle": "The status a new task starts in.",
+  "@defaultsStatusSubtitle": {
+    "description": "Help line under the default status header."
+  },
+  "defaultsStatusPendingDetail": "The normal choice. The task waits until you start it.",
+  "@defaultsStatusPendingDetail": {
+    "description": "Help line for the pending default status option."
+  },
+  "defaultsStatusWorkingDetail": "The task opens as working. No timer is started.",
+  "@defaultsStatusWorkingDetail": {
+    "description": "Help line for the working default status option."
+  },
+  "defaultsPriorityTitle": "Default priority",
+  "@defaultsPriorityTitle": {
+    "description": "Header of the default priority choice list."
+  },
+  "defaultsPrioritySubtitle": "The priority a new task starts with.",
+  "@defaultsPrioritySubtitle": {
+    "description": "Help line under the default priority header."
+  },
+  "defaultsTargetTitle": "Default target time",
+  "@defaultsTargetTitle": {
+    "description": "Header of the default target time choice list."
+  },
+  "defaultsTargetSubtitle": "How long a new task is expected to take. You can change it on any task.",
+  "@defaultsTargetSubtitle": {
+    "description": "Help line under the default target time header."
+  },
+  "defaultsTargetNone": "No target",
+  "@defaultsTargetNone": {
+    "description": "Option label for no default target time."
+  },
+  "priorityLow": "Low",
+  "@priorityLow": {
+    "description": "Priority level name."
+  },
+  "priorityNormal": "Normal",
+  "@priorityNormal": {
+    "description": "Priority level name."
+  },
+  "priorityHigh": "High",
+  "@priorityHigh": {
+    "description": "Priority level name."
+  },
+  "priorityUrgent": "Urgent",
+  "@priorityUrgent": {
+    "description": "Priority level name."
+  },
+  "priorityLabel": "Priority",
+  "@priorityLabel": {
+    "description": "Field label for the priority of a task."
+  },
+  "targetTimeLabel": "Target time",
+  "@targetTimeLabel": {
+    "description": "Field label for the target time of a task."
+  },
+  "targetTimeHint": "Leave both at zero for no target.",
+  "@targetTimeHint": {
+    "description": "Help line under the target time field."
+  },
+  "targetHoursLabel": "Hours",
+  "@targetHoursLabel": {
+    "description": "Label of the hours box in the target time field."
+  },
+  "targetMinutesLabel": "Minutes",
+  "@targetMinutesLabel": {
+    "description": "Label of the minutes box in the target time field."
+  },
+  "targetProgressLabel": "{tracked} of {target}",
+  "@targetProgressLabel": {
+    "description": "Tracked time against the target on a task tile.",
+    "placeholders": {
+      "target": {
+        "type": "String"
+      },
+      "tracked": {
+        "type": "String"
+      }
+    }
+  },
+  "targetOverBy": "Over by {amount}",
+  "@targetOverBy": {
+    "description": "Shown when tracked time has passed the target.",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "defaultsSortTitle": "Default order",
+  "@defaultsSortTitle": {
+    "description": "Header of the default sort choice list."
+  },
+  "defaultsSortSubtitle": "The order the day list opens in.",
+  "@defaultsSortSubtitle": {
+    "description": "Help line under the default order header."
+  },
+  "defaultsRememberSort": "Remember the last order I pick",
+  "@defaultsRememberSort": {
+    "description": "Switch label for saving the sort chosen from the day list."
+  },
+  "defaultsRememberSortDetail": "Changing the order from the day list also saves it as the default.",
+  "@defaultsRememberSortDetail": {
+    "description": "Help line for the remember-sort switch."
+  },
+  "defaultsShowCompleted": "Show completed tasks",
+  "@defaultsShowCompleted": {
+    "description": "Switch label for showing completed tasks in the day list."
+  },
+  "defaultsShowCompletedDetail": "Turn off to hide tasks you have finished.",
+  "@defaultsShowCompletedDetail": {
+    "description": "Help line for the show completed switch."
+  },
+  "defaultsShowDropped": "Show dropped tasks",
+  "@defaultsShowDropped": {
+    "description": "Switch label for showing dropped tasks in the day list."
+  },
+  "defaultsShowDroppedDetail": "Turn off to hide tasks you have given up.",
+  "@defaultsShowDroppedDetail": {
+    "description": "Help line for the show dropped switch."
+  },
+  "defaultsSinkFinished": "Move finished tasks to the bottom",
+  "@defaultsSinkFinished": {
+    "description": "Switch label for pushing finished tasks below the rest."
+  },
+  "defaultsSinkFinishedDetail": "Completed, dropped and ported tasks sit below the rest. Drag to reorder then works only among unfinished tasks.",
+  "@defaultsSinkFinishedDetail": {
+    "description": "Help line for the sink finished switch."
+  },
+  "hiddenTasksCount": "{count, plural, one{1 finished task hidden} other{{count} finished tasks hidden}}",
+  "@hiddenTasksCount": {
+    "description": "Line shown at the bottom of the day list when a filter hides tasks.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "showHiddenTasks": "Show",
+  "@showHiddenTasks": {
+    "description": "Button that reveals hidden finished tasks for this visit."
+  },
+  "defaultsConfirmComplete": "Ask before completing",
+  "@defaultsConfirmComplete": {
+    "description": "Switch label for confirming a complete action."
+  },
+  "defaultsConfirmCompleteDetail": "Show a short question before a task is marked complete.",
+  "@defaultsConfirmCompleteDetail": {
+    "description": "Help line for the confirm complete switch."
+  },
+  "defaultsConfirmDrop": "Ask before dropping",
+  "@defaultsConfirmDrop": {
+    "description": "Switch label for confirming a drop action."
+  },
+  "defaultsConfirmDropDetail": "Show a short question before a task is dropped.",
+  "@defaultsConfirmDropDetail": {
+    "description": "Help line for the confirm drop switch."
+  },
+  "confirmCompleteTitle": "Mark as complete?",
+  "@confirmCompleteTitle": {
+    "description": "Title of the confirm complete dialog."
+  },
+  "confirmCompleteBody": "This task will be marked as complete. Any running timer is stopped.",
+  "@confirmCompleteBody": {
+    "description": "Confirmation dialog body text when completing a task."
+  },
+  "defaultsCarryOver": "Ask to carry over unfinished tasks",
+  "@defaultsCarryOver": {
+    "description": "Switch label for the carry-over prompt."
+  },
+  "defaultsCarryOverDetail": "The first time you open a new day, offer to copy unfinished tasks forward.",
+  "@defaultsCarryOverDetail": {
+    "description": "Help line for the carry-over switch."
+  },
+  "defaultsCarryOverLookBackTitle": "How far back to look",
+  "@defaultsCarryOverLookBackTitle": {
+    "description": "Header of the carry-over look-back choice list."
+  },
+  "defaultsCarryOverPreviousDay": "Previous day only",
+  "@defaultsCarryOverPreviousDay": {
+    "description": "Look-back option label."
+  },
+  "defaultsCarryOverLastSevenDays": "Last 7 days",
+  "@defaultsCarryOverLastSevenDays": {
+    "description": "Look-back option label."
+  },
+  "carryOverTitle": "Carry over unfinished tasks",
+  "@carryOverTitle": {
+    "description": "Title of the carry-over sheet."
+  },
+  "carryOverBody": "These tasks were not finished. Pick the ones to copy to today.",
+  "@carryOverBody": {
+    "description": "Body line of the carry-over sheet."
+  },
+  "carryOverAction": "Carry over",
+  "@carryOverAction": {
+    "description": "Button that copies the ticked tasks."
+  },
+  "carryOverNotNow": "Not now",
+  "@carryOverNotNow": {
+    "description": "Button that closes the carry-over sheet."
+  },
+  "carryOverNeverAsk": "Do not ask again",
+  "@carryOverNeverAsk": {
+    "description": "Button that turns the carry-over prompt off."
+  },
+  "carryOverSelectAll": "Select all",
+  "@carryOverSelectAll": {
+    "description": "Button that ticks every task in the carry-over sheet."
+  },
+  "carryOverClearAll": "Clear all",
+  "@carryOverClearAll": {
+    "description": "Button that unticks every task in the carry-over sheet."
+  },
+  "carryOverDone": "{count, plural, one{1 task carried over} other{{count} tasks carried over}}",
+  "@carryOverDone": {
+    "description": "SnackBar shown after a carry-over.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "carryOverSkipped": "{count, plural, one{1 task skipped, it already exists today} other{{count} tasks skipped, they already exist today}}",
+  "@carryOverSkipped": {
+    "description": "SnackBar part for duplicates skipped during carry-over.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "defaultsAutocompleteEnabled": "Suggest titles while typing",
+  "@defaultsAutocompleteEnabled": {
+    "description": "Switch label for title autocomplete."
+  },
+  "defaultsAutocompleteEnabledDetail": "Turn off to stop reading past titles as you type.",
+  "@defaultsAutocompleteEnabledDetail": {
+    "description": "Help line for the autocomplete switch."
+  },
+  "defaultsSuggestionCountTitle": "How many suggestions",
+  "@defaultsSuggestionCountTitle": {
+    "description": "Header of the suggestion count choice list."
+  },
+  "suggestionCountValue": "{count} suggestions",
+  "@suggestionCountValue": {
+    "description": "Suggestion count option label.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "sortPriorityHigh": "Priority (high first)",
+  "@sortPriorityHigh": {
+    "description": "Sort menu item for priority order."
+  },
+  "settingsDateTime": "Date & time",
+  "@settingsDateTime": {
+    "description": "Settings card title for the date and time group."
+  },
+  "settingsDateTimeSubtitle": "Week start, clock, date format, day start, working days",
+  "@settingsDateTimeSubtitle": {
+    "description": "Settings card subtitle for the date and time group."
+  },
+  "dateTimeWeekStart": "First day of week",
+  "@dateTimeWeekStart": {
+    "description": "Date & time page link: week start."
+  },
+  "dateTimeWeekStartSubtitle": "Which day the calendar starts on",
+  "@dateTimeWeekStartSubtitle": {
+    "description": "Subtitle for the week start link."
+  },
+  "dateTimeClock": "Clock",
+  "@dateTimeClock": {
+    "description": "Date & time page link: clock format."
+  },
+  "dateTimeClockSubtitle": "12-hour or 24-hour times",
+  "@dateTimeClockSubtitle": {
+    "description": "Subtitle for the clock link."
+  },
+  "dateTimeDateFormat": "Date format",
+  "@dateTimeDateFormat": {
+    "description": "Date & time page link: date format."
+  },
+  "dateTimeDateFormatSubtitle": "How dates are written",
+  "@dateTimeDateFormatSubtitle": {
+    "description": "Subtitle for the date format link."
+  },
+  "dateTimeDayStart": "Day start",
+  "@dateTimeDayStart": {
+    "description": "Date & time page link: day start hour."
+  },
+  "dateTimeDayStartSubtitle": "When a new day begins for you",
+  "@dateTimeDayStartSubtitle": {
+    "description": "Subtitle for the day start link."
+  },
+  "dateTimeWorkingDays": "Working days",
+  "@dateTimeWorkingDays": {
+    "description": "Date & time page link: working days."
+  },
+  "dateTimeWorkingDaysSubtitle": "Days counted in statistics",
+  "@dateTimeWorkingDaysSubtitle": {
+    "description": "Subtitle for the working days link."
+  },
+  "weekStartTitle": "First day of week",
+  "@weekStartTitle": {
+    "description": "Header of the week start choice list."
+  },
+  "weekStartSubtitle": "Used by the calendar in the day list.",
+  "@weekStartSubtitle": {
+    "description": "Explains where the week start is used."
+  },
+  "weekStartSystem": "Follow the device",
+  "@weekStartSystem": {
+    "description": "Week start option: use the device locale."
+  },
+  "clockFormatTitle": "Clock",
+  "@clockFormatTitle": {
+    "description": "Header of the clock format choice list."
+  },
+  "clockFormatSubtitle": "Used everywhere a time of day is shown.",
+  "@clockFormatSubtitle": {
+    "description": "Explains where the clock format is used."
+  },
+  "clockFormatSystem": "Follow the device",
+  "@clockFormatSystem": {
+    "description": "Clock option: use the device locale."
+  },
+  "clockFormat12": "12-hour",
+  "@clockFormat12": {
+    "description": "Clock option: 12-hour times."
+  },
+  "clockFormat24": "24-hour",
+  "@clockFormat24": {
+    "description": "Clock option: 24-hour times."
+  },
+  "dateFormatTitle": "Date format",
+  "@dateFormatTitle": {
+    "description": "Header of the date format choice list."
+  },
+  "dateFormatSubtitle": "Used everywhere a date is shown.",
+  "@dateFormatSubtitle": {
+    "description": "Explains where the date format is used."
+  },
+  "dateFormatSystem": "Follow the device (long)",
+  "@dateFormatSystem": {
+    "description": "Date format option: the locale long form."
+  },
+  "dateFormatSystemShort": "Follow the device (short)",
+  "@dateFormatSystemShort": {
+    "description": "Date format option: the locale short form."
+  },
+  "dateFormatDayMonthYear": "Day/Month/Year",
+  "@dateFormatDayMonthYear": {
+    "description": "Date format option: 19/08/2026."
+  },
+  "dateFormatMonthDayYear": "Month/Day/Year",
+  "@dateFormatMonthDayYear": {
+    "description": "Date format option: 08/19/2026."
+  },
+  "dateFormatDayMonthNameYear": "Day Month Year",
+  "@dateFormatDayMonthNameYear": {
+    "description": "Date format option: 19 Aug 2026."
+  },
+  "dateFormatIso": "Year-Month-Day",
+  "@dateFormatIso": {
+    "description": "Date format option: 2026-08-19."
+  },
+  "dayStartTitle": "A new day begins at",
+  "@dayStartTitle": {
+    "description": "Header of the day start hour choice list."
+  },
+  "dayStartSubtitle": "Pick a later hour if you often work past midnight.",
+  "@dayStartSubtitle": {
+    "description": "Explains what the day start hour is for."
+  },
+  "dayStartMidnight": "Midnight (normal)",
+  "@dayStartMidnight": {
+    "description": "Day start option for hour zero."
+  },
+  "dayStartExplainTitle": "What this changes",
+  "@dayStartExplainTitle": {
+    "description": "Header of the day start explanation card."
+  },
+  "dayStartExplainBody": "With a later day start, the hours after midnight still count as the day before. Your task list, the day lock and your time totals all follow this. Nothing already saved is moved or changed.",
+  "@dayStartExplainBody": {
+    "description": "Long explanation of the day start hour."
+  },
+  "dayStartCurrentDay": "Right now the app treats today as {date}.",
+  "@dayStartCurrentDay": {
+    "description": "Shows which date the app currently considers today.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "workingDaysTitle": "Working days",
+  "@workingDaysTitle": {
+    "description": "Header of the working days card."
+  },
+  "workingDaysSubtitle": "Statistics use only these days when working out averages.",
+  "@workingDaysSubtitle": {
+    "description": "Explains what working days are for."
+  },
+  "workingDaysReset": "Reset to Monday to Friday",
+  "@workingDaysReset": {
+    "description": "Button that restores the default working days."
+  },
+  "workingDaysNoneWarning": "No working days are picked, so averages fall back to all seven days.",
+  "@workingDaysNoneWarning": {
+    "description": "Warning when the user turned every day off."
+  },
+  "settingsSecurity": "Security & privacy",
+  "@settingsSecurity": {
+    "description": "Settings card title for the security group."
+  },
+  "settingsSecuritySubtitle": "App lock, auto-lock, screen privacy, database key",
+  "@settingsSecuritySubtitle": {
+    "description": "Settings card subtitle for the security group."
+  },
+  "securityAppLock": "App lock",
+  "@securityAppLock": {
+    "description": "Security page link: app lock."
+  },
+  "securityAppLockSubtitle": "Ask for a PIN, password or your phone lock",
+  "@securityAppLockSubtitle": {
+    "description": "Subtitle for the app lock link."
+  },
+  "securityAutoLock": "Auto-lock",
+  "@securityAutoLock": {
+    "description": "Security page link: auto-lock delay."
+  },
+  "securityAutoLockSubtitle": "How long the app may stay open in the background",
+  "@securityAutoLockSubtitle": {
+    "description": "Subtitle for the auto-lock link."
+  },
+  "securityDatabaseKey": "Database key",
+  "@securityDatabaseKey": {
+    "description": "Security page link: database key rotation."
+  },
+  "securityDatabaseKeySubtitle": "Give your data a brand new encryption key",
+  "@securityDatabaseKeySubtitle": {
+    "description": "Subtitle for the database key link."
+  },
+  "securityScreenPrivacy": "Screen privacy",
+  "@securityScreenPrivacy": {
+    "description": "Header of the screen privacy card."
+  },
+  "securitySecureScreen": "Hide the app in recent apps",
+  "@securitySecureScreen": {
+    "description": "Switch that turns on the secure window flag."
+  },
+  "securitySecureScreenDetail": "The app preview stays blank when you switch apps, and screenshots are blocked. Android only.",
+  "@securitySecureScreenDetail": {
+    "description": "Explains the secure window flag."
+  },
+  "securitySecureScreenUnsupported": "This is an Android setting. It does nothing on this device.",
+  "@securitySecureScreenUnsupported": {
+    "description": "Note shown when the secure flag cannot be used."
+  },
+  "securityNotificationsNote": "The app sends no notifications at all, so there are no task titles to hide there. The setting above covers the recent-apps preview instead.",
+  "@securityNotificationsNote": {
+    "description": "Explains why there is no notification privacy setting."
+  },
+  "appLockModeTitle": "How to unlock",
+  "@appLockModeTitle": {
+    "description": "Header of the app lock mode choice list."
+  },
+  "appLockModeSubtitle": "Asked for when you open the app.",
+  "@appLockModeSubtitle": {
+    "description": "Explains when the lock is asked for."
+  },
+  "appLockOff": "No lock",
+  "@appLockOff": {
+    "description": "App lock option: no lock at all."
+  },
+  "appLockPin": "PIN",
+  "@appLockPin": {
+    "description": "App lock option: a digits-only code."
+  },
+  "appLockPassword": "Password",
+  "@appLockPassword": {
+    "description": "App lock option: a free-text password."
+  },
+  "appLockDeviceCredential": "Phone screen lock",
+  "@appLockDeviceCredential": {
+    "description": "App lock option: the device unlock screen."
+  },
+  "appLockDeviceCredentialDetail": "Uses your fingerprint, face or phone PIN.",
+  "@appLockDeviceCredentialDetail": {
+    "description": "Explains the device unlock option."
+  },
+  "appLockDeviceUnavailable": "Set up a screen lock on your phone first.",
+  "@appLockDeviceUnavailable": {
+    "description": "Shown when the device has no screen lock."
+  },
+  "appLockSetPin": "Set a PIN",
+  "@appLockSetPin": {
+    "description": "Title of the PIN setup sheet."
+  },
+  "appLockSetPassword": "Set a password",
+  "@appLockSetPassword": {
+    "description": "Title of the password setup sheet."
+  },
+  "appLockNewSecret": "New",
+  "@appLockNewSecret": {
+    "description": "Label of the first secret field."
+  },
+  "appLockConfirmSecret": "Type it again",
+  "@appLockConfirmSecret": {
+    "description": "Label of the confirmation field."
+  },
+  "appLockChange": "Change",
+  "@appLockChange": {
+    "description": "Button that opens the change sheet."
+  },
+  "appLockSaved": "App lock is on.",
+  "@appLockSaved": {
+    "description": "Confirmation after a lock is set."
+  },
+  "appLockRemoved": "App lock is off.",
+  "@appLockRemoved": {
+    "description": "Confirmation after a lock is removed."
+  },
+  "appLockWarningTitle": "There is no way back in",
+  "@appLockWarningTitle": {
+    "description": "Header of the forgotten-secret warning."
+  },
+  "appLockWarningBody": "Nothing about your PIN or password leaves this device, and nothing can recover it. If you forget it, the only way back into the app is to reinstall it, which erases your data. Keep a backup.",
+  "@appLockWarningBody": {
+    "description": "Warns that a forgotten secret cannot be recovered."
+  },
+  "appLockErrorEmpty": "Type something first.",
+  "@appLockErrorEmpty": {
+    "description": "Error when the secret field is empty."
+  },
+  "appLockErrorNotDigits": "A PIN can only hold digits.",
+  "@appLockErrorNotDigits": {
+    "description": "Error when a PIN has non-digits."
+  },
+  "appLockErrorPinTooShort": "A PIN needs at least 4 digits.",
+  "@appLockErrorPinTooShort": {
+    "description": "Error when a PIN is too short."
+  },
+  "appLockErrorPinTooLong": "A PIN can hold at most 8 digits.",
+  "@appLockErrorPinTooLong": {
+    "description": "Error when a PIN is too long."
+  },
+  "appLockErrorPasswordTooShort": "A password needs at least 6 characters.",
+  "@appLockErrorPasswordTooShort": {
+    "description": "Error when a password is too short."
+  },
+  "appLockErrorMismatch": "The two entries do not match.",
+  "@appLockErrorMismatch": {
+    "description": "Error when the confirmation does not match."
+  },
+  "autoLockTitle": "Lock again after",
+  "@autoLockTitle": {
+    "description": "Header of the auto-lock choice list."
+  },
+  "autoLockSubtitle": "Counted from the moment you leave the app.",
+  "@autoLockSubtitle": {
+    "description": "Explains what the auto-lock delay measures."
+  },
+  "autoLockImmediately": "At once",
+  "@autoLockImmediately": {
+    "description": "Auto-lock option: lock as soon as the app leaves the screen."
+  },
+  "autoLock30Seconds": "30 seconds",
+  "@autoLock30Seconds": {
+    "description": "Auto-lock option."
+  },
+  "autoLock1Minute": "1 minute",
+  "@autoLock1Minute": {
+    "description": "Auto-lock option."
+  },
+  "autoLock5Minutes": "5 minutes",
+  "@autoLock5Minutes": {
+    "description": "Auto-lock option."
+  },
+  "autoLock15Minutes": "15 minutes",
+  "@autoLock15Minutes": {
+    "description": "Auto-lock option."
+  },
+  "autoLockNever": "Only when the app restarts",
+  "@autoLockNever": {
+    "description": "Auto-lock option: never re-lock while running."
+  },
+  "autoLockNeedsLock": "Turn the app lock on first.",
+  "@autoLockNeedsLock": {
+    "description": "Note shown when auto-lock has no lock to apply."
+  },
+  "databaseKeyTitle": "New database key",
+  "@databaseKeyTitle": {
+    "description": "Header of the database key page."
+  },
+  "databaseKeyBody": "Your data is stored encrypted with a key held by this device. Rotating it writes the whole database again under a brand new key.",
+  "@databaseKeyBody": {
+    "description": "Explains what key rotation does."
+  },
+  "databaseKeyBackupFirst": "Take a backup before you start. If anything goes wrong part way, the backup is the only way back.",
+  "@databaseKeyBackupFirst": {
+    "description": "Warns to back up first."
+  },
+  "databaseKeyOldBackups": "Backup files are not affected. They keep the passphrase you exported them with.",
+  "@databaseKeyOldBackups": {
+    "description": "Clarifies that backups keep their own passphrase."
+  },
+  "databaseKeyRotate": "Rotate the key now",
+  "@databaseKeyRotate": {
+    "description": "Button that starts the rotation."
+  },
+  "databaseKeyConfirmTitle": "Rotate the database key?",
+  "@databaseKeyConfirmTitle": {
+    "description": "Title of the rotation confirmation dialog."
+  },
+  "databaseKeyConfirmBody": "This rewrites your whole database under a new key. Do not close the app while it runs.",
+  "@databaseKeyConfirmBody": {
+    "description": "Body of the rotation confirmation dialog."
+  },
+  "databaseKeyWorking": "Rotating the key. Please wait.",
+  "@databaseKeyWorking": {
+    "description": "Shown while the rotation runs."
+  },
+  "databaseKeyDone": "The database has a new key.",
+  "@databaseKeyDone": {
+    "description": "Shown after a successful rotation."
+  },
+  "databaseKeyFailed": "The key was not changed. Your data is untouched and still opens with the old key.",
+  "@databaseKeyFailed": {
+    "description": "Shown after a failed rotation."
+  },
+  "lockScreenTitle": "Locked",
+  "@lockScreenTitle": {
+    "description": "Title of the lock screen."
+  },
+  "lockScreenEnterPin": "Enter your PIN",
+  "@lockScreenEnterPin": {
+    "description": "Prompt on the lock screen for a PIN."
+  },
+  "lockScreenEnterPassword": "Enter your password",
+  "@lockScreenEnterPassword": {
+    "description": "Prompt on the lock screen for a password."
+  },
+  "lockScreenUnlock": "Unlock",
+  "@lockScreenUnlock": {
+    "description": "Button that submits the secret."
+  },
+  "lockScreenWrong": "That did not match. Try again.",
+  "@lockScreenWrong": {
+    "description": "Shown after a wrong entry."
+  },
+  "lockScreenWait": "Too many tries. Wait {seconds} seconds.",
+  "@lockScreenWait": {
+    "description": "Shown while the retry wait is running.",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "lockScreenUseDeviceLock": "Use my phone lock",
+  "@lockScreenUseDeviceLock": {
+    "description": "Button that opens the device unlock screen."
+  },
+  "lockScreenDevicePrompt": "Unlock SreerajP ToDo",
+  "@lockScreenDevicePrompt": {
+    "description": "Title shown on the device unlock screen."
+  },
+  "lockScreenDeviceDescription": "Confirm it is you to open your tasks.",
+  "@lockScreenDeviceDescription": {
+    "description": "Description shown on the device unlock screen."
+  },
+  "lockScreenDeviceFailed": "That did not open the app.",
+  "@lockScreenDeviceFailed": {
+    "description": "Shown when the device unlock was cancelled or failed."
+  },
+  "focusTitle": "Focus",
+  "@focusTitle": {
+    "description": "Title of the full screen Focus view."
+  },
+  "focusOpen": "Open focus view",
+  "@focusOpen": {
+    "description": "Tooltip on the button that opens the Focus view."
+  },
+  "focusLeave": "Leave focus",
+  "@focusLeave": {
+    "description": "Tooltip on the button that closes the Focus view."
+  },
+  "focusRunningNow": "Running now",
+  "@focusRunningNow": {
+    "description": "Label above the time the running timer has counted so far."
+  },
+  "focusTotalTracked": "Total tracked",
+  "@focusTotalTracked": {
+    "description": "Label above the total time tracked on the task."
+  },
+  "focusSteps": "Steps",
+  "@focusSteps": {
+    "description": "Heading above the sub-task checklist in the Focus view."
+  },
+  "focusNoSteps": "This task has no steps.",
+  "@focusNoSteps": {
+    "description": "Shown in the Focus view when the task has no sub-tasks."
+  },
+  "focusNotRunning": "The timer is not running.",
+  "@focusNotRunning": {
+    "description": "Shown in the Focus view when no timer is running on the task."
+  },
+  "focusNextNudge": "Next nudge in {time}",
+  "@focusNextNudge": {
+    "description": "Countdown to the next focus nudge.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "focusNudgesOff": "Nudges are off",
+  "@focusNudgesOff": {
+    "description": "Shown in the Focus view when the nudge is switched off."
+  },
+  "trackingFocusMode": "Focus mode",
+  "@trackingFocusMode": {
+    "description": "Title of the Focus mode settings page."
+  },
+  "trackingFocusModeSubtitle": "Full screen focus view and the nudge while a timer runs",
+  "@trackingFocusModeSubtitle": {
+    "description": "Subtitle on the Focus mode card."
+  },
+  "trackingFocusPulse": "Nudge while a timer runs",
+  "@trackingFocusPulse": {
+    "description": "Heading of the nudge setting."
+  },
+  "trackingFocusPulseOff": "Off",
+  "@trackingFocusPulseOff": {
+    "description": "Nudge mode: nothing happens."
+  },
+  "trackingFocusPulseVibration": "Vibration only",
+  "@trackingFocusPulseVibration": {
+    "description": "Nudge mode: vibration only."
+  },
+  "trackingFocusPulseSound": "Sound only",
+  "@trackingFocusPulseSound": {
+    "description": "Nudge mode: sound only."
+  },
+  "trackingFocusPulseBoth": "Vibration and sound",
+  "@trackingFocusPulseBoth": {
+    "description": "Nudge mode: vibration and sound."
+  },
+  "trackingFocusPulseEvery": "Nudge every",
+  "@trackingFocusPulseEvery": {
+    "description": "Label of the stepper that sets the gap between nudges."
+  },
+  "trackingFocusView": "Focus view",
+  "@trackingFocusView": {
+    "description": "Heading of the Focus view settings group."
+  },
+  "trackingFocusImmersive": "Immersive full screen",
+  "@trackingFocusImmersive": {
+    "description": "Switch that hides the status bar in the Focus view."
+  },
+  "trackingFocusImmersiveDetail": "Hide the status bar while the Focus view is open.",
+  "@trackingFocusImmersiveDetail": {
+    "description": "Detail under the immersive switch."
+  },
+  "trackingFocusNote": "The nudge only works while the app is open. This app sends no notifications, so nothing sounds in the background. Your time is still counted correctly.",
+  "@trackingFocusNote": {
+    "description": "Note explaining that the nudge only works while the app is open."
+  },
+  "trackingFocusPomodoroNote": "Focus blocks are on, so the nudge stays quiet. Pomodoro already sounds its own alert at the end of every block.",
+  "@trackingFocusPomodoroNote": {
+    "description": "Note explaining that the nudge is quiet while Pomodoro is on."
   },
 
-  "errorDayLocked": "Cannot modify tasks from past dates.",
-  "@errorDayLocked": { "description": "Error message when attempting to modify a past day task." },
-  "errorCompletedLocked": "Cannot add time segments to a completed or dropped task.",
-  "@errorCompletedLocked": { "description": "Error message when attempting to track time on a terminal state task." },
-  "errorDuplicateTitle": "A task with this title already exists for this date.",
-  "@errorDuplicateTitle": { "description": "Error message when title conflicts with an existing task on the same date." },
-  "errorSegmentAlreadyRunning": "A time segment is already running for this task.",
-  "@errorSegmentAlreadyRunning": { "description": "Error message when starting a second open timer segment for a task." },
-  "errorTodoNotFound": "Task not found.",
-  "@errorTodoNotFound": { "description": "Error message when task lookup fails." },
-  "errorBackupVersionTooNew": "This backup was created by a newer version of the app. Please update.",
-  "@errorBackupVersionTooNew": { "description": "Error message when backup schema is incompatible due to app version." },
-  "errorBackupCorrupted": "The backup file is corrupted and cannot be restored.",
-  "@errorBackupCorrupted": { "description": "Error message when backup archive verification fails." },
-  "errorPortTargetMustBeFuture": "Port target date must be tomorrow or later.",
-  "@errorPortTargetMustBeFuture": { "description": "Error message when attempting to port task to today or past date." },
-  "errorGeneric": "An unexpected error occurred.",
-  "@errorGeneric": { "description": "Fallback error message for unexpected exceptions." },
-  "errorRetryableGeneric": "Something went wrong. Tap to retry.",
-  "@errorRetryableGeneric": { "description": "Retryable inline error banner message." },
-
-  "subTasks": "Sub-tasks",
-  "@subTasks": { "description": "Section title for sub-task checklist." },
-  "addSubTask": "Add sub-task",
-  "@addSubTask": { "description": "Action button label to add a new sub-task item." },
-  "blockedBy": "Blocked by",
-  "@blockedBy": { "description": "Label prefix for task prerequisites." },
-  "prerequisiteTasks": "Prerequisite Tasks",
-  "@prerequisiteTasks": { "description": "Header for prerequisite tasks list." },
-  "blockedWarning": "Warning: Task is blocked by pending prerequisites",
-  "@blockedWarning": { "description": "Warning message when starting/completing a blocked task." },
-
-  "morningIntention": "Morning Intention",
-  "@morningIntention": { "description": "Title for morning intention setting section." },
-  "eveningReflection": "Evening Reflection",
-  "@eveningReflection": { "description": "Title for evening reflection ritual section." },
-  "eveningReflectionTitle": "Evening Reflection Ritual",
-  "@eveningReflectionTitle": { "description": "Header title on evening reflection screen." },
-  "reflectionSummaryTitle": "Today's Productivity Summary",
-  "@reflectionSummaryTitle": { "description": "Header for reflection screen productivity stats." },
-  "completedTime": "Completed Time",
-  "@completedTime": { "description": "Stat card label for total time on completed tasks." },
-  "droppedTime": "Dropped Time",
-  "@droppedTime": { "description": "Stat card label for total time on dropped tasks." },
-  "completionRatio": "Completion Ratio",
-  "@completionRatio": { "description": "Stat card label for task completion percentage." },
-  "reflectionNoteHint": "Write a brief reflection on your day...",
-  "@reflectionNoteHint": { "description": "TextField placeholder for evening reflection notes." },
-  "reflectionSaved": "Daily reflection saved.",
-  "@reflectionSaved": { "description": "SnackBar confirmation when reflection note is saved." },
-  "cycleIntention": "Cycle Intention",
-  "@cycleIntention": { "description": "Button label to cycle to next daily focus rule/intention." },
-  "startReflection": "Start Reflection",
-  "@startReflection": { "description": "Button label to launch evening reflection modal." },
-  "mindfulFocusRules": "Daily Focus Rules",
-  "@mindfulFocusRules": { "description": "Section header for daily mindful intentions." },
-  "defaultIntention1": "Focus on single-tasking today; handle duty without extra emotional noise.",
-  "@defaultIntention1": { "description": "Default intention option 1." },
-  "defaultIntention2": "Prioritize steady progress over perfection; remain calm and persistent.",
-  "@defaultIntention2": { "description": "Default intention option 2." },
-  "defaultIntention3": "Accept changing circumstances with composure; single-thread your effort.",
-  "@defaultIntention3": { "description": "Default intention option 3." },
-  "defaultIntention4": "Direct your attention to what is within your control; release the rest.",
-  "@defaultIntention4": { "description": "Default intention option 4." },
-  "defaultIntention5": "Complete each segment with full presence before stepping to the next.",
-  "@defaultIntention5": { "description": "Default intention option 5." },
-
-  "dataHandoffTitle": "Data Handoff (JSON & MD)",
-  "@dataHandoffTitle": { "description": "Title for data handoff screen and menu item." },
-  "actionChange": "Change",
-  "@actionChange": { "description": "Button label to change date or setting." },
-  "dataHandoffHeader": "JSON & Markdown Data Handoff",
-  "@dataHandoffHeader": { "description": "Header title on data handoff screen." },
-  "dataHandoffSubtitle": "Ingest and export task lists, subtask checklists, and timecard summaries fully offline.",
-  "@dataHandoffSubtitle": { "description": "Sub-header summary on data handoff screen." },
-  "exportJsonLabel": "Export JSON Data Payload",
-  "@exportJsonLabel": { "description": "Button label for JSON payload export." },
-  "exportJsonDesc": "Exports tasks, subtasks, recurrence rules, time segments, and Markdown notes to a structured JSON file.",
-  "@exportJsonDesc": { "description": "Description text for JSON payload export." },
-  "exportMarkdownLabel": "Export Markdown Checklist",
-  "@exportMarkdownLabel": { "description": "Button label for Markdown checklist export." },
-  "exportMarkdownDesc": "Generates a clean Markdown checklist file (- [ ] / - [x]) and timecard summary.",
-  "@exportMarkdownDesc": { "description": "Description text for Markdown checklist export." },
-  "importFileLabel": "Import JSON / Markdown File",
-  "@importFileLabel": { "description": "Button label for picking and importing JSON or Markdown file." },
-  "importFileDesc": "Pick a .json or .md file from device storage to convert and merge into tasks.",
-  "@importFileDesc": { "description": "Description text for file picker import." },
-  "pasteMarkdownLabel": "Paste Raw Markdown Text",
-  "@pasteMarkdownLabel": { "description": "Button label to open raw Markdown text paste dialog." },
-  "pasteMarkdownDesc": "Paste raw Markdown text containing - [ ] and - [x] checklist items to parse.",
-  "@pasteMarkdownDesc": { "description": "Description text for raw Markdown text paste." },
-  "targetDateLabel": "Target Date for Data Handoff",
-  "@targetDateLabel": { "description": "Label for target date selector on data handoff screen." },
-  "markdownImportTitle": "Paste Markdown Checklist Text",
-  "@markdownImportTitle": { "description": "Title for Markdown text import dialog." },
-  "parseMarkdownPreview": "Parsed Tasks Preview",
-  "@parseMarkdownPreview": { "description": "Section header for live preview of parsed Markdown tasks." },
-  "importSuccessMsg": "Successfully imported tasks.",
-  "@importSuccessMsg": { "description": "SnackBar success notification after importing payload." },
-  "exportSuccessMsg": "Export saved successfully to file.",
-  "@exportSuccessMsg": { "description": "SnackBar success notification after saving export file." },
-  "wifiSyncTitle": "Local P2P Wi-Fi Sync",
-  "@wifiSyncTitle": { "description": "Title for local peer-to-peer Wi-Fi sync screen and menu item." },
-  "airQrShareTitle": "AirQR Share Stream",
-  "@airQrShareTitle": { "description": "Title for AirQR animated share screen and menu item." },
-  "airQrScanTitle": "AirQR Scan Camera",
-  "@airQrScanTitle": { "description": "Title for AirQR scan camera scanner and menu item." },
-  "moreOptions": "More options",
-  "@moreOptions": { "description": "Tooltip for overflow dotted menu." }
+  "voiceSheetTitle": "Voice task",
+  "@voiceSheetTitle": {
+    "description": "Title of the voice task sheet."
+  },
+  "voiceSheetOfflineNote": "Everything is worked out on this phone. Nothing is recorded and nothing is sent anywhere.",
+  "@voiceSheetOfflineNote": {
+    "description": "Note under the voice sheet title explaining that it stays on the device."
+  },
+  "voiceSheetFieldLabel": "Say or type one sentence",
+  "@voiceSheetFieldLabel": {
+    "description": "Label of the text box in the voice sheet."
+  },
+  "voiceSheetExample": "For example: Call the bank tomorrow at 10 am for 30 minutes",
+  "@voiceSheetExample": {
+    "description": "Example sentence shown under the voice sheet text box."
+  },
+  "voiceLanguageEnglish": "English",
+  "@voiceLanguageEnglish": {
+    "description": "Language choice in the voice sheet."
+  },
+  "voiceLanguageMalayalam": "Malayalam",
+  "@voiceLanguageMalayalam": {
+    "description": "Language choice in the voice sheet."
+  },
+  "voiceTapToSpeak": "Tap to speak",
+  "@voiceTapToSpeak": {
+    "description": "Label under the microphone button before listening starts."
+  },
+  "voiceListening": "Listening",
+  "@voiceListening": {
+    "description": "Label under the microphone button while listening."
+  },
+  "voiceClear": "Clear",
+  "@voiceClear": {
+    "description": "Tooltip of the button that empties the voice sheet text box."
+  },
+  "voiceUnderstoodHeading": "Understood as",
+  "@voiceUnderstoodHeading": {
+    "description": "Heading above the chips showing what the sentence meant."
+  },
+  "voiceNoTitle": "No title yet",
+  "@voiceNoTitle": {
+    "description": "Chip shown when the sentence has no title left in it."
+  },
+  "voiceCreateTask": "Create task",
+  "@voiceCreateTask": {
+    "description": "Button that opens the create form with the voice reading filled in."
+  },
+  "voiceDateMovedToToday": "That day has already passed, so today is used instead.",
+  "@voiceDateMovedToToday": {
+    "description": "Shown when a spoken day was in the past and was moved to today."
+  },
+  "voiceErrorPermission": "The microphone was not allowed. You can still type the sentence.",
+  "@voiceErrorPermission": {
+    "description": "Shown when the microphone permission was refused."
+  },
+  "voiceErrorNoMatch": "Nothing was heard. Try again, or type the sentence.",
+  "@voiceErrorNoMatch": {
+    "description": "Shown when the recogniser heard nothing it could read."
+  },
+  "voiceErrorNoOfflineLanguage": "This phone has no offline language pack for that language. Install one in your phone settings, or type the sentence.",
+  "@voiceErrorNoOfflineLanguage": {
+    "description": "Shown when the recogniser has no on-device language pack. This is also what a recogniser reports when it wanted the network."
+  },
+  "voiceErrorBusy": "The recogniser is busy. Try again in a moment.",
+  "@voiceErrorBusy": {
+    "description": "Shown when the speech recogniser is already running."
+  },
+  "voiceErrorUnknown": "The microphone could not be used. You can still type the sentence.",
+  "@voiceErrorUnknown": {
+    "description": "Shown for any other recogniser failure."
+  },
+  "voiceUnavailableDevice": "This device has no voice input. Type the sentence instead.",
+  "@voiceUnavailableDevice": {
+    "description": "Shown on a platform with no speech recogniser at all, such as Windows."
+  },
+  "voiceUnavailableNoRecogniser": "No speech app was found on this device. Type the sentence instead.",
+  "@voiceUnavailableNoRecogniser": {
+    "description": "Shown when Android reports no recognition service."
+  },
+  "voiceUnavailableNoOffline": "This device cannot recognise speech without going online, so the microphone stays off. Type the sentence instead.",
+  "@voiceUnavailableNoOffline": {
+    "description": "Shown when no on-device recogniser can be pinned, so listening is refused to keep the app offline."
+  },
+  "voiceUnavailableNoPermission": "The microphone needs your permission. Tap the microphone to be asked.",
+  "@voiceUnavailableNoPermission": {
+    "description": "Shown when the microphone permission has not been granted yet."
+  },
+  "voiceOpenTooltip": "New task by voice",
+  "@voiceOpenTooltip": {
+    "description": "Tooltip of the microphone button on the day list."
+  },
+  "voiceInputSetting": "Voice input",
+  "@voiceInputSetting": {
+    "description": "Settings switch that shows the microphone button on the day list."
+  },
+  "voiceInputSettingDetail": "Show a microphone button on the day list. It uses the offline recogniser already on your phone, and asks for the microphone the first time you use it. The sentence is read on this device.",
+  "@voiceInputSettingDetail": {
+    "description": "Detail under the voice input switch."
+  },
+  "voiceInputTypingNote": "The sentence is always read on this device, whether you speak it or type it. Voice input only adds the microphone.",
+  "@voiceInputTypingNote": {
+    "description": "Note under the voice input switch making clear that typing works either way."
+  },
+  "permissionsCameraTitle": "Camera",
+  "@permissionsCameraTitle": {
+    "description": "Permission entry title for the camera."
+  },
+  "permissionsCameraBody": "Asked for only when you scan a QR code to move data between your own devices. No photo is ever saved.",
+  "@permissionsCameraBody": {
+    "description": "Permission entry body for the camera."
+  },
+  "permissionsMicrophoneTitle": "Microphone",
+  "@permissionsMicrophoneTitle": {
+    "description": "Permission entry title for the microphone."
+  },
+  "permissionsMicrophoneBody": "Asked for only after you turn Voice input on and tap the microphone. The phone recogniser is always asked for its offline engine, and listening is refused rather than going online. No audio is recorded or kept.",
+  "@permissionsMicrophoneBody": {
+    "description": "Permission entry body for the microphone, explaining the offline guarantee."
+  },
+  "permissionsExplicitNote": "These two are the only permissions this app asks for, and both are asked for only when you use the feature that needs them. The app declares no internet or network permission at all, so nothing it holds can leave this device on its own.",
+  "@permissionsExplicitNote": {
+    "description": "Statement under the explicit permission list confirming there is no network permission."
+  },
+  "voiceTimeNote": "At {time}",
+  "@voiceTimeNote": {
+    "description": "Note written into the description when the sentence named a time of day. A task has no time column of its own.",
+    "placeholders": {
+      "time": {
+        "type": "String",
+        "example": "10:30"
+      }
+    }
+  }
 }
-

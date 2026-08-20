@@ -79,11 +79,60 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
   }
 
   @override
-  Future<void> stopSegment(String todoId) async {
-    final running = await _timeSegmentDao.findRunningSegment(todoId);
-    if (running == null) return;
+  Future<TimeSegmentEntity?> stopSegment(String todoId) async {
+    return _closeRunning(todoId, DateTime.now());
+  }
 
-    await _timeSegmentDao.closeSegment(running.id, DateTime.now());
+  @override
+  Future<TimeSegmentEntity?> closeSegmentAt(String todoId, DateTime at) async {
+    return _closeRunning(todoId, at);
+  }
+
+  /// Closes the open segment on [todoId] at [at] and returns it as stored.
+  ///
+  /// [at] is never allowed before the segment start, because a negative
+  /// duration would poison every total. A cut-off that already passed before
+  /// the timer began collapses to a zero-length segment instead.
+  Future<TimeSegmentEntity?> _closeRunning(String todoId, DateTime at) async {
+    final running = await _timeSegmentDao.findRunningSegment(todoId);
+    if (running == null) return null;
+
+    final startTime = DateTime.parse(running.startTime);
+    final endTime = at.isBefore(startTime) ? startTime : at;
+
+    await _timeSegmentDao.closeSegment(running.id, endTime);
+    return _timeSegmentDao.findById(running.id);
+  }
+
+  @override
+  Future<List<TimeSegmentEntity>> getAllRunningSegments() {
+    return _timeSegmentDao.findAllRunningSegments();
+  }
+
+  @override
+  Future<List<String>> stopAllRunningSegments({String? exceptTodoId}) async {
+    final running = await _timeSegmentDao.findAllRunningSegments();
+    final stopped = <String>[];
+    final now = DateTime.now();
+
+    for (final segment in running) {
+      if (segment.todoId == exceptTodoId) continue;
+      final startTime = DateTime.parse(segment.startTime);
+      final endTime = now.isBefore(startTime) ? startTime : now;
+      await _timeSegmentDao.closeSegment(segment.id, endTime);
+      stopped.add(segment.todoId);
+    }
+    return stopped;
+  }
+
+  @override
+  Future<void> deleteSegment(String segmentId) async {
+    await _timeSegmentDao.delete(segmentId);
+  }
+
+  @override
+  Future<void> restoreSegment(TimeSegmentEntity segment) async {
+    await _timeSegmentDao.insert(segment);
   }
 
   @override
@@ -129,16 +178,43 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
   }
 
   @override
-  Future<void> repairOrphanedSegments(String todayDate) async {
+  Future<void> updateSegmentNotes(String segmentId, String? notes) async {
+    final segments = await _timeSegmentDao.findById(segmentId);
+    if (segments == null) return;
+
+    final todo = await _todoDao.findById(segments.todoId);
+    if (todo == null) throw const TodoNotFoundException();
+
+    // Day lock still applies: a past day stays read-only. The terminal status
+    // lock is not applied here, because writing a note does not add tracked
+    // time to a finished task.
+    if (isPastDate(todo.date)) {
+      throw const DayLockedException();
+    }
+
+    await _timeSegmentDao.updateNotes(segmentId, notes);
+  }
+
+  @override
+  Future<void> repairOrphanedSegments(
+    String todayDate, {
+    DateTime? Function(DateTime segmentStart)? closeAt,
+  }) async {
     final orphans = await _timeSegmentDao.findAllOrphanedSegments(todayDate);
 
     for (final orphan in orphans) {
       final startTime = DateTime.parse(orphan.startTime);
-      await _timeSegmentDao.closeSegment(
-        orphan.id,
-        startTime,
-        interrupted: true,
-      );
+
+      // With auto-stop on we know when the timer should have stopped, so the
+      // real worked time is kept. Without it we fall back to the original
+      // zero-length close, because any other guess would invent time the user
+      // never tracked.
+      final cutoff = closeAt?.call(startTime);
+      final endTime = (cutoff != null && !cutoff.isBefore(startTime))
+          ? cutoff
+          : startTime;
+
+      await _timeSegmentDao.closeSegment(orphan.id, endTime, interrupted: true);
     }
   }
 }

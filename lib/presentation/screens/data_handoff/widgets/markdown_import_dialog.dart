@@ -10,18 +10,14 @@ import 'package:sreerajp_todo/l10n/app_localizations.dart';
 class MarkdownImportDialog extends ConsumerStatefulWidget {
   final String targetDate;
 
-  const MarkdownImportDialog({
-    super.key,
-    required this.targetDate,
-  });
+  const MarkdownImportDialog({super.key, required this.targetDate});
 
   @override
   ConsumerState<MarkdownImportDialog> createState() =>
       _MarkdownImportDialogState();
 }
 
-class _MarkdownImportDialogState
-    extends ConsumerState<MarkdownImportDialog> {
+class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
   final _textController = TextEditingController();
   List<TodoEntity> _parsedTodos = [];
   bool _isImporting = false;
@@ -72,8 +68,12 @@ class _MarkdownImportDialogState
       final todoRepo = ref.read(todoRepositoryProvider);
       final segmentRepo = ref.read(timeSegmentRepositoryProvider);
 
-      final payload = ref.read(dataHandoffServiceProvider).parseJsonPayload(
-            ref.read(dataHandoffServiceProvider).exportToJson(
+      final payload = ref
+          .read(dataHandoffServiceProvider)
+          .parseJsonPayload(
+            ref
+                .read(dataHandoffServiceProvider)
+                .exportToJson(
                   todos: _parsedTodos,
                   timeSegments: [],
                   recurrenceRules: [],
@@ -190,9 +190,7 @@ class _MarkdownImportDialogState
                 Container(
                   constraints: const BoxConstraints(maxHeight: 180),
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: theme.colorScheme.outlineVariant,
-                    ),
+                    border: Border.all(color: theme.colorScheme.outlineVariant),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: ListView.separated(
@@ -225,12 +223,12 @@ class _MarkdownImportDialogState
                         subtitle: item.subTasks.isNotEmpty
                             ? Text('${item.subTasks.length} subtasks')
                             : (item.description != null
-                                ? Text(
-                                    item.description!,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                : null),
+                                  ? Text(
+                                      item.description!,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
+                                  : null),
                       );
                     },
                   ),
@@ -269,7 +267,10 @@ class _MarkdownImportDialogState
                 const SizedBox(height: 12),
                 Text(
                   _errorMessage!,
-                  style: TextStyle(color: theme.colorScheme.error, fontSize: 12),
+                  style: TextStyle(
+                    color: theme.colorScheme.error,
+                    fontSize: 12,
+                  ),
                 ),
               ],
             ],
@@ -282,10 +283,9 @@ class _MarkdownImportDialogState
           child: Text(l10n.cancel),
         ),
         FilledButton.icon(
-          onPressed:
-              (_parsedTodos.isNotEmpty && !isPast && !_isImporting)
-                  ? _handleImport
-                  : null,
+          onPressed: (_parsedTodos.isNotEmpty && !isPast && !_isImporting)
+              ? _handleImport
+              : null,
           icon: _isImporting
               ? const SizedBox(
                   width: 16,

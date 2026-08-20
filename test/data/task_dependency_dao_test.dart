@@ -49,7 +49,9 @@ void main() {
   group('TaskDependencyDao', () {
     test('setPrerequisitesForTodo and getPrerequisiteIdsForTodo', () async {
       await taskDependencyDao.setPrerequisitesForTodo('task-b', ['task-a']);
-      final prereqIds = await taskDependencyDao.getPrerequisiteIdsForTodo('task-b');
+      final prereqIds = await taskDependencyDao.getPrerequisiteIdsForTodo(
+        'task-b',
+      );
       expect(prereqIds, equals(['task-a']));
     });
 
@@ -65,12 +67,17 @@ void main() {
       expect(pending, isEmpty);
     });
 
-    test('cascade deletion deletes dependencies when prerequisite task is deleted', () async {
-      await taskDependencyDao.setPrerequisitesForTodo('task-b', ['task-a']);
-      await todoDao.delete('task-a');
+    test(
+      'cascade deletion deletes dependencies when prerequisite task is deleted',
+      () async {
+        await taskDependencyDao.setPrerequisitesForTodo('task-b', ['task-a']);
+        await todoDao.delete('task-a');
 
-      final prereqIds = await taskDependencyDao.getPrerequisiteIdsForTodo('task-b');
-      expect(prereqIds, isEmpty);
-    });
+        final prereqIds = await taskDependencyDao.getPrerequisiteIdsForTodo(
+          'task-b',
+        );
+        expect(prereqIds, isEmpty);
+      },
+    );
   });
 }

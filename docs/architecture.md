@@ -51,6 +51,8 @@ lib/
 |-- core/
 |   |-- constants/                  # app_constants, app_strings, app_routes
 |   |-- errors/                     # exceptions, failures
+|   |-- platform/                   # thin Dart sides of the app's own method channels
+|   |-- voice/                      # voice_command_parser + the en and ml lexicons
 |   `-- utils/                      # date_utils, duration_utils, unicode_utils
 |-- data/
 |   |-- database/                   # database_service, database_key_service, migrations/
@@ -99,6 +101,53 @@ lib/
 | `StateNotifierProvider` | Global mutable state (StatisticsNotifier, RecurrenceRulesNotifier) |
 | `FutureProvider.family` | One-shot async reads (autocomplete prefix, search query) |
 | `StreamProvider.family` | Live timer only (elapsed seconds ticking every 1 s) |
+| `StreamProvider` | Pomodoro block countdown (`pomodoroCountdownProvider`, 1 s tick) and the focus-nudge countdown (`focusPulseCountdownProvider`, 1 s tick) |
+| `StateProvider` | `timerActivityTickProvider`, bumped on every timer start / stop / pause so the lifecycle watcher can re-check the keep-awake flag without polling |
+
+### Time Tracking Settings
+
+The time-tracking settings are owned by `TimeTrackingSettingsNotifier`
+(`lib/application/time_tracking_settings_notifier.dart`), which mirrors
+`AppearanceNotifier`: it reads from and writes straight to `SharedPreferences`, and every
+default reproduces the app's earlier fixed behaviour.
+
+| Piece | File | Job |
+|-------|------|-----|
+| `TimeTrackingSettingsNotifier` | `application/time_tracking_settings_notifier.dart` | Holds and saves every setting |
+| `PomodoroNotifier` | `application/pomodoro_notifier.dart` | Work / break cycle. Owns no database work — it calls back into `TimeTrackingNotifier` to start and stop segments |
+| `FocusPulseNotifier` | `application/focus_pulse_notifier.dart` | The nudge given every so often while a timer runs. Owns the schedule only; the mode, the gap, the clock and the nudge itself are all injected, so it is tested with no platform channel. Stays quiet while Pomodoro is on |
+| `TimerPausedStore` / `PausedTodosNotifier` | `application/timer_paused_store.dart` | Which todos show Resume rather than Start, for today only |
+| `focus_pulse_rules.dart` | `core/utils/` | Pure Dart: the nudge mode enum, the allowed range for the gap, and the next-pulse instant. Pulses are counted from the start of the running segment, so the schedule cannot drift |
+| `time_tracking_rules.dart` | `core/utils/` | Pure Dart: the setting enums, rounding, minimum-length check, next auto-stop instant. No Flutter imports, so every rule is unit tested without a binding |
+| `ScreenWakeChannel` | `core/platform/` | Dart side of the keep-awake channel; a no-op off Android |
+| `TimerLifecycleWatcher` | `presentation/shared/widgets/` | `WidgetsBindingObserver` wrapping the app: auto-stop, auto-pause on background, keep-awake, and pointing the focus nudge at the running timer |
+| `TrackedDurationFormat` | `presentation/shared/utils/` | Inherited widget handing the rounding and format choices to deeply nested report widgets, so Statistics did not need a new constructor argument on every layer |
+
+The settings are read through callbacks (`bool Function()`, `int Function()`) rather than
+captured values, so `StartTimeSegment`, `RepairOrphanedSegments` and `TimeTrackingNotifier`
+pick up a change on their very next call without being rebuilt.
+
+
+### Task Defaults
+
+The task defaults are owned by `TaskDefaultsNotifier`
+(`lib/application/task_defaults_notifier.dart`), built the same way as
+`TimeTrackingSettingsNotifier`: it reads from and writes straight to `SharedPreferences`,
+and every default reproduces the behaviour the app had before the setting existed.
+
+| Piece | File | Job |
+|-------|------|-----|
+| `TaskDefaultsNotifier` | `application/task_defaults_notifier.dart` | Holds and saves every task default |
+| `task_default_rules.dart` | `core/utils/` | Pure Dart: the setting enums, the target-time split/join, and the once-a-day carry-over check. No Flutter imports |
+| `TodoSortOption` | `core/constants/todo_sort_option.dart` | The 9 day-list orders. It lives in `core/` because the saved default is held in the application layer, which must never import from `presentation/` |
+| `day_list_filters.dart` | `presentation/screens/daily_list/` | The show/hide and sink-to-bottom rules, pulled out of the screen so they can be unit tested without a widget tree |
+| `CarryOverSheet` | `presentation/screens/daily_list/widgets/` | Finds the unfinished tasks and offers to copy them into today. Copying goes through the existing `CopyTodos` use case, so nothing about the day lock or NFC normalisation is re-implemented |
+| `task_default_labels.dart` | `presentation/shared/` | One home for the priority, sort and target names and the priority colours, shared by the settings pages, the form, the tile and the sort menu |
+
+`autocompleteProvider` **watches** the suggestion limit, so changing the count or turning
+suggestions off refreshes the field without a restart. A limit of zero means the query is
+never run at all.
+
 
 ## 6. Data Flow
 
@@ -131,10 +180,11 @@ Use-cases exist only for multi-step business orchestrations:
 
 | Type | Purpose | Mutable? | Notes |
 |------|---------|----------|-------|
-| `TodoEntity` | One task per day | No (freezed) | Includes status, ported_to, source_date, recurrence_rule_id |
+| `TodoEntity` | One task per day | No (freezed) | Includes status, priority, target_seconds, ported_to, source_date, recurrence_rule_id |
 | `TimeSegmentEntity` | One start/stop pair | No (freezed) | Includes interrupted, manual flags |
 | `RecurrenceRuleEntity` | RRULE template | No (freezed) | iCalendar RRULE string (RFC 5545) |
-| `TodoStatus` | Enum: pending, completed, dropped, ported | No (enum) | Stored as TEXT in DB |
+| `TodoStatus` | Enum: pending, working, completed, dropped, ported | No (enum) | Stored as TEXT in DB |
+| `TodoPriority` | Enum: low, normal, high, urgent | No (enum) | Stored as TEXT in DB. Added by migration v9. An unknown stored value reads as `normal` rather than throwing, so a downgrade cannot stop the day list loading |
 
 ### Serialization Strategy
 
@@ -168,9 +218,10 @@ Use-cases exist only for multi-step business orchestrations:
 |-------|--------|-------|
 | `/` | — | Redirects to `/day/<today>` |
 | `/day/:date` | `DailyListScreen` | `YYYY-MM-DD` |
-| `/todo/new` | `CreateEditTodoScreen` | Query param `?date=YYYY-MM-DD` |
+| `/todo/new` | `CreateEditTodoScreen` | Query params `?date=YYYY-MM-DD`, and `title`, `description`, `target`, `priority` when the voice sheet hands over a filled-in draft. Built by `AppRoutes.createTodoPath` so escaping is never forgotten |
 | `/todo/:id` | `CreateEditTodoScreen` | Edit mode |
 | `/todo/:id/segments` | `TimeSegmentsScreen` | View/add time segments |
+| `/focus/:id` | `FocusScreen` | Full-screen focus view for one task |
 | `/copy` | `CopyTodosScreen` | Query param `?from=YYYY-MM-DD` |
 | `/search` | `SearchResultsScreen` | Query param `?q=<term>` |
 | `/backup` | `BackupScreen` | Export / import / list backups |
@@ -178,13 +229,25 @@ Use-cases exist only for multi-step business orchestrations:
 | `/recurring/new` | `RecurrenceEditorScreen` | Create rule |
 | `/recurring/:id` | `RecurrenceEditorScreen` | Edit rule |
 | `/statistics` | `StatisticsScreen` | Charts and tables |
+| `/settings/time-tracking` | `TimeTrackingScreen` | Time tracking settings hub |
+| `/settings/time-tracking/auto-stop` | `AutoStopScreen` | Auto-stop mode and custom time |
+| `/settings/time-tracking/timer` | `TimerBehaviourScreen` | Single timer, auto-pause, keep awake, minimum length |
+| `/settings/time-tracking/pomodoro` | `PomodoroScreen` | Focus block lengths and auto-start |
+| `/settings/time-tracking/focus` | `FocusModeScreen` | The nudge mode and gap, and the immersive Focus view switch |
+| `/settings/time-tracking/display` | `TimeDisplayScreen` | Rounding, duration format, manual entry default |
+| `/settings/task-defaults` | `TaskDefaultsScreen` | Task defaults hub |
+| `/settings/task-defaults/new-task` | `DefaultsNewTaskScreen` | Default status, priority, target time |
+| `/settings/task-defaults/day-list` | `DefaultsDayListScreen` | Default order, remember order, show/hide and sink finished |
+| `/settings/task-defaults/actions` | `DefaultsTaskActionsScreen` | Confirmations and carry-over |
+| `/settings/task-defaults/autocomplete` | `DefaultsAutocompleteScreen` | Suggestions on/off and how many |
 
 ## 10. Persistence And External Systems
 
 ### Local Storage
 
 - Database: `sqflite_sqlcipher` (mobile, AES-256 encrypted) + `sqflite_common_ffi` with SQLCipher (desktop)
-- Key-value storage: None
+- Key-value storage: `shared_preferences` for appearance, language, time-tracking and task-default settings, plus the transient paused-timer marks and the "carry-over last asked on" date. No user task data is ever stored here.
+- Schema version: 9. Migration v9 adds `todos.priority` (TEXT, not null, default `normal`) and `todos.target_seconds` (INTEGER, nullable), plus an `idx_todos_priority` index on `(date, priority)`. It is guarded by a `PRAGMA table_info` check, so it is safe to run twice. A backup made by an older build restores as an older database and is upgraded on open; an older P2P peer or handoff file has both columns defaulted in `P2pSyncPayload`.
 - Secure storage: Android Keystore (Android) / Windows DPAPI (Windows) for the device-derived database encryption key
 
 ### Network
@@ -198,6 +261,10 @@ Use-cases exist only for multi-step business orchestrations:
 - `sqflite_common_ffi`: FFI to SQLCipher shared library (desktop)
 - `path_provider`: Platform channel to resolve app documents directory
 - `file_picker`: Platform channel for file selection dialogs (backup export/import)
+- `in.sreerajp.todo/database_key`: Own channel to the Android Keystore for the database key
+- `in.sreerajp.todo/screen_wake`: Own channel setting and clearing `FLAG_KEEP_SCREEN_ON` while a timer runs (Android only). Written as a channel rather than a package so the audited dependency list stays unchanged
+- `in.sreerajp.todo/app_lock`: Own channel for `FLAG_SECURE` and the device unlock screen (Android only)
+- `in.sreerajp.todo/speech` and `in.sreerajp.todo/speech_events`: Own method and event channel pair over Android `SpeechRecognizer`, for the voice task sheet (Android only). The host always asks for the on-device engine and refuses to listen when it cannot, so the offline guarantee holds; see `docs/security.md` section 10. Written as a channel rather than a package for the same reason as the two above
 
 ## 11. Environment And Build Model
 

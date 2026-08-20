@@ -168,7 +168,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
       builder: (ctx) {
         final theme = Theme.of(ctx);
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           title: Row(
             children: [
               Icon(Icons.sync_outlined, color: theme.colorScheme.primary),
@@ -216,12 +218,18 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.lock_clock, color: Colors.amber, size: 20),
+                        const Icon(
+                          Icons.lock_clock,
+                          color: Colors.amber,
+                          size: 20,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             '${result.dayLockViolations} past-day items skipped due to Day-Lock immutability.',
-                            style: theme.textTheme.bodySmall?.copyWith(color: Colors.amber.shade900),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.amber.shade900,
+                            ),
                           ),
                         ),
                       ],
@@ -262,7 +270,10 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
           ),
           Text(
             '+$added added',
-            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              color: Colors.green,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(width: 8),
           Text(
@@ -291,10 +302,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [
-          _buildHostTab(theme),
-          _buildPeerTab(theme),
-        ],
+        children: [_buildHostTab(theme), _buildPeerTab(theme)],
       ),
     );
   }
@@ -307,7 +315,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
         children: [
           Card(
             elevation: 2,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -323,7 +333,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                           shape: BoxShape.circle,
                         ),
                         child: Icon(
-                          _isHostRunning ? Icons.wifi_tethering : Icons.portable_wifi_off,
+                          _isHostRunning
+                              ? Icons.wifi_tethering
+                              : Icons.portable_wifi_off,
                           color: _isHostRunning ? Colors.green : Colors.grey,
                           size: 32,
                         ),
@@ -334,7 +346,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _isHostRunning ? 'Host Server Active' : 'Host Server Stopped',
+                              _isHostRunning
+                                  ? 'Host Server Active'
+                                  : 'Host Server Stopped',
                               style: theme.textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -360,21 +374,42 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                       children: [
                         Column(
                           children: [
-                            const Text('PAIRING PIN', style: TextStyle(fontSize: 10, letterSpacing: 1.2, color: Colors.grey)),
+                            const Text(
+                              'PAIRING PIN',
+                              style: TextStyle(
+                                fontSize: 10,
+                                letterSpacing: 1.2,
+                                color: Colors.grey,
+                              ),
+                            ),
                             const SizedBox(height: 4),
                             SelectableText(
                               _pairingPin,
-                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, letterSpacing: 4),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 4,
+                              ),
                             ),
                           ],
                         ),
                         Column(
                           children: [
-                            const Text('PORT', style: TextStyle(fontSize: 10, letterSpacing: 1.2, color: Colors.grey)),
+                            const Text(
+                              'PORT',
+                              style: TextStyle(
+                                fontSize: 10,
+                                letterSpacing: 1.2,
+                                color: Colors.grey,
+                              ),
+                            ),
                             const SizedBox(height: 4),
                             Text(
                               '$_hostPort',
-                              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),
@@ -397,7 +432,11 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                       onPressed: () {
                         Clipboard.setData(ClipboardData(text: _qrPayload));
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Pairing payload copied to clipboard!')),
+                          const SnackBar(
+                            content: Text(
+                              'Pairing payload copied to clipboard!',
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -407,7 +446,12 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
             ),
           ),
           const SizedBox(height: 20),
-          Text('Select Sync Scope', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            'Select Sync Scope',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 8),
           _buildScopeSelector(
             scope: _hostScope,
@@ -421,13 +465,21 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 14),
-              backgroundColor: _isHostRunning ? Colors.redAccent : theme.colorScheme.primary,
+              backgroundColor: _isHostRunning
+                  ? Colors.redAccent
+                  : theme.colorScheme.primary,
               foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
             onPressed: _toggleHostServer,
-            icon: Icon(_isHostRunning ? Icons.stop_circle_outlined : Icons.play_arrow),
-            label: Text(_isHostRunning ? 'Stop Host Server' : 'Start Host Server'),
+            icon: Icon(
+              _isHostRunning ? Icons.stop_circle_outlined : Icons.play_arrow,
+            ),
+            label: Text(
+              _isHostRunning ? 'Stop Host Server' : 'Start Host Server',
+            ),
           ),
         ],
       ),
@@ -442,7 +494,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
         children: [
           Card(
             elevation: 2,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -450,7 +504,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                 children: [
                   Text(
                     'Connect to Host Device',
-                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   TextField(
@@ -499,7 +555,12 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
             ),
           ),
           const SizedBox(height: 20),
-          Text('Requested Sync Scope', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+          Text(
+            'Requested Sync Scope',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 8),
           _buildScopeSelector(
             scope: _peerScope,
@@ -513,14 +574,21 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
           if (_isPeerSyncing) ...[
             const Center(child: CircularProgressIndicator()),
             const SizedBox(height: 12),
-            Center(child: Text(_peerStatusMessage, style: theme.textTheme.bodyMedium)),
+            Center(
+              child: Text(
+                _peerStatusMessage,
+                style: theme.textTheme.bodyMedium,
+              ),
+            ),
           ] else
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 backgroundColor: theme.colorScheme.primary,
                 foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
               ),
               onPressed: _startPeerSync,
               icon: const Icon(Icons.sync_outlined),
@@ -550,14 +618,16 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
             title: const Text('Time Segments'),
             subtitle: const Text('Sync tracked time duration logs'),
             value: scope.timeSegments,
-            onChanged: (v) => onChanged(scope.copyWith(timeSegments: v ?? true)),
+            onChanged: (v) =>
+                onChanged(scope.copyWith(timeSegments: v ?? true)),
           ),
           const Divider(height: 1),
           CheckboxListTile(
             title: const Text('Recurrence Rules'),
             subtitle: const Text('Sync iCalendar RRULE task schedules'),
             value: scope.recurrenceRules,
-            onChanged: (v) => onChanged(scope.copyWith(recurrenceRules: v ?? true)),
+            onChanged: (v) =>
+                onChanged(scope.copyWith(recurrenceRules: v ?? true)),
           ),
           const Divider(height: 1),
           CheckboxListTile(

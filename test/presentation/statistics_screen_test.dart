@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/intl.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
@@ -17,10 +18,15 @@ class MockStatisticsQueryService extends Mock
     implements StatisticsQueryService {}
 
 void main() {
-  late MockStatisticsQueryService service;
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() {
+  late MockStatisticsQueryService service;
+  late SharedPreferences prefs;
+
+  setUp(() async {
     service = MockStatisticsQueryService();
+    SharedPreferences.setMockInitialValues(const {});
+    prefs = await SharedPreferences.getInstance();
 
     when(
       () => service.getCountsPerDay(
@@ -83,6 +89,7 @@ void main() {
       () => service.getSummaryStats(
         startDate: any(named: 'startDate'),
         endDate: any(named: 'endDate'),
+        workingDays: any(named: 'workingDays'),
       ),
     ).thenAnswer((invocation) async {
       final startDate = invocation.namedArguments[#startDate] as String?;
@@ -184,10 +191,15 @@ void main() {
 
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [statisticsQueryServiceProvider.overrideWithValue(service)],
+        overrides: [
+          statisticsQueryServiceProvider.overrideWithValue(service),
+          // The statistics notifier reads the working-day setting, which comes
+          // from preferences.
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
         child: MaterialApp(
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
           themeMode: themeMode,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,

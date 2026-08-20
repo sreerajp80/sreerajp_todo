@@ -12,12 +12,16 @@ import 'package:sreerajp_todo/data/models/statistics_models.dart';
 const String _kErrorSentinel = 'error';
 
 class StatisticsNotifier extends StateNotifier<StatisticsState> {
-  StatisticsNotifier(this._statisticsQueryService)
+  StatisticsNotifier(this._statisticsQueryService, {required this.workingDays})
     : super(const StatisticsState()) {
     refresh();
   }
 
   final StatisticsQueryService _statisticsQueryService;
+
+  /// The weekdays the user counts as working days, read fresh on every load so
+  /// a change on the settings page shows up on the next refresh.
+  final Set<int> Function() workingDays;
 
   _DailyCacheEntry? _dailyCache;
   _PerItemCacheEntry? _perItemCache;
@@ -70,6 +74,7 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
       final summaryStats = await _statisticsQueryService.getSummaryStats(
         startDate: filter.startDate,
         endDate: filter.endDate,
+        workingDays: workingDays(),
       );
       final totalPages = dayCount == 0
           ? 0
@@ -280,8 +285,13 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
     }
   }
 
-  String _dailyCacheKey(int page, _DateFilter filter) =>
-      '${state.dateRange.name}|${filter.startDate ?? ''}|${filter.endDate ?? ''}|$page';
+  String _dailyCacheKey(int page, _DateFilter filter) {
+    // The working days are part of the key, so changing them does not serve a
+    // stale average from the cache.
+    final days = (workingDays().toList()..sort()).join(',');
+    return '${state.dateRange.name}|${filter.startDate ?? ''}'
+        '|${filter.endDate ?? ''}|$page|$days';
+  }
 
   String _perItemCacheKey(int page, String? query) => '${query ?? ''}|$page';
 }

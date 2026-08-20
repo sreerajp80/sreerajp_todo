@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_link_tile.dart';
+import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_nav_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 
 class SettingsScreen extends ConsumerWidget {
@@ -12,104 +11,86 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeMode = ref.watch(themeModeProvider);
-    final locale = ref.watch(localeProvider);
-    final selectedLanguageCode = locale?.languageCode ?? 'system';
+    final l10n = context.l10n;
 
     return Scaffold(
-      appBar: AppBar(title: Text(context.l10n.settingsLabel)),
+      appBar: AppBar(title: Text(l10n.settingsLabel)),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          AppSectionCard(
-            title: context.l10n.settingsAppearance,
-            subtitle: context.l10n.settingsThemeMode,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SegmentedButton<ThemeMode>(
-                segments: [
-                  ButtonSegment(
-                    value: ThemeMode.system,
-                    label: Text(context.l10n.settingsFollowSystem),
-                    icon: const Icon(Icons.brightness_auto_outlined),
-                  ),
-                  ButtonSegment(
-                    value: ThemeMode.light,
-                    label: Text(context.l10n.settingsLight),
-                    icon: const Icon(Icons.light_mode_outlined),
-                  ),
-                  ButtonSegment(
-                    value: ThemeMode.dark,
-                    label: Text(context.l10n.settingsDark),
-                    icon: const Icon(Icons.dark_mode_outlined),
-                  ),
-                ],
-                selected: {themeMode},
-                onSelectionChanged: (selection) {
-                  ref.read(themeModeProvider.notifier).state = selection.first;
-                },
-              ),
-            ),
+          SettingsNavCard(
+            icon: Icons.palette_outlined,
+            title: l10n.settingsAppearance,
+            subtitle: l10n.settingsAppearanceSubtitle,
+            onTap: () => context.push(AppRoutes.appearance),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.stars_outlined,
+            title: l10n.settingsFeatures,
+            subtitle: l10n.settingsFeaturesSubtitle,
+            onTap: () => context.push(AppRoutes.features),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.help_outline_rounded,
+            title: l10n.settingsHelp,
+            subtitle: l10n.settingsHelpSubtitle,
+            onTap: () => context.push(AppRoutes.help),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.language_outlined,
+            title: l10n.settingsLanguage,
+            subtitle: l10n.settingsLanguageSubtitle,
+            onTap: () => context.push(AppRoutes.language),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.checklist_rounded,
+            title: l10n.settingsTaskDefaults,
+            subtitle: l10n.settingsTaskDefaultsSubtitle,
+            onTap: () => context.push(AppRoutes.taskDefaults),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.event_available_outlined,
+            title: l10n.settingsDateTime,
+            subtitle: l10n.settingsDateTimeSubtitle,
+            onTap: () => context.push(AppRoutes.dateTime),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.timer_outlined,
+            title: l10n.settingsTimeTracking,
+            subtitle: l10n.settingsTimeTrackingSubtitle,
+            onTap: () => context.push(AppRoutes.timeTracking),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.backup_rounded,
+            title: l10n.backupLabel,
+            subtitle: l10n.settingsBackupSubtitle,
+            onTap: () => context.push(AppRoutes.backup),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.shield_outlined,
+            title: l10n.settingsPermissions,
+            subtitle: l10n.settingsPermissionsSubtitle,
+            onTap: () => context.push(AppRoutes.permissions),
+          ),
+          const SizedBox(height: 16),
+          SettingsNavCard(
+            icon: Icons.info_outline_rounded,
+            title: l10n.settingsAboutApp,
+            subtitle: l10n.settingsAboutSubtitle,
+            onTap: () => context.push(AppRoutes.about),
           ),
           const SizedBox(height: 16),
           AppSectionCard(
-            title: context.l10n.settingsLanguage,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SegmentedButton<String>(
-                segments: [
-                  ButtonSegment(
-                    value: 'system',
-                    label: Text(context.l10n.settingsLanguageSystem),
-                    icon: const Icon(Icons.language_outlined),
-                  ),
-                  ButtonSegment(
-                    value: 'en',
-                    label: Text(context.l10n.settingsLanguageEnglish),
-                    icon: const Icon(Icons.abc_outlined),
-                  ),
-                  ButtonSegment(
-                    value: 'ml',
-                    label: Text(context.l10n.settingsLanguageMalayalam),
-                    icon: const Icon(Icons.translate_outlined),
-                  ),
-                ],
-                selected: {selectedLanguageCode},
-                onSelectionChanged: (selection) {
-                  ref.read(localeProvider.notifier).setLocale(selection.first);
-                },
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: context.l10n.settingsShortcuts,
-            child: Column(
-              children: [
-                SettingsLinkTile(
-                  icon: Icons.backup_rounded,
-                  title: context.l10n.backupLabel,
-                  onTap: () => context.push(AppRoutes.backup),
-                ),
-                const Divider(height: 20),
-                SettingsLinkTile(
-                  icon: Icons.shield_outlined,
-                  title: context.l10n.settingsPermissions,
-                  onTap: () => context.push(AppRoutes.permissions),
-                ),
-                const Divider(height: 20),
-                SettingsLinkTile(
-                  icon: Icons.info_outline_rounded,
-                  title: context.l10n.settingsAboutApp,
-                  onTap: () => context.push(AppRoutes.about),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: context.l10n.settingsOfflineTitle,
-            child: Text(context.l10n.settingsOfflineBody),
+            title: l10n.settingsOfflineTitle,
+            child: Text(l10n.settingsOfflineBody),
           ),
         ],
       ),

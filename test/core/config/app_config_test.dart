@@ -16,10 +16,7 @@ void main() {
         'description': 'Test Description',
         'version': '2.0.0',
         'build': '42',
-        'details': {
-          'Author': 'Tester',
-          'License': 'MIT',
-        },
+        'details': {'Author': 'Tester', 'License': 'MIT'},
       };
 
       final config = AppConfig.fromJson(json);
@@ -33,10 +30,7 @@ void main() {
     });
 
     test('fromJson falls back on missing or wrong type fields', () {
-      final json = {
-        'appName': 12345,
-        'details': 'not a map',
-      };
+      final json = {'appName': 12345, 'details': 'not a map'};
 
       final config = AppConfig.fromJson(json);
 

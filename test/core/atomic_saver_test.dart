@@ -18,34 +18,40 @@ void main() {
     }
   });
 
-  test('replaceFileAtomically replaces target file when target exists', () async {
-    final targetPath = p.join(tempDir.path, 'live.db');
-    final sourcePath = p.join(tempDir.path, 'new.db');
+  test(
+    'replaceFileAtomically replaces target file when target exists',
+    () async {
+      final targetPath = p.join(tempDir.path, 'live.db');
+      final sourcePath = p.join(tempDir.path, 'new.db');
 
-    await File(targetPath).writeAsString('old_data');
-    await File(sourcePath).writeAsString('new_data');
+      await File(targetPath).writeAsString('old_data');
+      await File(sourcePath).writeAsString('new_data');
 
-    await AtomicSaver.replaceFileAtomically(
-      sourcePath: sourcePath,
-      targetPath: targetPath,
-    );
+      await AtomicSaver.replaceFileAtomically(
+        sourcePath: sourcePath,
+        targetPath: targetPath,
+      );
 
-    expect(await File(targetPath).readAsString(), equals('new_data'));
-  });
+      expect(await File(targetPath).readAsString(), equals('new_data'));
+    },
+  );
 
-  test('replaceFileAtomically creates target file when target does not exist', () async {
-    final targetPath = p.join(tempDir.path, 'live.db');
-    final sourcePath = p.join(tempDir.path, 'new.db');
+  test(
+    'replaceFileAtomically creates target file when target does not exist',
+    () async {
+      final targetPath = p.join(tempDir.path, 'live.db');
+      final sourcePath = p.join(tempDir.path, 'new.db');
 
-    await File(sourcePath).writeAsString('new_data');
+      await File(sourcePath).writeAsString('new_data');
 
-    await AtomicSaver.replaceFileAtomically(
-      sourcePath: sourcePath,
-      targetPath: targetPath,
-    );
+      await AtomicSaver.replaceFileAtomically(
+        sourcePath: sourcePath,
+        targetPath: targetPath,
+      );
 
-    expect(await File(targetPath).readAsString(), equals('new_data'));
-  });
+      expect(await File(targetPath).readAsString(), equals('new_data'));
+    },
+  );
 
   test('replaceFileAtomically deletes auxiliary files', () async {
     final targetPath = p.join(tempDir.path, 'live.db');

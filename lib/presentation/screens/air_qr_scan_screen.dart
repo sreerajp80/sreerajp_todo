@@ -113,10 +113,7 @@ class _AirQrScanScreenState extends State<AirQrScanScreen> {
 
     // Return the parsed payload & decision back to calling screen
     if (mounted) {
-      Navigator.of(context).pop({
-        'payload': parsed,
-        'decision': decision,
-      });
+      Navigator.of(context).pop({'payload': parsed, 'decision': decision});
     }
   }
 

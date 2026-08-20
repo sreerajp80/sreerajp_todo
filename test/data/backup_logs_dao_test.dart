@@ -26,37 +26,40 @@ void main() {
     }
   });
 
-  test('insertLog and getAllLogs return logs ordered by timestamp DESC', () async {
-    const log1 = BackupLogEntity(
-      id: 'log-1',
-      timestamp: '2026-08-10T10:00:00.000Z',
-      status: 'success',
-      filePath: '/path/backup1.db.aes',
-      fileSizeBytes: 1024,
-      triggerType: 'manual',
-      diagnosticMessage: 'Success log 1',
-      createdAt: '2026-08-10T10:00:00.000Z',
-    );
+  test(
+    'insertLog and getAllLogs return logs ordered by timestamp DESC',
+    () async {
+      const log1 = BackupLogEntity(
+        id: 'log-1',
+        timestamp: '2026-08-10T10:00:00.000Z',
+        status: 'success',
+        filePath: '/path/backup1.db.aes',
+        fileSizeBytes: 1024,
+        triggerType: 'manual',
+        diagnosticMessage: 'Success log 1',
+        createdAt: '2026-08-10T10:00:00.000Z',
+      );
 
-    const log2 = BackupLogEntity(
-      id: 'log-2',
-      timestamp: '2026-08-10T12:00:00.000Z',
-      status: 'success',
-      filePath: '/path/backup2.db.aes',
-      fileSizeBytes: 2048,
-      triggerType: 'scheduled',
-      diagnosticMessage: 'Success log 2',
-      createdAt: '2026-08-10T12:00:00.000Z',
-    );
+      const log2 = BackupLogEntity(
+        id: 'log-2',
+        timestamp: '2026-08-10T12:00:00.000Z',
+        status: 'success',
+        filePath: '/path/backup2.db.aes',
+        fileSizeBytes: 2048,
+        triggerType: 'scheduled',
+        diagnosticMessage: 'Success log 2',
+        createdAt: '2026-08-10T12:00:00.000Z',
+      );
 
-    await dao.insertLog(log1);
-    await dao.insertLog(log2);
+      await dao.insertLog(log1);
+      await dao.insertLog(log2);
 
-    final logs = await dao.getAllLogs();
-    expect(logs, hasLength(2));
-    expect(logs.first.id, equals('log-2'));
-    expect(logs.last.id, equals('log-1'));
-  });
+      final logs = await dao.getAllLogs();
+      expect(logs, hasLength(2));
+      expect(logs.first.id, equals('log-2'));
+      expect(logs.last.id, equals('log-1'));
+    },
+  );
 
   test('getLatestLog returns the most recent log entry', () async {
     const log1 = BackupLogEntity(

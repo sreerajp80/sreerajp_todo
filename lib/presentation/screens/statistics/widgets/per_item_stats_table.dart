@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
+import 'package:sreerajp_todo/presentation/shared/utils/tracked_duration_format.dart';
 
 class PerItemSelectorCard extends StatelessWidget {
   const PerItemSelectorCard({
@@ -81,7 +81,7 @@ class PerItemSelectorCard extends StatelessWidget {
           Text(
             selectedStat == null
                 ? context.l10n.statsSelectTaskToViewHistory
-                : '${context.l10n.totalTime}: ${formatDuration(selectedStat.totalSeconds)} / ${context.l10n.statsAppearances}: ${selectedStat.appearances}',
+                : '${context.l10n.totalTime}: ${context.trackedDuration(selectedStat.totalSeconds)} / ${context.l10n.statsAppearances}: ${selectedStat.appearances}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurfaceVariant,
             ),
@@ -203,7 +203,7 @@ class PerItemStatsTable extends StatelessWidget {
                               onTap: () => onSelectTitle(stat.title),
                             ),
                             DataCell(
-                              Text(formatDuration(stat.totalSeconds)),
+                              Text(context.trackedDuration(stat.totalSeconds)),
                               onTap: () => onSelectTitle(stat.title),
                             ),
                           ],
@@ -301,7 +301,7 @@ class _CompactPerItemTile extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                '${context.l10n.totalTime}: ${formatDuration(stat.totalSeconds)}',
+                '${context.l10n.totalTime}: ${context.trackedDuration(stat.totalSeconds)}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),

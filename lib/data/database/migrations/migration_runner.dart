@@ -6,6 +6,8 @@ import 'package:sreerajp_todo/data/database/migrations/migration_v4.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v5.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v6.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v7.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v8.dart';
+import 'package:sreerajp_todo/data/database/migrations/migration_v9.dart';
 
 Future<void> runDatabaseMigrations(
   Database db,
@@ -63,5 +65,14 @@ Future<void> runDatabaseMigrations(
     await runMigrationV7(db);
     await db.execute('PRAGMA user_version = 7');
   }
-}
 
+  if (oldVersion < 8 && newVersion >= 8) {
+    await runMigrationV8(db);
+    await db.execute('PRAGMA user_version = 8');
+  }
+
+  if (oldVersion < 9 && newVersion >= 9) {
+    await runMigrationV9(db);
+    await db.execute('PRAGMA user_version = 9');
+  }
+}

@@ -13,8 +13,7 @@ import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 
 class MockTodoRepository extends Mock implements TodoRepository {}
 
-class MockTimeSegmentRepository extends Mock
-    implements TimeSegmentRepository {}
+class MockTimeSegmentRepository extends Mock implements TimeSegmentRepository {}
 
 void main() {
   late DataHandoffService service;
@@ -80,7 +79,10 @@ void main() {
       expect(parsedPayload.todos.length, equals(1));
       expect(parsedPayload.todos.first.title, equals('Test Task 1'));
       expect(parsedPayload.todos.first.subTasks.length, equals(1));
-      expect(parsedPayload.todos.first.subTasks.first.title, equals('Subtask A'));
+      expect(
+        parsedPayload.todos.first.subTasks.first.title,
+        equals('Subtask A'),
+      );
     });
   });
 
@@ -116,8 +118,10 @@ void main() {
       expect(mdString, contains('## Timecard Statistics'));
     });
 
-    test('parseMarkdownChecklist parses tasks, subtasks, notes, and applies NFC normalization', () {
-      const rawMd = '''
+    test(
+      'parseMarkdownChecklist parses tasks, subtasks, notes, and applies NFC normalization',
+      () {
+        const rawMd = '''
 - [ ] Task One
   - [ ] Subtask 1A
   - [x] Subtask 1B
@@ -125,83 +129,91 @@ void main() {
   > Note for task two
 ''';
 
-      final parsed = service.parseMarkdownChecklist(
-        rawMd,
-        targetDate: '2026-08-11',
-      );
+        final parsed = service.parseMarkdownChecklist(
+          rawMd,
+          targetDate: '2026-08-11',
+        );
 
-      expect(parsed.length, equals(2));
-      expect(parsed[0].title, equals('Task One'));
-      expect(parsed[0].status, equals(TodoStatus.pending));
-      expect(parsed[0].subTasks.length, equals(2));
-      expect(parsed[0].subTasks[0].title, equals('Subtask 1A'));
-      expect(parsed[0].subTasks[0].isCompleted, isFalse);
-      expect(parsed[0].subTasks[1].title, equals('Subtask 1B'));
-      expect(parsed[0].subTasks[1].isCompleted, isTrue);
+        expect(parsed.length, equals(2));
+        expect(parsed[0].title, equals('Task One'));
+        expect(parsed[0].status, equals(TodoStatus.pending));
+        expect(parsed[0].subTasks.length, equals(2));
+        expect(parsed[0].subTasks[0].title, equals('Subtask 1A'));
+        expect(parsed[0].subTasks[0].isCompleted, isFalse);
+        expect(parsed[0].subTasks[1].title, equals('Subtask 1B'));
+        expect(parsed[0].subTasks[1].isCompleted, isTrue);
 
-      expect(parsed[1].title, equals('Task Two'));
-      expect(parsed[1].status, equals(TodoStatus.completed));
-      expect(parsed[1].description, equals('Note for task two'));
-    });
+        expect(parsed[1].title, equals('Task Two'));
+        expect(parsed[1].status, equals(TodoStatus.completed));
+        expect(parsed[1].description, equals('Note for task two'));
+      },
+    );
   });
 
   group('DataHandoffService Import & Day-Lock Enforcement', () {
-    test('importPayload throws DayLockedException when importing to past date', () async {
-      const payload = DataHandoffPayload(
-        date: '2020-01-01',
-        exportedAt: '2020-01-01T00:00:00.000',
-        todos: [
-          TodoEntity(
-            id: 't1',
-            date: '2020-01-01',
-            title: 'Past Task',
-            createdAt: '2020-01-01T00:00:00.000',
-            updatedAt: '2020-01-01T00:00:00.000',
-          ),
-        ],
-      );
+    test(
+      'importPayload throws DayLockedException when importing to past date',
+      () async {
+        const payload = DataHandoffPayload(
+          date: '2020-01-01',
+          exportedAt: '2020-01-01T00:00:00.000',
+          todos: [
+            TodoEntity(
+              id: 't1',
+              date: '2020-01-01',
+              title: 'Past Task',
+              createdAt: '2020-01-01T00:00:00.000',
+              updatedAt: '2020-01-01T00:00:00.000',
+            ),
+          ],
+        );
 
-      expect(
-        () => service.importPayload(
+        expect(
+          () => service.importPayload(
+            payload,
+            targetDate: '2020-01-01',
+            todoRepo: mockTodoRepo,
+            segmentRepo: mockSegmentRepo,
+          ),
+          throwsA(isA<DayLockedException>()),
+        );
+      },
+    );
+
+    test(
+      'importPayload creates tasks on current/future date with title deduplication',
+      () async {
+        final today = todayAsIso();
+        final payload = DataHandoffPayload(
+          date: today,
+          exportedAt: DateTime.now().toIso8601String(),
+          todos: [
+            TodoEntity(
+              id: 't1',
+              date: today,
+              title: 'Imported Task',
+              createdAt: DateTime.now().toIso8601String(),
+              updatedAt: DateTime.now().toIso8601String(),
+            ),
+          ],
+        );
+
+        when(() => mockTodoRepo.maxSortOrder(today)).thenAnswer((_) async => 0);
+        when(
+          () => mockTodoRepo.titleExistsOnDate('Imported Task', today),
+        ).thenAnswer((_) async => false);
+        when(() => mockTodoRepo.createTodo(any())).thenAnswer((_) async {});
+
+        final importedCount = await service.importPayload(
           payload,
-          targetDate: '2020-01-01',
+          targetDate: today,
           todoRepo: mockTodoRepo,
           segmentRepo: mockSegmentRepo,
-        ),
-        throwsA(isA<DayLockedException>()),
-      );
-    });
+        );
 
-    test('importPayload creates tasks on current/future date with title deduplication', () async {
-      final today = todayAsIso();
-      final payload = DataHandoffPayload(
-        date: today,
-        exportedAt: DateTime.now().toIso8601String(),
-        todos: [
-          TodoEntity(
-            id: 't1',
-            date: today,
-            title: 'Imported Task',
-            createdAt: DateTime.now().toIso8601String(),
-            updatedAt: DateTime.now().toIso8601String(),
-          ),
-        ],
-      );
-
-      when(() => mockTodoRepo.maxSortOrder(today)).thenAnswer((_) async => 0);
-      when(() => mockTodoRepo.titleExistsOnDate('Imported Task', today))
-          .thenAnswer((_) async => false);
-      when(() => mockTodoRepo.createTodo(any())).thenAnswer((_) async {});
-
-      final importedCount = await service.importPayload(
-        payload,
-        targetDate: today,
-        todoRepo: mockTodoRepo,
-        segmentRepo: mockSegmentRepo,
-      );
-
-      expect(importedCount, equals(1));
-      verify(() => mockTodoRepo.createTodo(any())).called(1);
-    });
+        expect(importedCount, equals(1));
+        verify(() => mockTodoRepo.createTodo(any())).called(1);
+      },
+    );
   });
 }

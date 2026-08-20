@@ -160,7 +160,7 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 - **Do not upgrade packages** without running `flutter analyze` and all tests afterwards.
 - **Android Gradle Plugin:** Stay on AGP **8.x**.
 - **Blocked package categories:** HTTP clients, WebSockets, Cloud/BaaS SDKs, Analytics, Crash reporting, Ads, Network status packages.
-- **Approved local-only packages:** `sqflite_sqlcipher`, `sqflite_common_ffi`, `path`, `path_provider`, `flutter_riverpod`, `go_router`, `intl`, `fl_chart`, `table_calendar`, `uuid`, `flutter_localizations`, `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner`, `mocktail`, `flutter_test`, `unorm_dart`, `file_picker`, `flutter_native_splash`, `rrule`, `shared_preferences`.
+- **Approved local-only packages:** `sqflite_sqlcipher`, `sqflite_common_ffi`, `path`, `path_provider`, `flutter_riverpod`, `go_router`, `intl`, `fl_chart`, `table_calendar`, `uuid`, `flutter_localizations`, `characters`, `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner`, `mocktail`, `flutter_test`, `unorm_dart`, `file_picker`, `flutter_native_splash`, `rrule`, `shared_preferences`.
 
 ---
 

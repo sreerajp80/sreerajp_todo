@@ -25,8 +25,9 @@ class AirQrProgress {
     this.errorMessage,
   });
 
-  double get progressRatio =>
-      totalBlocks > 0 ? (receivedBlockCount / totalBlocks).clamp(0.0, 1.0) : 0.0;
+  double get progressRatio => totalBlocks > 0
+      ? (receivedBlockCount / totalBlocks).clamp(0.0, 1.0)
+      : 0.0;
 
   int get progressPercent => (progressRatio * 100).round();
 

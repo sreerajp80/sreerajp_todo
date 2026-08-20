@@ -54,7 +54,9 @@ void main() {
 
     test('finds due items on or before date', () async {
       await srsDao.insert(makeItem(id: 'srs-1', nextReviewDate: '2026-08-10'));
-      await srsDao.insert(makeItem(id: 'srs-2', title: 'Item 2', nextReviewDate: '2026-08-15'));
+      await srsDao.insert(
+        makeItem(id: 'srs-2', title: 'Item 2', nextReviewDate: '2026-08-15'),
+      );
 
       final dueItems = await srsDao.findDueOnOrBefore('2026-08-10');
       expect(dueItems.length, 1);
@@ -65,7 +67,11 @@ void main() {
       await srsDao.insert(makeItem());
       final item = await srsDao.findById('srs-1');
 
-      final updated = item!.copyWith(level: 2, intervalDays: 14, nextReviewDate: '2026-08-24');
+      final updated = item!.copyWith(
+        level: 2,
+        intervalDays: 14,
+        nextReviewDate: '2026-08-24',
+      );
       await srsDao.update(updated);
 
       final fetched = await srsDao.findById('srs-1');

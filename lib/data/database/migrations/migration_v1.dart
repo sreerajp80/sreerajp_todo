@@ -26,6 +26,8 @@ Future<void> runMigrationV1(Database db) async {
       source_date TEXT,
       recurrence_rule_id TEXT,
       sort_order INTEGER NOT NULL DEFAULT 0,
+      priority TEXT NOT NULL DEFAULT 'normal',
+      target_seconds INTEGER,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL,
       UNIQUE (date, title),
@@ -50,6 +52,7 @@ Future<void> runMigrationV1(Database db) async {
   await db.execute('CREATE INDEX idx_todos_date ON todos (date)');
   await db.execute('CREATE INDEX idx_todos_title ON todos (title)');
   await db.execute('CREATE INDEX idx_todos_status ON todos (status)');
+  await db.execute('CREATE INDEX idx_todos_priority ON todos (date, priority)');
   await db.execute(
     'CREATE INDEX idx_todos_recurrence ON todos (recurrence_rule_id)',
   );

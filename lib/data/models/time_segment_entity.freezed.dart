@@ -24,6 +24,7 @@ mixin _$TimeSegmentEntity {
   int? get durationSeconds => throw _privateConstructorUsedError;
   bool get interrupted => throw _privateConstructorUsedError;
   bool get manual => throw _privateConstructorUsedError;
+  String? get notes => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
 
   /// Create a copy of TimeSegmentEntity
@@ -48,6 +49,7 @@ abstract class $TimeSegmentEntityCopyWith<$Res> {
     int? durationSeconds,
     bool interrupted,
     bool manual,
+    String? notes,
     String createdAt,
   });
 }
@@ -74,6 +76,7 @@ class _$TimeSegmentEntityCopyWithImpl<$Res, $Val extends TimeSegmentEntity>
     Object? durationSeconds = freezed,
     Object? interrupted = null,
     Object? manual = null,
+    Object? notes = freezed,
     Object? createdAt = null,
   }) {
     return _then(
@@ -106,6 +109,10 @@ class _$TimeSegmentEntityCopyWithImpl<$Res, $Val extends TimeSegmentEntity>
                 ? _value.manual
                 : manual // ignore: cast_nullable_to_non_nullable
                       as bool,
+            notes: freezed == notes
+                ? _value.notes
+                : notes // ignore: cast_nullable_to_non_nullable
+                      as String?,
             createdAt: null == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
@@ -133,6 +140,7 @@ abstract class _$$TimeSegmentEntityImplCopyWith<$Res>
     int? durationSeconds,
     bool interrupted,
     bool manual,
+    String? notes,
     String createdAt,
   });
 }
@@ -158,6 +166,7 @@ class __$$TimeSegmentEntityImplCopyWithImpl<$Res>
     Object? durationSeconds = freezed,
     Object? interrupted = null,
     Object? manual = null,
+    Object? notes = freezed,
     Object? createdAt = null,
   }) {
     return _then(
@@ -190,6 +199,10 @@ class __$$TimeSegmentEntityImplCopyWithImpl<$Res>
             ? _value.manual
             : manual // ignore: cast_nullable_to_non_nullable
                   as bool,
+        notes: freezed == notes
+            ? _value.notes
+            : notes // ignore: cast_nullable_to_non_nullable
+                  as String?,
         createdAt: null == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
@@ -210,6 +223,7 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
     this.durationSeconds,
     this.interrupted = false,
     this.manual = false,
+    this.notes,
     required this.createdAt,
   }) : super._();
 
@@ -230,11 +244,13 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
   @JsonKey()
   final bool manual;
   @override
+  final String? notes;
+  @override
   final String createdAt;
 
   @override
   String toString() {
-    return 'TimeSegmentEntity(id: $id, todoId: $todoId, startTime: $startTime, endTime: $endTime, durationSeconds: $durationSeconds, interrupted: $interrupted, manual: $manual, createdAt: $createdAt)';
+    return 'TimeSegmentEntity(id: $id, todoId: $todoId, startTime: $startTime, endTime: $endTime, durationSeconds: $durationSeconds, interrupted: $interrupted, manual: $manual, notes: $notes, createdAt: $createdAt)';
   }
 
   @override
@@ -252,6 +268,7 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
             (identical(other.interrupted, interrupted) ||
                 other.interrupted == interrupted) &&
             (identical(other.manual, manual) || other.manual == manual) &&
+            (identical(other.notes, notes) || other.notes == notes) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -266,6 +283,7 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
     durationSeconds,
     interrupted,
     manual,
+    notes,
     createdAt,
   );
 
@@ -290,6 +308,7 @@ abstract class _TimeSegmentEntity extends TimeSegmentEntity {
     final int? durationSeconds,
     final bool interrupted,
     final bool manual,
+    final String? notes,
     required final String createdAt,
   }) = _$TimeSegmentEntityImpl;
   const _TimeSegmentEntity._() : super._();
@@ -308,6 +327,8 @@ abstract class _TimeSegmentEntity extends TimeSegmentEntity {
   bool get interrupted;
   @override
   bool get manual;
+  @override
+  String? get notes;
   @override
   String get createdAt;
 

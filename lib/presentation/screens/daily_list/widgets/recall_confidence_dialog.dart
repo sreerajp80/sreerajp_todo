@@ -80,7 +80,8 @@ class RecallConfidenceDialog extends StatelessWidget {
           const SizedBox(height: 8),
           _ConfidenceOptionTile(
             title: 'Easy',
-            subtitle: 'Effortless! Next review: $easyDays days (Lvl ${currentLevel + 1})',
+            subtitle:
+                'Effortless! Next review: $easyDays days (Lvl ${currentLevel + 1})',
             badgeText: '$easyDays d',
             color: Colors.green.shade700,
             onTap: () => Navigator.of(context).pop(RecallConfidence.easy),
@@ -139,10 +140,7 @@ class _ConfidenceOptionTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
+                  Text(subtitle, style: Theme.of(context).textTheme.bodySmall),
                 ],
               ),
             ),

@@ -638,6 +638,30 @@ abstract class AppLocalizations {
   /// **'Duration'**
   String get segmentDuration;
 
+  /// Label for the optional note attached to a time segment.
+  ///
+  /// In en, this message translates to:
+  /// **'Note'**
+  String get segmentNoteLabel;
+
+  /// Placeholder text for the time segment note field.
+  ///
+  /// In en, this message translates to:
+  /// **'What did you work on?'**
+  String get segmentNoteHint;
+
+  /// Tooltip and dialog title for editing a time segment note.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit note'**
+  String get editSegmentNote;
+
+  /// Search result subtitle shown when the match came from a time segment note.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: {note}'**
+  String matchedInNote(String note);
+
   /// Label for automatically recorded time segment.
   ///
   /// In en, this message translates to:
@@ -1418,6 +1442,642 @@ abstract class AppLocalizations {
   /// **'This app works fully offline. Tasks, backups, and statistics stay on this device unless you export a local backup file.'**
   String get settingsOfflineBody;
 
+  /// Subtitle on the Appearance card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme mode, typography, and accent color'**
+  String get settingsAppearanceSubtitle;
+
+  /// Subtitle on the Language card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the language used across the app'**
+  String get settingsLanguageSubtitle;
+
+  /// Subtitle on the Backup card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Export or import an encrypted backup file'**
+  String get settingsBackupSubtitle;
+
+  /// Menu label navigating to Features showcase screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Features'**
+  String get settingsFeatures;
+
+  /// Subtitle on the Features card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore all features of SreerajP ToDo'**
+  String get settingsFeaturesSubtitle;
+
+  /// Menu label navigating to Help Center screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & User Guides'**
+  String get settingsHelp;
+
+  /// Subtitle on the Help card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Guides on time tracking, sync, backups, and FAQs'**
+  String get settingsHelpSubtitle;
+
+  /// Subtitle on the About card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Version, credits, and app details'**
+  String get settingsAboutSubtitle;
+
+  /// Title of the Time tracking settings hub.
+  ///
+  /// In en, this message translates to:
+  /// **'Time tracking'**
+  String get settingsTimeTracking;
+
+  /// Subtitle on the Time tracking card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-stop, pause, Pomodoro, and how time is shown'**
+  String get settingsTimeTrackingSubtitle;
+
+  /// Title of the auto-stop settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-stop the timer'**
+  String get trackingAutoStop;
+
+  /// Subtitle on the auto-stop card.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop a timer that was left running'**
+  String get trackingAutoStopSubtitle;
+
+  /// Auto-stop option: never stop on its own.
+  ///
+  /// In en, this message translates to:
+  /// **'Never'**
+  String get trackingAutoStopOff;
+
+  /// Explains the never option.
+  ///
+  /// In en, this message translates to:
+  /// **'A running timer keeps going until you stop it.'**
+  String get trackingAutoStopOffDetail;
+
+  /// Auto-stop option: stop at the end of the day.
+  ///
+  /// In en, this message translates to:
+  /// **'At midnight'**
+  String get trackingAutoStopMidnight;
+
+  /// Explains the midnight option.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops at the end of the day so tracked time is not lost.'**
+  String get trackingAutoStopMidnightDetail;
+
+  /// Auto-stop option: stop at a chosen time.
+  ///
+  /// In en, this message translates to:
+  /// **'At a set time'**
+  String get trackingAutoStopCustom;
+
+  /// Explains the custom time option.
+  ///
+  /// In en, this message translates to:
+  /// **'Stops at the time you pick below.'**
+  String get trackingAutoStopCustomDetail;
+
+  /// Label for the custom auto-stop time picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop at'**
+  String get trackingAutoStopTime;
+
+  /// Honest note about the offline limit of auto-stop.
+  ///
+  /// In en, this message translates to:
+  /// **'While the app is closed the timer cannot be stopped at that exact moment. It is corrected the next time you open the app.'**
+  String get trackingAutoStopNote;
+
+  /// Message shown when a timer was auto-stopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer stopped automatically'**
+  String get trackingAutoStopped;
+
+  /// Title of the timer behaviour settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer behaviour'**
+  String get trackingTimerBehaviour;
+
+  /// Subtitle on the timer behaviour card.
+  ///
+  /// In en, this message translates to:
+  /// **'One timer at a time, pause, screen, short segments'**
+  String get trackingTimerBehaviourSubtitle;
+
+  /// Switch label for the single timer rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Only one timer at a time'**
+  String get trackingSingleTimer;
+
+  /// Explains the single timer rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting a timer stops any timer running on another task.'**
+  String get trackingSingleTimerDetail;
+
+  /// Message saying how many other timers were stopped to make room for a new one.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Stopped {count} other running timer} other{Stopped {count} other running timers}}'**
+  String trackingStoppedOtherCount(int count);
+
+  /// Switch label for auto-pause on background.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause when the app is closed'**
+  String get trackingAutoPause;
+
+  /// Explains auto-pause on background.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaving the app pauses a running timer. Time already tracked is kept.'**
+  String get trackingAutoPauseDetail;
+
+  /// Switch label for the keep-screen-awake setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the screen on'**
+  String get trackingKeepScreenAwake;
+
+  /// Explains the keep-screen-awake setting.
+  ///
+  /// In en, this message translates to:
+  /// **'The screen stays on while a timer runs. Android only.'**
+  String get trackingKeepScreenAwakeDetail;
+
+  /// Title for the minimum segment length choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Shortest segment to keep'**
+  String get trackingMinimumLength;
+
+  /// Explains the minimum segment length rule.
+  ///
+  /// In en, this message translates to:
+  /// **'A timer you stop sooner than this is thrown away, so a mis-tap does not clutter your log. Manual entries are never touched.'**
+  String get trackingMinimumLengthDetail;
+
+  /// Minimum segment length option: no limit.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep everything'**
+  String get trackingMinimumOff;
+
+  /// Minimum segment length option: 10 seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 10 seconds'**
+  String get trackingMinimum10s;
+
+  /// Minimum segment length option: 30 seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 30 seconds'**
+  String get trackingMinimum30s;
+
+  /// Minimum segment length option: 1 minute.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 1 minute'**
+  String get trackingMinimum1m;
+
+  /// Minimum segment length option: 5 minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Under 5 minutes'**
+  String get trackingMinimum5m;
+
+  /// Message when a short segment was dropped.
+  ///
+  /// In en, this message translates to:
+  /// **'Segment was too short and was not saved'**
+  String get trackingSegmentDiscarded;
+
+  /// Title of the Pomodoro settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Pomodoro'**
+  String get trackingPomodoro;
+
+  /// Subtitle on the Pomodoro card.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus blocks and breaks'**
+  String get trackingPomodoroSubtitle;
+
+  /// Switch label turning Pomodoro on.
+  ///
+  /// In en, this message translates to:
+  /// **'Use focus blocks'**
+  String get trackingPomodoroEnabled;
+
+  /// Explains the Pomodoro switch.
+  ///
+  /// In en, this message translates to:
+  /// **'A running timer becomes a work block that ends on its own.'**
+  String get trackingPomodoroEnabledDetail;
+
+  /// Label for the Pomodoro work block length.
+  ///
+  /// In en, this message translates to:
+  /// **'Work block'**
+  String get trackingPomodoroWork;
+
+  /// Label for the Pomodoro short break length.
+  ///
+  /// In en, this message translates to:
+  /// **'Short break'**
+  String get trackingPomodoroShortBreak;
+
+  /// Label for the Pomodoro long break length.
+  ///
+  /// In en, this message translates to:
+  /// **'Long break'**
+  String get trackingPomodoroLongBreak;
+
+  /// Label for how many work blocks precede a long break.
+  ///
+  /// In en, this message translates to:
+  /// **'Long break after'**
+  String get trackingPomodoroBlocks;
+
+  /// Switch label for Pomodoro auto-start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start the next block on its own'**
+  String get trackingPomodoroAutoStart;
+
+  /// Explains Pomodoro auto-start.
+  ///
+  /// In en, this message translates to:
+  /// **'When off, each block waits for you to tap start.'**
+  String get trackingPomodoroAutoStartDetail;
+
+  /// Honest note about the in-app-only Pomodoro alert.
+  ///
+  /// In en, this message translates to:
+  /// **'The alert only sounds while the app is open. This app sends no notifications, so a block that ends in the background makes no sound. The time is still counted correctly.'**
+  String get trackingPomodoroNote;
+
+  /// A length written in minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} minute} other{{count} minutes}}'**
+  String trackingMinutes(int count);
+
+  /// A count of Pomodoro work blocks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} work block} other{{count} work blocks}}'**
+  String trackingBlocks(int count);
+
+  /// Badge shown during a Pomodoro work block.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get trackingBlockWork;
+
+  /// Badge shown during a Pomodoro short break.
+  ///
+  /// In en, this message translates to:
+  /// **'Short break'**
+  String get trackingBlockShortBreak;
+
+  /// Badge shown during a Pomodoro long break.
+  ///
+  /// In en, this message translates to:
+  /// **'Long break'**
+  String get trackingBlockLongBreak;
+
+  /// Shown when a Pomodoro block ended and waits for a tap.
+  ///
+  /// In en, this message translates to:
+  /// **'Block finished'**
+  String get trackingBlockDone;
+
+  /// Button that starts the waiting Pomodoro block.
+  ///
+  /// In en, this message translates to:
+  /// **'Start next block'**
+  String get trackingStartNextBlock;
+
+  /// Title of the time display settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Time display'**
+  String get trackingTimeDisplay;
+
+  /// Subtitle on the time display card.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounding, format, and manual entry default'**
+  String get trackingTimeDisplaySubtitle;
+
+  /// Title for the rounding choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Rounding in reports'**
+  String get trackingRounding;
+
+  /// Explains that rounding is display only.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes only what is shown. Your saved times are never altered.'**
+  String get trackingRoundingDetail;
+
+  /// Rounding option: no rounding.
+  ///
+  /// In en, this message translates to:
+  /// **'Exact'**
+  String get trackingRoundingOff;
+
+  /// Rounding option: nearest minute.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest minute'**
+  String get trackingRounding1m;
+
+  /// Rounding option: nearest 5 minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest 5 minutes'**
+  String get trackingRounding5m;
+
+  /// Rounding option: nearest 15 minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Nearest 15 minutes'**
+  String get trackingRounding15m;
+
+  /// Title for the duration format choice.
+  ///
+  /// In en, this message translates to:
+  /// **'How times are written'**
+  String get trackingFormat;
+
+  /// Duration format option HH:MM:SS.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours, minutes, seconds'**
+  String get trackingFormatHhmmss;
+
+  /// Duration format option HH:MM.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours and minutes'**
+  String get trackingFormatHhmm;
+
+  /// Duration format option decimal hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Decimal hours'**
+  String get trackingFormatDecimal;
+
+  /// Note that the live timer keeps seconds.
+  ///
+  /// In en, this message translates to:
+  /// **'A running timer always shows seconds.'**
+  String get trackingFormatNote;
+
+  /// Title for the manual entry default duration.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual entry length'**
+  String get trackingManualDefault;
+
+  /// Explains the manual entry default.
+  ///
+  /// In en, this message translates to:
+  /// **'Picking a start time fills the end time this far ahead. You can still change it.'**
+  String get trackingManualDefaultDetail;
+
+  /// Manual entry default option: 15 minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'15 minutes'**
+  String get trackingManual15m;
+
+  /// Manual entry default option: 30 minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'30 minutes'**
+  String get trackingManual30m;
+
+  /// Manual entry default option: 1 hour.
+  ///
+  /// In en, this message translates to:
+  /// **'1 hour'**
+  String get trackingManual1h;
+
+  /// Manual entry default option: 2 hours.
+  ///
+  /// In en, this message translates to:
+  /// **'2 hours'**
+  String get trackingManual2h;
+
+  /// Tooltip on the pause button.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause timer'**
+  String get pauseTimer;
+
+  /// Tooltip on the resume button.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume timer'**
+  String get resumeTimer;
+
+  /// Badge shown on a task whose timer is paused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get timerPaused;
+
+  /// Subtitle on the Permissions card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'What this app can and cannot access'**
+  String get settingsPermissionsSubtitle;
+
+  /// Subtitle on the Theme Mode card.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Light, Dark, or follow the system'**
+  String get appearanceThemeModeSubtitle;
+
+  /// Title of the typography settings page and card.
+  ///
+  /// In en, this message translates to:
+  /// **'Typography & Text Size'**
+  String get appearanceTypography;
+
+  /// Subtitle on the Typography card.
+  ///
+  /// In en, this message translates to:
+  /// **'App font family and text size'**
+  String get appearanceTypographySubtitle;
+
+  /// Title of the accent colour settings page and card.
+  ///
+  /// In en, this message translates to:
+  /// **'Accent Color'**
+  String get appearanceAccentColor;
+
+  /// Subtitle on the Accent Color card.
+  ///
+  /// In en, this message translates to:
+  /// **'Presets, color wheel, and live preview'**
+  String get appearanceAccentColorSubtitle;
+
+  /// Helper text on the Theme Mode page.
+  ///
+  /// In en, this message translates to:
+  /// **'System mode follows the dark mode setting of your device.'**
+  String get themeModeHelp;
+
+  /// Section label above the font list.
+  ///
+  /// In en, this message translates to:
+  /// **'Font'**
+  String get typographyFontLabel;
+
+  /// Section label above the text size choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get typographyTextSizeLabel;
+
+  /// Latin sample text shown in the font preview.
+  ///
+  /// In en, this message translates to:
+  /// **'The quick brown fox 0123'**
+  String get typographySampleLatin;
+
+  /// Malayalam sample text shown in the font preview.
+  ///
+  /// In en, this message translates to:
+  /// **'മലയാളം സുന്ദരമാണ്'**
+  String get typographySampleMalayalam;
+
+  /// Font option that keeps the platform default font.
+  ///
+  /// In en, this message translates to:
+  /// **'System default'**
+  String get fontSystemDefault;
+
+  /// Font family name. Proper noun, not translated.
+  ///
+  /// In en, this message translates to:
+  /// **'Manjari'**
+  String get fontManjari;
+
+  /// Font family name. Proper noun, not translated.
+  ///
+  /// In en, this message translates to:
+  /// **'Anek Malayalam'**
+  String get fontAnekMalayalam;
+
+  /// Font family name. Proper noun, not translated.
+  ///
+  /// In en, this message translates to:
+  /// **'Noto Sans Malayalam'**
+  String get fontNotoSansMalayalam;
+
+  /// Text size option, 0.85x.
+  ///
+  /// In en, this message translates to:
+  /// **'Small'**
+  String get textSizeSmall;
+
+  /// Text size option, 1.0x.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get textSizeDefault;
+
+  /// Text size option, 1.15x.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get textSizeLarge;
+
+  /// Text size option, 1.30x.
+  ///
+  /// In en, this message translates to:
+  /// **'Larger'**
+  String get textSizeLarger;
+
+  /// Section label above the accent colour preview.
+  ///
+  /// In en, this message translates to:
+  /// **'Live preview'**
+  String get accentLivePreview;
+
+  /// Section label above the preset colour swatches.
+  ///
+  /// In en, this message translates to:
+  /// **'Presets'**
+  String get accentPresets;
+
+  /// Section label above the HSV colour wheel.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom color wheel'**
+  String get accentCustomWheel;
+
+  /// Text shown inside the accent colour preview chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample text'**
+  String get accentSampleText;
+
+  /// Note telling which theme the edited accent applies to.
+  ///
+  /// In en, this message translates to:
+  /// **'This color is used while the app is in light mode.'**
+  String get accentAppliesToLight;
+
+  /// Note telling which theme the edited accent applies to.
+  ///
+  /// In en, this message translates to:
+  /// **'This color is used while the app is in dark mode.'**
+  String get accentAppliesToDark;
+
+  /// Button that clears the light mode accent override.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset light mode color'**
+  String get accentResetLight;
+
+  /// Button that clears the dark mode accent override.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset dark mode color'**
+  String get accentResetDark;
+
+  /// Helper note under the accent colour controls.
+  ///
+  /// In en, this message translates to:
+  /// **'Text contrast is adjusted automatically for readability.'**
+  String get accentContrastNote;
+
   /// Title for permissions disclosure screen.
   ///
   /// In en, this message translates to:
@@ -1441,12 +2101,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Explicit'**
   String get permissionsExplicit;
-
-  /// Statement confirming zero manifest network or intrusive runtime permissions.
-  ///
-  /// In en, this message translates to:
-  /// **'This app declares zero permissions in the Android manifest for release builds. No runtime permission dialogs are shown.'**
-  String get permissionsExplicitNone;
 
   /// Item title explaining app-private storage access.
   ///
@@ -2095,6 +2749,1356 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More options'**
   String get moreOptions;
+
+  /// Title of the Task defaults settings hub.
+  ///
+  /// In en, this message translates to:
+  /// **'Task defaults'**
+  String get settingsTaskDefaults;
+
+  /// Subtitle on the Task defaults card in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'New task values, day list order, confirmations and carry-over'**
+  String get settingsTaskDefaultsSubtitle;
+
+  /// Title of the New task defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'New task'**
+  String get defaultsNewTask;
+
+  /// Subtitle of the New task defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'Status, priority and target time a new task starts with'**
+  String get defaultsNewTaskSubtitle;
+
+  /// Title of the Day list defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'Day list'**
+  String get defaultsDayList;
+
+  /// Subtitle of the Day list defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'Order, and whether finished tasks are shown'**
+  String get defaultsDayListSubtitle;
+
+  /// Title of the Task actions defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'Task actions'**
+  String get defaultsTaskActions;
+
+  /// Subtitle of the Task actions defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmations and carrying tasks over to a new day'**
+  String get defaultsTaskActionsSubtitle;
+
+  /// Title of the Autocomplete defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'Autocomplete'**
+  String get defaultsAutocomplete;
+
+  /// Subtitle of the Autocomplete defaults page.
+  ///
+  /// In en, this message translates to:
+  /// **'Title suggestions while you type'**
+  String get defaultsAutocompleteSubtitle;
+
+  /// Header of the default status choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'Default status'**
+  String get defaultsStatusTitle;
+
+  /// Help line under the default status header.
+  ///
+  /// In en, this message translates to:
+  /// **'The status a new task starts in.'**
+  String get defaultsStatusSubtitle;
+
+  /// Help line for the pending default status option.
+  ///
+  /// In en, this message translates to:
+  /// **'The normal choice. The task waits until you start it.'**
+  String get defaultsStatusPendingDetail;
+
+  /// Help line for the working default status option.
+  ///
+  /// In en, this message translates to:
+  /// **'The task opens as working. No timer is started.'**
+  String get defaultsStatusWorkingDetail;
+
+  /// Header of the default priority choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'Default priority'**
+  String get defaultsPriorityTitle;
+
+  /// Help line under the default priority header.
+  ///
+  /// In en, this message translates to:
+  /// **'The priority a new task starts with.'**
+  String get defaultsPrioritySubtitle;
+
+  /// Header of the default target time choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'Default target time'**
+  String get defaultsTargetTitle;
+
+  /// Help line under the default target time header.
+  ///
+  /// In en, this message translates to:
+  /// **'How long a new task is expected to take. You can change it on any task.'**
+  String get defaultsTargetSubtitle;
+
+  /// Option label for no default target time.
+  ///
+  /// In en, this message translates to:
+  /// **'No target'**
+  String get defaultsTargetNone;
+
+  /// Priority level name.
+  ///
+  /// In en, this message translates to:
+  /// **'Low'**
+  String get priorityLow;
+
+  /// Priority level name.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get priorityNormal;
+
+  /// Priority level name.
+  ///
+  /// In en, this message translates to:
+  /// **'High'**
+  String get priorityHigh;
+
+  /// Priority level name.
+  ///
+  /// In en, this message translates to:
+  /// **'Urgent'**
+  String get priorityUrgent;
+
+  /// Field label for the priority of a task.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority'**
+  String get priorityLabel;
+
+  /// Field label for the target time of a task.
+  ///
+  /// In en, this message translates to:
+  /// **'Target time'**
+  String get targetTimeLabel;
+
+  /// Help line under the target time field.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave both at zero for no target.'**
+  String get targetTimeHint;
+
+  /// Label of the hours box in the target time field.
+  ///
+  /// In en, this message translates to:
+  /// **'Hours'**
+  String get targetHoursLabel;
+
+  /// Label of the minutes box in the target time field.
+  ///
+  /// In en, this message translates to:
+  /// **'Minutes'**
+  String get targetMinutesLabel;
+
+  /// Tracked time against the target on a task tile.
+  ///
+  /// In en, this message translates to:
+  /// **'{tracked} of {target}'**
+  String targetProgressLabel(String target, String tracked);
+
+  /// Shown when tracked time has passed the target.
+  ///
+  /// In en, this message translates to:
+  /// **'Over by {amount}'**
+  String targetOverBy(String amount);
+
+  /// Header of the default sort choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'Default order'**
+  String get defaultsSortTitle;
+
+  /// Help line under the default order header.
+  ///
+  /// In en, this message translates to:
+  /// **'The order the day list opens in.'**
+  String get defaultsSortSubtitle;
+
+  /// Switch label for saving the sort chosen from the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'Remember the last order I pick'**
+  String get defaultsRememberSort;
+
+  /// Help line for the remember-sort switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Changing the order from the day list also saves it as the default.'**
+  String get defaultsRememberSortDetail;
+
+  /// Switch label for showing completed tasks in the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'Show completed tasks'**
+  String get defaultsShowCompleted;
+
+  /// Help line for the show completed switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off to hide tasks you have finished.'**
+  String get defaultsShowCompletedDetail;
+
+  /// Switch label for showing dropped tasks in the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'Show dropped tasks'**
+  String get defaultsShowDropped;
+
+  /// Help line for the show dropped switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off to hide tasks you have given up.'**
+  String get defaultsShowDroppedDetail;
+
+  /// Switch label for pushing finished tasks below the rest.
+  ///
+  /// In en, this message translates to:
+  /// **'Move finished tasks to the bottom'**
+  String get defaultsSinkFinished;
+
+  /// Help line for the sink finished switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed, dropped and ported tasks sit below the rest. Drag to reorder then works only among unfinished tasks.'**
+  String get defaultsSinkFinishedDetail;
+
+  /// Line shown at the bottom of the day list when a filter hides tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 finished task hidden} other{{count} finished tasks hidden}}'**
+  String hiddenTasksCount(num count);
+
+  /// Button that reveals hidden finished tasks for this visit.
+  ///
+  /// In en, this message translates to:
+  /// **'Show'**
+  String get showHiddenTasks;
+
+  /// Switch label for confirming a complete action.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask before completing'**
+  String get defaultsConfirmComplete;
+
+  /// Help line for the confirm complete switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a short question before a task is marked complete.'**
+  String get defaultsConfirmCompleteDetail;
+
+  /// Switch label for confirming a drop action.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask before dropping'**
+  String get defaultsConfirmDrop;
+
+  /// Help line for the confirm drop switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a short question before a task is dropped.'**
+  String get defaultsConfirmDropDetail;
+
+  /// Title of the confirm complete dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark as complete?'**
+  String get confirmCompleteTitle;
+
+  /// Confirmation dialog body text when completing a task.
+  ///
+  /// In en, this message translates to:
+  /// **'This task will be marked as complete. Any running timer is stopped.'**
+  String get confirmCompleteBody;
+
+  /// Switch label for the carry-over prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask to carry over unfinished tasks'**
+  String get defaultsCarryOver;
+
+  /// Help line for the carry-over switch.
+  ///
+  /// In en, this message translates to:
+  /// **'The first time you open a new day, offer to copy unfinished tasks forward.'**
+  String get defaultsCarryOverDetail;
+
+  /// Header of the carry-over look-back choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'How far back to look'**
+  String get defaultsCarryOverLookBackTitle;
+
+  /// Look-back option label.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous day only'**
+  String get defaultsCarryOverPreviousDay;
+
+  /// Look-back option label.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 7 days'**
+  String get defaultsCarryOverLastSevenDays;
+
+  /// Title of the carry-over sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry over unfinished tasks'**
+  String get carryOverTitle;
+
+  /// Body line of the carry-over sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'These tasks were not finished. Pick the ones to copy to today.'**
+  String get carryOverBody;
+
+  /// Button that copies the ticked tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry over'**
+  String get carryOverAction;
+
+  /// Button that closes the carry-over sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get carryOverNotNow;
+
+  /// Button that turns the carry-over prompt off.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not ask again'**
+  String get carryOverNeverAsk;
+
+  /// Button that ticks every task in the carry-over sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get carryOverSelectAll;
+
+  /// Button that unticks every task in the carry-over sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get carryOverClearAll;
+
+  /// SnackBar shown after a carry-over.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 task carried over} other{{count} tasks carried over}}'**
+  String carryOverDone(num count);
+
+  /// SnackBar part for duplicates skipped during carry-over.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 task skipped, it already exists today} other{{count} tasks skipped, they already exist today}}'**
+  String carryOverSkipped(num count);
+
+  /// Switch label for title autocomplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggest titles while typing'**
+  String get defaultsAutocompleteEnabled;
+
+  /// Help line for the autocomplete switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn off to stop reading past titles as you type.'**
+  String get defaultsAutocompleteEnabledDetail;
+
+  /// Header of the suggestion count choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'How many suggestions'**
+  String get defaultsSuggestionCountTitle;
+
+  /// Suggestion count option label.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} suggestions'**
+  String suggestionCountValue(num count);
+
+  /// Sort menu item for priority order.
+  ///
+  /// In en, this message translates to:
+  /// **'Priority (high first)'**
+  String get sortPriorityHigh;
+
+  /// Settings card title for the date and time group.
+  ///
+  /// In en, this message translates to:
+  /// **'Date & time'**
+  String get settingsDateTime;
+
+  /// Settings card subtitle for the date and time group.
+  ///
+  /// In en, this message translates to:
+  /// **'Week start, clock, date format, day start, working days'**
+  String get settingsDateTimeSubtitle;
+
+  /// Date & time page link: week start.
+  ///
+  /// In en, this message translates to:
+  /// **'First day of week'**
+  String get dateTimeWeekStart;
+
+  /// Subtitle for the week start link.
+  ///
+  /// In en, this message translates to:
+  /// **'Which day the calendar starts on'**
+  String get dateTimeWeekStartSubtitle;
+
+  /// Date & time page link: clock format.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock'**
+  String get dateTimeClock;
+
+  /// Subtitle for the clock link.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour or 24-hour times'**
+  String get dateTimeClockSubtitle;
+
+  /// Date & time page link: date format.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get dateTimeDateFormat;
+
+  /// Subtitle for the date format link.
+  ///
+  /// In en, this message translates to:
+  /// **'How dates are written'**
+  String get dateTimeDateFormatSubtitle;
+
+  /// Date & time page link: day start hour.
+  ///
+  /// In en, this message translates to:
+  /// **'Day start'**
+  String get dateTimeDayStart;
+
+  /// Subtitle for the day start link.
+  ///
+  /// In en, this message translates to:
+  /// **'When a new day begins for you'**
+  String get dateTimeDayStartSubtitle;
+
+  /// Date & time page link: working days.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days'**
+  String get dateTimeWorkingDays;
+
+  /// Subtitle for the working days link.
+  ///
+  /// In en, this message translates to:
+  /// **'Days counted in statistics'**
+  String get dateTimeWorkingDaysSubtitle;
+
+  /// Header of the week start choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'First day of week'**
+  String get weekStartTitle;
+
+  /// Explains where the week start is used.
+  ///
+  /// In en, this message translates to:
+  /// **'Used by the calendar in the day list.'**
+  String get weekStartSubtitle;
+
+  /// Week start option: use the device locale.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the device'**
+  String get weekStartSystem;
+
+  /// Header of the clock format choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'Clock'**
+  String get clockFormatTitle;
+
+  /// Explains where the clock format is used.
+  ///
+  /// In en, this message translates to:
+  /// **'Used everywhere a time of day is shown.'**
+  String get clockFormatSubtitle;
+
+  /// Clock option: use the device locale.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the device'**
+  String get clockFormatSystem;
+
+  /// Clock option: 12-hour times.
+  ///
+  /// In en, this message translates to:
+  /// **'12-hour'**
+  String get clockFormat12;
+
+  /// Clock option: 24-hour times.
+  ///
+  /// In en, this message translates to:
+  /// **'24-hour'**
+  String get clockFormat24;
+
+  /// Header of the date format choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'Date format'**
+  String get dateFormatTitle;
+
+  /// Explains where the date format is used.
+  ///
+  /// In en, this message translates to:
+  /// **'Used everywhere a date is shown.'**
+  String get dateFormatSubtitle;
+
+  /// Date format option: the locale long form.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the device (long)'**
+  String get dateFormatSystem;
+
+  /// Date format option: the locale short form.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the device (short)'**
+  String get dateFormatSystemShort;
+
+  /// Date format option: 19/08/2026.
+  ///
+  /// In en, this message translates to:
+  /// **'Day/Month/Year'**
+  String get dateFormatDayMonthYear;
+
+  /// Date format option: 08/19/2026.
+  ///
+  /// In en, this message translates to:
+  /// **'Month/Day/Year'**
+  String get dateFormatMonthDayYear;
+
+  /// Date format option: 19 Aug 2026.
+  ///
+  /// In en, this message translates to:
+  /// **'Day Month Year'**
+  String get dateFormatDayMonthNameYear;
+
+  /// Date format option: 2026-08-19.
+  ///
+  /// In en, this message translates to:
+  /// **'Year-Month-Day'**
+  String get dateFormatIso;
+
+  /// Header of the day start hour choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'A new day begins at'**
+  String get dayStartTitle;
+
+  /// Explains what the day start hour is for.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a later hour if you often work past midnight.'**
+  String get dayStartSubtitle;
+
+  /// Day start option for hour zero.
+  ///
+  /// In en, this message translates to:
+  /// **'Midnight (normal)'**
+  String get dayStartMidnight;
+
+  /// Header of the day start explanation card.
+  ///
+  /// In en, this message translates to:
+  /// **'What this changes'**
+  String get dayStartExplainTitle;
+
+  /// Long explanation of the day start hour.
+  ///
+  /// In en, this message translates to:
+  /// **'With a later day start, the hours after midnight still count as the day before. Your task list, the day lock and your time totals all follow this. Nothing already saved is moved or changed.'**
+  String get dayStartExplainBody;
+
+  /// Shows which date the app currently considers today.
+  ///
+  /// In en, this message translates to:
+  /// **'Right now the app treats today as {date}.'**
+  String dayStartCurrentDay(String date);
+
+  /// Header of the working days card.
+  ///
+  /// In en, this message translates to:
+  /// **'Working days'**
+  String get workingDaysTitle;
+
+  /// Explains what working days are for.
+  ///
+  /// In en, this message translates to:
+  /// **'Statistics use only these days when working out averages.'**
+  String get workingDaysSubtitle;
+
+  /// Button that restores the default working days.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to Monday to Friday'**
+  String get workingDaysReset;
+
+  /// Warning when the user turned every day off.
+  ///
+  /// In en, this message translates to:
+  /// **'No working days are picked, so averages fall back to all seven days.'**
+  String get workingDaysNoneWarning;
+
+  /// Settings card title for the security group.
+  ///
+  /// In en, this message translates to:
+  /// **'Security & privacy'**
+  String get settingsSecurity;
+
+  /// Settings card subtitle for the security group.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock, auto-lock, screen privacy, database key'**
+  String get settingsSecuritySubtitle;
+
+  /// Security page link: app lock.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock'**
+  String get securityAppLock;
+
+  /// Subtitle for the app lock link.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for a PIN, password or your phone lock'**
+  String get securityAppLockSubtitle;
+
+  /// Security page link: auto-lock delay.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-lock'**
+  String get securityAutoLock;
+
+  /// Subtitle for the auto-lock link.
+  ///
+  /// In en, this message translates to:
+  /// **'How long the app may stay open in the background'**
+  String get securityAutoLockSubtitle;
+
+  /// Security page link: database key rotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Database key'**
+  String get securityDatabaseKey;
+
+  /// Subtitle for the database key link.
+  ///
+  /// In en, this message translates to:
+  /// **'Give your data a brand new encryption key'**
+  String get securityDatabaseKeySubtitle;
+
+  /// Header of the screen privacy card.
+  ///
+  /// In en, this message translates to:
+  /// **'Screen privacy'**
+  String get securityScreenPrivacy;
+
+  /// Switch that turns on the secure window flag.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide the app in recent apps'**
+  String get securitySecureScreen;
+
+  /// Explains the secure window flag.
+  ///
+  /// In en, this message translates to:
+  /// **'The app preview stays blank when you switch apps, and screenshots are blocked. Android only.'**
+  String get securitySecureScreenDetail;
+
+  /// Note shown when the secure flag cannot be used.
+  ///
+  /// In en, this message translates to:
+  /// **'This is an Android setting. It does nothing on this device.'**
+  String get securitySecureScreenUnsupported;
+
+  /// Explains why there is no notification privacy setting.
+  ///
+  /// In en, this message translates to:
+  /// **'The app sends no notifications at all, so there are no task titles to hide there. The setting above covers the recent-apps preview instead.'**
+  String get securityNotificationsNote;
+
+  /// Header of the app lock mode choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'How to unlock'**
+  String get appLockModeTitle;
+
+  /// Explains when the lock is asked for.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked for when you open the app.'**
+  String get appLockModeSubtitle;
+
+  /// App lock option: no lock at all.
+  ///
+  /// In en, this message translates to:
+  /// **'No lock'**
+  String get appLockOff;
+
+  /// App lock option: a digits-only code.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN'**
+  String get appLockPin;
+
+  /// App lock option: a free-text password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get appLockPassword;
+
+  /// App lock option: the device unlock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone screen lock'**
+  String get appLockDeviceCredential;
+
+  /// Explains the device unlock option.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses your fingerprint, face or phone PIN.'**
+  String get appLockDeviceCredentialDetail;
+
+  /// Shown when the device has no screen lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Set up a screen lock on your phone first.'**
+  String get appLockDeviceUnavailable;
+
+  /// Title of the PIN setup sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a PIN'**
+  String get appLockSetPin;
+
+  /// Title of the password setup sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a password'**
+  String get appLockSetPassword;
+
+  /// Label of the first secret field.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get appLockNewSecret;
+
+  /// Label of the confirmation field.
+  ///
+  /// In en, this message translates to:
+  /// **'Type it again'**
+  String get appLockConfirmSecret;
+
+  /// Button that opens the change sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Change'**
+  String get appLockChange;
+
+  /// Confirmation after a lock is set.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock is on.'**
+  String get appLockSaved;
+
+  /// Confirmation after a lock is removed.
+  ///
+  /// In en, this message translates to:
+  /// **'App lock is off.'**
+  String get appLockRemoved;
+
+  /// Header of the forgotten-secret warning.
+  ///
+  /// In en, this message translates to:
+  /// **'There is no way back in'**
+  String get appLockWarningTitle;
+
+  /// Warns that a forgotten secret cannot be recovered.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing about your PIN or password leaves this device, and nothing can recover it. If you forget it, the only way back into the app is to reinstall it, which erases your data. Keep a backup.'**
+  String get appLockWarningBody;
+
+  /// Error when the secret field is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Type something first.'**
+  String get appLockErrorEmpty;
+
+  /// Error when a PIN has non-digits.
+  ///
+  /// In en, this message translates to:
+  /// **'A PIN can only hold digits.'**
+  String get appLockErrorNotDigits;
+
+  /// Error when a PIN is too short.
+  ///
+  /// In en, this message translates to:
+  /// **'A PIN needs at least 4 digits.'**
+  String get appLockErrorPinTooShort;
+
+  /// Error when a PIN is too long.
+  ///
+  /// In en, this message translates to:
+  /// **'A PIN can hold at most 8 digits.'**
+  String get appLockErrorPinTooLong;
+
+  /// Error when a password is too short.
+  ///
+  /// In en, this message translates to:
+  /// **'A password needs at least 6 characters.'**
+  String get appLockErrorPasswordTooShort;
+
+  /// Error when the confirmation does not match.
+  ///
+  /// In en, this message translates to:
+  /// **'The two entries do not match.'**
+  String get appLockErrorMismatch;
+
+  /// Header of the auto-lock choice list.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock again after'**
+  String get autoLockTitle;
+
+  /// Explains what the auto-lock delay measures.
+  ///
+  /// In en, this message translates to:
+  /// **'Counted from the moment you leave the app.'**
+  String get autoLockSubtitle;
+
+  /// Auto-lock option: lock as soon as the app leaves the screen.
+  ///
+  /// In en, this message translates to:
+  /// **'At once'**
+  String get autoLockImmediately;
+
+  /// Auto-lock option.
+  ///
+  /// In en, this message translates to:
+  /// **'30 seconds'**
+  String get autoLock30Seconds;
+
+  /// Auto-lock option.
+  ///
+  /// In en, this message translates to:
+  /// **'1 minute'**
+  String get autoLock1Minute;
+
+  /// Auto-lock option.
+  ///
+  /// In en, this message translates to:
+  /// **'5 minutes'**
+  String get autoLock5Minutes;
+
+  /// Auto-lock option.
+  ///
+  /// In en, this message translates to:
+  /// **'15 minutes'**
+  String get autoLock15Minutes;
+
+  /// Auto-lock option: never re-lock while running.
+  ///
+  /// In en, this message translates to:
+  /// **'Only when the app restarts'**
+  String get autoLockNever;
+
+  /// Note shown when auto-lock has no lock to apply.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn the app lock on first.'**
+  String get autoLockNeedsLock;
+
+  /// Header of the database key page.
+  ///
+  /// In en, this message translates to:
+  /// **'New database key'**
+  String get databaseKeyTitle;
+
+  /// Explains what key rotation does.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data is stored encrypted with a key held by this device. Rotating it writes the whole database again under a brand new key.'**
+  String get databaseKeyBody;
+
+  /// Warns to back up first.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a backup before you start. If anything goes wrong part way, the backup is the only way back.'**
+  String get databaseKeyBackupFirst;
+
+  /// Clarifies that backups keep their own passphrase.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup files are not affected. They keep the passphrase you exported them with.'**
+  String get databaseKeyOldBackups;
+
+  /// Button that starts the rotation.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate the key now'**
+  String get databaseKeyRotate;
+
+  /// Title of the rotation confirmation dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate the database key?'**
+  String get databaseKeyConfirmTitle;
+
+  /// Body of the rotation confirmation dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'This rewrites your whole database under a new key. Do not close the app while it runs.'**
+  String get databaseKeyConfirmBody;
+
+  /// Shown while the rotation runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotating the key. Please wait.'**
+  String get databaseKeyWorking;
+
+  /// Shown after a successful rotation.
+  ///
+  /// In en, this message translates to:
+  /// **'The database has a new key.'**
+  String get databaseKeyDone;
+
+  /// Shown after a failed rotation.
+  ///
+  /// In en, this message translates to:
+  /// **'The key was not changed. Your data is untouched and still opens with the old key.'**
+  String get databaseKeyFailed;
+
+  /// Title of the lock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Locked'**
+  String get lockScreenTitle;
+
+  /// Prompt on the lock screen for a PIN.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your PIN'**
+  String get lockScreenEnterPin;
+
+  /// Prompt on the lock screen for a password.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get lockScreenEnterPassword;
+
+  /// Button that submits the secret.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock'**
+  String get lockScreenUnlock;
+
+  /// Shown after a wrong entry.
+  ///
+  /// In en, this message translates to:
+  /// **'That did not match. Try again.'**
+  String get lockScreenWrong;
+
+  /// Shown while the retry wait is running.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many tries. Wait {seconds} seconds.'**
+  String lockScreenWait(int seconds);
+
+  /// Button that opens the device unlock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Use my phone lock'**
+  String get lockScreenUseDeviceLock;
+
+  /// Title shown on the device unlock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlock SreerajP ToDo'**
+  String get lockScreenDevicePrompt;
+
+  /// Description shown on the device unlock screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm it is you to open your tasks.'**
+  String get lockScreenDeviceDescription;
+
+  /// Shown when the device unlock was cancelled or failed.
+  ///
+  /// In en, this message translates to:
+  /// **'That did not open the app.'**
+  String get lockScreenDeviceFailed;
+
+  /// Title of the full screen Focus view.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus'**
+  String get focusTitle;
+
+  /// Tooltip on the button that opens the Focus view.
+  ///
+  /// In en, this message translates to:
+  /// **'Open focus view'**
+  String get focusOpen;
+
+  /// Tooltip on the button that closes the Focus view.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave focus'**
+  String get focusLeave;
+
+  /// Label above the time the running timer has counted so far.
+  ///
+  /// In en, this message translates to:
+  /// **'Running now'**
+  String get focusRunningNow;
+
+  /// Label above the total time tracked on the task.
+  ///
+  /// In en, this message translates to:
+  /// **'Total tracked'**
+  String get focusTotalTracked;
+
+  /// Heading above the sub-task checklist in the Focus view.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get focusSteps;
+
+  /// Shown in the Focus view when the task has no sub-tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'This task has no steps.'**
+  String get focusNoSteps;
+
+  /// Shown in the Focus view when no timer is running on the task.
+  ///
+  /// In en, this message translates to:
+  /// **'The timer is not running.'**
+  String get focusNotRunning;
+
+  /// Countdown to the next focus nudge.
+  ///
+  /// In en, this message translates to:
+  /// **'Next nudge in {time}'**
+  String focusNextNudge(String time);
+
+  /// Shown in the Focus view when the nudge is switched off.
+  ///
+  /// In en, this message translates to:
+  /// **'Nudges are off'**
+  String get focusNudgesOff;
+
+  /// Title of the Focus mode settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus mode'**
+  String get trackingFocusMode;
+
+  /// Subtitle on the Focus mode card.
+  ///
+  /// In en, this message translates to:
+  /// **'Full screen focus view and the nudge while a timer runs'**
+  String get trackingFocusModeSubtitle;
+
+  /// Heading of the nudge setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Nudge while a timer runs'**
+  String get trackingFocusPulse;
+
+  /// Nudge mode: nothing happens.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get trackingFocusPulseOff;
+
+  /// Nudge mode: vibration only.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration only'**
+  String get trackingFocusPulseVibration;
+
+  /// Nudge mode: sound only.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound only'**
+  String get trackingFocusPulseSound;
+
+  /// Nudge mode: vibration and sound.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibration and sound'**
+  String get trackingFocusPulseBoth;
+
+  /// Label of the stepper that sets the gap between nudges.
+  ///
+  /// In en, this message translates to:
+  /// **'Nudge every'**
+  String get trackingFocusPulseEvery;
+
+  /// Heading of the Focus view settings group.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus view'**
+  String get trackingFocusView;
+
+  /// Switch that hides the status bar in the Focus view.
+  ///
+  /// In en, this message translates to:
+  /// **'Immersive full screen'**
+  String get trackingFocusImmersive;
+
+  /// Detail under the immersive switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide the status bar while the Focus view is open.'**
+  String get trackingFocusImmersiveDetail;
+
+  /// Note explaining that the nudge only works while the app is open.
+  ///
+  /// In en, this message translates to:
+  /// **'The nudge only works while the app is open. This app sends no notifications, so nothing sounds in the background. Your time is still counted correctly.'**
+  String get trackingFocusNote;
+
+  /// Note explaining that the nudge is quiet while Pomodoro is on.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus blocks are on, so the nudge stays quiet. Pomodoro already sounds its own alert at the end of every block.'**
+  String get trackingFocusPomodoroNote;
+
+  /// Title of the voice task sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice task'**
+  String get voiceSheetTitle;
+
+  /// Note under the voice sheet title explaining that it stays on the device.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything is worked out on this phone. Nothing is recorded and nothing is sent anywhere.'**
+  String get voiceSheetOfflineNote;
+
+  /// Label of the text box in the voice sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Say or type one sentence'**
+  String get voiceSheetFieldLabel;
+
+  /// Example sentence shown under the voice sheet text box.
+  ///
+  /// In en, this message translates to:
+  /// **'For example: Call the bank tomorrow at 10 am for 30 minutes'**
+  String get voiceSheetExample;
+
+  /// Language choice in the voice sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get voiceLanguageEnglish;
+
+  /// Language choice in the voice sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Malayalam'**
+  String get voiceLanguageMalayalam;
+
+  /// Label under the microphone button before listening starts.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to speak'**
+  String get voiceTapToSpeak;
+
+  /// Label under the microphone button while listening.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening'**
+  String get voiceListening;
+
+  /// Tooltip of the button that empties the voice sheet text box.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get voiceClear;
+
+  /// Heading above the chips showing what the sentence meant.
+  ///
+  /// In en, this message translates to:
+  /// **'Understood as'**
+  String get voiceUnderstoodHeading;
+
+  /// Chip shown when the sentence has no title left in it.
+  ///
+  /// In en, this message translates to:
+  /// **'No title yet'**
+  String get voiceNoTitle;
+
+  /// Button that opens the create form with the voice reading filled in.
+  ///
+  /// In en, this message translates to:
+  /// **'Create task'**
+  String get voiceCreateTask;
+
+  /// Shown when a spoken day was in the past and was moved to today.
+  ///
+  /// In en, this message translates to:
+  /// **'That day has already passed, so today is used instead.'**
+  String get voiceDateMovedToToday;
+
+  /// Shown when the microphone permission was refused.
+  ///
+  /// In en, this message translates to:
+  /// **'The microphone was not allowed. You can still type the sentence.'**
+  String get voiceErrorPermission;
+
+  /// Shown when the recogniser heard nothing it could read.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was heard. Try again, or type the sentence.'**
+  String get voiceErrorNoMatch;
+
+  /// Shown when the recogniser has no on-device language pack. This is also what a recogniser reports when it wanted the network.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone has no offline language pack for that language. Install one in your phone settings, or type the sentence.'**
+  String get voiceErrorNoOfflineLanguage;
+
+  /// Shown when the speech recogniser is already running.
+  ///
+  /// In en, this message translates to:
+  /// **'The recogniser is busy. Try again in a moment.'**
+  String get voiceErrorBusy;
+
+  /// Shown for any other recogniser failure.
+  ///
+  /// In en, this message translates to:
+  /// **'The microphone could not be used. You can still type the sentence.'**
+  String get voiceErrorUnknown;
+
+  /// Shown on a platform with no speech recogniser at all, such as Windows.
+  ///
+  /// In en, this message translates to:
+  /// **'This device has no voice input. Type the sentence instead.'**
+  String get voiceUnavailableDevice;
+
+  /// Shown when Android reports no recognition service.
+  ///
+  /// In en, this message translates to:
+  /// **'No speech app was found on this device. Type the sentence instead.'**
+  String get voiceUnavailableNoRecogniser;
+
+  /// Shown when no on-device recogniser can be pinned, so listening is refused to keep the app offline.
+  ///
+  /// In en, this message translates to:
+  /// **'This device cannot recognise speech without going online, so the microphone stays off. Type the sentence instead.'**
+  String get voiceUnavailableNoOffline;
+
+  /// Shown when the microphone permission has not been granted yet.
+  ///
+  /// In en, this message translates to:
+  /// **'The microphone needs your permission. Tap the microphone to be asked.'**
+  String get voiceUnavailableNoPermission;
+
+  /// Tooltip of the microphone button on the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'New task by voice'**
+  String get voiceOpenTooltip;
+
+  /// Settings switch that shows the microphone button on the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'Voice input'**
+  String get voiceInputSetting;
+
+  /// Detail under the voice input switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a microphone button on the day list. It uses the offline recogniser already on your phone, and asks for the microphone the first time you use it. The sentence is read on this device.'**
+  String get voiceInputSettingDetail;
+
+  /// Note under the voice input switch making clear that typing works either way.
+  ///
+  /// In en, this message translates to:
+  /// **'The sentence is always read on this device, whether you speak it or type it. Voice input only adds the microphone.'**
+  String get voiceInputTypingNote;
+
+  /// Permission entry title for the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get permissionsCameraTitle;
+
+  /// Permission entry body for the camera.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked for only when you scan a QR code to move data between your own devices. No photo is ever saved.'**
+  String get permissionsCameraBody;
+
+  /// Permission entry title for the microphone.
+  ///
+  /// In en, this message translates to:
+  /// **'Microphone'**
+  String get permissionsMicrophoneTitle;
+
+  /// Permission entry body for the microphone, explaining the offline guarantee.
+  ///
+  /// In en, this message translates to:
+  /// **'Asked for only after you turn Voice input on and tap the microphone. The phone recogniser is always asked for its offline engine, and listening is refused rather than going online. No audio is recorded or kept.'**
+  String get permissionsMicrophoneBody;
+
+  /// Statement under the explicit permission list confirming there is no network permission.
+  ///
+  /// In en, this message translates to:
+  /// **'These two are the only permissions this app asks for, and both are asked for only when you use the feature that needs them. The app declares no internet or network permission at all, so nothing it holds can leave this device on its own.'**
+  String get permissionsExplicitNote;
+
+  /// Note written into the description when the sentence named a time of day. A task has no time column of its own.
+  ///
+  /// In en, this message translates to:
+  /// **'At {time}'**
+  String voiceTimeNote(String time);
 }
 
 class _AppLocalizationsDelegate

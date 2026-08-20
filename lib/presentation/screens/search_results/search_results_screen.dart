@@ -10,7 +10,7 @@ import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
@@ -107,8 +107,8 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
         message: mapErrorToMessage(context.l10n, error),
         onRetry: () => ref.invalidate(searchResultsProvider(_currentQuery)),
       ),
-      data: (todos) {
-        if (todos.isEmpty) {
+      data: (results) {
+        if (results.isEmpty) {
           return AppEmptyState(
             icon: Icons.search_off,
             title: context.l10n.noSearchResults,
@@ -116,14 +116,14 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
           );
         }
 
-        final grouped = _groupByDate(todos);
+        final grouped = _groupByDate(results);
         final dates = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
 
         return ListView.builder(
           itemCount: dates.length,
           itemBuilder: (context, index) {
             final date = dates[index];
-            final dateTodos = grouped[date]!;
+            final dateResults = grouped[date]!;
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -141,21 +141,16 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
                     ),
                   ),
                 ),
-                ...dateTodos.map(
-                  (todo) => ListTile(
-                    title: Text(todo.title),
-                    subtitle: todo.description != null
-                        ? Text(
-                            todo.description!,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        : null,
+                ...dateResults.map(
+                  (result) => ListTile(
+                    title: Text(result.todo.title),
+                    subtitle: _buildSubtitle(context, result),
                     trailing: StatusBadge(
-                      label: _statusLabel(context, todo.status),
-                      status: todo.status,
+                      label: _statusLabel(context, result.todo.status),
+                      status: result.todo.status,
                     ),
-                    onTap: () => context.go(AppRoutes.dailyListPath(todo.date)),
+                    onTap: () =>
+                        context.go(AppRoutes.dailyListPath(result.todo.date)),
                   ),
                 ),
                 if (index < dates.length - 1) const Divider(),
@@ -167,10 +162,31 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
     );
   }
 
-  Map<String, List<TodoEntity>> _groupByDate(List<TodoEntity> todos) {
-    final grouped = <String, List<TodoEntity>>{};
-    for (final todo in todos) {
-      grouped.putIfAbsent(todo.date, () => []).add(todo);
+  /// Shows the segment note when that is why the row matched, so the user can
+  /// see where the hit came from. Otherwise falls back to the description.
+  Widget? _buildSubtitle(BuildContext context, TodoSearchResult result) {
+    final matchedNote = result.matchedNote;
+    if (matchedNote != null && matchedNote.isNotEmpty) {
+      return Text(
+        context.l10n.matchedInNote(matchedNote),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(color: Theme.of(context).colorScheme.primary),
+      );
+    }
+
+    final description = result.todo.description;
+    if (description == null || description.isEmpty) return null;
+
+    return Text(description, maxLines: 1, overflow: TextOverflow.ellipsis);
+  }
+
+  Map<String, List<TodoSearchResult>> _groupByDate(
+    List<TodoSearchResult> results,
+  ) {
+    final grouped = <String, List<TodoSearchResult>>{};
+    for (final result in results) {
+      grouped.putIfAbsent(result.todo.date, () => []).add(result);
     }
     return grouped;
   }

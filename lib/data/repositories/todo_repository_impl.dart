@@ -1,8 +1,10 @@
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 
@@ -124,13 +126,24 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<List<String>> getAutocompleteSuggestions(String prefix) {
-    return _todoDao.getAllDistinctTitles(nfcNormalize(prefix));
+  Future<List<String>> getAutocompleteSuggestions(
+    String prefix, {
+    int limit = kAutocompleteLimit,
+  }) {
+    return _todoDao.getAllDistinctTitles(nfcNormalize(prefix), limit: limit);
   }
 
   @override
   Future<List<TodoEntity>> searchByTitle(String query, {int limit = 50}) {
     return _todoDao.searchByTitle(query, limit: limit);
+  }
+
+  @override
+  Future<List<TodoSearchResult>> searchWithMatchedNotes(
+    String query, {
+    int limit = 50,
+  }) {
+    return _todoDao.searchWithMatchedNotes(query, limit: limit);
   }
 
   @override

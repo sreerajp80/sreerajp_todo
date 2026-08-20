@@ -52,7 +52,10 @@ class CompleteSrsTodo {
     if (srsItem == null) {
       // Create new SRS item if it was triggered by hashtag in title
       final cleanTitle = nfcNormalize(
-        todo.title.replaceAll('#mastery', '').replaceAll('#spaced-repetition', '').trim(),
+        todo.title
+            .replaceAll('#mastery', '')
+            .replaceAll('#spaced-repetition', '')
+            .trim(),
       );
 
       srsItem = SpacedRepetitionItemEntity(
@@ -90,9 +93,11 @@ class CompleteSrsTodo {
         break;
     }
 
-    final nextReviewDateTime = DateTime(today.year, today.month, today.day).add(
-      Duration(days: newInterval),
-    );
+    final nextReviewDateTime = DateTime(
+      today.year,
+      today.month,
+      today.day,
+    ).add(Duration(days: newInterval));
     final nextReviewDateStr = dateTimeToIso(nextReviewDateTime);
 
     final updatedSrsItem = srsItem.copyWith(

@@ -115,7 +115,10 @@ class ResponsiveScaffold extends StatelessWidget {
                   minimum: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Theme.of(context).navigationBarTheme.backgroundColor ??
+                      color:
+                          Theme.of(
+                            context,
+                          ).navigationBarTheme.backgroundColor ??
                           Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(28),
                     ),
@@ -127,10 +130,11 @@ class ResponsiveScaffold extends StatelessWidget {
                           backgroundColor: Colors.transparent,
                           elevation: 0,
                           selectedIndex: currentDestination.index,
-                          onDestinationSelected: (index) => _onDestinationSelected(
-                            context,
-                            AppScaffoldDestination.values[index],
-                          ),
+                          onDestinationSelected: (index) =>
+                              _onDestinationSelected(
+                                context,
+                                AppScaffoldDestination.values[index],
+                              ),
                           destinations: [
                             NavigationDestination(
                               icon: const Icon(Icons.today_outlined),

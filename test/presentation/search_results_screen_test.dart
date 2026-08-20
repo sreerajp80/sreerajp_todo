@@ -6,6 +6,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/search_results/search_results_screen.dart';
@@ -14,6 +16,9 @@ import '../helpers/test_fixtures.dart';
 import '../helpers/test_l10n.dart';
 
 class MockTodoRepository extends Mock implements TodoRepository {}
+
+List<TodoSearchResult> asResults(List<TodoEntity> todos) =>
+    todos.map((todo) => TodoSearchResult(todo: todo)).toList();
 
 void main() {
   late MockTodoRepository repository;
@@ -57,13 +62,16 @@ void main() {
 
   testWidgets('groups search results by date', (tester) async {
     when(
-      () => repository.searchByTitle('focus', limit: any(named: 'limit')),
+      () => repository.searchWithMatchedNotes(
+        'focus',
+        limit: any(named: 'limit'),
+      ),
     ).thenAnswer(
-      (_) async => [
+      (_) async => asResults([
         buildTodo(id: 'a', date: '2026-03-22', title: 'Morning focus'),
         buildTodo(id: 'b', date: '2026-03-22', title: 'Evening focus'),
         buildTodo(id: 'c', date: '2026-03-20', title: 'Older focus'),
-      ],
+      ]),
     );
 
     await pumpSearchScreen(tester, query: 'focus');
@@ -77,11 +85,14 @@ void main() {
 
   testWidgets('tapping a result navigates to the day route', (tester) async {
     when(
-      () => repository.searchByTitle('focus', limit: any(named: 'limit')),
+      () => repository.searchWithMatchedNotes(
+        'focus',
+        limit: any(named: 'limit'),
+      ),
     ).thenAnswer(
-      (_) async => [
+      (_) async => asResults([
         buildTodo(id: 'a', date: '2026-03-22', title: 'Morning focus'),
-      ],
+      ]),
     );
 
     await pumpSearchScreen(tester, query: 'focus');
@@ -94,8 +105,11 @@ void main() {
 
   testWidgets('shows empty state when no results match', (tester) async {
     when(
-      () => repository.searchByTitle('missing', limit: any(named: 'limit')),
-    ).thenAnswer((_) async => const []);
+      () => repository.searchWithMatchedNotes(
+        'missing',
+        limit: any(named: 'limit'),
+      ),
+    ).thenAnswer((_) async => const <TodoSearchResult>[]);
 
     await pumpSearchScreen(tester, query: 'missing');
 
@@ -108,18 +122,53 @@ void main() {
 
   testWidgets('supports Unicode search queries', (tester) async {
     when(
-      () => repository.searchByTitle('المهمة', limit: any(named: 'limit')),
+      () => repository.searchWithMatchedNotes(
+        'المهمة',
+        limit: any(named: 'limit'),
+      ),
     ).thenAnswer(
-      (_) async => [
+      (_) async => asResults([
         buildTodo(id: 'arabic', title: 'المهمة العربية', description: 'وصف'),
-      ],
+      ]),
     );
 
     await pumpSearchScreen(tester, query: 'المهمة');
 
     expect(find.text('المهمة العربية'), findsOneWidget);
     verify(
-      () => repository.searchByTitle('المهمة', limit: any(named: 'limit')),
+      () => repository.searchWithMatchedNotes(
+        'المهمة',
+        limit: any(named: 'limit'),
+      ),
     ).called(1);
+  });
+
+  testWidgets('shows the matched segment note as the subtitle', (tester) async {
+    when(
+      () => repository.searchWithMatchedNotes(
+        'budget',
+        limit: any(named: 'limit'),
+      ),
+    ).thenAnswer(
+      (_) async => [
+        TodoSearchResult(
+          todo: buildTodo(
+            id: 'a',
+            date: '2026-03-22',
+            title: 'Untitled work',
+            description: 'Unrelated description',
+          ),
+          matchedNote: 'Reviewed the budget',
+        ),
+      ],
+    );
+
+    await pumpSearchScreen(tester, query: 'budget');
+
+    expect(
+      find.text(testL10n.matchedInNote('Reviewed the budget')),
+      findsOneWidget,
+    );
+    expect(find.text('Unrelated description'), findsNothing);
   });
 }

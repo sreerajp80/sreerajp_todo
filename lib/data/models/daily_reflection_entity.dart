@@ -16,13 +16,13 @@ class DailyReflectionEntity with _$DailyReflectionEntity {
   }) = _DailyReflectionEntity;
 
   Map<String, dynamic> toMap() => {
-        'date': date,
-        'reflection_note': reflectionNote,
-        'completed_seconds': completedSeconds,
-        'dropped_seconds': droppedSeconds,
-        'created_at': createdAt,
-        'updated_at': updatedAt,
-      };
+    'date': date,
+    'reflection_note': reflectionNote,
+    'completed_seconds': completedSeconds,
+    'dropped_seconds': droppedSeconds,
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+  };
 
   factory DailyReflectionEntity.fromMap(Map<String, dynamic> map) =>
       DailyReflectionEntity(

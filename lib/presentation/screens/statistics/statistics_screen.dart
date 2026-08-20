@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/statistics_notifier.dart';
 import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/widgets/daily_bar_chart.dart';
@@ -19,6 +19,7 @@ import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_error_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
+import 'package:sreerajp_todo/presentation/shared/utils/tracked_duration_format.dart';
 
 class StatisticsScreen extends ConsumerStatefulWidget {
   const StatisticsScreen({super.key});
@@ -499,8 +500,8 @@ class _DateRangeFilter extends StatelessWidget {
     final headline = selectedDate == null
         ? (isStartDate ? context.l10n.startDate : context.l10n.endDate)
         : (isCompact
-              ? DateFormat.MMMd().format(selectedDate)
-              : DateFormat.yMMMd().format(selectedDate));
+              ? formatShortDate(selectedDate)
+              : formatDate(selectedDate));
     final subtitle = selectedDate != null && isCompact
         ? DateFormat.y().format(selectedDate)
         : null;
@@ -657,17 +658,17 @@ class _SummaryCards extends StatelessWidget {
       ),
       (
         context.l10n.statsAverageTimePerDay,
-        formatDuration(summaryStats.avgTimePerDaySeconds),
+        context.trackedDuration(summaryStats.avgTimePerDaySeconds),
         Icons.schedule_rounded,
       ),
       (
         context.l10n.statsProductiveTime,
-        formatDuration(summaryStats.totalProductiveTimeSeconds),
+        context.trackedDuration(summaryStats.totalProductiveTimeSeconds),
         Icons.trending_up_rounded,
       ),
       (
         context.l10n.statsDroppedTime,
-        formatDuration(summaryStats.totalDroppedTimeSeconds),
+        context.trackedDuration(summaryStats.totalDroppedTimeSeconds),
         Icons.remove_circle_outline_rounded,
       ),
     ];

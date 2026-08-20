@@ -41,7 +41,10 @@ void main() {
       );
 
       final qrString = frame.toQrString();
-      expect(qrString.startsWith('AIRQR|LT1|992104|10|3:0,3,7|87654321|'), isTrue);
+      expect(
+        qrString.startsWith('AIRQR|LT1|992104|10|3:0,3,7|87654321|'),
+        isTrue,
+      );
 
       final parsed = AirQrFrame.parse(qrString);
       expect(parsed, isNotNull);

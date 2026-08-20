@@ -9,9 +9,9 @@ import 'package:uuid/uuid.dart';
 
 final masteryDeckItemsProvider =
     FutureProvider.autoDispose<List<SpacedRepetitionItemEntity>>((ref) async {
-  final repo = ref.watch(spacedRepetitionRepositoryProvider);
-  return repo.getAllItems();
-});
+      final repo = ref.watch(spacedRepetitionRepositoryProvider);
+      return repo.getAllItems();
+    });
 
 class MasteryDeckScreen extends ConsumerWidget {
   const MasteryDeckScreen({super.key});
@@ -118,9 +118,7 @@ class MasteryDeckScreen extends ConsumerWidget {
       ),
       body: itemsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(
-          child: Text('Error loading deck: $err'),
-        ),
+        error: (err, stack) => Center(child: Text('Error loading deck: $err')),
         data: (items) {
           if (items.isEmpty) {
             return Center(

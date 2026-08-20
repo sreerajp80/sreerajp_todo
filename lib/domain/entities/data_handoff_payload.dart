@@ -24,13 +24,13 @@ class DataHandoffPayload {
   });
 
   Map<String, dynamic> toJson() => {
-        'version': version,
-        'date': date,
-        'exported_at': exportedAt,
-        'todos': todos.map((t) => _todoToMapWithSubtasks(t)).toList(),
-        'time_segments': timeSegments.map((s) => s.toMap()).toList(),
-        'recurrence_rules': recurrenceRules.map((r) => r.toMap()).toList(),
-      };
+    'version': version,
+    'date': date,
+    'exported_at': exportedAt,
+    'todos': todos.map((t) => _todoToMapWithSubtasks(t)).toList(),
+    'time_segments': timeSegments.map((s) => s.toMap()).toList(),
+    'recurrence_rules': recurrenceRules.map((r) => r.toMap()).toList(),
+  };
 
   factory DataHandoffPayload.fromJson(Map<String, dynamic> json) {
     final version = (json['version'] as num?)?.toInt() ?? 1;

@@ -2,21 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:sreerajp_todo/core/utils/date_format_rules.dart';
+import 'package:sreerajp_todo/presentation/shared/date_time_labels.dart';
 import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/application/task_defaults_notifier.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
+import 'package:sreerajp_todo/core/constants/todo_sort_option.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
-import 'package:sreerajp_todo/presentation/screens/daily_list/todo_sort_option.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/day_list_filters.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/carry_over_sheet.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/evening_reflection_modal.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/morning_intention_card.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_command_sheet.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/recall_confidence_dialog.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
+import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
@@ -36,9 +44,94 @@ class DailyListScreen extends ConsumerStatefulWidget {
 
 class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   bool _showCalendar = false;
-  TodoSortOption _sortOption = TodoSortOption.manual;
+
+  /// The sort picked from the app bar menu on this screen. Null means "use the
+  /// saved default", so a screen the user has not touched always follows
+  /// Settings even after the setting changes.
+  TodoSortOption? _sortOption;
+
+  /// Set when the user taps "Show" on the hidden-tasks line. It lasts for this
+  /// visit only and is never saved, because it is a peek and not a preference.
+  bool _revealHidden = false;
+
+  /// Guards the carry-over sheet so it is opened at most once per screen, even
+  /// if the widget rebuilds while the sheet is still being prepared.
+  bool _carryOverChecked = false;
 
   bool get _isPast => isPastDate(widget.date);
+
+  /// The order in force right now: this screen's pick, or the saved default.
+  TodoSortOption get _effectiveSort =>
+      _sortOption ?? ref.read(taskDefaultsProvider).sortOption;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeOfferCarryOver());
+  }
+
+  /// Offers to copy unfinished tasks forward, at most once a day.
+  ///
+  /// Only today is offered. A past day is read-only and a future day has no
+  /// "leftovers" to speak of, so neither would make sense.
+  Future<void> _maybeOfferCarryOver() async {
+    if (_carryOverChecked || !mounted) return;
+    _carryOverChecked = true;
+
+    final defaults = ref.read(taskDefaultsProvider);
+    final today = todayAsIso();
+    if (widget.date != today) return;
+    if (!shouldAskCarryOver(
+      enabled: defaults.carryOverEnabled,
+      lastAskedIso: defaults.carryOverLastAsked,
+      todayIso: today,
+    )) {
+      return;
+    }
+
+    final notifier = ref.read(taskDefaultsProvider.notifier);
+    // Marked before the sheet opens, so a crash or a force-close cannot make
+    // the sheet reappear over and over on the same day.
+    await notifier.markCarryOverAsked(today);
+
+    final List<TodoEntity> candidates;
+    try {
+      candidates = await CarryOverSheet.findCandidates(
+        ref,
+        targetDate: today,
+        lookBack: defaults.carryOverLookBack,
+      );
+    } on Exception catch (error) {
+      if (mounted) _showError(error);
+      return;
+    }
+    if (candidates.isEmpty || !mounted) return;
+
+    final outcome = await CarryOverSheet.show(
+      context,
+      candidates: candidates,
+      targetDate: today,
+    );
+    if (outcome == null || !mounted) return;
+
+    if (outcome.neverAskAgain) {
+      await notifier.setCarryOverEnabled(false);
+      return;
+    }
+
+    if (outcome.copied > 0) {
+      ref.invalidate(dailyTodoProvider(today));
+    }
+    if (!mounted) return;
+
+    final parts = <String>[
+      context.l10n.carryOverDone(outcome.copied),
+      if (outcome.skipped > 0) context.l10n.carryOverSkipped(outcome.skipped),
+    ];
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(parts.join(' · '))));
+  }
 
   void _navigateToDate(String date) {
     context.go(AppRoutes.dailyListPath(date));
@@ -204,9 +297,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         int importedCount = 0;
         for (final todo in payload.todos) {
           try {
-            await repository.createTodo(
-              todo.copyWith(date: widget.date),
-            );
+            await repository.createTodo(todo.copyWith(date: widget.date));
             importedCount++;
           } catch (_) {
             // Ignore duplicate title lock exceptions if skip mode
@@ -238,15 +329,38 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     return todo.status;
   }
 
+  /// Applies the show/hide setting, unless the user has peeked at the hidden
+  /// tasks for this visit.
+  List<TodoEntity> _applyFilters(
+    List<TodoEntity> todos,
+    TaskDefaults defaults,
+  ) {
+    if (_revealHidden) return todos;
+    return filterVisibleTodos(
+      todos,
+      showCompleted: defaults.showCompleted,
+      showDropped: defaults.showDropped,
+    );
+  }
+
+  List<TodoEntity> _applySinking(
+    List<TodoEntity> todos,
+    TaskDefaults defaults,
+  ) {
+    if (!defaults.sinkFinished) return todos;
+    return sinkFinishedTodos(todos);
+  }
+
   List<TodoEntity> _applySorting(List<TodoEntity> todos) {
-    if (_sortOption == TodoSortOption.manual) return todos;
+    final sortOption = _effectiveSort;
+    if (sortOption == TodoSortOption.manual) return todos;
     final sorted = [...todos];
     final trackingStates = {
       for (final todo in todos)
         todo.id: ref.watch(timeTrackingProvider(todo.id)),
     };
 
-    switch (_sortOption) {
+    switch (sortOption) {
       case TodoSortOption.nameAsc:
         sorted.sort(
           (a, b) => a.title.toLowerCase().compareTo(b.title.toLowerCase()),
@@ -294,18 +408,65 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           );
           return (rank[aStatus] ?? 0).compareTo(rank[bStatus] ?? 0);
         });
+      case TodoSortOption.priorityHigh:
+        // Highest first. Ties keep the manual order, which the list already
+        // arrives in, because List.sort is not stable on its own.
+        final manualRank = {
+          for (var i = 0; i < todos.length; i++) todos[i].id: i,
+        };
+        sorted.sort((a, b) {
+          final byPriority = b.priority.index.compareTo(a.priority.index);
+          if (byPriority != 0) return byPriority;
+          return (manualRank[a.id] ?? 0).compareTo(manualRank[b.id] ?? 0);
+        });
       case TodoSortOption.manual:
         break;
     }
     return sorted;
   }
 
-  PopupMenuItem<TodoSortOption> _buildSortMenuItem(
-    TodoSortOption option,
-    IconData icon,
-    String label,
+  /// Translates a drag inside the visible list into a move inside the full
+  /// list held by the notifier.
+  ///
+  /// The two can differ once tasks are hidden or sunk to the bottom, so the
+  /// dragged task is placed just before whatever it was dropped in front of.
+  void _reorderVisible(
+    DailyTodoNotifier notifier,
+    List<TodoEntity> visible,
+    List<TodoEntity> all,
+    int oldIndex,
+    int newIndex,
   ) {
-    final isSelected = _sortOption == option;
+    if (visible.length == all.length &&
+        !ref.read(taskDefaultsProvider).sinkFinished) {
+      notifier.reorder(oldIndex, newIndex);
+      return;
+    }
+
+    final moved = visible[oldIndex];
+    final visibleAfter = [...visible]..removeAt(oldIndex);
+    final targetSlot = oldIndex < newIndex ? newIndex - 1 : newIndex;
+    final anchor = targetSlot < visibleAfter.length
+        ? visibleAfter[targetSlot]
+        : null;
+
+    final realOld = all.indexWhere((todo) => todo.id == moved.id);
+    if (realOld < 0) return;
+    final realAfter = [...all]..removeAt(realOld);
+    final desired = anchor == null
+        ? realAfter.length
+        : realAfter.indexWhere((todo) => todo.id == anchor.id);
+    if (desired < 0) return;
+
+    // `reorder` expects Flutter's own index convention, where a downward move
+    // counts the slot the item still occupies.
+    notifier.reorder(realOld, desired >= realOld ? desired + 1 : desired);
+  }
+
+  PopupMenuItem<TodoSortOption> _buildSortMenuItem(TodoSortOption option) {
+    final icon = sortOptionIcon(option);
+    final label = sortOptionName(context.l10n, option);
+    final isSelected = _effectiveSort == option;
     final color = Theme.of(context).colorScheme.primary;
     return PopupMenuItem<TodoSortOption>(
       value: option,
@@ -331,8 +492,11 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   Widget build(BuildContext context) {
     final state = ref.watch(dailyTodoProvider(widget.date));
     final notifier = ref.read(dailyTodoProvider(widget.date).notifier);
+    final defaults = ref.watch(taskDefaultsProvider);
     final hasUndoStack = state.undoStack.isNotEmpty;
-    final sortedTodos = _applySorting(state.todos);
+    final visibleTodos = _applyFilters(state.todos, defaults);
+    final sortedTodos = _applySinking(_applySorting(visibleTodos), defaults);
+    final hiddenCount = state.todos.length - visibleTodos.length;
 
     Widget buildTile(BuildContext ctx, int index) {
       final todo = sortedTodos[index];
@@ -352,8 +516,17 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           notifier.toggleSelect(todo.id);
         },
         onComplete: () async {
+          if (defaults.confirmComplete) {
+            final confirmed = await showConfirmDialog(
+              context,
+              title: context.l10n.confirmCompleteTitle,
+              content: context.l10n.confirmCompleteBody,
+            );
+            if (!confirmed || !context.mounted) return;
+          }
           try {
-            final isSrs = todo.spacedRepetitionItemId != null ||
+            final isSrs =
+                todo.spacedRepetitionItemId != null ||
                 todo.title.contains('#mastery') ||
                 todo.title.contains('#spaced-repetition');
 
@@ -388,11 +561,16 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           }
         },
         onDrop: () async {
-          final confirmed = await showConfirmDialog(
-            context,
-            title: context.l10n.confirmDrop,
-            content: context.l10n.confirmDropBody,
-          );
+          // The question is now a setting. When it is off the drop happens on
+          // the tap, and the undo SnackBar is the safety net.
+          var confirmed = true;
+          if (defaults.confirmDrop) {
+            confirmed = await showConfirmDialog(
+              context,
+              title: context.l10n.confirmDrop,
+              content: context.l10n.confirmDropBody,
+            );
+          }
           if (confirmed && context.mounted) {
             try {
               await notifier.markDropped(todo.id);
@@ -459,15 +637,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       appBar: state.isMultiSelectMode
           ? _buildMultiSelectAppBar(state, notifier)
           : _buildNormalAppBar(hasUndoStack, notifier, state),
-      floatingActionButton: _isPast
-          ? null
-          : FloatingActionButton(
-              onPressed: () {
-                context.push('${AppRoutes.createTodo}?date=${widget.date}');
-              },
-              tooltip: context.l10n.createTodo,
-              child: const Icon(Icons.add),
-            ),
+      floatingActionButton: _isPast ? null : _buildFabs(),
       body: Column(
         children: [
           if (_showCalendar) _buildCalendar(),
@@ -503,10 +673,10 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                               '${AppRoutes.createTodo}?date=${widget.date}',
                             ),
                     )
-                  : _sortOption == TodoSortOption.manual
+                  : _effectiveSort == TodoSortOption.manual
                   ? ReorderableListView.builder(
                       key: ValueKey(
-                        'list-${widget.date}-${state.todos.length}',
+                        'list-${widget.date}-${sortedTodos.length}',
                       ),
                       buildDefaultDragHandles: !_isPast,
                       padding: const EdgeInsets.only(bottom: 88),
@@ -514,20 +684,52 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                       // ignore: deprecated_member_use
                       onReorder: (oldIndex, newIndex) {
                         if (!_isPast) {
-                          notifier.reorder(oldIndex, newIndex);
+                          _reorderVisible(
+                            notifier,
+                            sortedTodos,
+                            state.todos,
+                            oldIndex,
+                            newIndex,
+                          );
                         }
                       },
                       itemBuilder: buildTile,
                     )
                   : ListView.builder(
                       key: ValueKey(
-                        'sorted-${widget.date}-${state.todos.length}-${_sortOption.name}',
+                        'sorted-${widget.date}-${sortedTodos.length}-${_effectiveSort.name}',
                       ),
                       padding: const EdgeInsets.only(bottom: 88),
                       itemCount: sortedTodos.length,
                       itemBuilder: buildTile,
                     ),
             ),
+          ),
+          if (hiddenCount > 0) _buildHiddenTasksBar(hiddenCount),
+        ],
+      ),
+    );
+  }
+
+  /// The line that owns up to a filter having hidden something.
+  ///
+  /// Without it an empty-looking day and a day with everything finished look
+  /// exactly the same.
+  Widget _buildHiddenTasksBar(int hiddenCount) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 4, 8, 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              context.l10n.hiddenTasksCount(hiddenCount),
+              style: theme.textTheme.bodySmall,
+            ),
+          ),
+          TextButton(
+            onPressed: () => setState(() => _revealHidden = true),
+            child: Text(context.l10n.showHiddenTasks),
           ),
         ],
       ),
@@ -620,58 +822,32 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           icon: Icon(
             Icons.sort,
             size: 22,
-            color: _sortOption != TodoSortOption.manual
+            color: _effectiveSort != TodoSortOption.manual
                 ? Theme.of(context).colorScheme.primary
                 : null,
           ),
           padding: EdgeInsets.zero,
           tooltip: context.l10n.sortTodos,
-          onSelected: (option) => setState(() => _sortOption = option),
+          onSelected: (option) {
+            setState(() => _sortOption = option);
+            // Saves only when "remember the last order I pick" is on. The
+            // notifier owns that rule, so the screen does not repeat it.
+            ref.read(taskDefaultsProvider.notifier).rememberSortOption(option);
+          },
           itemBuilder: (context) => [
-            _buildSortMenuItem(
-              TodoSortOption.manual,
-              Icons.reorder,
-              context.l10n.sortManual,
-            ),
+            _buildSortMenuItem(TodoSortOption.manual),
             const PopupMenuDivider(),
-            _buildSortMenuItem(
-              TodoSortOption.nameAsc,
-              Icons.sort_by_alpha,
-              context.l10n.sortNameAZ,
-            ),
-            _buildSortMenuItem(
-              TodoSortOption.nameDesc,
-              Icons.sort_by_alpha,
-              context.l10n.sortNameZA,
-            ),
+            _buildSortMenuItem(TodoSortOption.nameAsc),
+            _buildSortMenuItem(TodoSortOption.nameDesc),
             const PopupMenuDivider(),
-            _buildSortMenuItem(
-              TodoSortOption.createdOldest,
-              Icons.arrow_upward,
-              context.l10n.sortCreatedOldest,
-            ),
-            _buildSortMenuItem(
-              TodoSortOption.createdNewest,
-              Icons.arrow_downward,
-              context.l10n.sortCreatedNewest,
-            ),
+            _buildSortMenuItem(TodoSortOption.createdOldest),
+            _buildSortMenuItem(TodoSortOption.createdNewest),
             const PopupMenuDivider(),
-            _buildSortMenuItem(
-              TodoSortOption.timeMost,
-              Icons.timer,
-              context.l10n.sortTimeMost,
-            ),
-            _buildSortMenuItem(
-              TodoSortOption.timeLeast,
-              Icons.timer_outlined,
-              context.l10n.sortTimeLeast,
-            ),
+            _buildSortMenuItem(TodoSortOption.timeMost),
+            _buildSortMenuItem(TodoSortOption.timeLeast),
             const PopupMenuDivider(),
-            _buildSortMenuItem(
-              TodoSortOption.status,
-              Icons.flag_outlined,
-              context.l10n.sortByStatus,
-            ),
+            _buildSortMenuItem(TodoSortOption.status),
+            _buildSortMenuItem(TodoSortOption.priorityHigh),
           ],
         ),
         PopupMenuButton<_AppBarMoreOption>(
@@ -709,7 +885,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 children: [
                   const Icon(Icons.settings_outlined, size: 20),
                   const SizedBox(width: 12),
-                  Text(context.l10n.settingsLabel),
+                  Expanded(child: Text(context.l10n.settingsLabel)),
                 ],
               ),
             ),
@@ -720,7 +896,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 children: [
                   const Icon(Icons.wifi_tethering, size: 20),
                   const SizedBox(width: 12),
-                  Text(context.l10n.wifiSyncTitle),
+                  Expanded(child: Text(context.l10n.wifiSyncTitle)),
                 ],
               ),
             ),
@@ -730,7 +906,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 children: [
                   const Icon(Icons.qr_code_2, size: 20),
                   const SizedBox(width: 12),
-                  Text(context.l10n.airQrShareTitle),
+                  Expanded(child: Text(context.l10n.airQrShareTitle)),
                 ],
               ),
             ),
@@ -740,7 +916,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 children: [
                   const Icon(Icons.qr_code_scanner, size: 20),
                   const SizedBox(width: 12),
-                  Text(context.l10n.airQrScanTitle),
+                  Expanded(child: Text(context.l10n.airQrScanTitle)),
                 ],
               ),
             ),
@@ -751,7 +927,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
                 children: [
                   const Icon(Icons.import_export_rounded, size: 20),
                   const SizedBox(width: 12),
-                  Text(context.l10n.dataHandoffTitle),
+                  Expanded(child: Text(context.l10n.dataHandoffTitle)),
                 ],
               ),
             ),
@@ -888,14 +1064,54 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     );
   }
 
+  /// The add button, with the voice button stacked above it when the user has
+  /// turned voice input on. Both are hidden on a past day, which is read-only.
+  Widget _buildFabs() {
+    final strings = context.l10n;
+    final voiceEnabled = ref.watch(taskDefaultsProvider).voiceInputEnabled;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        if (voiceEnabled) ...[
+          FloatingActionButton.small(
+            heroTag: 'day-list-voice',
+            onPressed: () => VoiceCommandSheet.show(context, date: widget.date),
+            tooltip: strings.voiceOpenTooltip,
+            child: const Icon(Icons.mic),
+          ),
+          const SizedBox(height: 12),
+        ],
+        FloatingActionButton(
+          heroTag: 'day-list-add',
+          onPressed: () {
+            context.push(AppRoutes.createTodoPath(date: widget.date));
+          },
+          tooltip: strings.createTodo,
+          child: const Icon(Icons.add),
+        ),
+      ],
+    );
+  }
+
   Widget _buildCalendar() {
     final focusedDay = parseIsoDate(widget.date);
+    final dateSettings = ref.watch(dateTimeSettingsProvider);
+    // Days the user does not work are styled like a weekend, so the calendar
+    // shows the same week shape statistics count on.
+    final offDays = [
+      for (final weekday in kAllWeekdays)
+        if (!dateSettings.workingDays.contains(weekday)) weekday,
+    ];
     return TableCalendar(
       firstDay: DateTime(2020),
       lastDay: DateTime(2030),
       focusedDay: focusedDay,
       selectedDayPredicate: (day) => isSameDay(day, focusedDay),
       calendarFormat: CalendarFormat.month,
+      startingDayOfWeek: startingDayOfWeekFor(dateSettings.weekStart),
+      weekendDays: offDays,
       headerStyle: const HeaderStyle(formatButtonVisible: false),
       onDaySelected: (selectedDay, _) {
         setState(() => _showCalendar = false);
@@ -912,4 +1128,3 @@ enum _AppBarMoreOption {
   airQrScan,
   dataHandoff,
 }
-

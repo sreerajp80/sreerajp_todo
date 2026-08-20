@@ -127,9 +127,9 @@ class DataHandoffService {
 
     void flushCurrentTodo() {
       if (currentTodo != null) {
-        todos.add(currentTodo!.copyWith(
-          subTasks: List.unmodifiable(currentSubtasks),
-        ));
+        todos.add(
+          currentTodo!.copyWith(subTasks: List.unmodifiable(currentSubtasks)),
+        );
         currentTodo = null;
         currentSubtasks.clear();
       }
@@ -149,15 +149,17 @@ class DataHandoffService {
 
         if (isIndented && currentTodo != null) {
           // Treat as subtask of active todo
-          currentSubtasks.add(SubTaskItem(
-            id: _uuid.v4(),
-            todoId: currentTodo!.id,
-            title: normalizedTitle,
-            isCompleted: isChecked,
-            sortOrder: currentSubtasks.length,
-            createdAt: nowIso,
-            updatedAt: nowIso,
-          ));
+          currentSubtasks.add(
+            SubTaskItem(
+              id: _uuid.v4(),
+              todoId: currentTodo!.id,
+              title: normalizedTitle,
+              isCompleted: isChecked,
+              sortOrder: currentSubtasks.length,
+              createdAt: nowIso,
+              updatedAt: nowIso,
+            ),
+          );
         } else {
           // Top-level task
           flushCurrentTodo();
@@ -200,8 +202,9 @@ class DataHandoffService {
     // NFC-normalize all string values inside payload
     final normalizedTodos = payload.todos.map((t) {
       final normTitle = nfcNormalize(t.title);
-      final normDesc =
-          t.description != null ? nfcNormalize(t.description!) : null;
+      final normDesc = t.description != null
+          ? nfcNormalize(t.description!)
+          : null;
       final normSubtasks = t.subTasks.map((s) {
         return s.copyWith(title: nfcNormalize(s.title));
       }).toList();
@@ -323,9 +326,7 @@ class DataHandoffService {
         dialogTitle: 'Save Export File',
         fileName: defaultFileName,
         type: FileType.custom,
-        allowedExtensions: [
-          p.extension(defaultFileName).replaceAll('.', ''),
-        ],
+        allowedExtensions: [p.extension(defaultFileName).replaceAll('.', '')],
       );
     } catch (_) {}
 

@@ -16,7 +16,14 @@ import 'package:sreerajp_todo/data/services/p2p_wifi_sync_crypto.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_payload.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_scope.dart';
 
-enum P2pHostStatus { stopped, listening, peerConnected, syncing, completed, error }
+enum P2pHostStatus {
+  stopped,
+  listening,
+  peerConnected,
+  syncing,
+  completed,
+  error,
+}
 
 /// Serverless Local P2P Wi-Fi Sync Engine for device-to-device synchronization over local TCP sockets.
 class P2pWifiSyncService {
@@ -72,7 +79,9 @@ class P2pWifiSyncService {
 
   /// Generates pairing QR code / deep link string: `wifi_sync://<ip>:<port>?pin=<pin>&salt=<salt_hex>`
   String getPairingQrPayload() {
-    final saltHex = _salt.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
+    final saltHex = _salt
+        .map((b) => b.toRadixString(16).padLeft(2, '0'))
+        .join();
     return 'wifi_sync://$_hostIp:$_hostPort?pin=$_pairingPin&salt=$saltHex';
   }
 
@@ -87,7 +96,10 @@ class P2pWifiSyncService {
     _hostIp = ips.first;
     _pairingPin = pin ?? P2pWifiSyncCrypto.generatePairingPin();
     _salt = P2pWifiSyncCrypto.generateSalt(16);
-    _sessionKey = P2pWifiSyncCrypto.deriveSessionKey(pin: _pairingPin, salt: _salt);
+    _sessionKey = P2pWifiSyncCrypto.deriveSessionKey(
+      pin: _pairingPin,
+      salt: _salt,
+    );
 
     _serverSocket = await ServerSocket.bind(InternetAddress.anyIPv4, 0);
     _hostPort = _serverSocket!.port;
@@ -134,12 +146,14 @@ class P2pWifiSyncService {
               sessionKey: _sessionKey!,
             );
 
-            final requestJson = jsonDecode(decryptedMessage) as Map<String, dynamic>;
+            final requestJson =
+                jsonDecode(decryptedMessage) as Map<String, dynamic>;
             final command = requestJson['command'] as String?;
 
             if (command == 'REQUEST_SYNC') {
               _hostStatus = P2pHostStatus.syncing;
-              final requestedScopeJson = requestJson['scope'] as Map<String, dynamic>?;
+              final requestedScopeJson =
+                  requestJson['scope'] as Map<String, dynamic>?;
               final activeScope = requestedScopeJson != null
                   ? P2pSyncScope.fromJson(requestedScopeJson)
                   : scope;
@@ -171,10 +185,13 @@ class P2pWifiSyncService {
       );
 
       // 30s handshake timeout cap
-      await completer.future.timeout(P2pSyncBounds.handshakeTimeout, onTimeout: () {
-        streamSubscription.cancel();
-        socket.close();
-      });
+      await completer.future.timeout(
+        P2pSyncBounds.handshakeTimeout,
+        onTimeout: () {
+          streamSubscription.cancel();
+          socket.close();
+        },
+      );
     } catch (_) {
       _hostStatus = P2pHostStatus.error;
     }
@@ -229,7 +246,9 @@ class P2pWifiSyncService {
         P2pSyncBounds.handshakeTimeout,
         onTimeout: () {
           sub.cancel();
-          throw TimeoutException('P2P Sync timed out waiting for host response.');
+          throw TimeoutException(
+            'P2P Sync timed out waiting for host response.',
+          );
         },
       );
 
@@ -293,7 +312,9 @@ class P2pWifiSyncService {
   }
 
   /// Executes Add-Only Non-Destructive Merge of incoming records based on natural primary keys (`date` + NFC-normalized `title`).
-  Future<P2pSyncMergeResult> mergeIncomingPayload(P2pSyncPayload payload) async {
+  Future<P2pSyncMergeResult> mergeIncomingPayload(
+    P2pSyncPayload payload,
+  ) async {
     int todosAdded = 0;
     int todosSkipped = 0;
     int segmentsAdded = 0;
@@ -332,7 +353,9 @@ class P2pWifiSyncService {
 
     // 2. Merge Time Segments
     for (final segment in payload.timeSegments) {
-      final existingSegments = await _timeSegmentDao.findByTodoId(segment.todoId);
+      final existingSegments = await _timeSegmentDao.findByTodoId(
+        segment.todoId,
+      );
       final alreadyExists = existingSegments.any((s) => s.id == segment.id);
       if (alreadyExists) {
         segmentsSkipped++;

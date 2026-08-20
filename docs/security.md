@@ -128,6 +128,8 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 - Root or tamper detection: Not implemented (out-of-scope threat model).
 - `INTERNET` permission: Deliberately absent. Android OS blocks all network access at the system level.
 - `ACCESS_NETWORK_STATE` / `ACCESS_WIFI_STATE`: Absent.
+- `CAMERA`: Declared, for QR code scanning between the user's own devices. No photo is stored.
+- `RECORD_AUDIO`: Declared, for the offline voice task sheet only. See section 10.
 
 ### Windows
 
@@ -142,8 +144,39 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 |------------|------------------|----------------|-----------------|
 | Local file storage (implicit) | SQLite database in app's private directory | Automatic (OS grants to all apps for their own data directory) | Not applicable |
 | External storage / file access | Backup export/import to user-accessible location | When the user taps Export or Import on the Backup screen | Show error explaining file access is required for backup |
+| `CAMERA` | Scanning an AirQR code to move data between the user's own devices | When the user opens the QR scanner | The scanner screen explains that the camera is required; every other feature keeps working |
+| `RECORD_AUDIO` | The offline voice task sheet | Only after the user turns **Voice input** on in Settings → Task defaults → Day list, and then taps the microphone | The sheet shows its text box instead, and the sentence is parsed exactly the same way |
 
-Permissions the app explicitly does NOT request: `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `CAMERA`, `MICROPHONE`, `LOCATION`, `CONTACTS`, `PHONE`, `NOTIFICATIONS`.
+Permissions the app explicitly does NOT request: `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `LOCATION`, `CONTACTS`, `PHONE`, `NOTIFICATIONS`.
+
+### Why `RECORD_AUDIO` does not break the offline guarantee
+
+Flutter cannot read a microphone by itself, so speech-to-text has to come from
+somewhere. The choice made here keeps the offline promise in three ways:
+
+1. **This app still holds no network permission.** Nothing in the app process
+   can reach the network, before or after this feature. The manifest audit in
+   section 12 is unchanged and must still find zero matches.
+2. **The recogniser is always asked for its on-device engine.** From API 33 the
+   host calls `SpeechRecognizer.createOnDeviceSpeechRecognizer`; below that it
+   sets `RecognizerIntent.EXTRA_PREFER_OFFLINE`. A device that cannot offer an
+   on-device engine is reported back as `no_offline` and listening is
+   **refused**, rather than being allowed to fall back to a server.
+3. **A network error is treated as a missing language pack.** If the recogniser
+   still reaches for the network, the host maps that error to
+   `no_offline_language`, the attempt fails, and the user is told to install an
+   offline pack or type instead.
+
+The honest limit, recorded here so it is never overstated: the recogniser is a
+separate app on the device (usually the system speech service). Its behaviour
+can be constrained as above and its failures can be surfaced, but its code
+cannot be audited from here. Users who do not accept that limit simply leave
+**Voice input** off, which is the default, and type the sentence — the parser
+itself is pure Dart and reaches nothing at all.
+
+No audio is recorded, buffered to disk, or kept. The recogniser hands back text,
+the text is parsed on the device, and the recogniser is destroyed as soon as the
+sentence ends or the sheet closes.
 
 ## 11. Backup, Import, Export, And Recovery
 

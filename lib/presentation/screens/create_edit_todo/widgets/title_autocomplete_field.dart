@@ -43,6 +43,14 @@ class _TitleAutocompleteFieldState
     widget.onChanged?.call(value);
 
     _debounce?.cancel();
+    // With suggestions switched off nothing is read from the database at all,
+    // so the timer is not even started.
+    if (!ref.read(taskDefaultsProvider).autocompleteEnabled) {
+      if (_suggestions.isNotEmpty) {
+        setState(() => _suggestions = []);
+      }
+      return;
+    }
     _debounce = Timer(
       const Duration(milliseconds: kAutocompleteDebounceMills),
       () {

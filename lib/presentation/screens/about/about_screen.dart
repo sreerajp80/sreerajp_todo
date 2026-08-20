@@ -19,9 +19,7 @@ class AboutScreen extends ConsumerWidget {
     final config = configAsync.value ?? AppConfig.fallback;
 
     final detailEntries = config.details.entries
-        .where(
-          (e) => e.key.trim().isNotEmpty && e.value.trim().isNotEmpty,
-        )
+        .where((e) => e.key.trim().isNotEmpty && e.value.trim().isNotEmpty)
         .toList();
 
     return Scaffold(

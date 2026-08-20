@@ -13,10 +13,10 @@ class DailyIntentionEntity with _$DailyIntentionEntity {
   }) = _DailyIntentionEntity;
 
   Map<String, dynamic> toMap() => {
-        'date': date,
-        'intention_text': intentionText,
-        'created_at': createdAt,
-      };
+    'date': date,
+    'intention_text': intentionText,
+    'created_at': createdAt,
+  };
 
   factory DailyIntentionEntity.fromMap(Map<String, dynamic> map) =>
       DailyIntentionEntity(

@@ -17,16 +17,21 @@ class SpacedRepetitionRepositoryImpl implements SpacedRepetitionRepository {
   Future<void> deleteItem(String id) => _dao.delete(id);
 
   @override
-  Future<SpacedRepetitionItemEntity?> getItemById(String id) => _dao.findById(id);
+  Future<SpacedRepetitionItemEntity?> getItemById(String id) =>
+      _dao.findById(id);
 
   @override
-  Future<SpacedRepetitionItemEntity?> getItemByTitle(String title) => _dao.findByTitle(title);
+  Future<SpacedRepetitionItemEntity?> getItemByTitle(String title) =>
+      _dao.findByTitle(title);
 
   @override
-  Future<List<SpacedRepetitionItemEntity>> getItemsDueOnOrBefore(String dateStr) => _dao.findDueOnOrBefore(dateStr);
+  Future<List<SpacedRepetitionItemEntity>> getItemsDueOnOrBefore(
+    String dateStr,
+  ) => _dao.findDueOnOrBefore(dateStr);
 
   @override
-  Future<List<SpacedRepetitionItemEntity>> getAllActiveItems() => _dao.findAllActive();
+  Future<List<SpacedRepetitionItemEntity>> getAllActiveItems() =>
+      _dao.findAllActive();
 
   @override
   Future<List<SpacedRepetitionItemEntity>> getAllItems() => _dao.findAll();

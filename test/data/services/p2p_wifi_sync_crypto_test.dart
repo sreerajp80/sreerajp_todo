@@ -20,7 +20,10 @@ void main() {
       final key = P2pWifiSyncCrypto.deriveSessionKey(pin: '123456', salt: salt);
       expect(key.length, equals(32));
 
-      final key2 = P2pWifiSyncCrypto.deriveSessionKey(pin: '123456', salt: salt);
+      final key2 = P2pWifiSyncCrypto.deriveSessionKey(
+        pin: '123456',
+        salt: salt,
+      );
       expect(key, equals(key2));
     });
 

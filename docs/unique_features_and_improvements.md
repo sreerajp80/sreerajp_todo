@@ -48,6 +48,14 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
 
 ## 3. Detailed Feature & Data Management Specifications
 
+**Status legend used in this section and in section 4:**
+
+| Mark | Meaning |
+|------|---------|
+| ✅ **Implemented** | Built, shipped, and working in the current codebase. |
+| 🟡 **Partly implemented** | The main part is built. A named piece is still missing, listed under **Not Included**. |
+| *(no mark)* | Planned only. No code for it yet. |
+
 ### 3.1 Day-Locked Time-Travel Friction Engine & Deferral Audit Trail
 - **Concept:** Traditional todo apps allow users to endlessly change dates, defer, or push tasks into the future without consequence. `SreerajP ToDo` enforces an immutable past (Day-Lock). This feature introduces intentional cognitive friction and a tamper-evident audit log whenever a user attempts to repeatedly defer (`port`) a task.
 - **Functionality:**
@@ -58,12 +66,17 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
   - Maintains a persistent `TodoRevisions` SQLite table (reused from `SreerajP_Journal_Vault` `EntryRevisions`) recording an immutable audit trail with SHA-256 hash chain verification (adapted from `SreerajPContactSphere`) detailing every date modification, deferral reason, and title edit over time.
 - **Why Unique:** No Android todo app enforces cognitive friction challenges or tamper-evident hash-chained audit trails on deferred tasks.
 
-### 3.2 Bilingual Offline Natural Language Voice Task Parser (`en-IN` & `ml-IN`)
-- **Concept:** 100% offline, zero-network natural language voice task creation supporting English and Malayalam script and phonetics.
-- **Functionality:**
-  - Tapping a microphone FAB opens a floating voice sheet (`VoiceCommandUi` adapted from `chronotune-smart-clock`).
-  - Uses an offline regex and grammarless parsing engine (`VoiceCommandParser`) supporting English (`en-IN`) and Malayalam (`ml-IN`), recognizing localized regional numeral expressions ("ഏഴര", "പത്തു മണിക്ക്"), relative dates ("tomorrow", "next Monday", "അടുത്ത തിങ്കളാഴ്ച"), and duration estimates ("for 30 minutes", "45 മിനിറ്റ് പഠനം").
-  - Automatically runs `unicodeUtils.nfcNormalize()` and `unicodeUtils.detectTextDirection()` on the parsed title before creating the pre-filled task.
+### 3.2 Bilingual Offline Natural Language Voice Task Parser (`en-IN` & `ml-IN`) ✅
+- **Status:** Implemented ✅
+- **Current Implementation:**
+  - **Parser (`lib/core/voice/`):** `VoiceCommandParser` is pure Dart with no grammar file, no model and no network. It walks a sentence four times — duration, time of day, date, priority — removing the words it understands, and whatever is left becomes the title. Every word it knows lives in `voice_lexicon_en.dart` and `voice_lexicon_ml.dart`, so the engine itself holds rules and no vocabulary.
+  - **Malayalam by stem, not by word:** Malayalam glues its case endings on, so `ഏഴര` turns up as `ഏഴരയ്ക്ക്`. The Malayalam lexicon stores stems and the parser matches the start of a token, then swallows the whole token. Longer stems always win, so `പത്തൊൻപത` (19) beats `പത്ത` (10). Half-hour forms (`ഒന്നര` … `പന്ത്രണ്ടര`), `പത്തു മണിക്ക്`, `45 മിനിറ്റ്`, `അടുത്ത തിങ്കളാഴ്ച` and `മറ്റന്നാൾ` all work, glued or spaced.
+  - **Both lexicons always run,** so a mixed sentence such as `Call അമ്മ നാളെ for 20 minutes` needs no language switch.
+  - **It never invents.** No date words means today. An hour with no `am`, `pm` or part-of-day word is kept exactly as said. A day already past is clamped to today, because Day-Lock makes past days read-only.
+  - **Sheet (`VoiceCommandSheet`):** a small microphone FAB above the add FAB on the day list opens a floating sheet with a language toggle, a microphone button, a text box, and chips showing what was understood. It never saves: it opens the ordinary create screen with the fields filled in, so Day-Lock, title uniqueness and NFC normalisation stay enforced in the one place they always were. `unicodeUtils.nfcNormalize()` runs on the input before matching and on the title after; `detectTextDirection()` drives the text box and the chips.
+  - **Speech-to-text (`SpeechChannel` + `MainActivity`):** a small method channel over Android `SpeechRecognizer`, not a package, so the audited dependency list is unchanged. The on-device engine is always asked for (`createOnDeviceSpeechRecognizer` on API 33+, `EXTRA_PREFER_OFFLINE` below it) and listening is refused rather than allowed to go online. Adds `RECORD_AUDIO`, and nothing else; **no network permission is added.**
+  - **Off by default:** Settings → Task defaults → Day list → Voice input. A fresh install shows no microphone button and never asks for the microphone.
+- **Not a Package:** typing works everywhere, including Windows and any phone with no offline language pack. The parser is identical either way; voice input only adds the microphone.
 - **Why Unique:** All existing Android todo apps (Todoist, TickTick, Any.do) require online Google Voice Typing, Siri, or cloud NLP servers. This operates 100% offline with full Malayalam language equity.
 
 ### 3.3 Vedic Circadian Time-Boxing & Elastic Ghaṭikā Productivity Mode
@@ -75,7 +88,14 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
   - Allows time tracking in standard civil minutes (`HH:MM:SS`) or elastic *Ghaṭikā* focus blocks.
 - **Why Unique:** No todo application on any platform integrates solar-anchored circadian timekeeping or elastic *Ghaṭikā* focus tracking.
 
-### 3.4 Multi-Task Concurrent Focus Sprints with Zero-Asset Procedural Audio Synth
+### 3.4 Multi-Task Concurrent Focus Sprints with Zero-Asset Procedural Audio Synth 🟡
+- **Status:** Partly implemented 🟡
+- **Current Implementation:**
+  - **Pomodoro Sprint Engine (`PomodoroNotifier`):** Runs a work / short-break / long-break cycle beside the live timer. Tracked time is only ever recorded during a work block, so breaks never inflate a task's total. The notifier holds the running block, the owning task, the block end time, and the count of finished work blocks.
+  - **Sprint Settings Page:** Settings → Time tracking → Pomodoro (`/settings/time-tracking/pomodoro`) sets the work length, the short and long break lengths, and how many work blocks come before a long break.
+  - **Focus Pulse Nudge (`FocusPulseNotifier` & `focus_pulse_rules.dart`):** An optional vibration and/or short chime every 5 to 120 minutes while a timer runs (default 30, off by default). Modes are `off`, `vibration`, `sound`, `both`. Pulses are worked out from the clock rather than counted up, so the schedule never drifts, and they stay quiet while Pomodoro is on.
+  - **Full-Screen Focus View:** `/focus/:id` pairs the sprint with large typography, the sub-task checklist, and the `FocusPulseRing` animation (see 4.6).
+- **Not Included:** the zero-asset 16-bit PCM procedural synth. The nudge currently uses `HapticFeedback` and `SystemSound` from the Flutter engine, which keeps the audited dependency list unchanged and bundles no audio file, but it does not produce the ADSR-enveloped arpeggiated chimes described below. In-app only — nothing sounds while the app is closed.
 - **Concept:** Pair multi-task concurrent live time tracking with structured Pomodoro focus sprints (25m / 50m) and real-time procedurally synthesized audio chimes.
 - **Functionality:**
   - When starting a timer, users can toggle "Standard Tracking" or "Focus Sprint".
@@ -99,7 +119,15 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
   - Automatically calculates `nextReviewDue` using an SM-2 spaced repetition algorithm and generates the task on the Daily List on the exact target review date.
 - **Why Unique:** Spaced repetition algorithms are exclusive to flashcard apps (Anki, RemNote). Integrating SM-2 spaced repetition directly into a daily todo & time-tracking workflow is completely novel.
 
-### 3.6 Indic Phonetic & Sandhi-Aware Cross-Day Task Search
+### 3.6 Indic Phonetic & Sandhi-Aware Cross-Day Task Search ✅
+- **Status:** Implemented ✅
+- **Current Implementation:**
+  - **Database Migration V8:** Added a `notes TEXT` column to `time_segments`, and rebuilt the FTS5 virtual table `todos_fts` as (`todo_id UNINDEXED`, `title`, `description`, `notes`). Every indexed column stores search-folded text.
+  - **Tokenizer Fix:** The table now uses `unicode61 remove_diacritics 2 categories 'L* N* Co Mn Mc'`. The previous plain `unicode61` tokenizer treated every Malayalam vowel sign and virama as a word break, indexing `കാര്യം` as the separate letters `ക`, `ര`, `യ`; whole Malayalam words are now indexed as single tokens. Falls back to the plain tokenizer on an older SQLite build.
+  - **Folding Engine (`lib/core/utils/indic_search_utils.dart`):** `foldForSearch` is applied to both the stored text and the typed query. It NFC-normalizes, unifies Chillu (`ണ`+virama+ZWJ → `ൺ`, `ന` → `ൻ`, `ര` → `ർ`, `ല` → `ൽ`, `ള` → `ൾ`, `ക` → `ൿ`), strips `ZWJ`/`ZWNJ`, strips Latin accent marks only (Malayalam vowel signs and virama are preserved), lower-cases, and collapses whitespace. Folding walks grapheme clusters via the `characters` package.
+  - **Index Maintenance:** Because SQL cannot call the Dart folding function, insert and update sync moved from SQL triggers into `TodoSearchIndexDao`, driven by `TodoDao` and `TimeSegmentDao`. The delete trigger remains in SQL as a safety net.
+  - **Segment Notes:** Notes can be added on the manual segment sheet and edited from each row of the time segments screen. `TodoDao.searchWithMatchedNotes` returns the original note text that explains a hit, which the search results screen shows as the row subtitle.
+  - **Not Included:** Cross-script phonetic transliteration (typing Latin `ka` to find `ക`). The referenced `SreerajP_PDFApp` engine was not available in this repository.
 - **Concept:** High-performance, cross-day search across titles, descriptions, and segment notes supporting Indic Unicode scripts, Chillu character unification, and accent stripping.
 - **Functionality:**
   - Combines SQLite FTS5 virtual tables (`todos_fts` adapted from `SreerajP_Journal_Vault`) with the Indic phonetic search engine from `SreerajP_PDFApp`.
@@ -107,14 +135,29 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
   - Enables sub-millisecond full-text search across thousands of historical tasks regardless of script representation.
 - **Why Unique:** Standard todo search engines fail on Indic scripts due to ZWJ joiner mismatches and un-normalized Chillu characters.
 
-### 3.7 "On This Day" Productivity Memory Flashbacks & Evening Reflection Ritual
+### 3.7 "On This Day" Productivity Memory Flashbacks & Evening Reflection Ritual 🟡
+- **Status:** Partly implemented 🟡
+- **Current Implementation:**
+  - **Database Migration V5:** Created tables `daily_reflections` (`date` PK, `reflection_note`, `completed_seconds`, `dropped_seconds`, `created_at`, `updated_at`) and `daily_intentions` (`date` PK, `intention_text`, `created_at`).
+  - **Evening Reflection Ritual (`EveningReflectionModal`):** A modal on the day list that summarises today's completed versus dropped tracked time and records a free-text reflection note. Text is NFC-normalized before it is written. Past days open read-only, respecting Day-Lock.
+  - **Morning Intention Card (`MorningIntentionCard`):** The expandable header card above today's list holds the day's intention text and opens the reflection modal (see also 4.3).
+  - **Data Layer:** `DailyReflectionDao`, `DailyReflectionRepository` / `DailyReflectionRepositoryImpl`, and Riverpod providers in `lib/application/providers.dart`.
+- **Not Included:** the "On This Day" memory flashback card. Nothing yet resurfaces tasks completed 100 days, 6 months, or 1 year ago on the same calendar day.
 - **Concept:** Resurface major milestones accomplished on the same calendar day in previous months or years, paired with an evening reflection ritual.
 - **Functionality:**
   - **Memory Flashback Card:** Prominently highlights tasks completed on this exact month and day 1 year, 6 months, or 100 days ago (reusing the memory resurfacing engine from `SreerajP_Journal_Vault`), displaying total time spent and completion tags.
   - **Evening Reflection Ritual:** An optional 60-second evening reflection modal (adapted from `daily_rule_cards` and `SreerajP_Journal_Vault` mood/reflection engine) summarizing today's completed vs. dropped time ratio and recording a 1-5 scale mood/reflection note stored in SQLite.
 - **Why Unique:** Existing todo apps dump completed tasks into dark archives; resurfacing productivity memories fosters long-term motivation and intentional reflection.
 
-### 3.8 Biometric & Hardware Keystore Task Vault with `FLAG_SECURE` Privacy Protection
+### 3.8 Biometric & Hardware Keystore Task Vault with `FLAG_SECURE` Privacy Protection 🟡
+- **Status:** Partly implemented 🟡
+- **Current Implementation:**
+  - **App Lock Modes (`app_lock_rules.dart`, `AppLockNotifier`):** The whole app can be locked with `off`, `pin` (digits only), `password` (free text), or `deviceCredential` — the phone's own unlock screen, which uses fingerprint or face where the user set that up. Configured at Settings → Security → App lock (`/settings/security/app-lock`).
+  - **Auto-Lock Delay:** How long the app may sit in the background before it locks again — immediately, 30 seconds, 1 minute, 5 minutes, 15 minutes, or never. Even `never` still locks on a cold start. Configured at `/settings/security/auto-lock`.
+  - **Wrong-Try Slow-Down:** Repeated wrong PIN or password entries add a growing wait before the next try, handled by pure rules in `core/` so it stays unit testable.
+  - **Native `FLAG_SECURE` (`AppLockChannel` & `MainActivity.kt`):** A small platform channel (`in.sreerajp.todo/app_lock`) sets Android's `FLAG_SECURE`, so screenshots, screen recording, and the recent-apps preview are all blocked. A channel is used instead of a package so the audited dependency list stays unchanged. It is a safe no-op on Windows.
+  - **Database Key Screen:** `/settings/security/database-key` surfaces the at-rest encryption state described in 4.1.
+- **Not Included:** the per-task vault. Tasks tagged `#private` are not yet hidden from the main Daily List behind a separate unlock, and there is no encrypted attachment store. Today the lock is all-or-nothing for the whole app.
 - **Concept:** Protect sensitive personal, client, or financial tasks behind hardware-backed security and screen capture prevention.
 - **Functionality:**
   - Adapts `local_auth` biometric authentication, hardware Keystore 6-digit PIN lock, and native `FLAG_SECURE` window protection (from `SreerajP_Journal_Vault`, `SreerajP_Authenticator`, and `vault-files`).
@@ -201,8 +244,9 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
 ### 4.2 Full-Text Search Engine Upgrade (SQLite FTS5 Virtual Tables) ✅
 - **Status:** Implemented ✅
 - **Current Implementation:**
-  - Implemented SQLite FTS5 virtual table (`todos_fts`) with automatic database triggers (`AFTER INSERT`, `AFTER DELETE`, `AFTER UPDATE`) adapted from `SreerajP_Journal_Vault`.
-  - Enables instant, tokenized full-text search across titles and descriptions with `unicode61` tokenizer.
+  - Implemented SQLite FTS5 virtual table (`todos_fts`) adapted from `SreerajP_Journal_Vault`, giving instant, tokenized full-text search across titles and descriptions.
+  - **Later superseded by Migration V8 (see 3.6).** The table was rebuilt as (`todo_id UNINDEXED`, `title`, `description`, `notes`) with the `unicode61 remove_diacritics 2 categories 'L* N* Co Mn Mc'` tokenizer, because the plain `unicode61` tokenizer broke Malayalam words apart at every vowel sign and virama.
+  - **Index maintenance moved out of SQL.** The insert and update triggers were replaced by `TodoSearchIndexDao`, driven from `TodoDao` and `TimeSegmentDao`, because SQL cannot call the Dart search-folding function. Only the delete trigger remains in SQL, as a safety net.
 
 ### 4.3 Daily Mindful Intention Card & Reflection Ritual ✅
 - **Status:** Implemented ✅
@@ -219,10 +263,12 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
 - **Current Implementation:**
   - Explicit language selection menu in Settings (`System Default`, `English`, `Malayalam`) persisted via `SharedPreferences` and Riverpod `localeProvider`.
 
-### 4.6 Timer Engine Audio & Visual Enhancements (Full-Screen Focus UI, Haptic & Procedural Ticks)
-- **Planned Enhancement:**
-  - **Full-Screen Focus Mode:** Tapping a running timer opens an immersive full-screen Focus view featuring large typography, dark background, active task description, sub-task checklist, and ambient progress animation.
-  - **Procedural Haptic & Audio Pulse:** Optional gentle haptic pulse or procedural audio chime at configurable intervals (every 15m or 30m) to maintain time awareness.
+### 4.6 Timer Engine Audio & Visual Enhancements (Full-Screen Focus UI, Haptic & Procedural Ticks) ✅
+- **Status:** Implemented ✅
+- **Current Implementation:**
+  - **Full-Screen Focus Mode:** Tapping the time chip on a task tile (or the focus button on the Time Segments screen) opens `FocusScreen` at `/focus/:id`: large typography on a dark ground, the active task title and description, the tickable sub-task checklist, and an ambient `FocusPulseRing` animation that fills to the task target when one is set. The view keeps the user's accent colour and font, hides the system bars when "Immersive full screen" is on, and returns to the day list when the timer is stopped.
+  - **Procedural Haptic & Audio Pulse:** `FocusPulseNotifier` gives an optional vibration and/or short chime every 5 to 120 minutes (default 30) while a timer runs, set in Settings → Time tracking → Focus mode. The nudge uses `HapticFeedback` and `SystemSound` from the Flutter engine, so no audio file is bundled and no package was added. Pulses are counted from the start of the running segment and worked out from the clock, so the schedule never drifts, and they stay quiet while Pomodoro is on.
+  - **Known limit:** in-app only. The app sends no notifications, so nothing sounds while it is closed or in the background; a nudge that fell due while away is dropped rather than replayed. Tracked time is unaffected.
 
 ### 4.7 Recurrence Engine (RRULE) Visual Heatmaps & Holiday Calendar Sync
 - **Planned Enhancement:**
@@ -230,6 +276,7 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
   - **Holiday Calendar Awareness:** Integrates holiday calendar import (reused from `chronotune-smart-clock` `SpecialDayRegistry`), supporting rules like `SKIP_HOLIDAYS` or `MOVE_TO_NEXT_WORKDAY`.
 
 ### 4.8 Advanced Productivity Analytics (Focus Distribution, Efficiency Scores, Completion Streaks)
+- **Status:** Planned. Today the Statistics screen (`/statistics`) has a daily bar chart, a per-item line chart, and matching daily and per-item tables. None of the three items below exist yet.
 - **Planned Enhancement:**
   - **Focus Time Distribution:** Hourly heatmap chart showing peak productive hours.
   - **Productivity Efficiency Score:** Algorithmic ratio measuring planned vs. completed vs. dropped/ported tasks over rolling 7-day and 30-day windows.
@@ -266,18 +313,18 @@ gantt
     title SreerajP ToDo Implementation Roadmap
     dateFormat  YYYY-MM-DD
     section Phase 1: Security & Friction
-    Live DB Encryption (Keystore/DPAPI)    :a1, 2026-09-01, 10d
-    SQLite FTS5 Search Engine              :a2, after a1, 7d
-    Biometric Lock & FLAG_SECURE Protection :a3, after a2, 7d
+    Live DB Encryption (Keystore/DPAPI)    :done, a1, 2026-09-01, 10d
+    SQLite FTS5 Search Engine              :done, a2, after a1, 7d
+    Biometric Lock & FLAG_SECURE Protection :active, a3, after a2, 7d
     Day-Lock Friction & Audit Engine       :a4, after a3, 8d
     section Phase 2: Time & Focus Innovation
     Bilingual Offline Voice Parser         :b1, after a4, 10d
     Vedic Circadian Time-Boxing Engine     :b2, after b1, 9d
-    Focus Sprints & Procedural PCM Synth   :b3, after b2, 8d
-    Spaced Repetition Task Mastery Deck    :b4, after b3, 8d
+    Focus Sprints & Procedural PCM Synth   :active, b3, after b2, 8d
+    Spaced Repetition Task Mastery Deck    :done, b4, after b3, 8d
     section Phase 3: Analytics & Ecosystem
-    Indic Phonetic Cross-Day Search        :c1, after b4, 7d
-    "On This Day" Memory Resurfacing       :c2, after c1, 6d
+    Indic Phonetic Cross-Day Search        :done, c1, after b4, 7d
+    "On This Day" Memory Resurfacing       :active, c2, after c1, 6d
     Canvas-Rendered Home Screen Widgets    :c3, after c2, 10d
     Multi-Format Timecard Export Suite     :c4, after c3, 8d
 ```
@@ -285,20 +332,54 @@ gantt
 ### Phase 1: Security, Audit & Friction Foundation
 - Live Database Encryption at Rest (Android Keystore / Windows DPAPI) ✅
 - SQLite FTS5 Full-Text Search Engine Upgrade ✅
-- Biometric & Hardware Keystore Task Vault with `FLAG_SECURE` Privacy Protection
+- Biometric & Hardware Keystore Task Vault with `FLAG_SECURE` Privacy Protection 🟡 (app-wide lock and `FLAG_SECURE` done; per-task `#private` vault pending)
 - Day-Locked Time-Travel Friction Engine & Deferral Audit Trail
 
 ### Phase 2: Deep Time & Focus Innovation
 - Bilingual Offline Natural Language Voice Task Parser (`en-IN` & `ml-IN`)
 - Vedic Circadian Time-Boxing & Elastic Ghaṭikā Productivity Mode
-- Multi-Task Concurrent Focus Sprints with Zero-Asset Procedural Audio Synth
+- Multi-Task Concurrent Focus Sprints with Zero-Asset Procedural Audio Synth 🟡 (Pomodoro sprints and focus pulse done; PCM synth pending)
 - Spaced Repetition Task Mastery Deck (Anki-Style Habit & Skill Engine) ✅
 
 ### Phase 3: Advanced Search, Analytics & Ecosystem Integration
-- Indic Phonetic & Sandhi-Aware Cross-Day Task Search
-- "On This Day" Productivity Memory Flashbacks & Evening Reflection Ritual
+- Indic Phonetic & Sandhi-Aware Cross-Day Task Search ✅
+- "On This Day" Productivity Memory Flashbacks & Evening Reflection Ritual 🟡 (morning intention and evening reflection done; flashback card pending)
 - Canvas-Rendered Dynamic Home Screen & Lock Screen Complication Widgets
 - Multi-Format Professional Timecard & Audit Export Suite
 - AirQR Optical Air-Gapped Animated QR Code Sync ✅
 - Serverless Encrypted Local P2P Wi-Fi Sync Engine ✅
 - Local Self-Hosted Desktop & Local Server Sync Adapter
+
+---
+
+## 7. Implementation Status Summary
+
+One place to see where every feature stands. Last checked against the codebase on 2026-08-19.
+
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 3.1 | Day-Locked Time-Travel Friction Engine & Deferral Audit Trail | Planned | No `todo_revisions` table, no hash chain, no friction modal. |
+| 3.2 | Bilingual Offline Voice Task Parser (`en-IN` / `ml-IN`) | ✅ Done | `VoiceCommandParser`, both lexicons, `VoiceCommandSheet`, on-device `SpeechChannel`. Off by default. |
+| 3.3 | Vedic Circadian Time-Boxing & Elastic Ghaṭikā Mode | Planned | No solar algorithms in the codebase. |
+| 3.4 | Focus Sprints with Zero-Asset Procedural Audio Synth | 🟡 Partly | Pomodoro engine and focus pulse done; PCM synth pending. |
+| 3.5 | Spaced Repetition Task Mastery Deck | ✅ Done | Migration V6, SM-2 engine, `/mastery-deck`. |
+| 3.6 | Indic Phonetic & Sandhi-Aware Cross-Day Search | ✅ Done | Migration V8, FTS5 with Indic tokenizer, segment notes. Cross-script transliteration not included. |
+| 3.7 | "On This Day" Flashbacks & Evening Reflection Ritual | 🟡 Partly | Migration V5, intention card and reflection modal done; flashback card pending. |
+| 3.8 | Biometric Task Vault with `FLAG_SECURE` | 🟡 Partly | App-wide lock, auto-lock and `FLAG_SECURE` done; per-task `#private` vault pending. |
+| 3.9 | Canvas-Rendered Home / Lock Screen Widgets | Planned | No Android widget provider. |
+| 3.10 | Multi-Format Timecard & Audit Export Suite | Planned | JSON and Markdown handoff exists (3.12), but no PDF, CSV, or signed audit export. |
+| 3.11 | Passphrase-Encrypted Backup & Health Restore | ✅ Done | Migration V7, `BackupLogsDao`, atomic restore. |
+| 3.12 | Multi-Format Data Ingestion & Export (JSON + Markdown) | ✅ Done | `DataHandoffService`, `MarkdownImportDialog`. |
+| 3.13 | AirQR Optical Air-Gapped Animated QR Sync | ✅ Done | `AirQrService` fountain codes, sender, scanner, merge sheet. |
+| 3.14 | Serverless Encrypted Local P2P Wi-Fi Sync | ✅ Done | `P2pWifiSyncService`, PIN pairing, add-only merge. |
+| 3.15 | Local Desktop / Server Sync Adapter | Planned | No subnet discovery or vector-clock conflict resolution. |
+| 4.1 | Live Database Encryption at Rest | ✅ Done | Android Keystore and Windows DPAPI. |
+| 4.2 | Full-Text Search Engine Upgrade (FTS5) | ✅ Done | Superseded and improved by Migration V8, see 3.6. |
+| 4.3 | Daily Mindful Intention Card | ✅ Done | Expandable header card on the day list. |
+| 4.4 | Sub-task Checklists & Dependency Engine | ✅ Done | Checklist items with progress pills. |
+| 4.5 | In-App Language Override | ✅ Done | System / English / Malayalam. |
+| 4.6 | Timer Audio & Visual Enhancements | ✅ Done | `/focus/:id`, `FocusPulseRing`, haptic and chime pulses. |
+| 4.7 | Recurrence Heatmaps & Holiday Calendar | Planned | `rrule_preview.dart` still shows a text list of dates. |
+| 4.8 | Advanced Productivity Analytics | Planned | Statistics screen has charts and tables only; no streaks, heatmap, or efficiency score. |
+
+**Count:** 13 done ✅, 3 partly done 🟡, 7 planned.

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
 
 class BackupListTile extends StatelessWidget {
@@ -11,7 +11,6 @@ class BackupListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final formatter = DateFormat.yMMMd().add_jm();
     final theme = Theme.of(context);
 
     return Container(
@@ -48,7 +47,7 @@ class BackupListTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  formatter.format(info.createdAt),
+                  formatDateTime(info.createdAt),
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),

@@ -18,7 +18,9 @@ Future<void> runMigrationV6(Database db) async {
   ''');
 
   final columns = await db.rawQuery('PRAGMA table_info(todos)');
-  final hasColumn = columns.any((c) => c['name'] == 'spaced_repetition_item_id');
+  final hasColumn = columns.any(
+    (c) => c['name'] == 'spaced_repetition_item_id',
+  );
   if (!hasColumn) {
     await db.execute('''
       ALTER TABLE todos ADD COLUMN spaced_repetition_item_id TEXT

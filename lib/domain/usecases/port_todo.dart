@@ -69,6 +69,10 @@ class PortTodo {
       title: todo.title,
       description: todo.description,
       status: TodoStatus.pending,
+      // A ported task is the same task on a later day, so it keeps its
+      // priority and its target time.
+      priority: todo.priority,
+      targetSeconds: todo.targetSeconds,
       sourceDate: todo.date,
       recurrenceRuleId: null,
       sortOrder: maxSortOrder,

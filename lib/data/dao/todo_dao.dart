@@ -1,9 +1,12 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
-import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
+import 'package:sreerajp_todo/core/utils/indic_search_utils.dart';
 import 'package:sreerajp_todo/data/dao/sub_task_dao.dart';
 import 'package:sreerajp_todo/data/dao/task_dependency_dao.dart';
+import 'package:sreerajp_todo/data/dao/todo_search_index_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 
 class TodoDao {
@@ -11,9 +14,9 @@ class TodoDao {
     this._databaseService, {
     SubTaskDao? subTaskDao,
     TaskDependencyDao? taskDependencyDao,
-  })  : _subTaskDao = subTaskDao ?? SubTaskDao(_databaseService),
-        _taskDependencyDao =
-            taskDependencyDao ?? TaskDependencyDao(_databaseService);
+  }) : _subTaskDao = subTaskDao ?? SubTaskDao(_databaseService),
+       _taskDependencyDao =
+           taskDependencyDao ?? TaskDependencyDao(_databaseService);
 
   final DatabaseService _databaseService;
   final SubTaskDao _subTaskDao;
@@ -22,28 +25,10 @@ class TodoDao {
   SubTaskDao get subTaskDao => _subTaskDao;
   TaskDependencyDao get taskDependencyDao => _taskDependencyDao;
 
-  String _buildFtsQuery(String query) {
-    final normalized = nfcNormalize(query).trim();
-    if (normalized.isEmpty) return '';
-
-    if (normalized.startsWith('"') &&
-        normalized.endsWith('"') &&
-        normalized.length > 2) {
-      final phrase = normalized
-          .substring(1, normalized.length - 1)
-          .replaceAll('"', '""');
-      return '"$phrase"';
-    }
-
-    final cleaned = normalized.replaceAll(RegExp(r'["*\^:()\-+]'), ' ');
-    final words = cleaned.split(RegExp(r'\s+')).where((w) => w.isNotEmpty);
-    if (words.isEmpty) return '';
-    return words.map((w) => '$w*').join(' AND ');
-  }
-
   Future<void> insert(TodoEntity todo, {DatabaseExecutor? executor}) async {
     final db = executor ?? await _databaseService.database;
     await db.insert('todos', todo.toMap());
+    await reindexTodoInIndex(db, todo.id);
     if (todo.subTasks.isNotEmpty) {
       await _subTaskDao.saveAllForTodo(todo.id, todo.subTasks, executor: db);
     }
@@ -76,6 +61,7 @@ class TodoDao {
       updated.prerequisiteTodoIds,
       executor: db,
     );
+    await reindexTodoInIndex(db, updated.id);
   }
 
   Future<void> updateStatus(
@@ -192,21 +178,26 @@ class TodoDao {
     return result.isNotEmpty;
   }
 
-  Future<List<String>> getAllDistinctTitles(String prefix) async {
+  /// Distinct titles starting with [prefix], capped at [limit].
+  ///
+  /// The cap is a real SQL `LIMIT`, so a smaller setting reads fewer rows
+  /// rather than trimming a full list in Dart. The full title list is never
+  /// held in memory.
+  Future<List<String>> getAllDistinctTitles(
+    String prefix, {
+    int limit = kAutocompleteLimit,
+  }) async {
     final db = await _databaseService.database;
     final maps = await db.rawQuery(
-      'SELECT DISTINCT title FROM todos WHERE title LIKE ? LIMIT 20',
-      ['$prefix%'],
+      'SELECT DISTINCT title FROM todos WHERE title LIKE ? LIMIT ?',
+      ['$prefix%', limit],
     );
     return maps.map((m) => m['title'] as String).toList();
   }
 
-  Future<List<TodoEntity>> searchByTitle(
-    String query, {
-    int limit = 50,
-  }) async {
+  Future<List<TodoEntity>> searchByTitle(String query, {int limit = 50}) async {
     final db = await _databaseService.database;
-    final ftsQuery = _buildFtsQuery(query);
+    final ftsQuery = buildFtsMatchQuery(query);
     if (ftsQuery.isEmpty) return [];
 
     List<Map<String, dynamic>> maps;
@@ -217,13 +208,15 @@ class TodoDao {
         FROM todos_fts fts
         JOIN todos t ON t.id = fts.todo_id
         WHERE todos_fts MATCH ?
-        ORDER BY t.date DESC, t.sort_order ASC
+        ORDER BY bm25(todos_fts), t.date DESC, t.sort_order ASC
         LIMIT ?
         ''',
         [ftsQuery, limit],
       );
     } catch (_) {
-      final normalized = nfcNormalize(query).trim();
+      // Last-resort fallback if the index is unavailable. Folding cannot be
+      // applied inside SQL here, so this matches raw text only.
+      final normalized = foldForSearch(query);
       maps = await db.query(
         'todos',
         where: 'title LIKE ? OR description LIKE ?',
@@ -250,6 +243,67 @@ class TodoDao {
       );
     }
     return todos;
+  }
+
+  /// Same search as [searchByTitle], but each hit also carries the segment
+  /// note that matched, when the hit came from a note.
+  Future<List<TodoSearchResult>> searchWithMatchedNotes(
+    String query, {
+    int limit = 50,
+  }) async {
+    final todos = await searchByTitle(query, limit: limit);
+    if (todos.isEmpty) return [];
+
+    final tokens = foldForSearch(
+      query,
+    ).split(RegExp(r'\s+')).where((t) => t.isNotEmpty).toList();
+    if (tokens.isEmpty) {
+      return todos.map((t) => TodoSearchResult(todo: t)).toList();
+    }
+
+    final db = await _databaseService.database;
+    final results = <TodoSearchResult>[];
+
+    for (final todo in todos) {
+      // Only look for a note when the visible text does not already explain
+      // the hit, so the subtitle keeps showing the description where it can.
+      final visible = foldForSearch('${todo.title} ${todo.description ?? ''}');
+      final explained = tokens.every(visible.contains);
+      if (explained) {
+        results.add(TodoSearchResult(todo: todo));
+        continue;
+      }
+
+      results.add(
+        TodoSearchResult(
+          todo: todo,
+          matchedNote: await _findMatchingNote(db, todo.id, tokens),
+        ),
+      );
+    }
+
+    return results;
+  }
+
+  Future<String?> _findMatchingNote(
+    DatabaseExecutor db,
+    String todoId,
+    List<String> tokens,
+  ) async {
+    final maps = await db.query(
+      'time_segments',
+      columns: ['notes'],
+      where: "todo_id = ? AND notes IS NOT NULL AND notes != ''",
+      whereArgs: [todoId],
+      orderBy: 'start_time ASC',
+    );
+
+    for (final map in maps) {
+      final note = map['notes'] as String;
+      final folded = foldForSearch(note);
+      if (tokens.any(folded.contains)) return note;
+    }
+    return null;
   }
 
   Future<int> maxSortOrder(String date) async {

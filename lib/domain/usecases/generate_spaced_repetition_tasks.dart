@@ -7,10 +7,7 @@ import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:uuid/uuid.dart';
 
 class GenerateSpacedRepetitionTasks {
-  GenerateSpacedRepetitionTasks(
-    this._srsRepository,
-    this._todoRepository,
-  );
+  GenerateSpacedRepetitionTasks(this._srsRepository, this._todoRepository);
 
   final SpacedRepetitionRepository _srsRepository;
   final TodoRepository _todoRepository;
@@ -43,7 +40,9 @@ class GenerateSpacedRepetitionTasks {
         id: _uuid.v4(),
         date: targetDate,
         title: normalizedTitle,
-        description: item.description != null ? nfcNormalize(item.description!) : null,
+        description: item.description != null
+            ? nfcNormalize(item.description!)
+            : null,
         status: TodoStatus.pending,
         spacedRepetitionItemId: item.id,
         sortOrder: maxOrder + 1,

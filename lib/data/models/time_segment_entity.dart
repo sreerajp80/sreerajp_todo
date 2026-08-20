@@ -14,6 +14,7 @@ class TimeSegmentEntity with _$TimeSegmentEntity {
     int? durationSeconds,
     @Default(false) bool interrupted,
     @Default(false) bool manual,
+    String? notes,
     required String createdAt,
   }) = _TimeSegmentEntity;
 
@@ -25,6 +26,7 @@ class TimeSegmentEntity with _$TimeSegmentEntity {
     'duration_seconds': durationSeconds,
     'interrupted': interrupted ? 1 : 0,
     'manual': manual ? 1 : 0,
+    'notes': notes,
     'created_at': createdAt,
   };
 
@@ -37,6 +39,7 @@ class TimeSegmentEntity with _$TimeSegmentEntity {
         durationSeconds: map['duration_seconds'] as int?,
         interrupted: (map['interrupted'] as int) == 1,
         manual: (map['manual'] as int) == 1,
+        notes: map['notes'] as String?,
         createdAt: map['created_at'] as String,
       );
 }

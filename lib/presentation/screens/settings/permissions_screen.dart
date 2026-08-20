@@ -55,11 +55,28 @@ class PermissionsScreen extends StatelessWidget {
           const SizedBox(height: 16),
           AppSectionCard(
             title: strings.permissionsExplicit,
-            child: Text(
-              strings.permissionsExplicitNone,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _PermissionTile(
+                  icon: Icons.photo_camera_outlined,
+                  title: strings.permissionsCameraTitle,
+                  body: strings.permissionsCameraBody,
+                ),
+                const Divider(height: 24),
+                _PermissionTile(
+                  icon: Icons.mic_none_outlined,
+                  title: strings.permissionsMicrophoneTitle,
+                  body: strings.permissionsMicrophoneBody,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  strings.permissionsExplicitNote,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
             ),
           ),
         ],

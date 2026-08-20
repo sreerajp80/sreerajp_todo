@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
 import 'package:sreerajp_todo/data/models/daily_reflection_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/presentation/shared/utils/tracked_duration_format.dart';
 
 class EveningReflectionModal extends ConsumerStatefulWidget {
   const EveningReflectionModal({
@@ -34,11 +34,7 @@ class EveningReflectionModal extends ConsumerStatefulWidget {
         padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        child: EveningReflectionModal(
-          date: date,
-          isPast: isPast,
-          todos: todos,
-        ),
+        child: EveningReflectionModal(date: date, isPast: isPast, todos: todos),
       ),
     );
   }
@@ -145,7 +141,9 @@ class _EveningReflectionModalState
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+                color: colorScheme.surfaceContainerHighest.withValues(
+                  alpha: 0.4,
+                ),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: colorScheme.outline.withValues(alpha: 0.12),
@@ -167,7 +165,7 @@ class _EveningReflectionModalState
                       Expanded(
                         child: _MetricTile(
                           label: context.l10n.completedTime,
-                          value: formatDuration(completedSeconds),
+                          value: context.trackedDuration(completedSeconds),
                           subText: '$completedCount ${context.l10n.statsTotal}',
                           color: colorScheme.primary,
                         ),
@@ -176,7 +174,7 @@ class _EveningReflectionModalState
                       Expanded(
                         child: _MetricTile(
                           label: context.l10n.droppedTime,
-                          value: formatDuration(droppedSeconds),
+                          value: context.trackedDuration(droppedSeconds),
                           subText: '$droppedCount ${context.l10n.statsTotal}',
                           color: colorScheme.error,
                         ),
@@ -293,15 +291,15 @@ class _EveningReflectionModalState
 
       if (mounted) {
         Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(context.l10n.reflectionSaved)),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(context.l10n.reflectionSaved)));
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(e.toString())),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
       }
     } finally {
       if (mounted) {

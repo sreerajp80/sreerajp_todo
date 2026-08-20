@@ -18,10 +18,13 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
 
   final container = ProviderContainer(
-    overrides: [
-      sharedPreferencesProvider.overrideWithValue(prefs),
-    ],
+    overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
   );
+
+  // Apply the saved date and time preferences before anything reads a date.
+  // The day-start hour decides what "today" means, so it has to be in place
+  // before the startup tasks below run.
+  container.read(dateTimeSettingsProvider);
 
   // Ensure the database is initialised before running startup tasks.
   await container.read(databaseServiceProvider).database;

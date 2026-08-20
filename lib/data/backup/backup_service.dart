@@ -24,8 +24,8 @@ class BackupService {
     this._dbService, {
     BackupLogsDao? backupLogsDao,
     DateTime Function()? now,
-  })  : _backupLogsDao = backupLogsDao ?? BackupLogsDao(_dbService),
-        _now = now ?? DateTime.now;
+  }) : _backupLogsDao = backupLogsDao ?? BackupLogsDao(_dbService),
+       _now = now ?? DateTime.now;
 
   final DatabaseService _dbService;
   final BackupLogsDao _backupLogsDao;

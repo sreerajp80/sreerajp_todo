@@ -35,14 +35,14 @@ class P2pSyncPayload {
   });
 
   Map<String, dynamic> toJson() => {
-        'date': date,
-        'exported_at': exportedAt,
-        'scope': scope.toJson(),
-        'todos': todos.map((t) => t.toMap()).toList(),
-        'time_segments': timeSegments.map((s) => s.toMap()).toList(),
-        'recurrence_rules': recurrenceRules.map((r) => r.toMap()).toList(),
-        'mastery_items': masteryItems.map((m) => m.toMap()).toList(),
-      };
+    'date': date,
+    'exported_at': exportedAt,
+    'scope': scope.toJson(),
+    'todos': todos.map((t) => t.toMap()).toList(),
+    'time_segments': timeSegments.map((s) => s.toMap()).toList(),
+    'recurrence_rules': recurrenceRules.map((r) => r.toMap()).toList(),
+    'mastery_items': masteryItems.map((m) => m.toMap()).toList(),
+  };
 
   factory P2pSyncPayload.fromJson(Map<String, dynamic> json) {
     final scopeJson = json['scope'] as Map<String, dynamic>? ?? {};
@@ -63,7 +63,9 @@ class P2pSyncPayload {
     for (final item in rawSegments) {
       if (item is Map<String, dynamic>) {
         try {
-          timeSegments.add(TimeSegmentEntity.fromMap(_sanitizeFieldLengths(item)));
+          timeSegments.add(
+            TimeSegmentEntity.fromMap(_sanitizeFieldLengths(item)),
+          );
         } catch (_) {}
       }
     }
@@ -73,7 +75,9 @@ class P2pSyncPayload {
     for (final item in rawRules) {
       if (item is Map<String, dynamic>) {
         try {
-          recurrenceRules.add(RecurrenceRuleEntity.fromMap(_sanitizeFieldLengths(item)));
+          recurrenceRules.add(
+            RecurrenceRuleEntity.fromMap(_sanitizeFieldLengths(item)),
+          );
         } catch (_) {}
       }
     }
@@ -83,7 +87,9 @@ class P2pSyncPayload {
     for (final item in rawMastery) {
       if (item is Map<String, dynamic>) {
         try {
-          masteryItems.add(SpacedRepetitionItemEntity.fromMap(_sanitizeFieldLengths(item)));
+          masteryItems.add(
+            SpacedRepetitionItemEntity.fromMap(_sanitizeFieldLengths(item)),
+          );
         } catch (_) {}
       }
     }
@@ -102,6 +108,10 @@ class P2pSyncPayload {
   static Map<String, dynamic> _sanitizeFieldLengths(Map<String, dynamic> map) {
     final sanitized = <String, dynamic>{...map};
     sanitized.putIfAbsent('sort_order', () => 0);
+    // A peer on an older build sends no priority or target time. Default them
+    // here so the row still inserts instead of failing on a NOT NULL column.
+    sanitized.putIfAbsent('priority', () => 'normal');
+    sanitized.putIfAbsent('target_seconds', () => null);
     for (final entry in map.entries) {
       final key = entry.key;
       final val = entry.value;
@@ -138,21 +148,20 @@ class P2pSyncMergeResult {
     this.dayLockViolations = 0,
   });
 
-  int get totalAdded =>
-      todosAdded + segmentsAdded + rulesAdded + masteryAdded;
+  int get totalAdded => todosAdded + segmentsAdded + rulesAdded + masteryAdded;
 
   int get totalSkipped =>
       todosSkipped + segmentsSkipped + rulesSkipped + masterySkipped;
 
   Map<String, dynamic> toJson() => {
-        'todos_added': todosAdded,
-        'todos_skipped': todosSkipped,
-        'segments_added': segmentsAdded,
-        'segments_skipped': segmentsSkipped,
-        'rules_added': rulesAdded,
-        'rules_skipped': rulesSkipped,
-        'mastery_added': masteryAdded,
-        'mastery_skipped': masterySkipped,
-        'day_lock_violations': dayLockViolations,
-      };
+    'todos_added': todosAdded,
+    'todos_skipped': todosSkipped,
+    'segments_added': segmentsAdded,
+    'segments_skipped': segmentsSkipped,
+    'rules_added': rulesAdded,
+    'rules_skipped': rulesSkipped,
+    'mastery_added': masteryAdded,
+    'mastery_skipped': masterySkipped,
+    'day_lock_violations': dayLockViolations,
+  };
 }

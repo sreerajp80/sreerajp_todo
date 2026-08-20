@@ -15,7 +15,9 @@ class SpacedRepetitionDao {
     final db = executor ?? await _databaseService.database;
     final normalized = item.copyWith(
       title: nfcNormalize(item.title),
-      description: item.description != null ? nfcNormalize(item.description!) : null,
+      description: item.description != null
+          ? nfcNormalize(item.description!)
+          : null,
     );
     await db.insert('spaced_repetition_items', normalized.toMap());
   }
@@ -28,7 +30,9 @@ class SpacedRepetitionDao {
     final now = DateTime.now().toUtc().toIso8601String();
     final normalized = item.copyWith(
       title: nfcNormalize(item.title),
-      description: item.description != null ? nfcNormalize(item.description!) : null,
+      description: item.description != null
+          ? nfcNormalize(item.description!)
+          : null,
       updatedAt: now,
     );
     await db.update(

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/status_badge.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/timer_controls.dart';
 
 class TodoListTile extends ConsumerWidget {
   const TodoListTile({
@@ -41,6 +45,58 @@ class TodoListTile extends ConsumerWidget {
   final VoidCallback onDelete;
   final VoidCallback onViewSegments;
   final int animationIndex;
+
+  /// Tracked time against the target, with a thin bar underneath.
+  ///
+  /// Display only. Passing the target changes the colour and nothing else: no
+  /// timer is stopped and no status is changed, because a target is a guess and
+  /// not a rule.
+  Widget _buildTargetProgress(
+    BuildContext context, {
+    required int trackedSeconds,
+    required int targetSeconds,
+  }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final isOver = trackedSeconds > targetSeconds;
+    final barColor = isOver ? colorScheme.error : colorScheme.primary;
+    final fraction = targetSeconds <= 0
+        ? 0.0
+        : (trackedSeconds / targetSeconds).clamp(0.0, 1.0);
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          isOver
+              ? context.l10n.targetOverBy(
+                  formatDuration(trackedSeconds - targetSeconds),
+                )
+              : context.l10n.targetProgressLabel(
+                  formatDuration(trackedSeconds),
+                  formatDuration(targetSeconds),
+                ),
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: isOver ? colorScheme.error : colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 3),
+        SizedBox(
+          width: 120,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: LinearProgressIndicator(
+              value: fraction,
+              minHeight: 3,
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              valueColor: AlwaysStoppedAnimation<Color>(barColor),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   TodoStatus _effectiveStatus({
     required bool isRunning,
@@ -304,8 +360,12 @@ class TodoListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final priorityDotColor = priorityColor(theme, todo.priority);
     final trackingState = ref.watch(timeTrackingProvider(todo.id));
     final isRunning = trackingState.runningSegment != null;
+    final trackingSettings = ref.watch(timeTrackingSettingsProvider);
+    final isPaused =
+        !isRunning && ref.watch(pausedTodosProvider).contains(todo.id);
 
     final totalSeconds = trackingState.totalDurationSeconds;
     final liveElapsed = ref.watch(liveTimerProvider(todo.id));
@@ -328,8 +388,9 @@ class TodoListTile extends ConsumerWidget {
         ref.watch(pendingPrerequisitesProvider(todo.id)).valueOrNull ?? [];
     final isBlocked = pendingPrereqs.isNotEmpty;
 
-    final completedSubTasks =
-        todo.subTasks.where((st) => st.isCompleted).length;
+    final completedSubTasks = todo.subTasks
+        .where((st) => st.isCompleted)
+        .length;
     final totalSubTasks = todo.subTasks.length;
 
     final tile = Padding(
@@ -399,6 +460,26 @@ class TodoListTile extends ConsumerWidget {
                                     color: colorScheme.onPrimaryContainer,
                                   ),
                                 ),
+                              // An ordinary priority has no colour and so gets
+                              // no dot, which keeps a plain list plain.
+                              if (priorityDotColor != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8),
+                                  child: Tooltip(
+                                    message: priorityName(
+                                      context.l10n,
+                                      todo.priority,
+                                    ),
+                                    child: Container(
+                                      width: 10,
+                                      height: 10,
+                                      decoration: BoxDecoration(
+                                        color: priorityDotColor,
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               Expanded(
                                 child: Text(
                                   todo.title,
@@ -458,53 +539,69 @@ class TodoListTile extends ConsumerWidget {
                                   ),
                                 ),
                                 const SizedBox(width: 8),
-                                Builder(
-                                  builder: (context) {
-                                    final notifier = ref.read(
-                                      timeTrackingProvider(todo.id).notifier,
-                                    );
-                                    return _buildCompactActionButton(
+                                // Pause sits beside Stop while a timer runs,
+                                // so ending a block and taking a break are
+                                // never the same tap.
+                                if (isRunning) ...[
+                                  _buildCompactActionButton(
+                                    context,
+                                    icon: Icons.pause_circle_outline_rounded,
+                                    tooltip: context.l10n.pauseTimer,
+                                    onPressed: () => TimerActions.pause(
                                       context,
-                                      icon: isRunning
-                                          ? Icons.stop_circle_outlined
-                                          : Icons.play_circle_fill_rounded,
-                                      tooltip: isRunning
-                                          ? context.l10n.stopTimer
-                                          : context.l10n.startTimer,
-                                      onPressed: () {
-                                        if (isRunning) {
-                                          notifier.stopTimer();
-                                        } else {
-                                          if (isBlocked) {
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  context.l10n.blockedWarning,
-                                                ),
-                                                backgroundColor:
-                                                    colorScheme.error,
-                                              ),
-                                            );
-                                          }
-                                          notifier.startTimer();
-                                        }
-                                      },
-                                      backgroundColor: isRunning
-                                          ? colorScheme.errorContainer
-                                          : isBlocked
-                                          ? colorScheme.errorContainer.withValues(
-                                              alpha: 0.3,
-                                            )
-                                          : colorScheme.primaryContainer,
-                                      foregroundColor: isRunning
-                                          ? colorScheme.onErrorContainer
-                                          : isBlocked
-                                          ? colorScheme.error
-                                          : colorScheme.onPrimaryContainer,
-                                    );
+                                      ref,
+                                      todo.id,
+                                    ),
+                                    backgroundColor:
+                                        colorScheme.secondaryContainer,
+                                    foregroundColor:
+                                        colorScheme.onSecondaryContainer,
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
+                                _buildCompactActionButton(
+                                  context,
+                                  icon: isRunning
+                                      ? Icons.stop_circle_outlined
+                                      : isPaused
+                                      ? Icons.play_circle_outline_rounded
+                                      : Icons.play_circle_fill_rounded,
+                                  tooltip: isRunning
+                                      ? context.l10n.stopTimer
+                                      : isPaused
+                                      ? context.l10n.resumeTimer
+                                      : context.l10n.startTimer,
+                                  onPressed: () {
+                                    if (isRunning) {
+                                      TimerActions.stop(context, ref, todo.id);
+                                      return;
+                                    }
+                                    if (isBlocked) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            context.l10n.blockedWarning,
+                                          ),
+                                          backgroundColor: colorScheme.error,
+                                        ),
+                                      );
+                                    }
+                                    TimerActions.start(context, ref, todo.id);
                                   },
+                                  backgroundColor: isRunning
+                                      ? colorScheme.errorContainer
+                                      : isBlocked
+                                      ? colorScheme.errorContainer.withValues(
+                                          alpha: 0.3,
+                                        )
+                                      : colorScheme.primaryContainer,
+                                  foregroundColor: isRunning
+                                      ? colorScheme.onErrorContainer
+                                      : isBlocked
+                                      ? colorScheme.error
+                                      : colorScheme.onPrimaryContainer,
                                 ),
                               ],
                               if (!isMultiSelectMode) ...[
@@ -584,7 +681,8 @@ class TodoListTile extends ConsumerWidget {
                                             ? Icons.check_circle_outline
                                             : Icons.checklist_rounded,
                                         size: 13,
-                                        color: completedSubTasks == totalSubTasks
+                                        color:
+                                            completedSubTasks == totalSubTasks
                                             ? colorScheme.primary
                                             : colorScheme.onSurfaceVariant,
                                       ),
@@ -596,10 +694,46 @@ class TodoListTile extends ConsumerWidget {
                                               fontWeight: FontWeight.w600,
                                               color:
                                                   completedSubTasks ==
-                                                          totalSubTasks
-                                                      ? colorScheme.primary
-                                                      : colorScheme
-                                                            .onSurfaceVariant,
+                                                      totalSubTasks
+                                                  ? colorScheme.primary
+                                                  : colorScheme
+                                                        .onSurfaceVariant,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              // A paused task looks different from a stopped
+                              // one, so the Resume button is not a surprise.
+                              if (isPaused)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: colorScheme.secondaryContainer,
+                                    borderRadius: BorderRadius.circular(12),
+                                    border: Border.all(
+                                      color: colorScheme.outlineVariant,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(
+                                        Icons.pause_rounded,
+                                        size: 13,
+                                        color: colorScheme.onSecondaryContainer,
+                                      ),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        context.l10n.timerPaused,
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: colorScheme
+                                                  .onSecondaryContainer,
                                             ),
                                       ),
                                     ],
@@ -612,9 +746,8 @@ class TodoListTile extends ConsumerWidget {
                                     vertical: 3,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: colorScheme.errorContainer.withValues(
-                                      alpha: 0.6,
-                                    ),
+                                    color: colorScheme.errorContainer
+                                        .withValues(alpha: 0.6),
                                     borderRadius: BorderRadius.circular(12),
                                     border: Border.all(
                                       color: colorScheme.error.withValues(
@@ -643,50 +776,79 @@ class TodoListTile extends ConsumerWidget {
                                     ],
                                   ),
                                 ),
+                              // Tapping the time chip opens the full screen
+                              // Focus view for this task.
                               if (displaySeconds > 0 || isRunning)
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isRunning
-                                        ? colorScheme.primaryContainer
-                                        : colorScheme.surfaceContainerLow,
-                                    borderRadius: BorderRadius.circular(999),
-                                    border: Border.all(
-                                      color: isRunning
-                                          ? colorScheme.primary.withValues(
-                                              alpha: 0.22,
-                                            )
-                                          : colorScheme.outlineVariant,
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: isMultiSelectMode
+                                      ? null
+                                      : () => context.push(
+                                          AppRoutes.focusPath(todo.id),
+                                        ),
+                                  child: Tooltip(
+                                    message: context.l10n.focusOpen,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                        vertical: 4,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: isRunning
+                                            ? colorScheme.primaryContainer
+                                            : colorScheme.surfaceContainerLow,
+                                        borderRadius: BorderRadius.circular(
+                                          999,
+                                        ),
+                                        border: Border.all(
+                                          color: isRunning
+                                              ? colorScheme.primary.withValues(
+                                                  alpha: 0.22,
+                                                )
+                                              : colorScheme.outlineVariant,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(
+                                            isRunning
+                                                ? Icons.timer_rounded
+                                                : Icons.access_time_rounded,
+                                            size: 14,
+                                            color: isRunning
+                                                ? colorScheme.primary
+                                                : colorScheme.onSurfaceVariant,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Text(
+                                            isRunning
+                                                ? formatDuration(displaySeconds)
+                                                : formatDuration(
+                                                    displaySeconds,
+                                                    rounding: trackingSettings
+                                                        .rounding,
+                                                    format:
+                                                        trackingSettings.format,
+                                                  ),
+                                            style: theme.textTheme.labelMedium
+                                                ?.copyWith(
+                                                  color: isRunning
+                                                      ? colorScheme.primary
+                                                      : colorScheme
+                                                            .onSurfaceVariant,
+                                                ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        isRunning
-                                            ? Icons.timer_rounded
-                                            : Icons.access_time_rounded,
-                                        size: 14,
-                                        color: isRunning
-                                            ? colorScheme.primary
-                                            : colorScheme.onSurfaceVariant,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        formatDuration(displaySeconds),
-                                        style: theme.textTheme.labelMedium
-                                            ?.copyWith(
-                                              color: isRunning
-                                                  ? colorScheme.primary
-                                                  : colorScheme
-                                                        .onSurfaceVariant,
-                                            ),
-                                      ),
-                                    ],
-                                  ),
+                                ),
+                              if (todo.targetSeconds != null)
+                                _buildTargetProgress(
+                                  context,
+                                  trackedSeconds: displaySeconds,
+                                  targetSeconds: todo.targetSeconds!,
                                 ),
                               if (todo.sourceDate != null)
                                 Text(

@@ -1,5 +1,1 @@
-enum RecallConfidence {
-  hard,
-  revision,
-  easy,
-}
+enum RecallConfidence { hard, revision, easy }

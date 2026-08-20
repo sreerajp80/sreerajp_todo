@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
@@ -24,8 +27,10 @@ class _FakeTodoRepository implements TodoRepository {
   Future<void> deleteTodo(String id, {bool bypassLock = false}) async {}
 
   @override
-  Future<List<String>> getAutocompleteSuggestions(String prefix) async =>
-      const [];
+  Future<List<String>> getAutocompleteSuggestions(
+    String prefix, {
+    int limit = kAutocompleteLimit,
+  }) async => const [];
 
   @override
   Future<TodoEntity?> getTodoById(String id) async =>
@@ -47,6 +52,14 @@ class _FakeTodoRepository implements TodoRepository {
     int limit = 50,
   }) async => const [];
 
+  @override
+  Future<List<TodoSearchResult>> searchWithMatchedNotes(
+    String query, {
+    int limit = 50,
+  }) async => (await searchByTitle(
+    query,
+    limit: limit,
+  )).map((todo) => TodoSearchResult(todo: todo)).toList();
   @override
   Future<bool> titleExistsOnDate(
     String title,
@@ -125,6 +138,15 @@ void main() {
 
     await tester.pumpAndSettle();
 
+    // Priority and target time now sit above the status card, so it starts
+    // below the fold on a 320 dp screen.
+    await tester.dragUntilVisible(
+      find.text(testL10n.statusDropped),
+      find.byType(ListView),
+      const Offset(0, -120),
+    );
+    await tester.pumpAndSettle();
+
     final droppedRect = tester.getRect(find.text(testL10n.statusDropped));
     final portedRect = tester.getRect(find.text(testL10n.statusPorted));
 
@@ -176,11 +198,16 @@ void main() {
     tester,
   ) async {
     final todo = buildTodo(id: 'unused', date: dateOffsetIso(0));
+    // A new task opens on the saved task defaults, so the preference store has
+    // to be present even when every default is left alone.
+    SharedPreferences.setMockInitialValues(const {});
+    final prefs = await SharedPreferences.getInstance();
 
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
           todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todo)),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,

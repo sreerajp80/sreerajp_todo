@@ -22,6 +22,8 @@ mixin _$TodoEntity {
   String get title => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   TodoStatus get status => throw _privateConstructorUsedError;
+  TodoPriority get priority => throw _privateConstructorUsedError;
+  int? get targetSeconds => throw _privateConstructorUsedError;
   String? get portedTo => throw _privateConstructorUsedError;
   String? get sourceDate => throw _privateConstructorUsedError;
   String? get recurrenceRuleId => throw _privateConstructorUsedError;
@@ -52,6 +54,8 @@ abstract class $TodoEntityCopyWith<$Res> {
     String title,
     String? description,
     TodoStatus status,
+    TodoPriority priority,
+    int? targetSeconds,
     String? portedTo,
     String? sourceDate,
     String? recurrenceRuleId,
@@ -84,6 +88,8 @@ class _$TodoEntityCopyWithImpl<$Res, $Val extends TodoEntity>
     Object? title = null,
     Object? description = freezed,
     Object? status = null,
+    Object? priority = null,
+    Object? targetSeconds = freezed,
     Object? portedTo = freezed,
     Object? sourceDate = freezed,
     Object? recurrenceRuleId = freezed,
@@ -116,6 +122,14 @@ class _$TodoEntityCopyWithImpl<$Res, $Val extends TodoEntity>
                 ? _value.status
                 : status // ignore: cast_nullable_to_non_nullable
                       as TodoStatus,
+            priority: null == priority
+                ? _value.priority
+                : priority // ignore: cast_nullable_to_non_nullable
+                      as TodoPriority,
+            targetSeconds: freezed == targetSeconds
+                ? _value.targetSeconds
+                : targetSeconds // ignore: cast_nullable_to_non_nullable
+                      as int?,
             portedTo: freezed == portedTo
                 ? _value.portedTo
                 : portedTo // ignore: cast_nullable_to_non_nullable
@@ -173,6 +187,8 @@ abstract class _$$TodoEntityImplCopyWith<$Res>
     String title,
     String? description,
     TodoStatus status,
+    TodoPriority priority,
+    int? targetSeconds,
     String? portedTo,
     String? sourceDate,
     String? recurrenceRuleId,
@@ -204,6 +220,8 @@ class __$$TodoEntityImplCopyWithImpl<$Res>
     Object? title = null,
     Object? description = freezed,
     Object? status = null,
+    Object? priority = null,
+    Object? targetSeconds = freezed,
     Object? portedTo = freezed,
     Object? sourceDate = freezed,
     Object? recurrenceRuleId = freezed,
@@ -236,6 +254,14 @@ class __$$TodoEntityImplCopyWithImpl<$Res>
             ? _value.status
             : status // ignore: cast_nullable_to_non_nullable
                   as TodoStatus,
+        priority: null == priority
+            ? _value.priority
+            : priority // ignore: cast_nullable_to_non_nullable
+                  as TodoPriority,
+        targetSeconds: freezed == targetSeconds
+            ? _value.targetSeconds
+            : targetSeconds // ignore: cast_nullable_to_non_nullable
+                  as int?,
         portedTo: freezed == portedTo
             ? _value.portedTo
             : portedTo // ignore: cast_nullable_to_non_nullable
@@ -286,6 +312,8 @@ class _$TodoEntityImpl extends _TodoEntity {
     required this.title,
     this.description,
     this.status = TodoStatus.pending,
+    this.priority = TodoPriority.normal,
+    this.targetSeconds,
     this.portedTo,
     this.sourceDate,
     this.recurrenceRuleId,
@@ -310,6 +338,11 @@ class _$TodoEntityImpl extends _TodoEntity {
   @override
   @JsonKey()
   final TodoStatus status;
+  @override
+  @JsonKey()
+  final TodoPriority priority;
+  @override
+  final int? targetSeconds;
   @override
   final String? portedTo;
   @override
@@ -347,7 +380,7 @@ class _$TodoEntityImpl extends _TodoEntity {
 
   @override
   String toString() {
-    return 'TodoEntity(id: $id, date: $date, title: $title, description: $description, status: $status, portedTo: $portedTo, sourceDate: $sourceDate, recurrenceRuleId: $recurrenceRuleId, spacedRepetitionItemId: $spacedRepetitionItemId, sortOrder: $sortOrder, subTasks: $subTasks, prerequisiteTodoIds: $prerequisiteTodoIds, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'TodoEntity(id: $id, date: $date, title: $title, description: $description, status: $status, priority: $priority, targetSeconds: $targetSeconds, portedTo: $portedTo, sourceDate: $sourceDate, recurrenceRuleId: $recurrenceRuleId, spacedRepetitionItemId: $spacedRepetitionItemId, sortOrder: $sortOrder, subTasks: $subTasks, prerequisiteTodoIds: $prerequisiteTodoIds, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -361,6 +394,10 @@ class _$TodoEntityImpl extends _TodoEntity {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.status, status) || other.status == status) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
+            (identical(other.targetSeconds, targetSeconds) ||
+                other.targetSeconds == targetSeconds) &&
             (identical(other.portedTo, portedTo) ||
                 other.portedTo == portedTo) &&
             (identical(other.sourceDate, sourceDate) ||
@@ -390,6 +427,8 @@ class _$TodoEntityImpl extends _TodoEntity {
     title,
     description,
     status,
+    priority,
+    targetSeconds,
     portedTo,
     sourceDate,
     recurrenceRuleId,
@@ -417,6 +456,8 @@ abstract class _TodoEntity extends TodoEntity {
     required final String title,
     final String? description,
     final TodoStatus status,
+    final TodoPriority priority,
+    final int? targetSeconds,
     final String? portedTo,
     final String? sourceDate,
     final String? recurrenceRuleId,
@@ -439,6 +480,10 @@ abstract class _TodoEntity extends TodoEntity {
   String? get description;
   @override
   TodoStatus get status;
+  @override
+  TodoPriority get priority;
+  @override
+  int? get targetSeconds;
   @override
   String? get portedTo;
   @override

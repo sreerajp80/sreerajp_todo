@@ -2,13 +2,14 @@ import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
+import 'package:sreerajp_todo/presentation/shared/utils/tracked_duration_format.dart';
 
 class PerItemLineChart extends StatelessWidget {
   const PerItemLineChart({
@@ -105,7 +106,7 @@ class PerItemLineChart extends StatelessWidget {
                       return spots
                           .map(
                             (spot) => LineTooltipItem(
-                              '${DateFormat.yMMMd().format(DateTime.parse(history[spot.x.toInt()].date))}\n${formatDuration(history[spot.x.toInt()].totalSeconds)}',
+                              '${formatDateFromIso(history[spot.x.toInt()].date)}\n${context.trackedDuration(history[spot.x.toInt()].totalSeconds)}',
                               theme.textTheme.bodySmall!.copyWith(
                                 color: theme.colorScheme.onInverseSurface,
                                 fontWeight: FontWeight.w600,
@@ -151,9 +152,7 @@ class PerItemLineChart extends StatelessWidget {
                           meta: meta,
                           space: 8,
                           child: Text(
-                            DateFormat.MMMd().format(
-                              DateTime.parse(history[index].date),
-                            ),
+                            formatShortDateFromIso(history[index].date),
                             style: theme.textTheme.bodySmall,
                           ),
                         );
@@ -268,7 +267,7 @@ class _ChartLegend extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         Text(
-          '${context.l10n.totalTime}: ${formatDuration(stat.totalSeconds)}',
+          '${context.l10n.totalTime}: ${context.trackedDuration(stat.totalSeconds)}',
           style: theme.textTheme.bodyMedium?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),

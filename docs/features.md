@@ -148,7 +148,7 @@ or JSON/Markdown files, and switch theme and language inside the app.
   date picker dialog, or the inline expandable calendar (`table_calendar`).
 - **Drag-and-Drop Reordering:** Reorder tasks with drag handles, saved to `sortOrder`.
   Handles show in "Manual" sort mode and hide in the automatic sort modes.
-- **Task Sorting Options:** 8 sort modes in the sort menu:
+- **Task Sorting Options:** 9 sort modes in the sort menu:
   - Manual (custom drag-and-drop order)
   - Name A→Z
   - Name Z→A
@@ -157,12 +157,20 @@ or JSON/Markdown files, and switch theme and language inside the app.
   - Most Time Tracked
   - Least Time Tracked
   - By Status
+  - Priority (high first)
+
+  The order the list opens in is a saved preference (see section 3.8). Ties in the
+  priority sort keep the manual order.
 - **Task Attributes (`TodoEntity`):**
   - `id`: Unique identifier (UUID v4).
   - `date`: Assigned ISO date (`YYYY-MM-DD`).
   - `title`: Task title (NFC-normalized, unique per date).
   - `description`: Optional multi-line notes.
   - `status`: Lifecycle state (`pending`, `working`, `completed`, `dropped`, `ported`).
+  - `priority`: How important the task is (`low`, `normal`, `high`, `urgent`). Default
+    `normal`, which shows no dot on the tile.
+  - `targetSeconds`: How long the task is expected to take, or null for no target.
+    Display only — passing it never stops a timer or changes a status.
   - `portedTo`: Target date for ported tasks (`YYYY-MM-DD`).
   - `sourceDate`: Original date for copied/ported tasks (`YYYY-MM-DD`).
   - `recurrenceRuleId`: Link to the recurrence rule that created it, if any.
@@ -180,7 +188,8 @@ or JSON/Markdown files, and switch theme and language inside the app.
 - **`completed`**: Terminal. Running timers stop and close. Timer controls hide and new
   segments are refused (`CompletedLockException`).
 - **`dropped`**: Terminal, for abandoned work. Running timers stop. The time already spent
-  is counted as "dropped time" in statistics. Needs a confirmation dialog.
+  is counted as "dropped time" in statistics. Asks for confirmation when the "Ask before
+  dropping" setting is on (it is on by default; see section 3.8).
 - **`ported`**: The task was moved to a later date. Needs a target date and a confirmation
   dialog, and creates a fresh `pending` copy on that date.
 - **Status Transitions:** `pending -> working -> completed`, `pending -> completed`,
@@ -217,18 +226,124 @@ or JSON/Markdown files, and switch theme and language inside the app.
 
 ### 3.7 History-Wide Title Autocomplete
 - While typing a title, the app looks up past titles from all dates.
-- Up to 20 prefix matches are offered, with 300 ms debouncing, to keep naming consistent.
+- Up to 20 prefix matches are offered by default, with 300 ms debouncing, to keep naming
+  consistent. Both the on/off switch and the number of matches are settings (section 3.8).
+- With suggestions switched off, nothing is read from the database while typing at all.
+
+### 3.8 Task Defaults (Settings → Task defaults)
+Four pages of preferences, all stored in `SharedPreferences` and all with defaults that
+keep the behaviour the app had before they existed.
+
+**New task**
+- *Default status* — `pending` (default) or `working`. Choosing `working` pre-selects the
+  status but does **not** start a timer.
+- *Default priority* — `normal` by default.
+- *Default target time* — none by default; otherwise 15 min, 30 min, 45 min, 1 h, 90 min
+  or 2 h. Any task can still be given any target on the form.
+
+**Day list**
+- *Default order* — which of the 9 sort modes the day list opens in. Manual by default.
+- *Remember the last order I pick* — on by default. Choosing a sort from the day list menu
+  also saves it, so the choice survives a restart.
+- *Show completed tasks* / *Show dropped tasks* — both on by default.
+- *Move finished tasks to the bottom* — off by default. When on, `completed`, `dropped`
+  and `ported` tasks sit below the rest whatever the sort is.
+- When a filter hides anything, the day list shows a "N finished tasks hidden — Show" line,
+  so an empty-looking day is never a mystery. "Show" reveals them for that visit only.
+- *Voice input* — **off by default**. When on, a small microphone button sits above the add
+  button on the day list and opens the voice task sheet (see 3.9). Turning it on is what
+  leads to the microphone permission being asked for, so a fresh install never sees that
+  prompt.
+
+**Task actions**
+- *Ask before completing* — off by default.
+- *Ask before dropping* — on by default, matching the old fixed behaviour.
+- Both apply on the day tile quick actions **and** on the status chips in the create/edit
+  form, so the two routes to a status change behave the same.
+- *Ask to carry over unfinished tasks* — off by default. The first time today's list is
+  opened on a given day, a sheet lists the `pending` and `working` tasks from the most
+  recent earlier day that had any, all ticked. "Carry over" copies the ticked ones to
+  today through the existing `CopyTodos` use case, so duplicate titles are skipped and
+  the day lock applies. The tasks on the earlier day are **never changed** — past days are
+  read-only. *How far back to look* is "previous day only" (default) or "last 7 days".
+
+**Autocomplete**
+- *Suggest titles while typing* — on by default.
+- *How many suggestions* — 5, 10, 20 (default) or 50. This is a real SQL `LIMIT`, not a
+  list trimmed in Dart.
+
+**Known limit:** drag-to-reorder writes `sort_order` over the whole day. While finished
+tasks are sunk to the bottom, or while a filter hides some of them, a drag is translated
+into a move in the full list — the dragged task lands just before whatever it was dropped
+in front of. Dragging an unfinished task into the finished group will therefore appear to
+snap back, because sinking is re-applied on the next build.
+
+### 3.9 Voice Task Entry (Offline, English & Malayalam)
+One plain sentence in, one ready-made task out. Everything is worked out on the device.
+
+**Opening it.** With *Voice input* on (3.8), a small microphone button sits above the add
+button on the day list, on today and on future days. It is hidden on a past day, which is
+read-only. It opens a floating sheet with a language toggle (English / Malayalam), a
+microphone button, a text box, and a row of chips showing what was understood.
+
+**What it understands.** Both language word lists are always tried, so a sentence may mix
+the two freely.
+
+| Sentence | Title | Day | Time | Target |
+|---|---|---|---|---|
+| `Call the bank tomorrow at 10 am for 30 minutes` | Call the bank | tomorrow | 10:00 | 30 min |
+| `Study Dart next Monday for 1 hour 30 minutes` | Study Dart | next Monday | — | 90 min |
+| `urgent: Pay rent tomorrow` | Pay rent (urgent) | tomorrow | — | — |
+| `ഏഴരയ്ക്ക് നടക്കാൻ പോകണം` | നടക്കാൻ പോകണം | today | 07:30 | — |
+| `അടുത്ത തിങ്കളാഴ്ച 45 മിനിറ്റ് പഠനം` | പഠനം | next Monday | — | 45 min |
+| `പത്തു മണിക്ക് ഡോക്ടറെ കാണണം` | ഡോക്ടറെ കാണണം | today | 10:00 | — |
+| `രണ്ട് മണിക്കൂർ വായന` | വായന | today | — | 2 h |
+
+Also handled: `today`, `the day after tomorrow`, `in 3 days`, `in 2 weeks`, any weekday,
+`half past seven`, `quarter to 8`, `10:30 pm`, `half an hour`, `forty five minutes`,
+`low priority`, an opening `remind me to`, and the Malayalam forms `ഇന്ന്`, `നാളെ`,
+`മറ്റന്നാൾ`, `അടുത്ത ആഴ്ച`, `മൂന്ന് ദിവസം`, `രാവിലെ` / `വൈകുന്നേരം`, and every half-past
+form from `ഒന്നര` to `പന്ത്രണ്ടര`.
+
+**Rules it keeps.**
+- **It never invents.** No date words means today — or, if the sheet was opened on another
+  day, the day being looked at. An hour with no `am`, `pm` or part-of-day word is kept
+  exactly as said, so `at 5` is 05:00 and is not "helpfully" turned into 17:00.
+- **Day-Lock holds.** A day already past is moved to today, and the sheet says so.
+- **Nothing is saved by the sheet.** "Create task" opens the ordinary create form with the
+  fields filled in, so the duplicate-title check, the day lock and NFC normalisation are
+  all enforced in the one place they always were. The form can be edited before saving.
+- A task has no time-of-day column, so a spoken time is written into the description as a
+  short note (`At 10:30`) rather than being dropped.
+- `unicodeUtils.nfcNormalize()` runs on the sentence before matching and on the title
+  after; `detectTextDirection()` drives the text box and the chips.
+
+**Speaking is optional.** Typing works everywhere and always — on Windows, on a phone with
+no speech app, and on a phone with no offline language pack — and is read exactly the same
+way. Where the microphone cannot be used, the sheet says why in one line and shows the text
+box only. The keyboard's own microphone key still works in that box.
+
+**Staying offline.** The app declares no network permission of any kind. The phone
+recogniser is always asked for its on-device engine, and listening is refused rather than
+allowed to go online; a recogniser that reaches for the network is reported as a missing
+offline language pack. No audio is recorded or kept. The full reasoning, and the honest
+limit that the recogniser is a separate app that cannot be audited from here, is in
+`docs/security.md` section 10.
 
 ---
 
 ## 4. Time Tracking & Segment Management
 
 ### 4.1 Live Timer
-- **Start / Stop Control:** Start (▶) begins a segment; Stop (⏹) closes it.
-- **Real-Time Display:** Live `HH:MM:SS` counter driven by `liveTimerProvider` ticks.
+- **Start / Pause / Resume / Stop Control:** Start (▶) begins a segment; Pause (⏸) closes
+  it but marks the task as paused so it offers Resume; Stop (⏹) closes it for good.
+- **Real-Time Display:** Live `HH:MM:SS` counter driven by `liveTimerProvider` ticks. A
+  running timer always shows seconds, whatever the duration format setting is.
 - **Multi-Task Timer Concurrency:**
-  - Different tasks may run timers at the same time.
+  - Different tasks may run timers at the same time by default. The **Only one timer at a
+    time** setting (§4.4) changes this.
   - One task may have only one open segment (`SegmentAlreadyRunningException` otherwise).
+    Pause does not create a second open segment: it closes the current one.
 
 ### 4.2 Manual Time Entry & Segment Manager
 - Per-task **Time Segments Screen** (`/todo/:id/segments`) listing all recorded intervals.
@@ -251,7 +366,108 @@ or JSON/Markdown files, and switch theme and language inside the app.
 ### 4.3 Automatic Orphaned Segment Repair
 - On app launch, `RepairOrphanedSegments` looks for open segments on past-day tasks (for
   example, a timer left running when the app closed).
-- Such segments are closed with 0 duration and marked `interrupted = 1`.
+- **With auto-stop off (the default):** such segments are closed with 0 duration and
+  marked `interrupted = 1`, because there is no honest way to know how long the user
+  really worked.
+- **With auto-stop on (§4.4):** the segment is closed at the cut-off that followed its
+  start and still marked `interrupted = 1`, so real worked time is no longer thrown away.
+  An end time is never written into the future, so a clock that moved backwards cannot
+  invent time.
+
+### 4.4 Time Tracking Settings
+
+All nine settings live under **Settings → Time tracking** (`/settings/time-tracking`) and
+are saved in `SharedPreferences`. Every default reproduces the behaviour the app had
+before the settings existed, so nothing changes for a user who never opens the page.
+
+**Auto-stop the timer** (`/settings/time-tracking/auto-stop`)
+- Never (default), at midnight, or at a time the user picks.
+- While the app is open a single timer fires at the cut-off and closes any running
+  segment at that exact moment.
+- While the app is closed nothing can fire. The next launch corrects it: see §4.3.
+
+**Pause and resume**
+- A **Pause** button sits beside Stop on the day tile and on the Time Segments screen.
+- Pause closes the running segment exactly like Stop, so time already worked is kept and
+  the one-open-segment-per-todo rule still holds. Resume opens a fresh segment.
+- The paused mark is screen state, not user data. It is held in `SharedPreferences` for
+  the current day only, and is deliberately kept out of the database, out of backups and
+  out of sync. It is cleared on resume, on stop, when the task becomes `completed` or
+  `dropped`, and when the day rolls over.
+- **Pause when the app is closed** (default off) pauses a running timer as the app leaves
+  the foreground.
+
+**Only one timer at a time** (default off)
+- When on, starting a timer stops any timer running on another task first, and a
+  SnackBar says how many were stopped. Enforced in the `StartTimeSegment` use case, so
+  every path obeys it. A start that is refused never stops the previous timer.
+
+**Shortest segment to keep** (default: keep everything)
+- Off, 10s, 30s, 1 minute, or 5 minutes.
+- Applies only when the user stops or pauses a **live** timer. A shorter segment is
+  deleted instead of saved, with a 5 second SnackBar and an **Undo** button.
+- Never applies to manual entries, imports, or restored backups.
+- Deliberately skipped by auto-stop: the user did not end that segment, so their work is
+  never silently thrown away.
+
+**Pomodoro** (`/settings/time-tracking/pomodoro`, default off)
+- Work block (default 25 min), short break (5), long break (15), long break after N work
+  blocks (4), and start-the-next-block-on-its-own (off).
+- `PomodoroNotifier` drives the cycle; the segment start and stop stay in
+  `TimeTrackingNotifier`, so no database work happens in the engine.
+- The running block and its countdown show on the Time Segments screen.
+- **Known limit:** the alert is in-app only. This app sends no notifications, so a block
+  that ends while the app is closed or in the background makes no sound. The elapsed time
+  is still counted correctly when the app comes back, via `syncWithClock()`.
+
+**Focus mode** (`/settings/time-tracking/focus`)
+- **Full-screen Focus view** (`/focus/:id`): tapping the time chip on a task tile, or the
+  focus button on the Time Segments screen, opens an immersive view for that one task:
+  the elapsed time in large type on a dark ground, the task title and description, a slow
+  ambient ring (which fills up to the target when the task has one), the tickable step
+  list, and pause / stop controls. Stopping the timer takes the user back where they came
+  from. The view is always dark, whatever the app theme is, but keeps the user's own
+  accent colour and font.
+- Ticks on the step list go through `DailyTodoNotifier.toggleSubTask`, so day-lock and
+  every other repository rule still applies. A past day or a finished task is read-only.
+- **Immersive full screen** (default on): hides the status and navigation bars while the
+  Focus view is open, and puts them back on the way out.
+- **Nudge while a timer runs** (default off): off, vibration only, sound only, or both,
+  every 5 to 120 minutes (default 30). `FocusPulseNotifier` owns the schedule and
+  `TimerLifecycleWatcher` tells it which timer to follow; the nudge itself is
+  `SystemSound.play` and `HapticFeedback`, both from the Flutter engine, so no sound file
+  is shipped and no package was added.
+- Nudges are counted from the start of the running segment, so "every 30 minutes" means
+  30 minutes of tracked work. The schedule is worked out from the clock every time, so a
+  spell in the background cannot make it drift.
+- While Pomodoro is on the nudge stays quiet, because Pomodoro already sounds its own
+  alert at the end of every block.
+- **Known limit:** like the Pomodoro alert, the nudge is in-app only. Nothing sounds
+  while the app is closed or in the background, and a nudge that fell due while the app
+  was away is dropped rather than replayed. The tracked time is unaffected.
+
+**Keep the screen on** (default off, Android only)
+- Set through a small `MethodChannel` (`in.sreerajp.todo/screen_wake`) beside the
+  existing database-key channel, which sets and clears `FLAG_KEEP_SCREEN_ON`. No new
+  package, so the audited dependency list is unchanged. The flag is cleared in
+  `onDestroy()` and whenever no timer is running. The switch is hidden on other
+  platforms rather than shown doing nothing.
+
+**Time display** (`/settings/time-tracking/display`)
+- **Rounding in reports:** exact (default), nearest minute, nearest 5, nearest 15.
+  **Display only** — stored segment seconds are never rewritten.
+- **How times are written:** `HH:MM:SS` (default), `HH:MM`, or decimal hours.
+- A **running** timer always keeps its seconds, whatever the format, because a live clock
+  that jumps a minute at a time reads as broken.
+- Both are applied inside `formatDuration`, and handed to deeply nested report widgets
+  through the `TrackedDurationFormat` inherited widget, so Statistics, the Time Segments
+  screen, the day tile and the evening reflection all agree.
+- **Manual entry length:** 15 min, 30 min, 1 hour (default), or 2 hours. Picking a start
+  time fills the end time that far ahead, stopping at 23:59 rather than crossing midnight.
+  The user can still change it.
+
+`TimerLifecycleWatcher` wraps the whole app and owns auto-stop, auto-pause on background,
+and the keep-awake flag.
 
 ---
 
@@ -360,10 +576,25 @@ or JSON/Markdown files, and switch theme and language inside the app.
 ## 11. Cross-Day Full-Text Search
 
 - **Screen:** `/search` (`/search?q=query`)
-- Search runs against the FTS5 index `todos_fts` (`MATCH`), covering task titles and
-  descriptions across all dates, with a `LIKE` query as a fallback when the index cannot
-  serve the term.
+- Search runs against the FTS5 index `todos_fts` (`MATCH`), covering task titles,
+  descriptions, and time segment notes across all dates, with a `LIKE` query as a
+  fallback when the index cannot serve the term.
+- **Indic phonetic and sandhi-aware matching.** Indexed text and the typed query both
+  pass through one folding step (`lib/core/utils/indic_search_utils.dart`) before they
+  meet:
+  - Malayalam Chillu is unified, so `ണ` + virama + ZWJ and the single letter `ൺ` match
+    each other (same for `ന`/`ൻ`, `ര`/`ർ`, `ല`/`ൽ`, `ള`/`ൾ`, `ക`/`ൿ`).
+  - Zero-width joiners (`ZWJ`, `ZWNJ`) are removed, so an invisible character can no
+    longer split one word into two.
+  - Latin accents are stripped (`café` matches `cafe`). Malayalam vowel signs and the
+    virama are never stripped, because they change the word.
+  - Folding walks grapheme clusters (`characters` package), so a multi-code-point letter
+    is never cut in half.
+  - The FTS5 tokenizer keeps combining marks inside a token, so a Malayalam word indexes
+    as one word rather than as separate letters.
 - Results are grouped by date, in date order.
+- When a result matched on a time segment note, that note is shown as the result
+  subtitle so the reason for the hit is visible.
 - Full Unicode, multi-script, and bilingual search.
 - Tapping a result opens that date's Daily List screen.
 
@@ -469,8 +700,17 @@ or JSON/Markdown files, and switch theme and language inside the app.
 | **Backup & Restore** | `/backup` | Passphrase-encrypted export/import, local backup file manager, and backup health dashboard. |
 | **Wi-Fi Sync** | `/wifi-sync` | Host or join an encrypted local-network sync session with PIN pairing and add-only merge. |
 | **AirQR Scan** | `/air-qr-scan` | Camera scanner that rebuilds a QR frame stream and imports the data. |
+| **Focus view** | `/focus/:id` | Full-screen, dark, distraction-free view of one running task: large elapsed time, ambient ring, step checklist, pause and stop. |
 | **Data Handoff** | `/data-handoff` | JSON and Markdown export and import. |
-| **Settings** | `/settings` | Theme selector (System/Light/Dark), language selector (System/English/Malayalam), shortcuts, and offline policy info. |
+| **Settings** | `/settings` | Hub with cards for Appearance, Language, Time tracking, Backup, About and Permissions, plus offline policy info. |
+| **Time Tracking** | `/settings/time-tracking` | Hub for how the timer behaves: Auto-stop, Timer behaviour, Pomodoro, Focus mode, and Time display. |
+| **Auto-stop** | `/settings/time-tracking/auto-stop` | Never / at midnight / at a set time, plus the time picker and a plain note about the offline limit. |
+| **Timer behaviour** | `/settings/time-tracking/timer` | Only one timer at a time, pause when the app is closed, keep the screen on (Android), and the shortest segment worth keeping. |
+| **Pomodoro** | `/settings/time-tracking/pomodoro` | Focus blocks on/off, work and break lengths, blocks before a long break, auto-start, and a note that the alert is in-app only. |
+| **Focus mode** | `/settings/time-tracking/focus` | The nudge given while a timer runs (off / vibration / sound / both), how often it comes, and the immersive full-screen switch for the Focus view. |
+| **Time display** | `/settings/time-tracking/display` | Rounding in reports, how times are written, the manual entry default length, and a live sample. |
+| **Appearance** | `/settings/appearance` | Hub for the look of the app: Theme Mode, Typography, and Accent Color. |
+| **Accent Color** | `/settings/appearance/accent-color` | Picks the highlight colour used on buttons, chips, switches and selected labels. Presets, colour wheel, live preview, stored separately for light and dark mode. |
 | **Permissions Info** | `/permissions` | Transparency screen listing the local permission categories used (storage, file picker, system clock, text processing). |
 | **About App** | `/about` | App version and build from `app_config.json`, author details, AI and IDE attribution, offline guarantees, and a Unicode-first note. |
 

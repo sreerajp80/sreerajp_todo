@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
+import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:uuid/uuid.dart';
 
@@ -11,11 +12,15 @@ class ManualSegmentForm extends StatefulWidget {
     required this.todoId,
     required this.todoDate,
     required this.existingSegments,
+    this.defaultDuration = ManualEntryDuration.oneHour,
   });
 
   final String todoId;
   final String todoDate;
   final List<TimeSegmentEntity> existingSegments;
+
+  /// How far ahead of the picked start time the end time is filled in.
+  final ManualEntryDuration defaultDuration;
 
   @override
   State<ManualSegmentForm> createState() => _ManualSegmentFormState();
@@ -24,9 +29,17 @@ class ManualSegmentForm extends StatefulWidget {
 class _ManualSegmentFormState extends State<ManualSegmentForm> {
   static const _uuid = Uuid();
 
+  final TextEditingController _noteController = TextEditingController();
+
   TimeOfDay? _startTime;
   TimeOfDay? _endTime;
   String? _error;
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
 
   bool get _isValid => _startTime != null && _endTime != null && _error == null;
 
@@ -79,12 +92,28 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
       setState(() {
         if (isStart) {
           _startTime = picked;
+          // Fill the end time from the saved default so the common case is a
+          // single tap. The user can still change it afterwards.
+          _endTime ??= _addMinutes(picked, widget.defaultDuration.minutes);
         } else {
           _endTime = picked;
         }
       });
       _validate();
     }
+  }
+
+  /// Adds [minutes] to [time], stopping at 23:59 rather than wrapping past
+  /// midnight, because a segment must stay inside its own day.
+  TimeOfDay _addMinutes(TimeOfDay time, int minutes) {
+    final total = time.hour * 60 + time.minute + minutes;
+    if (total >= 24 * 60) return const TimeOfDay(hour: 23, minute: 59);
+    return TimeOfDay(hour: total ~/ 60, minute: total % 60);
+  }
+
+  String? get _noteText {
+    final text = _noteController.text.trim();
+    return text.isEmpty ? null : text;
   }
 
   void _submit() {
@@ -101,6 +130,7 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
       endTime: endDt.toIso8601String(),
       durationSeconds: durationSec,
       manual: true,
+      notes: _noteText,
       createdAt: DateTime.now().toUtc().toIso8601String(),
     );
 
@@ -156,6 +186,18 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _noteController,
+            maxLines: 2,
+            textCapitalization: TextCapitalization.sentences,
+            decoration: InputDecoration(
+              labelText: context.l10n.segmentNoteLabel,
+              hintText: context.l10n.segmentNoteHint,
+              border: const OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.sticky_note_2_outlined),
+            ),
           ),
           if (durationPreview != null) ...[
             const SizedBox(height: 12),

@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
@@ -111,7 +111,7 @@ class DailyBarChart extends StatelessWidget {
                                 context.l10n.statusPorted,
                               ];
                               return BarTooltipItem(
-                                '${DateFormat.yMMMd().format(DateTime.parse(item.date))}\n${labels[rodIndex]}: ${rod.toY.toStringAsFixed(0)}',
+                                '${formatDateFromIso(item.date)}\n${labels[rodIndex]}: ${rod.toY.toStringAsFixed(0)}',
                                 theme.textTheme.bodySmall!.copyWith(
                                   color: theme.colorScheme.onInverseSurface,
                                   fontWeight: FontWeight.w600,
@@ -163,8 +163,8 @@ class DailyBarChart extends StatelessWidget {
                                 if (index % skipEvery != 0) {
                                   return const SizedBox.shrink();
                                 }
-                                final label = DateFormat.MMMd().format(
-                                  DateTime.parse(stats[index].date),
+                                final label = formatShortDateFromIso(
+                                  stats[index].date,
                                 );
                                 return SideTitleWidget(
                                   meta: meta,

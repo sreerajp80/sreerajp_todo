@@ -22,6 +22,7 @@ Before adding any package:
 |---|---|---|
 | `flutter_localizations` | Bilingual localization (English & Malayalam) | Internationalization |
 | `cupertino_icons` | iOS-style iconography support | UI |
+| `characters` | Grapheme-cluster-aligned string walking for Indic search folding | Core Utilities |
 | `sqflite_sqlcipher` | AES-256 encrypted SQLite engine (Mobile) | Database |
 | `sqflite_common_ffi` | SQLCipher-enabled SQLite engine (Desktop) | Database |
 | `path` | Cross-platform filesystem path manipulation | Utilities |
@@ -68,6 +69,25 @@ The following package types are strictly prohibited in `pubspec.yaml` and transi
 - **Crash Reporting:** `sentry`, `firebase_crashlytics`, `datadog_flutter_plugin`
 - **Network Status Checks:** `connectivity_plus`, `internet_connection_checker`
 - **Ad Frameworks:** `google_mobile_ads`
+- **Speech / voice packages:** `speech_to_text`, `flutter_tts` and the like. Voice task
+  entry (features 3.9) needed speech-to-text, and the package route was rejected here.
+  It is done instead with the app's own `in.sreerajp.todo/speech` method channel over
+  Android `SpeechRecognizer`, which adds no package and keeps this inventory unchanged.
+
+---
+
+## 4a. Native Capabilities Used Without A Package
+
+Some platform features are reached through the app's own small method channels rather than
+by adding a package. This keeps the audited list above short and keeps every native call
+visible in `MainActivity.kt` instead of inside someone else's plugin.
+
+| Capability | Channel | Instead of |
+|---|---|---|
+| Android Keystore for the database key | `in.sreerajp.todo/database_key` | a secure-storage package |
+| Keep the screen on while a timer runs | `in.sreerajp.todo/screen_wake` | a wakelock package |
+| `FLAG_SECURE` and the device unlock screen | `in.sreerajp.todo/app_lock` | a biometrics package |
+| On-device speech-to-text for the voice sheet | `in.sreerajp.todo/speech` (+ `…/speech_events`) | `speech_to_text` |
 
 ---
 

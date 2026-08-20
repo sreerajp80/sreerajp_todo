@@ -58,9 +58,19 @@ class StatisticsQueryService {
         .toList();
   }
 
-  Future<int> getDayCount({String? startDate, String? endDate}) async {
+  /// How many days in the range carry any todo.
+  ///
+  /// When [workingDays] is given, days that fall on a weekday the user does
+  /// not work are left out, so a "per day" average is not watered down by the
+  /// days they never meant to work.
+  Future<int> getDayCount({
+    String? startDate,
+    String? endDate,
+    Set<int>? workingDays,
+  }) async {
     final db = await _databaseService.database;
     final filter = _buildTodoFilter(startDate: startDate, endDate: endDate);
+    final workingDayClause = _buildWorkingDayClause(workingDays);
     final maps = await db.rawQuery('''
       SELECT COUNT(*) AS total
       FROM (
@@ -68,10 +78,27 @@ class StatisticsQueryService {
         FROM todos t
         ${filter.whereClause}
         GROUP BY t.date
+        $workingDayClause
       ) grouped_days
       ''', filter.args);
 
     return _toInt(maps.first['total']);
+  }
+
+  /// A `HAVING` clause that keeps only the chosen working days.
+  ///
+  /// SQLite's `strftime('%w', ...)` numbers Sunday as 0 and Saturday as 6,
+  /// while Dart numbers Monday as 1 and Sunday as 7, so the set is translated
+  /// here rather than at the call site.
+  String _buildWorkingDayClause(Set<int>? workingDays) {
+    // An empty or missing set means "count every day", which is what the app
+    // did before this setting existed.
+    if (workingDays == null || workingDays.isEmpty) return '';
+    final sqliteDays = <int>{
+      for (final day in workingDays) day == DateTime.sunday ? 0 : day,
+    }.toList()..sort();
+    final list = sqliteDays.join(', ');
+    return "HAVING CAST(strftime('%w', t.date) AS INTEGER) IN ($list)";
   }
 
   Future<List<TodoTimeStats>> getPerItemStats({
@@ -205,6 +232,7 @@ class StatisticsQueryService {
   Future<SummaryStats> getSummaryStats({
     String? startDate,
     String? endDate,
+    Set<int>? workingDays,
   }) async {
     final db = await _databaseService.database;
     final todoFilter = _buildTodoFilter(startDate: startDate, endDate: endDate);
@@ -253,7 +281,11 @@ class StatisticsQueryService {
       JOIN todos t ON ts.todo_id = t.id
       ${droppedFilter.whereClause}
       ''', droppedFilter.args);
-    final dayCount = await getDayCount(startDate: startDate, endDate: endDate);
+    final dayCount = await getDayCount(
+      startDate: startDate,
+      endDate: endDate,
+      workingDays: workingDays,
+    );
 
     final totalTodos = _toInt(totalTodoMaps.first['total']);
     final completedTotal = _toInt(completedMaps.first['completed_total']);

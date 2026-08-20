@@ -18,7 +18,8 @@ void main() {
     });
 
     test('encodes and decodes small payload seamlessly', () {
-      const payload = 'SREERAJP_TODO|v1|{"type":"tasks","date":"2026-08-10","todos":[{"id":"1","title":"Test AirQR"}]}';
+      const payload =
+          'SREERAJP_TODO|v1|{"type":"tasks","date":"2026-08-10","todos":[{"id":"1","title":"Test AirQR"}]}';
       final frames = AirQrService.encodePayload(payload, blockSize: 50);
       expect(frames.isNotEmpty, isTrue);
 
@@ -33,8 +34,13 @@ void main() {
     });
 
     test('recovers lost systematic blocks using LT Fountain parity frames', () {
-      const payload = 'Fountain LT parity recovery test payload with enough text length to produce multiple block chunks for stream solving verification.';
-      final frames = AirQrService.encodePayload(payload, blockSize: 30, extraParityRatioPercent: 100);
+      const payload =
+          'Fountain LT parity recovery test payload with enough text length to produce multiple block chunks for stream solving verification.';
+      final frames = AirQrService.encodePayload(
+        payload,
+        blockSize: 30,
+        extraParityRatioPercent: 100,
+      );
 
       // Filter systematic frames and parity frames
       final systematic = frames.where((f) => !f.isParity).toList();
@@ -62,7 +68,10 @@ void main() {
         const AirQrProgress(),
       );
       service.reset();
-      expect(service.processFrameString('INVALID', const AirQrProgress()).status, equals(AirQrStatus.idle));
+      expect(
+        service.processFrameString('INVALID', const AirQrProgress()).status,
+        equals(AirQrStatus.idle),
+      );
     });
   });
 }

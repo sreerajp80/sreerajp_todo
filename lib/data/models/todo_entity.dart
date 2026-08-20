@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:sreerajp_todo/data/models/sub_task_item.dart';
+import 'package:sreerajp_todo/data/models/todo_priority.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 
 part 'todo_entity.freezed.dart';
@@ -14,6 +15,8 @@ class TodoEntity with _$TodoEntity {
     required String title,
     String? description,
     @Default(TodoStatus.pending) TodoStatus status,
+    @Default(TodoPriority.normal) TodoPriority priority,
+    int? targetSeconds,
     String? portedTo,
     String? sourceDate,
     String? recurrenceRuleId,
@@ -31,6 +34,8 @@ class TodoEntity with _$TodoEntity {
     'title': title,
     'description': description,
     'status': status.toDbString(),
+    'priority': priority.toDbString(),
+    'target_seconds': targetSeconds,
     'ported_to': portedTo,
     'source_date': sourceDate,
     'recurrence_rule_id': recurrenceRuleId,
@@ -50,6 +55,8 @@ class TodoEntity with _$TodoEntity {
     title: map['title'] as String,
     description: map['description'] as String?,
     status: TodoStatus.fromDbString(map['status'] as String),
+    priority: TodoPriority.fromDbString(map['priority'] as String?),
+    targetSeconds: map['target_seconds'] as int?,
     portedTo: map['ported_to'] as String?,
     sourceDate: map['source_date'] as String?,
     recurrenceRuleId: map['recurrence_rule_id'] as String?,

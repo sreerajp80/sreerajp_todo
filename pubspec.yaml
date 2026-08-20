@@ -1,7 +1,7 @@
 name: sreerajp_todo
 description: "SreerajP ToDo — Personal offline-first daily ToDo and time-tracker."
 publish_to: 'none'
-version: 1.9.3+18
+version: 1.12.2+23
 
 environment:
   sdk: ^3.12.2
@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.8
+  characters: ^1.4.0
   sqflite_sqlcipher: ^3.1.0
   sqflite_common_ffi: ^2.3.4
   path: ^1.9.0
@@ -52,6 +53,23 @@ flutter:
     - assets/config/
     - assets/fonts/
     - assets/splash/
+
+  fonts:
+    - family: Manjari
+      fonts:
+        - asset: assets/fonts/Manjari-Regular.ttf
+        - asset: assets/fonts/Manjari-Bold.ttf
+          weight: 700
+    - family: Anek Malayalam
+      fonts:
+        - asset: assets/fonts/AnekMalayalam-Regular.ttf
+        - asset: assets/fonts/AnekMalayalam-Bold.ttf
+          weight: 700
+    - family: Noto Sans Malayalam
+      fonts:
+        - asset: assets/fonts/NotoSansMalayalam-Regular.ttf
+        - asset: assets/fonts/NotoSansMalayalam-Bold.ttf
+          weight: 700
 
 flutter_native_splash:
   color: '#1565C0'

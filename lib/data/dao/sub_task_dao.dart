@@ -7,10 +7,7 @@ class SubTaskDao {
 
   final DatabaseService _databaseService;
 
-  Future<void> insert(
-    SubTaskItem item, {
-    DatabaseExecutor? executor,
-  }) async {
+  Future<void> insert(SubTaskItem item, {DatabaseExecutor? executor}) async {
     final db = executor ?? await _databaseService.database;
     await db.insert('sub_tasks', item.toMap());
   }
@@ -51,10 +48,7 @@ class SubTaskDao {
     final db = executor ?? await _databaseService.database;
     await db.update(
       'sub_tasks',
-      {
-        'is_completed': isCompleted ? 1 : 0,
-        'updated_at': updatedAt,
-      },
+      {'is_completed': isCompleted ? 1 : 0, 'updated_at': updatedAt},
       where: 'id = ?',
       whereArgs: [subTaskId],
     );

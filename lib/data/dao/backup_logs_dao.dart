@@ -32,9 +32,7 @@ class BackupLogsDao {
     return maps.map(BackupLogEntity.fromMap).toList();
   }
 
-  Future<BackupLogEntity?> getLatestLog({
-    DatabaseExecutor? executor,
-  }) async {
+  Future<BackupLogEntity?> getLatestLog({DatabaseExecutor? executor}) async {
     final db = executor ?? await _databaseService.database;
     final maps = await db.query(
       'backup_logs',
@@ -47,9 +45,7 @@ class BackupLogsDao {
     return BackupLogEntity.fromMap(maps.first);
   }
 
-  Future<void> clearLogs({
-    DatabaseExecutor? executor,
-  }) async {
+  Future<void> clearLogs({DatabaseExecutor? executor}) async {
     final db = executor ?? await _databaseService.database;
     await db.delete('backup_logs');
   }

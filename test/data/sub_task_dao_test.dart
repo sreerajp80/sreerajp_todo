@@ -99,22 +99,25 @@ void main() {
       expect(list[1].title, 'Step 2');
     });
 
-    test('cascade deletion deletes sub-tasks when parent todo is deleted', () async {
-      final now = DateTime.now().toUtc().toIso8601String();
-      await subTaskDao.insert(
-        SubTaskItem(
-          id: 'sub-1',
-          todoId: 'todo-1',
-          title: 'Step 1',
-          sortOrder: 0,
-          createdAt: now,
-          updatedAt: now,
-        ),
-      );
-      await todoDao.delete('todo-1');
+    test(
+      'cascade deletion deletes sub-tasks when parent todo is deleted',
+      () async {
+        final now = DateTime.now().toUtc().toIso8601String();
+        await subTaskDao.insert(
+          SubTaskItem(
+            id: 'sub-1',
+            todoId: 'todo-1',
+            title: 'Step 1',
+            sortOrder: 0,
+            createdAt: now,
+            updatedAt: now,
+          ),
+        );
+        await todoDao.delete('todo-1');
 
-      final list = await subTaskDao.findByTodoId('todo-1');
-      expect(list, isEmpty);
-    });
+        final list = await subTaskDao.findByTodoId('todo-1');
+        expect(list, isEmpty);
+      },
+    );
   });
 }

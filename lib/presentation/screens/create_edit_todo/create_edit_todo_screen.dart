@@ -11,9 +11,13 @@ import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_priority.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/repeat_option_picker.dart';
+import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/priority_selector.dart';
+import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/target_time_field.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/title_autocomplete_field.dart';
 import 'package:sreerajp_todo/presentation/screens/recurring_tasks/widgets/rrule_frequency_picker.dart';
 import 'package:sreerajp_todo/presentation/screens/recurring_tasks/widgets/rrule_preview.dart';
@@ -25,10 +29,35 @@ import 'package:sreerajp_todo/core/utils/rrule_display_utils.dart';
 import 'package:sreerajp_todo/data/models/sub_task_item.dart';
 
 class CreateEditTodoScreen extends ConsumerStatefulWidget {
-  const CreateEditTodoScreen({super.key, this.todoId, this.date});
+  const CreateEditTodoScreen({
+    super.key,
+    this.todoId,
+    this.date,
+    this.initialTitle,
+    this.initialDescription,
+    this.initialTargetSeconds,
+    this.initialPriority,
+  });
 
   final String? todoId;
   final String? date;
+
+  /// A title to open the form with, sent by the voice task sheet.
+  ///
+  /// All four `initial` values are ignored while editing an existing task, so
+  /// a saved task can never be overwritten by a stale link.
+  final String? initialTitle;
+
+  /// A description to open the form with. The voice sheet uses it to note a
+  /// spoken time of day, which has no column of its own on a task.
+  final String? initialDescription;
+
+  /// A tracking target to open the form with, in seconds.
+  final int? initialTargetSeconds;
+
+  /// A priority to open the form with, as its stored name. Anything
+  /// unrecognised falls back to the setting in Settings.
+  final String? initialPriority;
 
   bool get isEditing => todoId != null;
 
@@ -47,6 +76,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   final _titleFocusNode = FocusNode();
 
   TodoStatus _status = TodoStatus.pending;
+  TodoPriority _priority = TodoPriority.normal;
+  int? _targetSeconds;
   String? _portedTo;
   String _effectiveDate = '';
   TodoEntity? _existingTodo;
@@ -78,6 +109,39 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   void initState() {
     super.initState();
     _effectiveDate = widget.date ?? todayAsIso();
+    if (!widget.isEditing) {
+      // A brand new task opens on the values chosen in Settings. An existing
+      // task keeps whatever it was saved with, so editing never rewrites it.
+      final defaults = ref.read(taskDefaultsProvider);
+      _status = switch (defaults.newTaskStatus) {
+        NewTaskStatus.pending => TodoStatus.pending,
+        NewTaskStatus.working => TodoStatus.working,
+      };
+      _priority = defaults.priority;
+      _targetSeconds = defaults.targetTime.seconds;
+
+      // Anything the voice sheet understood overrides those defaults, but only
+      // where it actually understood something. A sentence that named no
+      // priority leaves the Settings priority alone.
+      if (widget.initialTitle != null && widget.initialTitle!.isNotEmpty) {
+        _titleController.text = widget.initialTitle!;
+        // A spoken title has never been through the field, so run the same
+        // duplicate check typing would have run. Two tasks with the same title
+        // on one day are refused whatever put the words there.
+        _checkTitleUniqueness(widget.initialTitle!);
+      }
+      if (widget.initialDescription != null &&
+          widget.initialDescription!.isNotEmpty) {
+        _descriptionController.text = widget.initialDescription!;
+      }
+      if (widget.initialTargetSeconds != null &&
+          widget.initialTargetSeconds! > 0) {
+        _targetSeconds = widget.initialTargetSeconds;
+      }
+      if (widget.initialPriority != null) {
+        _priority = TodoPriority.fromDbString(widget.initialPriority);
+      }
+    }
     _loadData();
   }
 
@@ -94,8 +158,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   Future<void> _loadData() async {
     final repo = ref.read(todoRepositoryProvider);
     final dayTodos = await repo.getTodosByDate(_effectiveDate);
-    _availablePrerequisites =
-        dayTodos.where((t) => t.id != widget.todoId).toList();
+    _availablePrerequisites = dayTodos
+        .where((t) => t.id != widget.todoId)
+        .toList();
 
     if (widget.isEditing) {
       final todo = await repo.getTodoById(widget.todoId!);
@@ -111,6 +176,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           _titleController.text = todo.title;
           _descriptionController.text = todo.description ?? '';
           _status = todo.status;
+          _priority = todo.priority;
+          _targetSeconds = todo.targetSeconds;
           _portedTo = todo.portedTo;
           _effectiveDate = todo.date;
           _subTasks = List.from(todo.subTasks);
@@ -225,6 +292,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           title: normalizedTitle,
           description: description,
           status: _status,
+          priority: _priority,
+          targetSeconds: _targetSeconds,
           portedTo: _status == TodoStatus.ported ? _portedTo : null,
           recurrenceRuleId: recurrenceRuleId,
           subTasks: _subTasks,
@@ -259,6 +328,8 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           title: normalizedTitle,
           description: description,
           status: _status,
+          priority: _priority,
+          targetSeconds: _targetSeconds,
           portedTo: _status == TodoStatus.ported ? _portedTo : null,
           recurrenceRuleId: recurrenceRuleId,
           sortOrder: 0,
@@ -311,11 +382,26 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       return;
     }
 
-    if (newStatus == TodoStatus.dropped) {
+    // The two questions are settings now, and the same settings the day list
+    // tile reads, so both routes to a status change behave the same way.
+    final defaults = ref.read(taskDefaultsProvider);
+
+    if (newStatus == TodoStatus.dropped && defaults.confirmDrop) {
       final confirmed = await showConfirmDialog(
         context,
         title: context.l10n.confirmDrop,
         content: context.l10n.confirmDropBody,
+      );
+      if (!confirmed || !mounted) {
+        return;
+      }
+    }
+
+    if (newStatus == TodoStatus.completed && defaults.confirmComplete) {
+      final confirmed = await showConfirmDialog(
+        context,
+        title: context.l10n.confirmCompleteTitle,
+        content: context.l10n.confirmCompleteBody,
       );
       if (!confirmed || !mounted) {
         return;
@@ -467,6 +553,24 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                     ),
                   ],
                 ],
+              ),
+            ),
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: context.l10n.priorityLabel,
+              child: PrioritySelector(
+                selected: _priority,
+                enabled: !_isReadOnly,
+                onChanged: (priority) => setState(() => _priority = priority),
+              ),
+            ),
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: context.l10n.targetTimeLabel,
+              child: TargetTimeField(
+                targetSeconds: _targetSeconds,
+                enabled: !_isReadOnly,
+                onChanged: (seconds) => _targetSeconds = seconds,
               ),
             ),
             const SizedBox(height: 16),
@@ -1043,7 +1147,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     final completedCount = _subTasks.where((st) => st.isCompleted).length;
     return AppSectionCard(
       title: context.l10n.subTasks,
-      subtitle: _subTasks.isNotEmpty ? '$completedCount/${_subTasks.length}' : null,
+      subtitle: _subTasks.isNotEmpty
+          ? '$completedCount/${_subTasks.length}'
+          : null,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

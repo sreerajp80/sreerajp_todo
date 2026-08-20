@@ -10,42 +10,90 @@ abstract final class AppTheme {
   static const _lightOutline = Color(0xFFB6C3D6);
   static const _darkOutline = Color(0xFF465A74);
 
-  static final light = _buildTheme(Brightness.light);
-  static final dark = _buildTheme(Brightness.dark);
+  /// The default accent colour of the light theme.
+  static const Color defaultLightAccent = Color(0xFF355FA8);
 
-  static ThemeData _buildTheme(Brightness brightness) {
+  /// The default accent colour of the dark theme.
+  static const Color defaultDarkAccent = Color(0xFF9BBAFF);
+
+  /// Quick-pick accent colours offered on the Accent Color screen.
+  static const List<Color> presetAccents = <Color>[
+    Color(0xFF355FA8), // app blue
+    Color(0xFF0D9488), // teal
+    Color(0xFF3B82F6), // bright blue
+    Color(0xFF7C8AFF), // indigo
+    Color(0xFF8B5CF6), // violet
+    Color(0xFFEC4899), // pink
+    Color(0xFFF97316), // orange
+    Color(0xFF10B981), // green
+  ];
+
+  /// Black or white, whichever reads better on top of [background].
+  static Color contrastOn(Color background) =>
+      background.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+
+  /// The light theme, optionally re-tinted with [accent] (the highlight
+  /// colour), using [fontFamily].
+  static ThemeData light({Color? accent, String? fontFamily}) =>
+      _buildTheme(Brightness.light, accent: accent, fontFamily: fontFamily);
+
+  /// The dark theme, optionally re-tinted with [accent] (the highlight
+  /// colour), using [fontFamily].
+  static ThemeData dark({Color? accent, String? fontFamily}) =>
+      _buildTheme(Brightness.dark, accent: accent, fontFamily: fontFamily);
+
+  /// Returns [color] with its lightness moved to [lightness] (0..1).
+  static Color _withLightness(Color color, double lightness) =>
+      HSLColor.fromColor(
+        color,
+      ).withLightness(lightness.clamp(0.0, 1.0)).toColor();
+
+  static ThemeData _buildTheme(
+    Brightness brightness, {
+    Color? accent,
+    String? fontFamily,
+  }) {
     final isDark = brightness == Brightness.dark;
+    final background = isDark ? _darkBackground : _lightBackground;
+    final surfaceColor = isDark ? _darkSurface : _lightSurface;
+    final cardColor = isDark
+        ? const Color(0xFF1F3355)
+        : Colors.white.withValues(alpha: 0.94);
+    final outlineColor = isDark ? _darkOutline : _lightOutline;
     final baseScheme = ColorScheme.fromSeed(
-      seedColor: _seedColor,
+      seedColor: accent ?? _seedColor,
       brightness: brightness,
     );
+    final primary = accent ?? (isDark ? defaultDarkAccent : defaultLightAccent);
+    final usesCustomAccent = accent != null;
     final scheme = baseScheme.copyWith(
-      primary: isDark ? const Color(0xFF9BBAFF) : const Color(0xFF355FA8),
-      onPrimary: Colors.white,
-      primaryContainer: isDark
-          ? const Color(0xFF243A5B)
-          : const Color(0xFFD9E5FF),
-      onPrimaryContainer: isDark
-          ? const Color(0xFFE1E9FF)
-          : const Color(0xFF18315C),
-      secondary: isDark ? const Color(0xFFB9C9E9) : const Color(0xFF516B95),
-      secondaryContainer: isDark
-          ? const Color(0xFF203047)
-          : const Color(0xFFE3EBF9),
-      onSecondaryContainer: isDark
-          ? const Color(0xFFE0EBFF)
-          : const Color(0xFF25344C),
-      surface: isDark ? _darkSurface : _lightSurface,
-      outline: isDark ? _darkOutline : _lightOutline,
-      outlineVariant: (isDark ? _darkOutline : _lightOutline).withValues(
-        alpha: isDark ? 0.56 : 0.42,
-      ),
+      primary: primary,
+      onPrimary: usesCustomAccent ? contrastOn(primary) : Colors.white,
+      primaryContainer: usesCustomAccent
+          ? _withLightness(primary, isDark ? 0.22 : 0.88)
+          : (isDark ? const Color(0xFF243A5B) : const Color(0xFFD9E5FF)),
+      onPrimaryContainer: usesCustomAccent
+          ? _withLightness(primary, isDark ? 0.92 : 0.20)
+          : (isDark ? const Color(0xFFE1E9FF) : const Color(0xFF18315C)),
+      secondary: usesCustomAccent
+          ? _withLightness(primary, isDark ? 0.78 : 0.44)
+          : (isDark ? const Color(0xFFB9C9E9) : const Color(0xFF516B95)),
+      secondaryContainer: usesCustomAccent
+          ? _withLightness(primary, isDark ? 0.18 : 0.92)
+          : (isDark ? const Color(0xFF203047) : const Color(0xFFE3EBF9)),
+      onSecondaryContainer: usesCustomAccent
+          ? _withLightness(primary, isDark ? 0.90 : 0.24)
+          : (isDark ? const Color(0xFFE0EBFF) : const Color(0xFF25344C)),
+      surface: surfaceColor,
+      outline: outlineColor,
+      outlineVariant: outlineColor.withValues(alpha: isDark ? 0.56 : 0.42),
       shadow: Colors.black.withValues(alpha: isDark ? 0.42 : 0.12),
     );
     final baseTheme = ThemeData(
       useMaterial3: true,
       brightness: brightness,
       colorScheme: scheme,
+      fontFamily: fontFamily,
     );
     final textTheme = baseTheme.textTheme.copyWith(
       headlineSmall: baseTheme.textTheme.headlineSmall?.copyWith(
@@ -76,8 +124,9 @@ abstract final class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
+      fontFamily: fontFamily,
       textTheme: textTheme,
-      scaffoldBackgroundColor: isDark ? _darkBackground : _lightBackground,
+      scaffoldBackgroundColor: background,
       canvasColor: scheme.surface,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -112,9 +161,7 @@ abstract final class AppTheme {
       ),
       cardTheme: CardThemeData(
         elevation: 0,
-        color: isDark
-            ? const Color(0xFF1F3355)
-            : Colors.white.withValues(alpha: 0.94),
+        color: cardColor,
         shadowColor: scheme.shadow,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
@@ -144,7 +191,7 @@ abstract final class AppTheme {
         closeIconColor: Colors.white70,
       ),
       dialogTheme: DialogThemeData(
-        backgroundColor: isDark ? const Color(0xFF17212B) : Colors.white,
+        backgroundColor: cardColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -208,9 +255,7 @@ abstract final class AppTheme {
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: isDark
-            ? const Color(0xFF182434)
-            : Colors.white.withValues(alpha: 0.96),
+        backgroundColor: cardColor,
         height: 78,
         elevation: 12,
         indicatorColor: scheme.primaryContainer,
@@ -271,7 +316,7 @@ abstract final class AppTheme {
         thickness: 1,
       ),
       popupMenuTheme: PopupMenuThemeData(
-        color: isDark ? const Color(0xFF1A293A) : Colors.white,
+        color: cardColor,
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       ),

@@ -1,4 +1,6 @@
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 
 abstract class TodoRepository {
@@ -23,8 +25,15 @@ abstract class TodoRepository {
     String date, {
     String? excludeId,
   });
-  Future<List<String>> getAutocompleteSuggestions(String prefix);
+  Future<List<String>> getAutocompleteSuggestions(
+    String prefix, {
+    int limit = kAutocompleteLimit,
+  });
   Future<List<TodoEntity>> searchByTitle(String query, {int limit = 50});
+  Future<List<TodoSearchResult>> searchWithMatchedNotes(
+    String query, {
+    int limit = 50,
+  });
   Future<void> reorderTodos(List<TodoEntity> todos, {bool bypassLock = false});
   Future<int> maxSortOrder(String date);
   Future<void> bulkCreateTodos(List<TodoEntity> todos);

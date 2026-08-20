@@ -11,15 +11,15 @@ import 'package:sreerajp_todo/data/database/migrations/migration_runner.dart';
 
 class DatabaseService {
   DatabaseService({DatabaseKeyService? databaseKeyService})
-      : _databaseKeyService = databaseKeyService ?? DatabaseKeyService();
+    : _databaseKeyService = databaseKeyService ?? DatabaseKeyService();
 
   DatabaseService.forTesting(
     Database database, {
     String? databasePath,
     DatabaseKeyService? databaseKeyService,
-  })  : _database = database,
-        _resolvedDatabasePath = databasePath,
-        _databaseKeyService = databaseKeyService ?? DatabaseKeyService();
+  }) : _database = database,
+       _resolvedDatabasePath = databasePath,
+       _databaseKeyService = databaseKeyService ?? DatabaseKeyService();
 
   final DatabaseKeyService _databaseKeyService;
   Database? _database;
@@ -173,16 +173,51 @@ class DatabaseService {
     }
 
     final key = await _databaseKeyService.getOrCreateDatabaseKey();
-    final db = await openDatabaseAt(
-      path,
-      password: key,
-      singleInstance: false,
-    );
+    final db = await openDatabaseAt(path, password: key, singleInstance: false);
     try {
       await runDatabaseMigrations(db, fromVersion, kDatabaseVersion);
     } finally {
       await db.close();
     }
+  }
+
+  /// Gives the database a brand new encryption key.
+  ///
+  /// The order matters. The database is rekeyed first, then the new key is
+  /// stored. If storing fails the database is put straight back on the old
+  /// key, so the app is never left holding a database it cannot open.
+  ///
+  /// Returns true only when both steps worked. Never logs either key.
+  Future<bool> rotateDatabaseKey() async {
+    final db = await database;
+    final oldKey = await _databaseKeyService.getOrCreateDatabaseKey();
+    final newKey = _databaseKeyService.generateKeyHex();
+
+    // Flush the write-ahead log first, so nothing is left encrypted with the
+    // old key in a side file.
+    await db.rawQuery('PRAGMA wal_checkpoint(TRUNCATE)');
+
+    try {
+      await db.rawQuery("PRAGMA rekey = '$newKey'");
+    } catch (_) {
+      return false;
+    }
+
+    final stored = await _databaseKeyService.storeDatabaseKey(newKey);
+    if (!stored) {
+      try {
+        await db.rawQuery("PRAGMA rekey = '$oldKey'");
+      } catch (_) {
+        // Nothing further can be done from here. The caller shows the failure
+        // and tells the user to restore the backup they were asked to take.
+      }
+      return false;
+    }
+
+    // Reopen so every later query uses a connection that knows the new key.
+    await close();
+    await database;
+    return true;
   }
 
   Future<void> close() async {
@@ -193,4 +228,3 @@ class DatabaseService {
     }
   }
 }
-

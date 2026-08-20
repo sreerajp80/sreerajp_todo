@@ -6,7 +6,9 @@ abstract class SpacedRepetitionRepository {
   Future<void> deleteItem(String id);
   Future<SpacedRepetitionItemEntity?> getItemById(String id);
   Future<SpacedRepetitionItemEntity?> getItemByTitle(String title);
-  Future<List<SpacedRepetitionItemEntity>> getItemsDueOnOrBefore(String dateStr);
+  Future<List<SpacedRepetitionItemEntity>> getItemsDueOnOrBefore(
+    String dateStr,
+  );
   Future<List<SpacedRepetitionItemEntity>> getAllActiveItems();
   Future<List<SpacedRepetitionItemEntity>> getAllItems();
 }

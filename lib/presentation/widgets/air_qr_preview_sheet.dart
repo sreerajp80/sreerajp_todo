@@ -122,8 +122,9 @@ class AirQrPreviewSheet extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               OutlinedButton(
-                onPressed: () => Navigator.of(context)
-                    .pop(AirQrMergeDecision.skipDuplicates),
+                onPressed: () => Navigator.of(
+                  context,
+                ).pop(AirQrMergeDecision.skipDuplicates),
                 child: const Text('Skip Duplicates'),
               ),
               const SizedBox(width: 8),

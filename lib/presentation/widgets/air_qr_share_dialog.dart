@@ -138,18 +138,16 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
     final Color bannerColor = isLarge
         ? Colors.amber.shade50
         : (isBackup
-            ? Colors.blue.shade50
-            : theme.colorScheme.surfaceContainerHighest);
+              ? Colors.blue.shade50
+              : theme.colorScheme.surfaceContainerHighest);
     final Color borderColor = isLarge
         ? Colors.amber.shade400
-        : (isBackup
-            ? Colors.blue.shade300
-            : theme.colorScheme.outlineVariant);
+        : (isBackup ? Colors.blue.shade300 : theme.colorScheme.outlineVariant);
     final Color iconColor = isLarge
         ? Colors.amber.shade900
         : (isBackup
-            ? Colors.blue.shade800
-            : theme.colorScheme.onSurfaceVariant);
+              ? Colors.blue.shade800
+              : theme.colorScheme.onSurfaceVariant);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -222,8 +220,9 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
     }
 
     final currentFrame = _frames[_currentIndex];
-    final frameTypeLabel =
-        currentFrame.isParity ? 'Fountain Parity' : 'Systematic Block';
+    final frameTypeLabel = currentFrame.isParity
+        ? 'Fountain Parity'
+        : 'Systematic Block';
 
     return AlertDialog(
       title: Text(widget.title),
@@ -260,9 +259,8 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
                   data: currentFrame.toQrString(),
                   size: 230,
                   backgroundColor: Colors.white,
-                  errorStateBuilder: (_, _) => const Center(
-                    child: Text('Frame rendering error'),
-                  ),
+                  errorStateBuilder: (_, _) =>
+                      const Center(child: Text('Frame rendering error')),
                 ),
               ),
             ),
@@ -278,7 +276,9 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
               runSpacing: 4,
               children: [
                 IconButton(
-                  icon: Icon(_isPlaying ? Icons.pause_circle : Icons.play_circle),
+                  icon: Icon(
+                    _isPlaying ? Icons.pause_circle : Icons.play_circle,
+                  ),
                   iconSize: 32,
                   color: theme.colorScheme.primary,
                   onPressed: _togglePlayPause,

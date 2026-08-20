@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
@@ -10,10 +11,11 @@ import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/screens/time_segments/widgets/manual_segment_form.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_error_state.dart';
-
-final _timeFormat = DateFormat.Hm();
+import 'package:sreerajp_todo/presentation/shared/widgets/pomodoro_banner.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/timer_controls.dart';
 
 class TimeSegmentsScreen extends ConsumerWidget {
   const TimeSegmentsScreen({super.key, required this.todoId});
@@ -23,7 +25,7 @@ class TimeSegmentsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final trackingState = ref.watch(timeTrackingProvider(todoId));
-    final todoAsync = ref.watch(_todoByIdProvider(todoId));
+    final todoAsync = ref.watch(todoByIdProvider(todoId));
 
     return todoAsync.when(
       data: (todo) {
@@ -42,7 +44,19 @@ class TimeSegmentsScreen extends ConsumerWidget {
             !past && !isTerminal && todo.status != TodoStatus.ported;
 
         return Scaffold(
-          appBar: AppBar(title: Text(context.l10n.timeSegments)),
+          appBar: AppBar(
+            title: Text(context.l10n.timeSegments),
+            actions: [
+              // Only offered while a timer runs, because the Focus view is
+              // about the block happening right now.
+              if (trackingState.runningSegment != null)
+                IconButton(
+                  icon: const Icon(Icons.center_focus_strong_rounded),
+                  tooltip: context.l10n.focusOpen,
+                  onPressed: () => context.push(AppRoutes.focusPath(todoId)),
+                ),
+            ],
+          ),
           body: trackingState.isLoading
               ? const Center(child: CircularProgressIndicator())
               : _SegmentsBody(
@@ -86,6 +100,9 @@ class TimeSegmentsScreen extends ConsumerWidget {
         todoId: todoId,
         todoDate: todo.date,
         existingSegments: ref.read(timeTrackingProvider(todoId)).segments,
+        defaultDuration: ref
+            .read(timeTrackingSettingsProvider)
+            .manualEntryDuration,
       ),
     );
 
@@ -101,13 +118,6 @@ class TimeSegmentsScreen extends ConsumerWidget {
     }
   }
 }
-
-final _todoByIdProvider = FutureProvider.family<TodoEntity?, String>((
-  ref,
-  todoId,
-) {
-  return ref.read(todoRepositoryProvider).getTodoById(todoId);
-});
 
 class _SegmentsBody extends ConsumerWidget {
   const _SegmentsBody({
@@ -134,15 +144,68 @@ class _SegmentsBody extends ConsumerWidget {
     final colorScheme = theme.colorScheme;
 
     final liveElapsed = ref.watch(liveTimerProvider(todoId));
-    final runningExtra = runningSegment != null
-        ? (liveElapsed.valueOrNull ?? 0)
-        : 0;
+    final isRunning = runningSegment != null;
+    final runningExtra = isRunning ? (liveElapsed.valueOrNull ?? 0) : 0;
     final grandTotal = totalDurationSeconds + runningExtra;
+    final settings = ref.watch(timeTrackingSettingsProvider);
+    final isPaused =
+        !isRunning && ref.watch(pausedTodosProvider).contains(todoId);
+    final canTrack = !isPast && !isTerminal;
+
+    // A running total keeps its seconds; a settled one follows the settings.
+    final totalText = isRunning
+        ? formatDuration(grandTotal)
+        : formatDuration(
+            grandTotal,
+            rounding: settings.rounding,
+            format: settings.format,
+          );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildHeader(context, theme, colorScheme, grandTotal),
+        _buildHeader(context, theme, colorScheme, grandTotal, totalText),
+        if (canTrack)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: Row(
+              children: [
+                if (isRunning) ...[
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: () => TimerActions.pause(context, ref, todoId),
+                      icon: const Icon(Icons.pause_rounded),
+                      label: Text(context.l10n.pauseTimer),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: () => TimerActions.stop(context, ref, todoId),
+                      icon: const Icon(Icons.stop_rounded),
+                      label: Text(context.l10n.stopTimer),
+                    ),
+                  ),
+                ] else
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: () => TimerActions.start(context, ref, todoId),
+                      icon: const Icon(Icons.play_arrow_rounded),
+                      label: Text(
+                        isPaused
+                            ? context.l10n.resumeTimer
+                            : context.l10n.startTimer,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        if (settings.pomodoroEnabled)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+            child: PomodoroBanner(todoId: todoId),
+          ),
         const Divider(height: 1),
         if (segments.isEmpty)
           Expanded(
@@ -179,6 +242,7 @@ class _SegmentsBody extends ConsumerWidget {
     ThemeData theme,
     ColorScheme colorScheme,
     int grandTotal,
+    String totalText,
   ) {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -200,17 +264,14 @@ class _SegmentsBody extends ConsumerWidget {
           ),
           const SizedBox(height: 12),
           Semantics(
-            label: context.l10n.totalTimeForTask(
-              todo.title,
-              formatDuration(grandTotal),
-            ),
+            label: context.l10n.totalTimeForTask(todo.title, totalText),
             child: ExcludeSemantics(
               child: Row(
                 children: [
                   Icon(Icons.access_time, size: 20, color: colorScheme.primary),
                   const SizedBox(width: 8),
                   Text(
-                    '${context.l10n.totalTime}: ${formatDuration(grandTotal)}',
+                    '${context.l10n.totalTime}: $totalText',
                     style: theme.textTheme.titleMedium?.copyWith(
                       color: colorScheme.primary,
                       fontWeight: FontWeight.w700,
@@ -245,7 +306,7 @@ class _SegmentTile extends ConsumerWidget {
     final colorScheme = theme.colorScheme;
 
     final startDt = DateTime.parse(segment.startTime);
-    final startStr = _timeFormat.format(startDt);
+    final startStr = formatTime(startDt);
 
     String endStr;
     String durationStr;
@@ -260,8 +321,13 @@ class _SegmentTile extends ConsumerWidget {
       }
     } else if (segment.endTime != null) {
       final endDt = DateTime.parse(segment.endTime!);
-      endStr = _timeFormat.format(endDt);
-      durationStr = formatDuration(segment.durationSeconds ?? 0);
+      endStr = formatTime(endDt);
+      final settings = ref.watch(timeTrackingSettingsProvider);
+      durationStr = formatDuration(
+        segment.durationSeconds ?? 0,
+        rounding: settings.rounding,
+        format: settings.format,
+      );
     } else {
       endStr = context.l10n.emptyValue;
       durationStr = context.l10n.emptyValue;
@@ -270,6 +336,8 @@ class _SegmentTile extends ConsumerWidget {
     final typeLabel = segment.manual
         ? context.l10n.segmentManual
         : context.l10n.segmentAuto;
+
+    final hasNote = segment.notes != null && segment.notes!.isNotEmpty;
 
     return Card(
       child: Padding(
@@ -351,8 +419,34 @@ class _SegmentTile extends ConsumerWidget {
                           ),
                         ],
                       ),
+                      if (hasNote) ...[
+                        const SizedBox(height: 6),
+                        AdaptiveDirectionality(
+                          text: segment.notes!,
+                          child: Text(
+                            segment.notes!,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: colorScheme.onSurfaceVariant,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ),
+                      ],
                     ],
                   ),
+                ),
+                IconButton(
+                  icon: Icon(
+                    hasNote
+                        ? Icons.sticky_note_2
+                        : Icons.sticky_note_2_outlined,
+                    size: 20,
+                    color: hasNote
+                        ? colorScheme.primary
+                        : colorScheme.onSurfaceVariant,
+                  ),
+                  tooltip: context.l10n.editSegmentNote,
+                  onPressed: () => _editNote(context, ref),
                 ),
               ],
             ),
@@ -360,6 +454,46 @@ class _SegmentTile extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _editNote(BuildContext context, WidgetRef ref) async {
+    final controller = TextEditingController(text: segment.notes ?? '');
+
+    final saved = await showDialog<String?>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(dialogContext.l10n.editSegmentNote),
+        content: TextField(
+          controller: controller,
+          autofocus: true,
+          maxLines: 3,
+          textCapitalization: TextCapitalization.sentences,
+          decoration: InputDecoration(
+            labelText: dialogContext.l10n.segmentNoteLabel,
+            hintText: dialogContext.l10n.segmentNoteHint,
+            border: const OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(dialogContext.l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () =>
+                Navigator.of(dialogContext).pop(controller.text.trim()),
+            child: Text(dialogContext.l10n.save),
+          ),
+        ],
+      ),
+    );
+
+    controller.dispose();
+    if (saved == null) return;
+
+    await ref
+        .read(timeTrackingProvider(todoId).notifier)
+        .updateSegmentNotes(segment.id, saved);
   }
 }
 

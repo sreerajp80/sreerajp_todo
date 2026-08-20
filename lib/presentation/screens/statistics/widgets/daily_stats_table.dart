@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
+import 'package:sreerajp_todo/presentation/shared/utils/tracked_duration_format.dart';
 
 class DailyStatsTable extends StatelessWidget {
   const DailyStatsTable({
@@ -81,11 +81,7 @@ class DailyStatsTable extends StatelessWidget {
                         DataRow(
                           cells: [
                             DataCell(
-                              Text(
-                                DateFormat.yMMMd().format(
-                                  DateTime.parse(stat.date),
-                                ),
-                              ),
+                              Text(formatDateFromIso(stat.date)),
                               onTap: () => onSelectDate(stat.date),
                             ),
                             DataCell(
@@ -113,7 +109,7 @@ class DailyStatsTable extends StatelessWidget {
                               onTap: () => onSelectDate(stat.date),
                             ),
                             DataCell(
-                              Text(formatDuration(stat.totalSeconds)),
+                              Text(context.trackedDuration(stat.totalSeconds)),
                               onTap: () => onSelectDate(stat.date),
                             ),
                           ],
@@ -168,7 +164,7 @@ class _CompactDailyStatTile extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      DateFormat.yMMMd().format(DateTime.parse(stat.date)),
+                      formatDateFromIso(stat.date),
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.w700,
                       ),
@@ -214,7 +210,7 @@ class _CompactDailyStatTile extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                '${context.l10n.totalTime}: ${formatDuration(stat.totalSeconds)}',
+                '${context.l10n.totalTime}: ${context.trackedDuration(stat.totalSeconds)}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
                 ),

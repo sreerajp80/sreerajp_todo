@@ -74,9 +74,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted && savedPath != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(
-              'Export saved to ${p.basename(savedPath)}',
-            ),
+            content: Text('Export saved to ${p.basename(savedPath)}'),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -281,9 +279,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
     final isPast = isPastDate(_targetDate);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.dataHandoffHeader),
-      ),
+      appBar: AppBar(title: Text(l10n.dataHandoffHeader)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -458,8 +454,9 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
                     title: Text(l10n.pasteMarkdownLabel),
                     subtitle: Text(l10n.pasteMarkdownDesc),
                     trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap:
-                        (_isProcessing || isPast) ? null : _handlePasteMarkdown,
+                    onTap: (_isProcessing || isPast)
+                        ? null
+                        : _handlePasteMarkdown,
                   ),
                 ],
               ),
@@ -467,9 +464,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
 
             if (_isProcessing) ...[
               const SizedBox(height: 24),
-              const Center(
-                child: CircularProgressIndicator(),
-              ),
+              const Center(child: CircularProgressIndicator()),
             ],
           ],
         ),
