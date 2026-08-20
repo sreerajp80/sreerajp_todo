@@ -1,6 +1,6 @@
 # Change Log: Appearance, Features & Help Hubs in Settings
 
-**Plan:** [plans/20260820_062100_settings_appearance_features_help.md](plans/20260820_062100_settings_appearance_features_help.md)
+**Plan:** [plans/20260820_062100_settings_appearance_features_help.md](../plans/20260820_062100_settings_appearance_features_help.md)
 
 ## Summary of Changes
 - **Features Showcase Screen (`lib/presentation/screens/features/features_screen.dart`)**:
