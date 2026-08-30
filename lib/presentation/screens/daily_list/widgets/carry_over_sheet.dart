@@ -73,6 +73,41 @@ class CarryOverSheet extends ConsumerStatefulWidget {
     return const [];
   }
 
+  /// Looks for ALL unfinished tasks across all [lookBackDays] days before [targetDate].
+  ///
+  /// Deduplicates tasks by title against already collected candidates and tasks already existing on [targetDate].
+  static Future<List<TodoEntity>> findAllUnfinishedCandidates(
+    WidgetRef ref, {
+    required String targetDate,
+    int lookBackDays = kDefaultCarryOverLookBackDays,
+  }) async {
+    final repository = ref.read(todoRepositoryProvider);
+    final target = parseIsoDate(targetDate);
+    final allUnfinished = <TodoEntity>[];
+    final seenTitles = <String>{};
+
+    final todayTodos = await repository.getTodosByDate(targetDate);
+    for (final t in todayTodos) {
+      seenTitles.add(t.title.toLowerCase().trim());
+    }
+
+    for (var back = 1; back <= lookBackDays; back++) {
+      final day = dateTimeToIso(target.subtract(Duration(days: back)));
+      final todos = await repository.getTodosByDate(day);
+      for (final todo in todos) {
+        if (todo.status == TodoStatus.pending ||
+            todo.status == TodoStatus.working) {
+          final norm = todo.title.toLowerCase().trim();
+          if (!seenTitles.contains(norm)) {
+            allUnfinished.add(todo);
+            seenTitles.add(norm);
+          }
+        }
+      }
+    }
+    return allUnfinished;
+  }
+
   /// Shows the sheet and returns what happened, or null if it was dismissed.
   static Future<CarryOverOutcome?> show(
     BuildContext context, {

@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sreerajp_todo/app.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/constants/app_routes.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +40,18 @@ void main() async {
   // Generate spaced repetition tasks for today.
   await container.read(generateSpacedRepetitionTasksProvider).call();
 
+  // Decide the first screen. This runs after the two generators above on
+  // purpose: the ritual's settle step shows today's tasks, and today's
+  // recurring and mastery-deck tasks only exist once they have run.
+  final ritual = container.read(ritualProvider);
+  final startAt = ritual.shouldOpenOn(todayAsIso())
+      ? AppRoutes.ritual
+      : AppRoutes.root;
+
   runApp(
-    UncontrolledProviderScope(container: container, child: const TodoApp()),
+    UncontrolledProviderScope(
+      container: container,
+      child: TodoApp(initialLocation: startAt),
+    ),
   );
 }

@@ -152,97 +152,99 @@ class _ManualSegmentFormState extends State<ManualSegmentForm> {
       }
     }
 
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 24,
-        right: 24,
-        top: 24,
-        bottom: 24 + bottomInset,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            context.l10n.addManualSegment,
-            style: theme.textTheme.titleLarge,
-          ),
-          const SizedBox(height: 24),
-          Row(
-            children: [
-              Expanded(
-                child: _TimePickerField(
-                  label: context.l10n.segmentStart,
-                  value: _startTime,
-                  onTap: () => _pickTime(isStart: true),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: _TimePickerField(
-                  label: context.l10n.segmentEnd,
-                  value: _endTime,
-                  onTap: () => _pickTime(isStart: false),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _noteController,
-            maxLines: 2,
-            textCapitalization: TextCapitalization.sentences,
-            decoration: InputDecoration(
-              labelText: context.l10n.segmentNoteLabel,
-              hintText: context.l10n.segmentNoteHint,
-              border: const OutlineInputBorder(),
-              prefixIcon: const Icon(Icons.sticky_note_2_outlined),
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 24,
+          bottom: 24 + bottomInset,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              context.l10n.addManualSegment,
+              style: theme.textTheme.titleLarge,
             ),
-          ),
-          if (durationPreview != null) ...[
-            const SizedBox(height: 12),
+            const SizedBox(height: 24),
             Row(
               children: [
-                Icon(
-                  Icons.access_time,
-                  size: 16,
-                  color: colorScheme.onSurfaceVariant,
+                Expanded(
+                  child: _TimePickerField(
+                    label: context.l10n.segmentStart,
+                    value: _startTime,
+                    onTap: () => _pickTime(isStart: true),
+                  ),
                 ),
-                const SizedBox(width: 6),
-                Text(
-                  '${context.l10n.segmentDuration}: $durationPreview',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                const SizedBox(width: 16),
+                Expanded(
+                  child: _TimePickerField(
+                    label: context.l10n.segmentEnd,
+                    value: _endTime,
+                    onTap: () => _pickTime(isStart: false),
                   ),
                 ),
               ],
             ),
-          ],
-          if (_error != null) ...[
-            const SizedBox(height: 12),
-            Text(
-              _error!,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: colorScheme.error,
+            const SizedBox(height: 16),
+            TextField(
+              controller: _noteController,
+              maxLines: 2,
+              textCapitalization: TextCapitalization.sentences,
+              decoration: InputDecoration(
+                labelText: context.l10n.segmentNoteLabel,
+                hintText: context.l10n.segmentNoteHint,
+                border: const OutlineInputBorder(),
+                prefixIcon: const Icon(Icons.sticky_note_2_outlined),
               ),
             ),
-          ],
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text(context.l10n.cancel),
-              ),
-              const SizedBox(width: 12),
-              FilledButton(
-                onPressed: _isValid ? _submit : null,
-                child: Text(context.l10n.save),
+            if (durationPreview != null) ...[
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Icon(
+                    Icons.access_time,
+                    size: 16,
+                    color: colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${context.l10n.segmentDuration}: $durationPreview',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
+            if (_error != null) ...[
+              const SizedBox(height: 12),
+              Text(
+                _error!,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.error,
+                ),
+              ),
+            ],
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text(context.l10n.cancel),
+                ),
+                const SizedBox(width: 12),
+                FilledButton(
+                  onPressed: _isValid ? _submit : null,
+                  child: Text(context.l10n.save),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

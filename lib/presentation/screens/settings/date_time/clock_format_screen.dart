@@ -18,25 +18,27 @@ class ClockFormatScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.dateTimeClock)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsChoiceList<ClockFormat>(
-            title: l10n.clockFormatTitle,
-            subtitle: l10n.clockFormatSubtitle,
-            selected: settings.clockFormat,
-            onChanged: notifier.setClockFormat,
-            choices: [
-              for (final option in ClockFormat.values)
-                SettingsChoice(
-                  value: option,
-                  label: clockFormatName(l10n, option),
-                  // Shows the real result, so the choice needs no explaining.
-                  detail: clockFormatSample(option),
-                ),
-            ],
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsChoiceList<ClockFormat>(
+              title: l10n.clockFormatTitle,
+              subtitle: l10n.clockFormatSubtitle,
+              selected: settings.clockFormat,
+              onChanged: notifier.setClockFormat,
+              choices: [
+                for (final option in ClockFormat.values)
+                  SettingsChoice(
+                    value: option,
+                    label: clockFormatName(l10n, option),
+                    // Shows the real result, so the choice needs no explaining.
+                    detail: clockFormatSample(option),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1633,6 +1633,24 @@ class AppLocalizationsEn extends AppLocalizations {
       'This task will be marked as complete. Any running timer is stopped.';
 
   @override
+  String get defaultsAutoCarryOver => 'Auto carry-over incomplete tasks';
+
+  @override
+  String get defaultsAutoCarryOverDetail =>
+      'Automatically carry over unfinished tasks from earlier days into today without asking.';
+
+  @override
+  String autoCarryOverDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Automatically carried over $count tasks to today',
+      one: 'Automatically carried over 1 task to today',
+    );
+    return '$_temp0';
+  }
+
+  @override
   String get defaultsCarryOver => 'Ask to carry over unfinished tasks';
 
   @override
@@ -2247,5 +2265,1238 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String voiceTimeNote(String time) {
     return 'At $time';
+  }
+
+  @override
+  String get settingsRitual => 'Ritual mode';
+
+  @override
+  String get settingsRitualSubtitle => 'A quiet, guided start to the day';
+
+  @override
+  String get ritualTitle => 'Ritual mode';
+
+  @override
+  String get ritualEnabled => 'Ritual mode';
+
+  @override
+  String get ritualEnabledDetail =>
+      'Breathe, read one card, settle the day, then begin.';
+
+  @override
+  String get ritualOpenOnLaunch => 'Open on the first launch of a day';
+
+  @override
+  String get ritualOpenOnLaunchDetail =>
+      'With this off, start it yourself from the day list.';
+
+  @override
+  String get ritualBreathSection => 'Breathing';
+
+  @override
+  String get ritualBreathTechnique => 'Rhythm';
+
+  @override
+  String get ritualBreathBox => 'Box breathing (4-4-4-4)';
+
+  @override
+  String get ritualBreathRelaxing => 'Relaxing breath (4-7-8)';
+
+  @override
+  String get ritualBreathCalm => 'Calm rhythm (4-4)';
+
+  @override
+  String get ritualBreathCyclesLabel => 'Breaths';
+
+  @override
+  String ritualBreathCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString breaths',
+      one: '$countString breath',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualHaptic => 'Gentle buzz at each change';
+
+  @override
+  String get ritualHapticDetail =>
+      'A short tap when it is time to breathe in, hold or let go, so the eyes can stay closed.';
+
+  @override
+  String get ritualStepsSection => 'Steps';
+
+  @override
+  String get ritualCardStepSwitch => 'Show a reflection card';
+
+  @override
+  String get ritualCardStepDetail =>
+      'One card from the Ritual Deck, chosen by when you last saw it.';
+
+  @override
+  String get ritualSettleStepSwitch => 'Settle the day';
+
+  @override
+  String get ritualSettleStepDetail =>
+      'Carry over what is left from before, then pick the three tasks to lead today.';
+
+  @override
+  String get ritualEveningSection => 'Evening close';
+
+  @override
+  String get ritualEveningClose => 'Offer an evening reflection';
+
+  @override
+  String get ritualEveningCloseDetail =>
+      'Once a day, later on, the day list offers to close the day.';
+
+  @override
+  String get ritualEveningFrom => 'Offer it from';
+
+  @override
+  String get ritualDeckSection => 'The deck';
+
+  @override
+  String get ritualBrowseDeck => 'Browse the Ritual Deck';
+
+  @override
+  String get ritualBrowseDeckDetail =>
+      'All the cards, and when each one comes back.';
+
+  @override
+  String get ritualResetReviews => 'Reset card reviews';
+
+  @override
+  String get ritualResetReviewsDetail =>
+      'Every card becomes new again. Your tasks are not touched.';
+
+  @override
+  String get ritualResetConfirmTitle => 'Reset card reviews?';
+
+  @override
+  String get ritualResetConfirmBody =>
+      'The deck starts from the first card again. Nothing else changes.';
+
+  @override
+  String get ritualResetDone => 'Card reviews reset.';
+
+  @override
+  String get ritualRunNow => 'Run the ritual now';
+
+  @override
+  String get ritualStepBreathe => 'Breathe';
+
+  @override
+  String get ritualStepReflect => 'Reflect';
+
+  @override
+  String get ritualStepSettle => 'Settle';
+
+  @override
+  String get ritualStepBegin => 'Begin';
+
+  @override
+  String get ritualSkip => 'Skip ritual';
+
+  @override
+  String get ritualContinue => 'Continue';
+
+  @override
+  String get ritualBreathIn => 'Breathe in';
+
+  @override
+  String get ritualBreathHold => 'Hold';
+
+  @override
+  String get ritualBreathOut => 'Breathe out';
+
+  @override
+  String get ritualBreathRest => 'Rest';
+
+  @override
+  String get ritualBreathInHint => 'Slowly, through the nose.';
+
+  @override
+  String get ritualBreathHoldHint => 'Hold it gently at the top.';
+
+  @override
+  String get ritualBreathOutHint => 'Let it all go, without hurry.';
+
+  @override
+  String get ritualBreathRestHint => 'Stay in the quiet for a moment.';
+
+  @override
+  String ritualBreathProgress(int current, int total) {
+    return 'Breath $current of $total';
+  }
+
+  @override
+  String get ritualBreathFinished => 'That is enough.';
+
+  @override
+  String ritualCardProgress(int number, int total) {
+    return 'Card $number of $total';
+  }
+
+  @override
+  String get ritualCardAnother => 'Show another card';
+
+  @override
+  String get ritualMakeIntention => 'Make this today\'s intention';
+
+  @override
+  String get ritualIntentionSaved => 'Saved as today\'s intention.';
+
+  @override
+  String get ritualRateQuestion => 'When should this card come back?';
+
+  @override
+  String get ritualRateHard => 'Hard';
+
+  @override
+  String get ritualRateRevision => 'Revision';
+
+  @override
+  String get ritualRateEasy => 'Easy';
+
+  @override
+  String get ritualRateTomorrow => 'Tomorrow';
+
+  @override
+  String ritualRateInDays(num days) {
+    final intl.NumberFormat daysNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String daysString = daysNumberFormat.format(days);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: 'In $daysString days',
+      one: 'In $daysString day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualSettleCarryTitle => 'Left over from before';
+
+  @override
+  String get ritualSettleCarryEmpty =>
+      'Nothing was left unfinished. A clean start.';
+
+  @override
+  String get ritualSettleFocusTitle => 'Today\'s three';
+
+  @override
+  String get ritualSettleFocusHint =>
+      'Pick up to three tasks to lead the day. They move to high priority.';
+
+  @override
+  String get ritualSettleFocusEmpty =>
+      'No tasks for today yet. You can add them after the ritual.';
+
+  @override
+  String get ritualSettleFocusLimit => 'Three is the limit. Untick one first.';
+
+  @override
+  String get ritualBeginTitle => 'Ready';
+
+  @override
+  String ritualBeginCarried(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString tasks carried over',
+      one: '1 task carried over',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String ritualBeginFocused(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString tasks in focus',
+      one: '1 task in focus',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualBeginNothing => 'Nothing changed. That is fine too.';
+
+  @override
+  String get ritualBeginAction => 'Begin the day';
+
+  @override
+  String get ritualDeckTitle => 'Ritual Deck';
+
+  @override
+  String get ritualDeckAll => 'All';
+
+  @override
+  String get ritualDeckDue => 'Due';
+
+  @override
+  String get ritualDeckUnseen => 'New';
+
+  @override
+  String ritualDeckSeenCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Seen $countString times',
+      one: 'Seen once',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualDeckEmpty => 'No cards in this theme.';
+
+  @override
+  String get ritualPastDayNote => 'The ritual runs for today only.';
+
+  @override
+  String get ritualThemeDharma => 'Dharma';
+
+  @override
+  String get ritualThemeKarma => 'Karma';
+
+  @override
+  String get ritualThemeBhakti => 'Bhakti';
+
+  @override
+  String get ritualThemeJnana => 'Jnana';
+
+  @override
+  String get ritualThemeYoga => 'Yoga';
+
+  @override
+  String get ritualThemeAhimsa => 'Ahimsa';
+
+  @override
+  String get ritualThemeSathya => 'Sathya';
+
+  @override
+  String get ritualThemeVairagya => 'Vairagya';
+
+  @override
+  String get ritualThemeSeva => 'Seva';
+
+  @override
+  String get ritualThemeShanti => 'Shanti';
+
+  @override
+  String get ritualCardSd01Title => 'Your Swadharma';
+
+  @override
+  String get ritualCardSd01Prompt =>
+      'What is the unique duty or calling that only you can fulfil in this season of your life? How are you honouring it today?';
+
+  @override
+  String get ritualCardSd01Quote =>
+      'It is better to perform one\'s own duty imperfectly than to perform another\'s duty perfectly.';
+
+  @override
+  String get ritualCardSd01QuoteAuthor => 'Bhagavad Gita 3.35';
+
+  @override
+  String get ritualCardSd02Title => 'Righteousness in the Small';
+
+  @override
+  String get ritualCardSd02Prompt =>
+      'In what small, everyday action today can you choose what is right over what is easy or popular?';
+
+  @override
+  String get ritualCardSd02Quote =>
+      'Dharma exists for the welfare of all beings. Hence, that by which the welfare of all living beings is sustained, that is Dharma.';
+
+  @override
+  String get ritualCardSd02QuoteAuthor => 'Mahabharata, Shanti Parva 109.10';
+
+  @override
+  String get ritualCardSd03Title => 'The Wheel of Dharma';
+
+  @override
+  String get ritualCardSd03Prompt =>
+      'Reflect on one relationship or responsibility you hold. Are you nurturing it with integrity, or have you been neglecting its call?';
+
+  @override
+  String get ritualCardSd03Quote =>
+      'When Dharma is protected, Dharma protects.';
+
+  @override
+  String get ritualCardSd03QuoteAuthor => 'Manusmriti 8.15';
+
+  @override
+  String get ritualCardSd04Title => 'The Eternal Order';
+
+  @override
+  String get ritualCardSd04Prompt =>
+      'Where in nature — the rising sun, the changing seasons, the flowing river — do you see the rhythm of Rta (cosmic order), and how does it mirror your own life?';
+
+  @override
+  String get ritualCardSd04Quote =>
+      'The rivers flow into the ocean but the ocean never overflows. Likewise, desires flow into the wise one, who remains ever at peace.';
+
+  @override
+  String get ritualCardSd04QuoteAuthor => 'Bhagavad Gita 2.70';
+
+  @override
+  String get ritualCardSd05Title => 'Dharma in Adversity';
+
+  @override
+  String get ritualCardSd05Prompt =>
+      'When life tests you, what principle or value do you refuse to compromise? Why does it matter to you?';
+
+  @override
+  String get ritualCardSd05Quote =>
+      'Even in the most difficult of times, one should not abandon Dharma.';
+
+  @override
+  String get ritualCardSd05QuoteAuthor => 'Ramayana, Ayodhya Kanda';
+
+  @override
+  String get ritualCardSd06Title => 'Action Without Attachment';
+
+  @override
+  String get ritualCardSd06Prompt =>
+      'What is one task or effort you are doing today where you can let go of the result and focus purely on the quality of your action?';
+
+  @override
+  String get ritualCardSd06Quote =>
+      'You have the right to perform your duty, but you are not entitled to the fruits of your actions.';
+
+  @override
+  String get ritualCardSd06QuoteAuthor => 'Bhagavad Gita 2.47';
+
+  @override
+  String get ritualCardSd07Title => 'The Seed You Plant Today';
+
+  @override
+  String get ritualCardSd07Prompt =>
+      'Every action is a seed. What kind of seed — patience, kindness, discipline, or something else — are you planting today?';
+
+  @override
+  String get ritualCardSd07Quote =>
+      'As a man sows, so shall he reap. There is no escape from the fruits of one\'s actions.';
+
+  @override
+  String get ritualCardSd07QuoteAuthor => 'Mahabharata, Vana Parva';
+
+  @override
+  String get ritualCardSd08Title => 'Nishkama Karma';
+
+  @override
+  String get ritualCardSd08Prompt =>
+      'Think of something you did purely for its own sake, without wanting praise or reward. How did that feel? Can you bring that spirit to more of your day?';
+
+  @override
+  String get ritualCardSd08Quote =>
+      'The wise, engaged in selfless action, surrender all attachment to results and attain supreme peace.';
+
+  @override
+  String get ritualCardSd08QuoteAuthor => 'Bhagavad Gita 5.12';
+
+  @override
+  String get ritualCardSd09Title => 'Breaking the Chain';
+
+  @override
+  String get ritualCardSd09Prompt =>
+      'Is there a pattern of reaction — anger, avoidance, blame — that you keep repeating? What would it look like to consciously choose a different response today?';
+
+  @override
+  String get ritualCardSd09Quote =>
+      'One who restrains the senses and organs of action, but whose mind dwells on sense objects, is deluded and called a hypocrite.';
+
+  @override
+  String get ritualCardSd09QuoteAuthor => 'Bhagavad Gita 3.6';
+
+  @override
+  String get ritualCardSd10Title => 'Karma Yoga in Daily Life';
+
+  @override
+  String get ritualCardSd10Prompt =>
+      'How can you transform an ordinary task today — cooking, cleaning, working — into an offering, performing it with full attention and devotion?';
+
+  @override
+  String get ritualCardSd10Quote =>
+      'Whatever you do, whatever you eat, whatever you offer in sacrifice, whatever you give, whatever austerity you practise — do it as an offering to Me.';
+
+  @override
+  String get ritualCardSd10QuoteAuthor => 'Bhagavad Gita 9.27';
+
+  @override
+  String get ritualCardSd11Title => 'The Heart of Devotion';
+
+  @override
+  String get ritualCardSd11Prompt =>
+      'What fills your heart with reverence and love — a prayer, a memory, a place, the thought of the Divine? Dwell on it now.';
+
+  @override
+  String get ritualCardSd11Quote =>
+      'Whoever offers Me with devotion a leaf, a flower, a fruit, or water — that offering of love I accept from the pure-hearted.';
+
+  @override
+  String get ritualCardSd11QuoteAuthor => 'Bhagavad Gita 9.26';
+
+  @override
+  String get ritualCardSd12Title => 'Surrender and Trust';
+
+  @override
+  String get ritualCardSd12Prompt =>
+      'What worry or burden can you mentally place at the feet of the Divine today, trusting that grace will carry you through?';
+
+  @override
+  String get ritualCardSd12Quote =>
+      'Abandon all varieties of Dharma and simply surrender unto Me. I shall deliver you from all sinful reactions; do not fear.';
+
+  @override
+  String get ritualCardSd12QuoteAuthor => 'Bhagavad Gita 18.66';
+
+  @override
+  String get ritualCardSd13Title => 'Seeing God in All';
+
+  @override
+  String get ritualCardSd13Prompt =>
+      'Can you look at every person you meet today as a form of the Divine? How would that change the way you speak and listen?';
+
+  @override
+  String get ritualCardSd13Quote =>
+      'The wise see the same Divine Self equally in a learned Brahmin, a cow, an elephant, a dog, and an outcaste.';
+
+  @override
+  String get ritualCardSd13QuoteAuthor => 'Bhagavad Gita 5.18';
+
+  @override
+  String get ritualCardSd14Title => 'The Name that Purifies';
+
+  @override
+  String get ritualCardSd14Prompt =>
+      'When was the last time you sat quietly and repeated a sacred name or mantra? What feelings arose when you did?';
+
+  @override
+  String get ritualCardSd14Quote =>
+      'The name of the Lord is the boat that will take you across the ocean of worldly existence.';
+
+  @override
+  String get ritualCardSd14QuoteAuthor => 'Tulsidas, Ramcharitmanas';
+
+  @override
+  String get ritualCardSd15Title => 'Grace in Gratitude';
+
+  @override
+  String get ritualCardSd15Prompt =>
+      'What unexpected blessing or moment of grace have you received recently that you have not yet paused to acknowledge?';
+
+  @override
+  String get ritualCardSd15Quote =>
+      'I am the origin of all. Everything emanates from Me. The wise who know this worship Me with loving devotion.';
+
+  @override
+  String get ritualCardSd15QuoteAuthor => 'Bhagavad Gita 10.8';
+
+  @override
+  String get ritualCardSd16Title => 'Who Am I?';
+
+  @override
+  String get ritualCardSd16Prompt =>
+      'Strip away your name, your job, your roles, your body. What remains? Sit with this question: Who am I beyond all labels?';
+
+  @override
+  String get ritualCardSd16Quote => 'Tat Tvam Asi — Thou art That.';
+
+  @override
+  String get ritualCardSd16QuoteAuthor => 'Chandogya Upanishad 6.8.7';
+
+  @override
+  String get ritualCardSd17Title => 'The Eternal Witness';
+
+  @override
+  String get ritualCardSd17Prompt =>
+      'Observe your thoughts passing by without grasping any of them. Who is the one watching? Can that awareness itself ever be harmed?';
+
+  @override
+  String get ritualCardSd17Quote =>
+      'The Self is never born, nor does it die. It is eternal, ever-existing, and primeval. It is not slain when the body is slain.';
+
+  @override
+  String get ritualCardSd17QuoteAuthor => 'Bhagavad Gita 2.20';
+
+  @override
+  String get ritualCardSd18Title => 'Knowledge That Frees';
+
+  @override
+  String get ritualCardSd18Prompt =>
+      'What is one truth about yourself or about life that, once you truly accepted it, freed you from suffering?';
+
+  @override
+  String get ritualCardSd18Quote =>
+      'There is nothing as purifying in this world as knowledge. One who has attained purity of mind through prolonged Yoga discovers this knowledge within, in due course of time.';
+
+  @override
+  String get ritualCardSd18QuoteAuthor => 'Bhagavad Gita 4.38';
+
+  @override
+  String get ritualCardSd19Title => 'Beyond the Senses';
+
+  @override
+  String get ritualCardSd19Prompt =>
+      'Your senses show you the surface of things. What deeper truth lies beneath the situation you are facing right now?';
+
+  @override
+  String get ritualCardSd19Quote =>
+      'Beyond the senses are the objects; beyond the objects is the mind; beyond the mind is the intellect; beyond the intellect is the Great Self.';
+
+  @override
+  String get ritualCardSd19QuoteAuthor => 'Katha Upanishad 1.3.10';
+
+  @override
+  String get ritualCardSd20Title => 'The Light Within';
+
+  @override
+  String get ritualCardSd20Prompt =>
+      'Close your eyes. Imagine a steady flame burning in your heart that no wind can extinguish. What does this light illuminate for you?';
+
+  @override
+  String get ritualCardSd20Quote =>
+      'Asato ma sadgamaya, tamaso ma jyotirgamaya, mrityorma amritam gamaya. Lead me from the unreal to the Real, from darkness to Light, from death to Immortality.';
+
+  @override
+  String get ritualCardSd20QuoteAuthor => 'Brihadaranyaka Upanishad 1.3.28';
+
+  @override
+  String get ritualCardSd21Title => 'The Fullness of Being';
+
+  @override
+  String get ritualCardSd21Prompt =>
+      'If you lack nothing at the deepest level, why do you feel incomplete? Reflect on what it means to be already whole.';
+
+  @override
+  String get ritualCardSd21Quote =>
+      'Om Purnamadah Purnamidam — That is Whole, this is Whole. From the Whole, the Whole arises. When the Whole is taken from the Whole, the Whole still remains.';
+
+  @override
+  String get ritualCardSd21QuoteAuthor => 'Isha Upanishad, Invocation';
+
+  @override
+  String get ritualCardSd22Title => 'Brahman in Everything';
+
+  @override
+  String get ritualCardSd22Prompt =>
+      'The same consciousness that shines through you shines through every living being. How does this awareness change the way you see the world today?';
+
+  @override
+  String get ritualCardSd22Quote => 'Aham Brahmasmi — I am Brahman.';
+
+  @override
+  String get ritualCardSd22QuoteAuthor => 'Brihadaranyaka Upanishad 1.4.10';
+
+  @override
+  String get ritualCardSd23Title => 'Stilling the Mind';
+
+  @override
+  String get ritualCardSd23Prompt =>
+      'Right now, observe the fluctuations of your mind — planning, worrying, remembering. Can you gently bring all of them to stillness, even for a few breaths?';
+
+  @override
+  String get ritualCardSd23Quote =>
+      'Yogas chitta vritti nirodhah — Yoga is the cessation of the fluctuations of the mind.';
+
+  @override
+  String get ritualCardSd23QuoteAuthor => 'Yoga Sutras of Patanjali 1.2';
+
+  @override
+  String get ritualCardSd24Title => 'Steady Practice';
+
+  @override
+  String get ritualCardSd24Prompt =>
+      'What is one positive habit or practice you can commit to with patience and devotion, knowing that consistency matters more than intensity?';
+
+  @override
+  String get ritualCardSd24Quote =>
+      'Abhyasa — practice becomes firmly grounded when it is pursued for a long time, without interruption, and with sincere devotion.';
+
+  @override
+  String get ritualCardSd24QuoteAuthor => 'Yoga Sutras of Patanjali 1.14';
+
+  @override
+  String get ritualCardSd25Title => 'Evenness of Mind';
+
+  @override
+  String get ritualCardSd25Prompt =>
+      'Recall a recent moment of success and a moment of failure. Can you hold both with the same steady awareness, without elation or despair?';
+
+  @override
+  String get ritualCardSd25Quote =>
+      'Yoga is equanimity of mind — samatvam yoga uchyate.';
+
+  @override
+  String get ritualCardSd25QuoteAuthor => 'Bhagavad Gita 2.48';
+
+  @override
+  String get ritualCardSd26Title => 'The Five Yamas';
+
+  @override
+  String get ritualCardSd26Prompt =>
+      'Non-violence, truthfulness, non-stealing, moderation, non-possessiveness — which of the five Yamas is the hardest for you right now, and why?';
+
+  @override
+  String get ritualCardSd26Quote =>
+      'Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha — these are the great universal vows.';
+
+  @override
+  String get ritualCardSd26QuoteAuthor => 'Yoga Sutras of Patanjali 2.30';
+
+  @override
+  String get ritualCardSd27Title => 'Ishvara Pranidhana';
+
+  @override
+  String get ritualCardSd27Prompt =>
+      'What does it feel like to offer your effort completely — not to achieve, but to dedicate? Try offering your next action to something greater than yourself.';
+
+  @override
+  String get ritualCardSd27Quote =>
+      'By total surrender to Ishvara, Samadhi is attained.';
+
+  @override
+  String get ritualCardSd27QuoteAuthor => 'Yoga Sutras of Patanjali 2.45';
+
+  @override
+  String get ritualCardSd28Title => 'Non-Violence in Thought';
+
+  @override
+  String get ritualCardSd28Prompt =>
+      'Have you directed harsh, violent thoughts towards yourself or someone else today? What would it mean to replace them with understanding?';
+
+  @override
+  String get ritualCardSd28Quote =>
+      'Ahimsa Paramo Dharma — Non-violence is the highest Dharma.';
+
+  @override
+  String get ritualCardSd28QuoteAuthor =>
+      'Mahabharata, Anushasana Parva 116.38';
+
+  @override
+  String get ritualCardSd29Title => 'Compassion for All Beings';
+
+  @override
+  String get ritualCardSd29Prompt =>
+      'Think of a creature — an animal, an insect, a bird — you encountered recently. What would the world be like if you extended the same care to all living beings?';
+
+  @override
+  String get ritualCardSd29Quote =>
+      'One who sees all beings in the Self and the Self in all beings, never turns away from it.';
+
+  @override
+  String get ritualCardSd29QuoteAuthor => 'Isha Upanishad, Verse 6';
+
+  @override
+  String get ritualCardSd30Title => 'Gentle Speech';
+
+  @override
+  String get ritualCardSd30Prompt =>
+      'Before you speak today, pause and ask: Is it true? Is it kind? Is it necessary? How does this filter change your conversations?';
+
+  @override
+  String get ritualCardSd30Quote =>
+      'Words that do not cause distress, that are truthful, pleasant, and beneficial — this is called the austerity of speech.';
+
+  @override
+  String get ritualCardSd30QuoteAuthor => 'Bhagavad Gita 17.15';
+
+  @override
+  String get ritualCardSd31Title => 'Forgiving the Hurt';
+
+  @override
+  String get ritualCardSd31Prompt =>
+      'Who has caused you pain that you are still carrying? What would it take to forgive — not for them, but to free your own heart?';
+
+  @override
+  String get ritualCardSd31Quote => 'Forgiveness is the ornament of the brave.';
+
+  @override
+  String get ritualCardSd31QuoteAuthor => 'Mahabharata, Udyoga Parva 33.48';
+
+  @override
+  String get ritualCardSd32Title => 'Living in Truth';
+
+  @override
+  String get ritualCardSd32Prompt =>
+      'Is there something in your life where you are being less than truthful — with yourself or with others? What would honest alignment look like?';
+
+  @override
+  String get ritualCardSd32Quote => 'Satyameva Jayate — Truth alone triumphs.';
+
+  @override
+  String get ritualCardSd32QuoteAuthor => 'Mundaka Upanishad 3.1.6';
+
+  @override
+  String get ritualCardSd33Title => 'The Courage of Honesty';
+
+  @override
+  String get ritualCardSd33Prompt =>
+      'What is one truth you have been avoiding because it is uncomfortable? What would it take to face it with courage today?';
+
+  @override
+  String get ritualCardSd33Quote =>
+      'Speak the truth. Practise Dharma. Do not neglect the study of the scriptures.';
+
+  @override
+  String get ritualCardSd33QuoteAuthor => 'Taittiriya Upanishad 1.11.1';
+
+  @override
+  String get ritualCardSd34Title => 'Truth Beyond Words';
+
+  @override
+  String get ritualCardSd34Prompt =>
+      'Truth is not only in what you say, but in what you do. Are your actions today aligned with the truth you hold in your heart?';
+
+  @override
+  String get ritualCardSd34Quote =>
+      'By truthfulness, man reaches the station of God.';
+
+  @override
+  String get ritualCardSd34QuoteAuthor => 'Chanakya Niti 14.3';
+
+  @override
+  String get ritualCardSd35Title => 'The Promise You Keep';
+
+  @override
+  String get ritualCardSd35Prompt =>
+      'What is a promise you have made — to yourself, to another, or to the Divine — that you must honour? Recommit to it now.';
+
+  @override
+  String get ritualCardSd35Quote =>
+      'Let your word be your bond. A person who breaks a promise breaks trust, and trust once broken is hard to rebuild.';
+
+  @override
+  String get ritualCardSd35QuoteAuthor => 'Vidura Niti, Mahabharata';
+
+  @override
+  String get ritualCardSd36Title => 'Letting Go';
+
+  @override
+  String get ritualCardSd36Prompt =>
+      'What possession, expectation, or desire are you clinging to that no longer serves your growth? Imagine gently releasing it.';
+
+  @override
+  String get ritualCardSd36Quote =>
+      'Vairagya is the mastery of consciousness in which one is free from craving for sense objects, whether experienced directly or described.';
+
+  @override
+  String get ritualCardSd36QuoteAuthor => 'Yoga Sutras of Patanjali 1.15';
+
+  @override
+  String get ritualCardSd37Title => 'The Unchanging Self';
+
+  @override
+  String get ritualCardSd37Prompt =>
+      'Everything around you changes — moods, fortunes, relationships. What part of you has remained unchanged through all of life\'s storms?';
+
+  @override
+  String get ritualCardSd37Quote =>
+      'That which is not real never was and never will be. That which is real always was and can never cease to be.';
+
+  @override
+  String get ritualCardSd37QuoteAuthor => 'Bhagavad Gita 2.16';
+
+  @override
+  String get ritualCardSd38Title => 'Contentment';
+
+  @override
+  String get ritualCardSd38Prompt =>
+      'What do you already have that is truly enough? Reflect on the difference between want and need in your life right now.';
+
+  @override
+  String get ritualCardSd38Quote =>
+      'From contentment comes unsurpassed happiness.';
+
+  @override
+  String get ritualCardSd38QuoteAuthor => 'Yoga Sutras of Patanjali 2.42';
+
+  @override
+  String get ritualCardSd39Title => 'Beyond Pleasure and Pain';
+
+  @override
+  String get ritualCardSd39Prompt =>
+      'Can you sit with discomfort without fleeing, and with pleasure without grasping? What happens when you simply observe both?';
+
+  @override
+  String get ritualCardSd39Quote =>
+      'One who is not disturbed by happiness and distress and is steady in both is certainly eligible for liberation.';
+
+  @override
+  String get ritualCardSd39QuoteAuthor => 'Bhagavad Gita 2.15';
+
+  @override
+  String get ritualCardSd40Title => 'The Joy of Giving';
+
+  @override
+  String get ritualCardSd40Prompt =>
+      'What can you give today — time, attention, a kind word, a helping hand — without expecting anything in return?';
+
+  @override
+  String get ritualCardSd40Quote =>
+      'The highest form of charity is helping those who are helpless.';
+
+  @override
+  String get ritualCardSd40QuoteAuthor => 'Thirukkural 221';
+
+  @override
+  String get ritualCardSd41Title => 'Serving the Divine in Others';
+
+  @override
+  String get ritualCardSd41Prompt =>
+      'If the person standing in front of you were God in disguise, how would you treat them? Try living this for the next hour.';
+
+  @override
+  String get ritualCardSd41Quote => 'Service to humanity is service to God.';
+
+  @override
+  String get ritualCardSd41QuoteAuthor => 'Swami Vivekananda';
+
+  @override
+  String get ritualCardSd42Title => 'Selfless Work';
+
+  @override
+  String get ritualCardSd42Prompt =>
+      'Recall a time when you helped someone and felt a quiet, deep joy that had nothing to do with recognition. What did that teach you?';
+
+  @override
+  String get ritualCardSd42Quote =>
+      'Arise, awake, and stop not till the goal is reached.';
+
+  @override
+  String get ritualCardSd42QuoteAuthor =>
+      'Katha Upanishad 1.3.14 / Swami Vivekananda';
+
+  @override
+  String get ritualCardSd43Title => 'Vasudhaiva Kutumbakam';
+
+  @override
+  String get ritualCardSd43Prompt =>
+      'The whole world is one family. What is one step you can take today to live as though every person\'s well-being matters to you?';
+
+  @override
+  String get ritualCardSd43Quote =>
+      'Vasudhaiva Kutumbakam — the entire world is one family.';
+
+  @override
+  String get ritualCardSd43QuoteAuthor => 'Maha Upanishad 6.71';
+
+  @override
+  String get ritualCardSd44Title => 'The Wealth of Kindness';
+
+  @override
+  String get ritualCardSd44Prompt =>
+      'What small act of kindness did someone do for you that you still remember? How can you pass that same kindness forward today?';
+
+  @override
+  String get ritualCardSd44Quote =>
+      'Even the poverty of the poor will depart if they give, with compassion, even what little they have.';
+
+  @override
+  String get ritualCardSd44QuoteAuthor => 'Thirukkural 247';
+
+  @override
+  String get ritualCardSd45Title => 'The Peace Within';
+
+  @override
+  String get ritualCardSd45Prompt =>
+      'Close your eyes and take three slow breaths. Feel the silence between each breath. That silence is who you truly are. Can you carry it through the day?';
+
+  @override
+  String get ritualCardSd45Quote =>
+      'For one who has conquered the mind, the mind is the best of friends; but for one who has failed to do so, the mind will remain the greatest enemy.';
+
+  @override
+  String get ritualCardSd45QuoteAuthor => 'Bhagavad Gita 6.6';
+
+  @override
+  String get ritualCardSd46Title => 'Equanimity in Praise and Blame';
+
+  @override
+  String get ritualCardSd46Prompt =>
+      'Recall a recent praise and a recent criticism you received. Can you hold both with the same calm composure, without clinging to one or rejecting the other?';
+
+  @override
+  String get ritualCardSd46Quote =>
+      'One who is the same to friend and foe, in honour and dishonour, in heat and cold, in pleasure and pain, and is free from attachment — such a person is dear to Me.';
+
+  @override
+  String get ritualCardSd46QuoteAuthor => 'Bhagavad Gita 12.18–19';
+
+  @override
+  String get ritualCardSd47Title => 'The Lotus in Mud';
+
+  @override
+  String get ritualCardSd47Prompt =>
+      'A lotus blooms in muddy water yet remains unstained. What is the muddy situation in your life right now, and how can you remain untouched by it while still growing?';
+
+  @override
+  String get ritualCardSd47Quote =>
+      'One who performs actions without attachment, surrendering them to Brahman, is untouched by sin, like a lotus leaf by water.';
+
+  @override
+  String get ritualCardSd47QuoteAuthor => 'Bhagavad Gita 5.10';
+
+  @override
+  String get ritualCardSd48Title => 'Om Shanti';
+
+  @override
+  String get ritualCardSd48Prompt =>
+      'Sit still and repeat Om Shanti three times — peace in body, peace in mind, peace in spirit. What disturbance melts away as you do this?';
+
+  @override
+  String get ritualCardSd48Quote =>
+      'Om Shantih Shantih Shantih — Om, Peace, Peace, Peace.';
+
+  @override
+  String get ritualCardSd48QuoteAuthor => 'Upanishadic Shanti Mantra';
+
+  @override
+  String get ritualCardSd49Title => 'May All Be Happy';
+
+  @override
+  String get ritualCardSd49Prompt =>
+      'Silently wish well-being for yourself, then for your loved ones, then for strangers, then for all beings. Notice how your heart expands as the circle widens.';
+
+  @override
+  String get ritualCardSd49Quote =>
+      'Sarve bhavantu sukhinah, sarve santu niramayah. Sarve bhadrani pashyantu, ma kashchit duhkhabhag bhavet. — May all be happy, may all be free from disease, may all see auspiciousness, may none suffer.';
+
+  @override
+  String get ritualCardSd49QuoteAuthor => 'Upanishadic Prayer';
+
+  @override
+  String get ritualCardSd50Title => 'Strength and Peace Together';
+
+  @override
+  String get ritualCardSd50Prompt =>
+      'True strength does not come from tension; it comes from deep inner peace. Where in your life can you replace force with calm resolve today?';
+
+  @override
+  String get ritualCardSd50Quote =>
+      'Strength is life, weakness is death. Strength is the medicine, strength is the cure. Strength, strength is what the Upanishads preach.';
+
+  @override
+  String get ritualCardSd50QuoteAuthor => 'Swami Vivekananda';
+
+  @override
+  String get pendingAlertsTitle => 'Pending Task Alerts';
+
+  @override
+  String get pendingAlertsSubtitle =>
+      'Reminders at day start and periodic intervals for pending tasks.';
+
+  @override
+  String get pendingAlertsEnabled => 'Enable Pending Alerts';
+
+  @override
+  String get pendingAlertsEnabledDetail =>
+      'Show an interactive list of pending tasks when alerts trigger.';
+
+  @override
+  String get pendingAlertsDayStart => 'Day Start Alert';
+
+  @override
+  String get pendingAlertsDayStartDetail =>
+      'Show pending tasks alert at the beginning of each day.';
+
+  @override
+  String get pendingAlertsDayStartTime => 'Alert Time';
+
+  @override
+  String get pendingAlertsInterval => 'Reminder Interval';
+
+  @override
+  String get pendingAlertsIntervalDetail =>
+      'How often to remind you about pending tasks while using the app.';
+
+  @override
+  String get pendingAlertsIntervalOff => 'Off';
+
+  @override
+  String get pendingAlertsInterval30m => 'Every 30 minutes';
+
+  @override
+  String get pendingAlertsInterval1h => 'Every 1 hour';
+
+  @override
+  String get pendingAlertsInterval2h => 'Every 2 hours';
+
+  @override
+  String get pendingAlertsInterval3h => 'Every 3 hours';
+
+  @override
+  String get pendingAlertsInterval4h => 'Every 4 hours';
+
+  @override
+  String get pendingAlertsHaptic => 'Vibrate / Haptic';
+
+  @override
+  String get pendingAlertsHapticDetail =>
+      'Vibrate device gently when a pending task alert appears.';
+
+  @override
+  String get pendingAlertsPreview => 'Preview Pending Tasks Alert';
+
+  @override
+  String get pendingAlertsSheetTitle => 'Pending Tasks Alert';
+
+  @override
+  String pendingAlertsSheetCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count pending tasks remaining today',
+      one: '1 pending task remaining today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pendingAlertsSheetEmpty =>
+      'Great job! No pending tasks remaining for today.';
+
+  @override
+  String get pendingAlertsStartTimer => 'Start';
+
+  @override
+  String get pendingAlertsGoToToday => 'Open Daily List';
+
+  @override
+  String get pendingAlertsSnooze => 'Snooze (1 hour)';
+
+  @override
+  String get pendingAlertsDismiss => 'Dismiss';
+
+  @override
+  String get trackingRunningNotification => 'Running task notification';
+
+  @override
+  String get trackingRunningNotificationDetail =>
+      'Show an ongoing notification with a live timer while tracking time';
+
+  @override
+  String get permissionsNotificationTitle => 'Notifications';
+
+  @override
+  String get permissionsNotificationBody =>
+      'Used to display an ongoing live timer in the notification drawer while tracking tasks, and for optional daily reminders. Operates 100% offline with zero cloud access.';
+
+  @override
+  String get pendingAlertsTodaySection => 'Today\'s Tasks';
+
+  @override
+  String get pendingAlertsPreviousSection => 'From Previous Days';
+
+  @override
+  String get pendingAlertsPortToToday => 'Port to Today';
+
+  @override
+  String get pendingAlertsPortedSuccess => 'Task ported to today';
+
+  @override
+  String get pendingAlertsNotificationTitle => 'Pending Tasks Reminder';
+
+  @override
+  String pendingAlertsNotificationBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You have $count pending tasks waiting',
+      one: 'You have 1 pending task waiting',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get taskHistory => 'Task History';
+
+  @override
+  String get taskHistorySubtitle =>
+      'Full lifecycle and activity timeline for this task';
+
+  @override
+  String get taskHistoryEmpty =>
+      'No activity history recorded for this task yet.';
+
+  @override
+  String get eventCreated => 'Task created';
+
+  @override
+  String get eventMoved => 'Task moved';
+
+  @override
+  String eventMovedFromTo(String fromDate, String toDate) {
+    return 'Moved from $fromDate to $toDate';
+  }
+
+  @override
+  String get eventTimerStarted => 'Timer started';
+
+  @override
+  String eventTimerStopped(String duration) {
+    return 'Timer stopped ($duration)';
+  }
+
+  @override
+  String eventTimerPaused(String duration) {
+    return 'Timer paused ($duration)';
+  }
+
+  @override
+  String eventManualSegment(String duration) {
+    return 'Manual time added ($duration)';
+  }
+
+  @override
+  String eventStatusChanged(String status) {
+    return 'Status changed to $status';
+  }
+
+  @override
+  String get eventSubtaskToggled => 'Sub-task updated';
+
+  @override
+  String get eventEdited => 'Task details edited';
+
+  @override
+  String get moveToToday => 'Move to Today';
+
+  @override
+  String get taskMovedToToday => 'Task moved to today';
+
+  @override
+  String taskMovedSuccess(String date) {
+    return 'Task moved to $date';
   }
 }

@@ -2,6 +2,9 @@ package `in`.sreerajp.sreerajp_todo
 
 import android.app.Activity
 import android.app.KeyguardManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.Manifest
@@ -15,6 +18,7 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import android.util.Base64
 import android.view.WindowManager
+import androidx.core.app.NotificationCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.EventChannel
@@ -32,12 +36,22 @@ class MainActivity : FlutterActivity() {
     private val APP_LOCK_CHANNEL = "in.sreerajp.todo/app_lock"
     private val SPEECH_CHANNEL = "in.sreerajp.todo/speech"
     private val SPEECH_EVENT_CHANNEL = "in.sreerajp.todo/speech_events"
+    private val RUNNING_NOTIFICATION_CHANNEL = "in.sreerajp.todo/running_notification"
+    private val RUNNING_CHANNEL_ID = "running_todo_timer_channel"
+    private val RUNNING_NOTIFICATION_ID = 1001
+    private val PENDING_NOTIFICATION_CHANNEL = "in.sreerajp.todo/pending_notification"
+    private val PENDING_CHANNEL_ID = "pending_todo_reminder_channel"
+    private val PENDING_NOTIFICATION_ID = 1002
     private val KEY_ALIAS = "SreerajpTodoMasterKey"
     private val PREFS_NAME = "sreerajp_todo_secure_prefs"
     private val PREF_KEY_DATA = "encrypted_db_key"
     private val PREF_KEY_IV = "encrypted_db_key_iv"
     private val DEVICE_CREDENTIAL_REQUEST = 4711
     private val MICROPHONE_REQUEST = 4712
+    private val NOTIFICATION_PERMISSION_REQUEST = 4713
+
+    // Held while the notification permission dialog is up.
+    private var pendingNotificationPermissionResult: MethodChannel.Result? = null
 
     // Held while the device unlock screen is in front of us, so its result can
     // be handed back to the Dart side that asked for it.
@@ -227,6 +241,89 @@ class MainActivity : FlutterActivity() {
                     }
                 }
             )
+
+        // Ongoing notification with live chronometer for active running tasks.
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, RUNNING_NOTIFICATION_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "show" -> {
+                    val title = call.argument<String>("title") ?: "Task"
+                    val startTimeMillis = call.argument<Number>("startTimeMillis")?.toLong() ?: System.currentTimeMillis()
+                    runOnUiThread {
+                        showRunningNotification(title, startTimeMillis)
+                    }
+                    result.success(true)
+                }
+                "hide" -> {
+                    runOnUiThread {
+                        hideRunningNotification()
+                    }
+                    result.success(true)
+                }
+                "hasPermission" -> {
+                    result.success(hasNotificationPermission())
+                }
+                "requestPermission" -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        if (hasNotificationPermission()) {
+                            result.success(true)
+                        } else if (pendingNotificationPermissionResult != null) {
+                            result.error("IN_PROGRESS", "A notification permission request is already running", null)
+                        } else {
+                            pendingNotificationPermissionResult = result
+                            requestPermissions(
+                                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                                NOTIFICATION_PERMISSION_REQUEST
+                            )
+                        }
+                    } else {
+                        result.success(true)
+                    }
+                }
+                else -> result.notImplemented()
+            }
+        }
+
+        // Pending todo reminders status-bar notification.
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PENDING_NOTIFICATION_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "show" -> {
+                    val title = call.argument<String>("title") ?: "Pending Tasks Reminder"
+                    val body = call.argument<String>("body") ?: "You have pending tasks remaining"
+                    val count = call.argument<Int>("count") ?: 1
+                    runOnUiThread {
+                        showPendingNotification(title, body, count)
+                    }
+                    result.success(true)
+                }
+                "cancel" -> {
+                    runOnUiThread {
+                        cancelPendingNotification()
+                    }
+                    result.success(true)
+                }
+                "hasPermission" -> {
+                    result.success(hasNotificationPermission())
+                }
+                "requestPermission" -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        if (hasNotificationPermission()) {
+                            result.success(true)
+                        } else if (pendingNotificationPermissionResult != null) {
+                            result.error("IN_PROGRESS", "A notification permission request is already running", null)
+                        } else {
+                            pendingNotificationPermissionResult = result
+                            requestPermissions(
+                                arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                                NOTIFICATION_PERMISSION_REQUEST
+                            )
+                        }
+                    } else {
+                        result.success(true)
+                    }
+                }
+                else -> result.notImplemented()
+            }
+        }
     }
 
     private fun hasMicrophonePermission(): Boolean {
@@ -380,6 +477,12 @@ class MainActivity : FlutterActivity() {
             val granted = grantResults.isNotEmpty() &&
                 grantResults[0] == PackageManager.PERMISSION_GRANTED
             pending?.success(granted)
+        } else if (requestCode == NOTIFICATION_PERMISSION_REQUEST) {
+            val pending = pendingNotificationPermissionResult
+            pendingNotificationPermissionResult = null
+            val granted = grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+            pending?.success(granted)
         }
     }
 
@@ -523,6 +626,135 @@ class MainActivity : FlutterActivity() {
             sb.append(String.format("%02x", b.toInt() and 0xFF))
         }
         return sb.toString()
+    }
+
+    private fun ensureNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                RUNNING_CHANNEL_ID,
+                "Active Task Timer",
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                description = "Shows live ongoing timer for currently active task"
+                setShowBadge(false)
+                enableVibration(false)
+                setSound(null, null)
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+    private fun showRunningNotification(title: String, startTimeMillis: Long) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                return
+            }
+        }
+        ensureNotificationChannel()
+
+        val launchIntent = packageManager.getLaunchIntentForPackage(packageName) ?: Intent(this, MainActivity::class.java)
+        launchIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            launchIntent,
+            pendingIntentFlags
+        )
+
+        val builder = NotificationCompat.Builder(this, RUNNING_CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(title)
+            .setContentText("Time tracking in progress")
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .setShowWhen(true)
+            .setWhen(startTimeMillis)
+            .setUsesChronometer(true)
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setCategory(NotificationCompat.CATEGORY_PROGRESS)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+        notificationManager?.notify(RUNNING_NOTIFICATION_ID, builder.build())
+    }
+
+    private fun hideRunningNotification() {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+        notificationManager?.cancel(RUNNING_NOTIFICATION_ID)
+    }
+
+    private fun ensurePendingNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                PENDING_CHANNEL_ID,
+                "Pending Task Reminders",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Alerts and reminders for pending tasks"
+                setShowBadge(true)
+                enableVibration(true)
+            }
+            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+    private fun showPendingNotification(title: String, body: String, count: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                return
+            }
+        }
+        ensurePendingNotificationChannel()
+
+        val launchIntent = packageManager.getLaunchIntentForPackage(packageName) ?: Intent(this, MainActivity::class.java)
+        launchIntent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        val pendingIntentFlags = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        } else {
+            PendingIntent.FLAG_UPDATE_CURRENT
+        }
+
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            launchIntent,
+            pendingIntentFlags
+        )
+
+        val builder = NotificationCompat.Builder(this, PENDING_CHANNEL_ID)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle(title)
+            .setContentText(body)
+            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+            .setNumber(count)
+            .setAutoCancel(true)
+            .setShowWhen(true)
+            .setContentIntent(pendingIntent)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setCategory(NotificationCompat.CATEGORY_REMINDER)
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+        notificationManager?.notify(PENDING_NOTIFICATION_ID, builder.build())
+    }
+
+    private fun cancelPendingNotification() {
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager
+        notificationManager?.cancel(PENDING_NOTIFICATION_ID)
+    }
+
+    private fun hasNotificationPermission(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return true
+        return checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
     }
 }
 

@@ -88,13 +88,15 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
             ),
         ],
       ),
-      body: _currentQuery.isEmpty
-          ? AppEmptyState(
-              icon: Icons.search,
-              title: context.l10n.searchTasksTitle,
-              message: context.l10n.searchTasksMessage,
-            )
-          : _buildResults(),
+      body: SafeArea(
+        child: _currentQuery.isEmpty
+            ? AppEmptyState(
+                icon: Icons.search,
+                title: context.l10n.searchTasksTitle,
+                message: context.l10n.searchTasksMessage,
+              )
+            : _buildResults(),
+      ),
     );
   }
 
@@ -120,6 +122,7 @@ class _SearchResultsScreenState extends ConsumerState<SearchResultsScreen> {
         final dates = grouped.keys.toList()..sort((a, b) => b.compareTo(a));
 
         return ListView.builder(
+          padding: const EdgeInsets.only(bottom: 32),
           itemCount: dates.length,
           itemBuilder: (context, index) {
             final date = dates[index];

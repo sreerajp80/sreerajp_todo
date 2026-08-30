@@ -77,6 +77,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
           .where((id) => !_conflictingTitles.contains(id))
           .toList();
       final result = await copyTodos(idsToActuallyCopy, _targetDate!);
+      ref.invalidate(dailyTodoProvider(_targetDate!));
       if (!mounted) return;
       context.pop<CopyTodosResult>(result);
     } on Exception catch (e) {

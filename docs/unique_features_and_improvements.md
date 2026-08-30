@@ -282,6 +282,23 @@ By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we iden
   - **Productivity Efficiency Score:** Algorithmic ratio measuring planned vs. completed vs. dropped/ported tasks over rolling 7-day and 30-day windows.
   - **Daily Completion Streaks:** Streak counter tracking consecutive days with completed tasks (reused from `SreerajP_Journal_Vault`).
 
+### 4.9 Ritual Mode — Guided Day Open with a Bilingual Reflection Deck ✅
+- **Status:** Implemented ✅
+- **Origin:** Ported from `SreerajP_Journal_Vault` (its C9 Ritual Mode), and reworked for a task and time tracker. In the journal the flow ends by opening today's entry; here it ends by settling the day.
+- **Current Implementation:**
+  - **Four-step flow (`/ritual`):** Breathe → Reflect on one card → Settle the day → Begin. The middle two steps can be switched off, so the flow is built from whatever is turned on. Every step can be skipped, and the app-bar "Skip ritual" leaves at once.
+  - **Breathing step:** `BreathingOrb` runs one of three rhythms — Box 4-4-4-4, Relaxing 4-7-8, Calm 4-4 — for 1 to 5 breaths (default 2), with an optional `HapticFeedback` tap at each phase change. A plain `AnimationController` and a one-second `Timer`: no package, no asset, no sound.
+  - **Card step:** one card from a 50-card Sanathana Dharma deck, each with a title, a reflection question, a grounding quote and its attribution, in English and Malayalam. Rating it Hard / Revision / Easy schedules when it returns (1 day / 3 days / 7 × level days). "Make this today's intention" writes the card title through `DailyReflectionRepository`, so the Morning Intention Card of 4.3 then shows the same words — one source of truth, no second table.
+  - **Settle step:** yesterday's unfinished tasks with a Carry over button (the same `CopyTodos` use case the carry-over sheet uses), then up to three of today's tasks marked as the day's focus, stored as the existing `TodoPriority.high`. No new column.
+  - **Evening close:** optional, off by default. Once a day, from a chosen hour (default 20:00), the day list offers the existing `EveningReflectionModal` of 4.3. Nothing new was built for it.
+  - **Ritual Deck browser (`/ritual/deck`):** all 50 cards, filterable by theme, showing which are new, which are due, and how far off the rest are. Read-only.
+  - **Settings (`/settings/ritual`):** the on/off switch, automatic opening, rhythm, breath count, haptic, the two optional steps, evening close and its hour, the deck browser, "Reset card reviews", and "Run the ritual now".
+- **Two spaced repetition engines, kept apart:** the Mastery Deck (3.5) schedules real tasks in the `spaced_repetition_items` table; the Ritual Deck schedules reflection cards entirely in `SharedPreferences`. They are never merged, and they live at different routes with different names.
+  - One rule differs from the Journal app on purpose: a card that is due back beats a card never seen. Journal Vault prefers unseen cards, which would mean a card rated "Hard" could not return tomorrow as promised until all fifty had been seen.
+- **Storage:** no database migration. `kDatabaseVersion` is unchanged. Every ritual preference and every card review is device state in `SharedPreferences`, so none of it appears in a backup, an export, or a sync payload.
+- **Strings:** all 50 cards live in `lib/l10n/app_en.arb` and `lib/l10n/app_ml.arb` — 400 entries — alongside the UI chrome. `tool/ritual_deck_to_arb.dart` generated them from the Journal source together with the id-to-strings resolver, so no card text was retyped and the keys cannot drift from the switch that reads them.
+- **Default:** off. A fresh install behaves exactly as it did before this feature existed.
+
 ---
 
 ## 5. Compliance & Architectural Verification Guarantee
@@ -354,7 +371,7 @@ gantt
 
 ## 7. Implementation Status Summary
 
-One place to see where every feature stands. Last checked against the codebase on 2026-08-19.
+One place to see where every feature stands. Last checked against the codebase on 2026-08-27.
 
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
@@ -381,5 +398,6 @@ One place to see where every feature stands. Last checked against the codebase o
 | 4.6 | Timer Audio & Visual Enhancements | ✅ Done | `/focus/:id`, `FocusPulseRing`, haptic and chime pulses. |
 | 4.7 | Recurrence Heatmaps & Holiday Calendar | Planned | `rrule_preview.dart` still shows a text list of dates. |
 | 4.8 | Advanced Productivity Analytics | Planned | Statistics screen has charts and tables only; no streaks, heatmap, or efficiency score. |
+| 4.9 | Ritual Mode — Guided Day Open & Ritual Deck | ✅ Done | `/ritual`, `/ritual/deck`, 50 bilingual cards, no migration. Off by default. |
 
-**Count:** 13 done ✅, 3 partly done 🟡, 7 planned.
+**Count:** 14 done ✅, 3 partly done 🟡, 7 planned.

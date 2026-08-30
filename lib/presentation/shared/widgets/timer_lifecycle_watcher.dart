@@ -41,6 +41,7 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
       _scheduleAutoStop();
       unawaited(_syncKeepAwake());
       unawaited(_syncFocusPulse());
+      unawaited(_syncRunningNotification());
     });
   }
 
@@ -84,6 +85,7 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
           .read(timeTrackingProvider(segment.todoId).notifier)
           .pauseTimer();
     }
+    await _syncRunningNotification();
   }
 
   Future<void> _onReturnedToForeground() async {
@@ -95,6 +97,7 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
     _scheduleAutoStop();
     await _syncKeepAwake();
     await _syncFocusPulse();
+    await _syncRunningNotification();
 
     if (ref.read(timeTrackingSettingsProvider).pomodoroEnabled) {
       await ref.read(pomodoroProvider.notifier).syncWithClock();
@@ -188,6 +191,47 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
     await ref.read(screenWakeChannelProvider).setKeepAwake(running);
   }
 
+  /// Asks the host to show or hide the ongoing running task notification with live chronometer.
+  Future<void> _syncRunningNotification() async {
+    final settings = ref.read(timeTrackingSettingsProvider);
+    final notificationChannel = ref.read(runningNotificationChannelProvider);
+
+    if (!settings.showRunningNotification) {
+      await notificationChannel.hideRunningNotification();
+      return;
+    }
+
+    final running = await ref
+        .read(timeSegmentRepositoryProvider)
+        .getAllRunningSegments();
+
+    if (running.isEmpty) {
+      await notificationChannel.hideRunningNotification();
+      return;
+    }
+
+    final segment = running.first;
+    final todo = await ref
+        .read(todoRepositoryProvider)
+        .getTodoById(segment.todoId);
+
+    if (todo == null) {
+      await notificationChannel.hideRunningNotification();
+      return;
+    }
+
+    final hasPerm = await notificationChannel.hasPermission();
+    if (!hasPerm) {
+      await notificationChannel.requestPermission();
+    }
+
+    final startTime = DateTime.parse(segment.startTime);
+    await notificationChannel.showRunningNotification(
+      title: todo.title,
+      startTime: startTime,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Re-check whenever the settings change, so turning auto-stop on takes
@@ -201,6 +245,9 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
       if (previous?.keepScreenAwake != next.keepScreenAwake) {
         unawaited(_syncKeepAwake());
       }
+      if (previous?.showRunningNotification != next.showRunningNotification) {
+        unawaited(_syncRunningNotification());
+      }
       if (previous?.focusPulseMode != next.focusPulseMode ||
           previous?.focusPulseIntervalMinutes !=
               next.focusPulseIntervalMinutes ||
@@ -210,10 +257,11 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
     });
 
     // A timer starting, stopping or pausing changes whether the screen must
-    // stay on, and which timer the pulse follows.
+    // stay on, notification status, and which timer the pulse follows.
     ref.listen(timerActivityTickProvider, (_, _) {
       unawaited(_syncKeepAwake());
       unawaited(_syncFocusPulse());
+      unawaited(_syncRunningNotification());
     });
 
     // Hand the display choices down so reports deep in the tree can use them

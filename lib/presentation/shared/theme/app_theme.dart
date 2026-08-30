@@ -29,8 +29,12 @@ abstract final class AppTheme {
   ];
 
   /// Black or white, whichever reads better on top of [background].
-  static Color contrastOn(Color background) =>
-      background.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+  static Color contrastOn(Color background) {
+    final lum = background.computeLuminance();
+    final contrastWithBlack = (lum + 0.05) / 0.05;
+    final contrastWithWhite = 1.05 / (lum + 0.05);
+    return contrastWithBlack >= contrastWithWhite ? Colors.black : Colors.white;
+  }
 
   /// The light theme, optionally re-tinted with [accent] (the highlight
   /// colour), using [fontFamily].
@@ -68,7 +72,7 @@ abstract final class AppTheme {
     final usesCustomAccent = accent != null;
     final scheme = baseScheme.copyWith(
       primary: primary,
-      onPrimary: usesCustomAccent ? contrastOn(primary) : Colors.white,
+      onPrimary: contrastOn(primary),
       primaryContainer: usesCustomAccent
           ? _withLightness(primary, isDark ? 0.22 : 0.88)
           : (isDark ? const Color(0xFF243A5B) : const Color(0xFFD9E5FF)),

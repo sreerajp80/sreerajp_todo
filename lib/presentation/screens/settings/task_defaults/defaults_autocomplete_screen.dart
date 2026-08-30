@@ -18,35 +18,37 @@ class DefaultsAutocompleteScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.defaultsAutocomplete)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AppSectionCard(
-            child: SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              value: defaults.autocompleteEnabled,
-              onChanged: notifier.setAutocompleteEnabled,
-              title: Text(l10n.defaultsAutocompleteEnabled),
-              subtitle: Text(l10n.defaultsAutocompleteEnabledDetail),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            AppSectionCard(
+              child: SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: defaults.autocompleteEnabled,
+                onChanged: notifier.setAutocompleteEnabled,
+                title: Text(l10n.defaultsAutocompleteEnabled),
+                subtitle: Text(l10n.defaultsAutocompleteEnabledDetail),
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          // With suggestions off there is nothing to count, so the list is
-          // hidden instead of shown with no effect.
-          if (defaults.autocompleteEnabled)
-            SettingsChoiceList<SuggestionCount>(
-              title: l10n.defaultsSuggestionCountTitle,
-              selected: defaults.suggestionCount,
-              onChanged: notifier.setSuggestionCount,
-              choices: [
-                for (final count in SuggestionCount.values)
-                  SettingsChoice(
-                    value: count,
-                    label: l10n.suggestionCountValue(count.limit),
-                  ),
-              ],
-            ),
-        ],
+            const SizedBox(height: 16),
+            // With suggestions off there is nothing to count, so the list is
+            // hidden instead of shown with no effect.
+            if (defaults.autocompleteEnabled)
+              SettingsChoiceList<SuggestionCount>(
+                title: l10n.defaultsSuggestionCountTitle,
+                selected: defaults.suggestionCount,
+                onChanged: notifier.setSuggestionCount,
+                choices: [
+                  for (final count in SuggestionCount.values)
+                    SettingsChoice(
+                      value: count,
+                      label: l10n.suggestionCountValue(count.limit),
+                    ),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }

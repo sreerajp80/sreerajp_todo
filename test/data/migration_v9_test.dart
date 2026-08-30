@@ -110,7 +110,7 @@ void main() {
         expect(columns, contains('target_seconds'));
 
         final version = await db.rawQuery('PRAGMA user_version');
-        expect(version.single['user_version'], 9);
+        expect(version.single['user_version'] as int, greaterThanOrEqualTo(9));
         await service.close();
       },
     );

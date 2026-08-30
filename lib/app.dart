@@ -50,13 +50,19 @@ import 'package:sreerajp_todo/presentation/screens/help/task_management_help_scr
 import 'package:sreerajp_todo/presentation/screens/help/time_tracking_help_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/help/wifi_sync_help_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/mastery_deck/mastery_deck_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/ritual/ritual_deck_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/ritual/ritual_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/settings/ritual/ritual_settings_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/settings/pending_alerts_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/air_qr_scan_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/p2p_wifi_sync/p2p_wifi_sync_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/data_handoff/data_handoff_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/statistics_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/task_history/task_history_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/time_segments/time_segments_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/timer_lifecycle_watcher.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/pending_alert_watcher.dart';
 
 CustomTransitionPage<void> _buildPage(GoRouterState state, Widget child) {
   return CustomTransitionPage<void>(
@@ -84,8 +90,15 @@ CustomTransitionPage<void> _buildPage(GoRouterState state, Widget child) {
   );
 }
 
-final _router = GoRouter(
-  initialLocation: AppRoutes.root,
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
+/// Builds the router.
+///
+/// [initialLocation] is what lets `main.dart` open Ritual mode as the very
+/// first screen of the day. Everything else always starts at the day list.
+GoRouter _createRouter(String initialLocation) => GoRouter(
+  navigatorKey: rootNavigatorKey,
+  initialLocation: initialLocation,
   redirect: (context, state) {
     if (state.matchedLocation == '/') {
       return AppRoutes.dailyListPath(todayAsIso());
@@ -131,6 +144,13 @@ final _router = GoRouter(
           pageBuilder: (context, state) {
             final id = state.pathParameters['id']!;
             return _buildPage(state, TimeSegmentsScreen(todoId: id));
+          },
+        ),
+        GoRoute(
+          path: 'history',
+          pageBuilder: (context, state) {
+            final id = state.pathParameters['id']!;
+            return _buildPage(state, TaskHistoryScreen(todoId: id));
           },
         ),
       ],
@@ -299,6 +319,25 @@ final _router = GoRouter(
           _buildPage(state, const MasteryDeckScreen()),
     ),
     GoRoute(
+      path: AppRoutes.ritual,
+      pageBuilder: (context, state) => _buildPage(state, const RitualScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.ritualDeck,
+      pageBuilder: (context, state) =>
+          _buildPage(state, const RitualDeckScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.ritualSettings,
+      pageBuilder: (context, state) =>
+          _buildPage(state, const RitualSettingsScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.pendingAlerts,
+      pageBuilder: (context, state) =>
+          _buildPage(state, const PendingAlertsScreen()),
+    ),
+    GoRoute(
       path: AppRoutes.airQrScan,
       pageBuilder: (context, state) =>
           _buildPage(state, const AirQrScanScreen()),
@@ -376,11 +415,24 @@ final _router = GoRouter(
   ],
 );
 
-class TodoApp extends ConsumerWidget {
-  const TodoApp({super.key});
+class TodoApp extends ConsumerStatefulWidget {
+  const TodoApp({super.key, this.initialLocation = AppRoutes.root});
+
+  /// The first screen of the session. `main.dart` passes the ritual route when
+  /// Ritual mode is on and today's ritual has not run yet.
+  final String initialLocation;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<TodoApp> createState() => _TodoAppState();
+}
+
+class _TodoAppState extends ConsumerState<TodoApp> {
+  // Built once and kept, so a rebuild for a theme or language change never
+  // throws the user back to the first screen.
+  late final GoRouter _router = _createRouter(widget.initialLocation);
+
+  @override
+  Widget build(BuildContext context) {
     final appearance = ref.watch(appearanceProvider);
     final locale = ref.watch(localeProvider);
     final fontFamily = appearance.font.family;
@@ -413,7 +465,12 @@ class TodoApp extends ConsumerWidget {
         return MediaQuery(
           data: media.copyWith(textScaler: TextScaler.linear(combined)),
           // Owns auto-stop, auto-pause on background, and keep-screen-awake.
-          child: TimerLifecycleWatcher(child: child ?? const SizedBox.shrink()),
+          child: TimerLifecycleWatcher(
+            child: PendingAlertWatcher(
+              navigatorKey: rootNavigatorKey,
+              child: child ?? const SizedBox.shrink(),
+            ),
+          ),
         );
       },
     );

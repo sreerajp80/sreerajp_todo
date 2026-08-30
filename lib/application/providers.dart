@@ -15,8 +15,14 @@ import 'package:sreerajp_todo/application/time_tracking_state.dart';
 import 'package:sreerajp_todo/application/timer_paused_store.dart';
 import 'package:sreerajp_todo/application/voice_capture_notifier.dart';
 import 'package:sreerajp_todo/application/voice_capture_state.dart';
+import 'package:sreerajp_todo/application/ritual_notifier.dart';
 import 'package:sreerajp_todo/application/security_settings_notifier.dart';
 import 'package:sreerajp_todo/application/app_lock_notifier.dart';
+import 'package:sreerajp_todo/application/pending_alert_notifier.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/core/platform/pending_notification_channel.dart';
+import 'package:sreerajp_todo/core/platform/running_notification_channel.dart';
 import 'package:sreerajp_todo/core/platform/screen_wake_channel.dart';
 import 'package:sreerajp_todo/core/platform/speech_channel.dart';
 import 'package:sreerajp_todo/data/backup/backup_service.dart';
@@ -44,16 +50,21 @@ import 'package:sreerajp_todo/domain/usecases/delete_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/generate_recurring_tasks.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
+import 'package:sreerajp_todo/domain/usecases/get_todo_history.dart';
+import 'package:sreerajp_todo/domain/usecases/move_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/repair_orphaned_segments.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 import 'package:sreerajp_todo/data/dao/spaced_repetition_dao.dart';
+import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
+import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/repositories/spaced_repetition_repository_impl.dart';
 import 'package:sreerajp_todo/domain/repositories/spaced_repetition_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/complete_srs_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/generate_spaced_repetition_tasks.dart';
 import 'package:sreerajp_todo/data/services/p2p_wifi_sync_service.dart';
 import 'package:sreerajp_todo/data/services/data_handoff_service.dart';
+import 'package:sreerajp_todo/data/services/ritual_service.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/appearance_notifier.dart';
@@ -102,6 +113,10 @@ final timeSegmentDaoProvider = Provider<TimeSegmentDao>((ref) {
   return TimeSegmentDao(ref.read(databaseServiceProvider));
 });
 
+final todoHistoryDaoProvider = Provider<TodoHistoryDao>((ref) {
+  return TodoHistoryDao(ref.read(databaseServiceProvider));
+});
+
 final recurrenceRuleDaoProvider = Provider<RecurrenceRuleDao>((ref) {
   return RecurrenceRuleDao(ref.read(databaseServiceProvider));
 });
@@ -111,7 +126,11 @@ final statisticsQueryServiceProvider = Provider<StatisticsQueryService>((ref) {
 });
 
 final todoRepositoryProvider = Provider<TodoRepository>((ref) {
-  return TodoRepositoryImpl(ref.read(todoDaoProvider));
+  return TodoRepositoryImpl(
+    ref.read(todoDaoProvider),
+    todoHistoryDao: ref.read(todoHistoryDaoProvider),
+    timeSegmentDao: ref.read(timeSegmentDaoProvider),
+  );
 });
 
 final recurrenceRuleRepositoryProvider = Provider<RecurrenceRuleRepository>((
@@ -125,6 +144,7 @@ final timeSegmentRepositoryProvider = Provider<TimeSegmentRepository>((ref) {
     ref.read(timeSegmentDaoProvider),
     ref.read(todoDaoProvider),
     ref.read(databaseServiceProvider),
+    todoHistoryDao: ref.read(todoHistoryDaoProvider),
   );
 });
 
@@ -148,6 +168,22 @@ final portTodoProvider = Provider<PortTodo>((ref) {
     ref.read(timeSegmentRepositoryProvider),
   );
 });
+
+final moveTodoProvider = Provider<MoveTodo>((ref) {
+  return MoveTodo(
+    ref.read(todoRepositoryProvider),
+    ref.read(timeSegmentRepositoryProvider),
+  );
+});
+
+final getTodoHistoryProvider = Provider<GetTodoHistory>((ref) {
+  return GetTodoHistory(ref.read(todoRepositoryProvider));
+});
+
+final todoHistoryProvider =
+    FutureProvider.family<List<TodoHistoryEntity>, String>((ref, todoId) {
+      return ref.watch(getTodoHistoryProvider)(todoId);
+    });
 
 final copyTodosProvider = Provider<CopyTodos>((ref) {
   return CopyTodos(ref.read(todoRepositoryProvider));
@@ -236,7 +272,11 @@ final dailyTodoProvider =
         portTodoUseCase: ref.read(portTodoProvider),
         copyTodosUseCase: ref.read(copyTodosProvider),
         deleteRecurringTodos: ref.read(deleteRecurringTodosProvider),
-        onDataChanged: () => ref.invalidate(statisticsProvider),
+        moveTodoUseCase: ref.read(moveTodoProvider),
+        onDataChanged: () {
+          ref.invalidate(statisticsProvider);
+          ref.invalidate(pendingAlertPayloadProvider);
+        },
         onTimerStopped: (id) {
           ref.invalidate(timeTrackingProvider(id));
           // A finished task must never keep showing a Resume button.
@@ -303,6 +343,12 @@ final timerActivityTickProvider = StateProvider<int>((ref) => 0);
 final screenWakeChannelProvider = Provider<ScreenWakeChannel>((ref) {
   return ScreenWakeChannel();
 });
+
+final runningNotificationChannelProvider = Provider<RunningNotificationChannel>(
+  (ref) {
+    return RunningNotificationChannel();
+  },
+);
 
 /// The on-device speech recogniser channel used by the voice task sheet.
 ///
@@ -523,4 +569,86 @@ final appLockProvider = StateNotifierProvider<AppLockNotifier, AppLockState>((
   final prefs = ref.watch(sharedPreferencesProvider);
   final settingsNotifier = ref.watch(securitySettingsProvider.notifier);
   return AppLockNotifier(settings: settingsNotifier, prefs: prefs);
+});
+
+/// Ritual mode preferences: the guided day open, its breathing rhythm, its
+/// steps, and the day it last ran.
+final ritualProvider = StateNotifierProvider<RitualNotifier, RitualSettings>((
+  ref,
+) {
+  return RitualNotifier(ref.watch(sharedPreferencesProvider));
+});
+
+/// The Ritual Deck's spaced repetition: which card comes next, and when a
+/// rated card returns.
+///
+/// Entirely preference-backed. It never touches the database, so it is not
+/// part of any backup, export or sync payload.
+final ritualServiceProvider = Provider<RitualService>((ref) {
+  return RitualService(ref.watch(sharedPreferencesProvider));
+});
+
+final pendingNotificationChannelProvider = Provider<PendingNotificationChannel>(
+  (ref) {
+    return PendingNotificationChannel();
+  },
+);
+
+/// Pending todo alerts preferences (master toggle, day-start time, interval).
+final pendingAlertSettingsProvider =
+    StateNotifierProvider<PendingAlertNotifier, PendingAlertSettings>((ref) {
+      final prefs = ref.watch(sharedPreferencesProvider);
+      return PendingAlertNotifier(prefs);
+    });
+
+/// Pending or in-progress tasks for today.
+final pendingTodosForTodayProvider = FutureProvider<List<TodoEntity>>((
+  ref,
+) async {
+  final repo = ref.watch(todoRepositoryProvider);
+  final today = todayAsIso();
+  final todos = await repo.getTodosByDate(today);
+  return todos
+      .where(
+        (t) => t.status == TodoStatus.pending || t.status == TodoStatus.working,
+      )
+      .toList();
+});
+
+/// Queries today's pending tasks and recent previous days' unfinished tasks.
+final pendingAlertPayloadProvider = FutureProvider<PendingAlertPayload>((
+  ref,
+) async {
+  final repo = ref.watch(todoRepositoryProvider);
+  final today = todayAsIso();
+  final target = parseIsoDate(today);
+
+  // Today's pending & working tasks
+  final todayAll = await repo.getTodosByDate(today);
+  final todayPending = todayAll
+      .where(
+        (t) => t.status == TodoStatus.pending || t.status == TodoStatus.working,
+      )
+      .toList();
+
+  // Previous days' unfinished tasks (look back up to 7 days)
+  final previousUnfinished = <TodoEntity>[];
+  final todayTitles = todayAll.map((t) => t.title.toLowerCase().trim()).toSet();
+
+  for (var back = 1; back <= 7; back++) {
+    final day = dateTimeToIso(target.subtract(Duration(days: back)));
+    final dayTodos = await repo.getTodosByDate(day);
+    for (final todo in dayTodos) {
+      if ((todo.status == TodoStatus.pending ||
+              todo.status == TodoStatus.working) &&
+          !todayTitles.contains(todo.title.toLowerCase().trim())) {
+        previousUnfinished.add(todo);
+      }
+    }
+  }
+
+  return PendingAlertPayload(
+    todayTodos: todayPending,
+    previousTodos: previousUnfinished,
+  );
 });

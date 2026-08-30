@@ -18,23 +18,25 @@ class WeekStartScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.dateTimeWeekStart)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsChoiceList<WeekStartDay>(
-            title: l10n.weekStartTitle,
-            subtitle: l10n.weekStartSubtitle,
-            selected: settings.weekStart,
-            onChanged: notifier.setWeekStart,
-            choices: [
-              for (final option in WeekStartDay.values)
-                SettingsChoice(
-                  value: option,
-                  label: weekStartName(l10n, option),
-                ),
-            ],
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsChoiceList<WeekStartDay>(
+              title: l10n.weekStartTitle,
+              subtitle: l10n.weekStartSubtitle,
+              selected: settings.weekStart,
+              onChanged: notifier.setWeekStart,
+              choices: [
+                for (final option in WeekStartDay.values)
+                  SettingsChoice(
+                    value: option,
+                    label: weekStartName(l10n, option),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -28,37 +28,39 @@ class DayStartScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.dateTimeDayStart)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsChoiceList<int>(
-            title: l10n.dayStartTitle,
-            subtitle: l10n.dayStartSubtitle,
-            selected: settings.dayStartHour,
-            onChanged: notifier.setDayStartHour,
-            choices: [
-              for (
-                var hour = kMinDayStartHour;
-                hour <= kMaxDayStartHour;
-                hour++
-              )
-                SettingsChoice(
-                  value: hour,
-                  label: dayStartHourLabel(l10n, hour),
-                ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: l10n.dayStartExplainTitle,
-            child: Text(l10n.dayStartExplainBody),
-          ),
-          const SizedBox(height: 16),
-          SettingsNoteCard(
-            icon: Icons.today_rounded,
-            text: l10n.dayStartCurrentDay(currentDay),
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsChoiceList<int>(
+              title: l10n.dayStartTitle,
+              subtitle: l10n.dayStartSubtitle,
+              selected: settings.dayStartHour,
+              onChanged: notifier.setDayStartHour,
+              choices: [
+                for (
+                  var hour = kMinDayStartHour;
+                  hour <= kMaxDayStartHour;
+                  hour++
+                )
+                  SettingsChoice(
+                    value: hour,
+                    label: dayStartHourLabel(l10n, hour),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: l10n.dayStartExplainTitle,
+              child: Text(l10n.dayStartExplainBody),
+            ),
+            const SizedBox(height: 16),
+            SettingsNoteCard(
+              icon: Icons.today_rounded,
+              text: l10n.dayStartCurrentDay(currentDay),
+            ),
+          ],
+        ),
       ),
     );
   }

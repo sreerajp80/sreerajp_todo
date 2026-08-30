@@ -309,6 +309,8 @@ mixin _$UndoEntry {
   TodoStatus get oldStatus => throw _privateConstructorUsedError;
   TodoStatus get newStatus => throw _privateConstructorUsedError;
   String? get copiedTodoId => throw _privateConstructorUsedError;
+  String? get sourceDate => throw _privateConstructorUsedError;
+  String? get targetDate => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
 
   /// Create a copy of UndoEntry
@@ -328,6 +330,8 @@ abstract class $UndoEntryCopyWith<$Res> {
     TodoStatus oldStatus,
     TodoStatus newStatus,
     String? copiedTodoId,
+    String? sourceDate,
+    String? targetDate,
     DateTime timestamp,
   });
 }
@@ -351,6 +355,8 @@ class _$UndoEntryCopyWithImpl<$Res, $Val extends UndoEntry>
     Object? oldStatus = null,
     Object? newStatus = null,
     Object? copiedTodoId = freezed,
+    Object? sourceDate = freezed,
+    Object? targetDate = freezed,
     Object? timestamp = null,
   }) {
     return _then(
@@ -370,6 +376,14 @@ class _$UndoEntryCopyWithImpl<$Res, $Val extends UndoEntry>
             copiedTodoId: freezed == copiedTodoId
                 ? _value.copiedTodoId
                 : copiedTodoId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            sourceDate: freezed == sourceDate
+                ? _value.sourceDate
+                : sourceDate // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            targetDate: freezed == targetDate
+                ? _value.targetDate
+                : targetDate // ignore: cast_nullable_to_non_nullable
                       as String?,
             timestamp: null == timestamp
                 ? _value.timestamp
@@ -395,6 +409,8 @@ abstract class _$$UndoEntryImplCopyWith<$Res>
     TodoStatus oldStatus,
     TodoStatus newStatus,
     String? copiedTodoId,
+    String? sourceDate,
+    String? targetDate,
     DateTime timestamp,
   });
 }
@@ -417,6 +433,8 @@ class __$$UndoEntryImplCopyWithImpl<$Res>
     Object? oldStatus = null,
     Object? newStatus = null,
     Object? copiedTodoId = freezed,
+    Object? sourceDate = freezed,
+    Object? targetDate = freezed,
     Object? timestamp = null,
   }) {
     return _then(
@@ -437,6 +455,14 @@ class __$$UndoEntryImplCopyWithImpl<$Res>
             ? _value.copiedTodoId
             : copiedTodoId // ignore: cast_nullable_to_non_nullable
                   as String?,
+        sourceDate: freezed == sourceDate
+            ? _value.sourceDate
+            : sourceDate // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        targetDate: freezed == targetDate
+            ? _value.targetDate
+            : targetDate // ignore: cast_nullable_to_non_nullable
+                  as String?,
         timestamp: null == timestamp
             ? _value.timestamp
             : timestamp // ignore: cast_nullable_to_non_nullable
@@ -454,6 +480,8 @@ class _$UndoEntryImpl implements _UndoEntry {
     required this.oldStatus,
     required this.newStatus,
     this.copiedTodoId,
+    this.sourceDate,
+    this.targetDate,
     required this.timestamp,
   });
 
@@ -466,11 +494,15 @@ class _$UndoEntryImpl implements _UndoEntry {
   @override
   final String? copiedTodoId;
   @override
+  final String? sourceDate;
+  @override
+  final String? targetDate;
+  @override
   final DateTime timestamp;
 
   @override
   String toString() {
-    return 'UndoEntry(todoId: $todoId, oldStatus: $oldStatus, newStatus: $newStatus, copiedTodoId: $copiedTodoId, timestamp: $timestamp)';
+    return 'UndoEntry(todoId: $todoId, oldStatus: $oldStatus, newStatus: $newStatus, copiedTodoId: $copiedTodoId, sourceDate: $sourceDate, targetDate: $targetDate, timestamp: $timestamp)';
   }
 
   @override
@@ -485,6 +517,10 @@ class _$UndoEntryImpl implements _UndoEntry {
                 other.newStatus == newStatus) &&
             (identical(other.copiedTodoId, copiedTodoId) ||
                 other.copiedTodoId == copiedTodoId) &&
+            (identical(other.sourceDate, sourceDate) ||
+                other.sourceDate == sourceDate) &&
+            (identical(other.targetDate, targetDate) ||
+                other.targetDate == targetDate) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp));
   }
@@ -496,6 +532,8 @@ class _$UndoEntryImpl implements _UndoEntry {
     oldStatus,
     newStatus,
     copiedTodoId,
+    sourceDate,
+    targetDate,
     timestamp,
   );
 
@@ -514,6 +552,8 @@ abstract class _UndoEntry implements UndoEntry {
     required final TodoStatus oldStatus,
     required final TodoStatus newStatus,
     final String? copiedTodoId,
+    final String? sourceDate,
+    final String? targetDate,
     required final DateTime timestamp,
   }) = _$UndoEntryImpl;
 
@@ -525,6 +565,10 @@ abstract class _UndoEntry implements UndoEntry {
   TodoStatus get newStatus;
   @override
   String? get copiedTodoId;
+  @override
+  String? get sourceDate;
+  @override
+  String? get targetDate;
   @override
   DateTime get timestamp;
 

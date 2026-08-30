@@ -83,48 +83,50 @@ class _AppLockScreenState extends ConsumerState<AppLockScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.securityAppLock)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsChoiceList<AppLockMode>(
-            title: l10n.appLockModeTitle,
-            subtitle: l10n.appLockModeSubtitle,
-            selected: settings.lockMode,
-            onChanged: _onModeChosen,
-            choices: [
-              for (final mode in AppLockMode.values)
-                SettingsChoice(
-                  value: mode,
-                  label: appLockModeName(l10n, mode),
-                  detail: _detailFor(l10n, mode),
-                ),
-            ],
-          ),
-          if (settings.needsTypedSecret) ...[
-            const SizedBox(height: 16),
-            AppSectionCard(
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: OutlinedButton.icon(
-                  onPressed: () => _promptForSecret(settings.lockMode),
-                  icon: const Icon(Icons.edit_outlined),
-                  label: Text(l10n.appLockChange),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsChoiceList<AppLockMode>(
+              title: l10n.appLockModeTitle,
+              subtitle: l10n.appLockModeSubtitle,
+              selected: settings.lockMode,
+              onChanged: _onModeChosen,
+              choices: [
+                for (final mode in AppLockMode.values)
+                  SettingsChoice(
+                    value: mode,
+                    label: appLockModeName(l10n, mode),
+                    detail: _detailFor(l10n, mode),
+                  ),
+              ],
+            ),
+            if (settings.needsTypedSecret) ...[
+              const SizedBox(height: 16),
+              AppSectionCard(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: OutlinedButton.icon(
+                    onPressed: () => _promptForSecret(settings.lockMode),
+                    icon: const Icon(Icons.edit_outlined),
+                    label: Text(l10n.appLockChange),
+                  ),
                 ),
               ),
-            ),
+            ],
+            if (settings.isLockEnabled) ...[
+              const SizedBox(height: 16),
+              AppSectionCard(
+                title: l10n.appLockWarningTitle,
+                child: Text(l10n.appLockWarningBody),
+              ),
+            ],
+            if (!_deviceCredentialAvailable) ...[
+              const SizedBox(height: 16),
+              SettingsNoteCard(text: l10n.appLockDeviceUnavailable),
+            ],
           ],
-          if (settings.isLockEnabled) ...[
-            const SizedBox(height: 16),
-            AppSectionCard(
-              title: l10n.appLockWarningTitle,
-              child: Text(l10n.appLockWarningBody),
-            ),
-          ],
-          if (!_deviceCredentialAvailable) ...[
-            const SizedBox(height: 16),
-            SettingsNoteCard(text: l10n.appLockDeviceUnavailable),
-          ],
-        ],
+        ),
       ),
     );
   }

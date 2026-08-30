@@ -60,6 +60,10 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
 
   bool get _isPast => isPastDate(widget.date);
 
+  /// True once the evening close has been considered for this screen, so it is
+  /// never offered twice in one visit.
+  bool _eveningCloseChecked = false;
+
   /// The order in force right now: this screen's pick, or the saved default.
   TodoSortOption get _effectiveSort =>
       _sortOption ?? ref.read(taskDefaultsProvider).sortOption;
@@ -67,7 +71,54 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeOfferCarryOver());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        ref.read(dailyTodoProvider(widget.date).notifier).loadTodos();
+      }
+      _maybeOfferCarryOver();
+      _maybeOfferEveningClose();
+    });
+  }
+
+  @override
+  void didUpdateWidget(DailyListScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.date != widget.date) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          ref.read(dailyTodoProvider(widget.date).notifier).loadTodos();
+        }
+      });
+    }
+  }
+
+  /// Offers the evening reflection once, later in the day.
+  ///
+  /// Part of Ritual mode, and off unless both that and "evening close" are
+  /// turned on. It opens the reflection modal that already exists rather than
+  /// anything of its own: the ritual closes the day with the same tool the app
+  /// has always used.
+  Future<void> _maybeOfferEveningClose() async {
+    if (_eveningCloseChecked || !mounted) return;
+    _eveningCloseChecked = true;
+
+    final today = todayAsIso();
+    if (widget.date != today) return;
+
+    final ritual = ref.read(ritualProvider);
+    if (!ritual.shouldOfferEveningClose(today, DateTime.now())) return;
+
+    // Marked before the modal opens, so a crash or a force-close cannot make
+    // it reappear over and over on the same evening.
+    await ref.read(ritualProvider.notifier).markEveningAsked(today);
+    if (!mounted) return;
+
+    await EveningReflectionModal.show(
+      context,
+      date: widget.date,
+      isPast: _isPast,
+      todos: ref.read(dailyTodoProvider(widget.date)).todos,
+    );
   }
 
   /// Offers to copy unfinished tasks forward, at most once a day.
@@ -81,6 +132,51 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     final defaults = ref.read(taskDefaultsProvider);
     final today = todayAsIso();
     if (widget.date != today) return;
+
+    final notifier = ref.read(taskDefaultsProvider.notifier);
+
+    // If automatic carry-over is enabled (default: ON):
+    if (defaults.autoCarryOverEnabled) {
+      if (defaults.carryOverLastAsked == today) return;
+      await notifier.markCarryOverAsked(today);
+
+      final List<TodoEntity> candidates;
+      try {
+        candidates = await CarryOverSheet.findAllUnfinishedCandidates(
+          ref,
+          targetDate: today,
+          lookBackDays: defaults.carryOverLookBackDays,
+        );
+      } on Exception catch (error) {
+        if (mounted) _showError(error);
+        return;
+      }
+
+      if (candidates.isEmpty || !mounted) return;
+
+      final ordered = candidates.map((todo) => todo.id).toList();
+      try {
+        final result = await ref.read(copyTodosProvider)(ordered, today);
+        if (result.copied.isNotEmpty) {
+          ref.invalidate(dailyTodoProvider(today));
+          ref.invalidate(pendingAlertPayloadProvider);
+          ref.invalidate(statisticsProvider);
+
+          if (mounted) {
+            final message = context.l10n.autoCarryOverDone(
+              result.copied.length,
+            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(message)));
+          }
+        }
+      } catch (error) {
+        if (mounted) _showError(error);
+      }
+      return;
+    }
+
     if (!shouldAskCarryOver(
       enabled: defaults.carryOverEnabled,
       lastAskedIso: defaults.carryOverLastAsked,
@@ -89,7 +185,6 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       return;
     }
 
-    final notifier = ref.read(taskDefaultsProvider.notifier);
     // Marked before the sheet opens, so a crash or a force-close cannot make
     // the sheet reappear over and over on the same day.
     await notifier.markCarryOverAsked(today);
@@ -121,6 +216,8 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
 
     if (outcome.copied > 0) {
       ref.invalidate(dailyTodoProvider(today));
+      ref.invalidate(pendingAlertPayloadProvider);
+      ref.invalidate(statisticsProvider);
     }
     if (!mounted) return;
 
@@ -244,6 +341,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
             .read(dailyTodoProvider(widget.date).notifier)
             .portTodo(todoId, targetDate);
         if (mounted) {
+          ref.invalidate(dailyTodoProvider(targetDate));
           showUndoSnackBar(
             context,
             message: context.l10n.todoPorted,
@@ -251,6 +349,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               ref
                   .read(dailyTodoProvider(widget.date).notifier)
                   .undoLastStatusChange();
+              ref.invalidate(dailyTodoProvider(targetDate));
             },
           );
         }
@@ -269,6 +368,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     );
     if (result != null && mounted) {
       ref.read(dailyTodoProvider(widget.date).notifier).loadTodos();
+      for (final copy in result.copied) {
+        ref.invalidate(dailyTodoProvider(copy.date));
+      }
       final message = StringBuffer();
       message.write('${result.copied.length} ${context.l10n.todosCopied}');
       if (result.skipped.isNotEmpty) {
@@ -795,6 +897,12 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           onPressed: () => _openCopyWizard(),
           tooltip: context.l10n.copyToAnotherDay,
         ),
+        if (isToday(widget.date) && ref.watch(ritualProvider).enabled)
+          _buildActionIcon(
+            icon: Icons.self_improvement_rounded,
+            onPressed: () => context.push(AppRoutes.ritual),
+            tooltip: context.l10n.ritualRunNow,
+          ),
         _buildActionIcon(
           icon: Icons.auto_awesome_outlined,
           onPressed: () => EveningReflectionModal.show(

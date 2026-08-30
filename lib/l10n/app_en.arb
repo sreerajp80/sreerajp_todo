@@ -2053,6 +2053,24 @@
   "@confirmCompleteBody": {
     "description": "Confirmation dialog body text when completing a task."
   },
+  "defaultsAutoCarryOver": "Auto carry-over incomplete tasks",
+  "@defaultsAutoCarryOver": {
+    "description": "Switch label for automatic carry-over of incomplete tasks."
+  },
+  "defaultsAutoCarryOverDetail": "Automatically carry over unfinished tasks from earlier days into today without asking.",
+  "@defaultsAutoCarryOverDetail": {
+    "description": "Help line for the automatic carry-over switch."
+  },
+  "autoCarryOverDone": "{count, plural, =1{Automatically carried over 1 task to today} other{Automatically carried over {count} tasks to today}}",
+  "@autoCarryOverDone": {
+    "description": "SnackBar notification after automatically carrying over unfinished tasks.",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "defaultsCarryOver": "Ask to carry over unfinished tasks",
   "@defaultsCarryOver": {
     "description": "Switch label for the carry-over prompt."
@@ -2800,5 +2818,1451 @@
         "example": "10:30"
       }
     }
+  },
+  "settingsRitual": "Ritual mode",
+  "@settingsRitual": {
+    "description": "Settings row that opens the Ritual mode page."
+  },
+  "settingsRitualSubtitle": "A quiet, guided start to the day",
+  "@settingsRitualSubtitle": {
+    "description": "Subtitle under the Ritual mode row in Settings."
+  },
+  "ritualTitle": "Ritual mode",
+  "@ritualTitle": {
+    "description": "Title of the ritual flow and its settings page."
+  },
+  "ritualEnabled": "Ritual mode",
+  "@ritualEnabled": {
+    "description": "Main on/off switch for Ritual mode."
+  },
+  "ritualEnabledDetail": "Breathe, read one card, settle the day, then begin.",
+  "@ritualEnabledDetail": {
+    "description": "Explains what Ritual mode does, under its switch."
+  },
+  "ritualOpenOnLaunch": "Open on the first launch of a day",
+  "@ritualOpenOnLaunch": {
+    "description": "Switch: run the ritual automatically once a day."
+  },
+  "ritualOpenOnLaunchDetail": "With this off, start it yourself from the day list.",
+  "@ritualOpenOnLaunchDetail": {
+    "description": "Explains the automatic-open switch."
+  },
+  "ritualBreathSection": "Breathing",
+  "@ritualBreathSection": {
+    "description": "Section heading for the breathing settings."
+  },
+  "ritualBreathTechnique": "Rhythm",
+  "@ritualBreathTechnique": {
+    "description": "Choice list title for the breathing rhythm."
+  },
+  "ritualBreathBox": "Box breathing (4-4-4-4)",
+  "@ritualBreathBox": {
+    "description": "Breathing rhythm: four seconds in, hold, out, hold."
+  },
+  "ritualBreathRelaxing": "Relaxing breath (4-7-8)",
+  "@ritualBreathRelaxing": {
+    "description": "Breathing rhythm: four in, seven hold, eight out."
+  },
+  "ritualBreathCalm": "Calm rhythm (4-4)",
+  "@ritualBreathCalm": {
+    "description": "Breathing rhythm: four seconds in, four seconds out."
+  },
+  "ritualBreathCyclesLabel": "Breaths",
+  "@ritualBreathCyclesLabel": {
+    "description": "Label on the stepper that sets how many breaths."
+  },
+  "ritualBreathCount": "{count, plural, one{{count} breath} other{{count} breaths}}",
+  "@ritualBreathCount": {
+    "description": "How many breaths the first step runs for.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "ritualHaptic": "Gentle buzz at each change",
+  "@ritualHaptic": {
+    "description": "Switch: vibrate when the breathing phase changes."
+  },
+  "ritualHapticDetail": "A short tap when it is time to breathe in, hold or let go, so the eyes can stay closed.",
+  "@ritualHapticDetail": {
+    "description": "Explains the breathing haptic switch."
+  },
+  "ritualStepsSection": "Steps",
+  "@ritualStepsSection": {
+    "description": "Section heading for turning ritual steps on or off."
+  },
+  "ritualCardStepSwitch": "Show a reflection card",
+  "@ritualCardStepSwitch": {
+    "description": "Switch: include the card step in the ritual."
+  },
+  "ritualCardStepDetail": "One card from the Ritual Deck, chosen by when you last saw it.",
+  "@ritualCardStepDetail": {
+    "description": "Explains the card step switch."
+  },
+  "ritualSettleStepSwitch": "Settle the day",
+  "@ritualSettleStepSwitch": {
+    "description": "Switch: include the settle step in the ritual."
+  },
+  "ritualSettleStepDetail": "Carry over what is left from before, then pick the three tasks to lead today.",
+  "@ritualSettleStepDetail": {
+    "description": "Explains the settle step switch."
+  },
+  "ritualEveningSection": "Evening close",
+  "@ritualEveningSection": {
+    "description": "Section heading for the evening reflection offer."
+  },
+  "ritualEveningClose": "Offer an evening reflection",
+  "@ritualEveningClose": {
+    "description": "Switch: offer the evening reflection once a day."
+  },
+  "ritualEveningCloseDetail": "Once a day, later on, the day list offers to close the day.",
+  "@ritualEveningCloseDetail": {
+    "description": "Explains the evening close switch."
+  },
+  "ritualEveningFrom": "Offer it from",
+  "@ritualEveningFrom": {
+    "description": "Label for the hour the evening close starts being offered."
+  },
+  "ritualDeckSection": "The deck",
+  "@ritualDeckSection": {
+    "description": "Section heading for the Ritual Deck actions."
+  },
+  "ritualBrowseDeck": "Browse the Ritual Deck",
+  "@ritualBrowseDeck": {
+    "description": "Opens the deck browser from Settings."
+  },
+  "ritualBrowseDeckDetail": "All the cards, and when each one comes back.",
+  "@ritualBrowseDeckDetail": {
+    "description": "Subtitle for the deck browser row."
+  },
+  "ritualResetReviews": "Reset card reviews",
+  "@ritualResetReviews": {
+    "description": "Clears the spaced repetition history for every card."
+  },
+  "ritualResetReviewsDetail": "Every card becomes new again. Your tasks are not touched.",
+  "@ritualResetReviewsDetail": {
+    "description": "Subtitle for the reset reviews row."
+  },
+  "ritualResetConfirmTitle": "Reset card reviews?",
+  "@ritualResetConfirmTitle": {
+    "description": "Title of the confirm dialog for resetting reviews."
+  },
+  "ritualResetConfirmBody": "The deck starts from the first card again. Nothing else changes.",
+  "@ritualResetConfirmBody": {
+    "description": "Body of the confirm dialog for resetting reviews."
+  },
+  "ritualResetDone": "Card reviews reset.",
+  "@ritualResetDone": {
+    "description": "SnackBar after the card reviews are cleared."
+  },
+  "ritualRunNow": "Run the ritual now",
+  "@ritualRunNow": {
+    "description": "Starts the ritual by hand from Settings or the day list."
+  },
+  "ritualStepBreathe": "Breathe",
+  "@ritualStepBreathe": {
+    "description": "Name of the first ritual step."
+  },
+  "ritualStepReflect": "Reflect",
+  "@ritualStepReflect": {
+    "description": "Name of the second ritual step."
+  },
+  "ritualStepSettle": "Settle",
+  "@ritualStepSettle": {
+    "description": "Name of the third ritual step."
+  },
+  "ritualStepBegin": "Begin",
+  "@ritualStepBegin": {
+    "description": "Name of the last ritual step."
+  },
+  "ritualSkip": "Skip ritual",
+  "@ritualSkip": {
+    "description": "Leaves the ritual and goes straight to the day list."
+  },
+  "ritualContinue": "Continue",
+  "@ritualContinue": {
+    "description": "Moves to the next ritual step."
+  },
+  "ritualBreathIn": "Breathe in",
+  "@ritualBreathIn": {
+    "description": "Breathing phase label: inhale."
+  },
+  "ritualBreathHold": "Hold",
+  "@ritualBreathHold": {
+    "description": "Breathing phase label: hold after breathing in."
+  },
+  "ritualBreathOut": "Breathe out",
+  "@ritualBreathOut": {
+    "description": "Breathing phase label: exhale."
+  },
+  "ritualBreathRest": "Rest",
+  "@ritualBreathRest": {
+    "description": "Breathing phase label: hold after breathing out."
+  },
+  "ritualBreathInHint": "Slowly, through the nose.",
+  "@ritualBreathInHint": {
+    "description": "Guidance under the inhale phase."
+  },
+  "ritualBreathHoldHint": "Hold it gently at the top.",
+  "@ritualBreathHoldHint": {
+    "description": "Guidance under the hold phase."
+  },
+  "ritualBreathOutHint": "Let it all go, without hurry.",
+  "@ritualBreathOutHint": {
+    "description": "Guidance under the exhale phase."
+  },
+  "ritualBreathRestHint": "Stay in the quiet for a moment.",
+  "@ritualBreathRestHint": {
+    "description": "Guidance under the rest phase."
+  },
+  "ritualBreathProgress": "Breath {current} of {total}",
+  "@ritualBreathProgress": {
+    "description": "Counter shown under the breathing circle.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "ritualBreathFinished": "That is enough.",
+  "@ritualBreathFinished": {
+    "description": "Shown when the breathing step has run its course."
+  },
+  "ritualCardProgress": "Card {number} of {total}",
+  "@ritualCardProgress": {
+    "description": "Which card of the deck is on screen.",
+    "placeholders": {
+      "number": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "ritualCardAnother": "Show another card",
+  "@ritualCardAnother": {
+    "description": "Moves to the next card in the deck."
+  },
+  "ritualMakeIntention": "Make this today's intention",
+  "@ritualMakeIntention": {
+    "description": "Saves the card title as the day's intention."
+  },
+  "ritualIntentionSaved": "Saved as today's intention.",
+  "@ritualIntentionSaved": {
+    "description": "SnackBar after the card is saved as the intention."
+  },
+  "ritualRateQuestion": "When should this card come back?",
+  "@ritualRateQuestion": {
+    "description": "Asked above the Hard / Revision / Easy buttons."
+  },
+  "ritualRateHard": "Hard",
+  "@ritualRateHard": {
+    "description": "Recall rating: bring this card back tomorrow."
+  },
+  "ritualRateRevision": "Revision",
+  "@ritualRateRevision": {
+    "description": "Recall rating: bring this card back in a few days."
+  },
+  "ritualRateEasy": "Easy",
+  "@ritualRateEasy": {
+    "description": "Recall rating: this one has sunk in, leave it a while."
+  },
+  "ritualRateTomorrow": "Tomorrow",
+  "@ritualRateTomorrow": {
+    "description": "Badge under a rating button meaning one day away."
+  },
+  "ritualRateInDays": "{days, plural, one{In {days} day} other{In {days} days}}",
+  "@ritualRateInDays": {
+    "description": "Badge under a rating button, or when a card returns.",
+    "placeholders": {
+      "days": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "ritualSettleCarryTitle": "Left over from before",
+  "@ritualSettleCarryTitle": {
+    "description": "Heading above the unfinished tasks in the settle step."
+  },
+  "ritualSettleCarryEmpty": "Nothing was left unfinished. A clean start.",
+  "@ritualSettleCarryEmpty": {
+    "description": "Shown when there is nothing to carry over."
+  },
+  "ritualSettleFocusTitle": "Today's three",
+  "@ritualSettleFocusTitle": {
+    "description": "Heading above today's tasks in the settle step."
+  },
+  "ritualSettleFocusHint": "Pick up to three tasks to lead the day. They move to high priority.",
+  "@ritualSettleFocusHint": {
+    "description": "Explains what picking a focus task does."
+  },
+  "ritualSettleFocusEmpty": "No tasks for today yet. You can add them after the ritual.",
+  "@ritualSettleFocusEmpty": {
+    "description": "Shown when today has no tasks to choose from."
+  },
+  "ritualSettleFocusLimit": "Three is the limit. Untick one first.",
+  "@ritualSettleFocusLimit": {
+    "description": "SnackBar when a fourth focus task is tapped."
+  },
+  "ritualBeginTitle": "Ready",
+  "@ritualBeginTitle": {
+    "description": "Heading of the last ritual step."
+  },
+  "ritualBeginCarried": "{count, plural, one{1 task carried over} other{{count} tasks carried over}}",
+  "@ritualBeginCarried": {
+    "description": "Summary line: how many tasks were carried over.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "ritualBeginFocused": "{count, plural, one{1 task in focus} other{{count} tasks in focus}}",
+  "@ritualBeginFocused": {
+    "description": "Summary line: how many tasks were put in focus.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "ritualBeginNothing": "Nothing changed. That is fine too.",
+  "@ritualBeginNothing": {
+    "description": "Summary line when the ritual changed nothing."
+  },
+  "ritualBeginAction": "Begin the day",
+  "@ritualBeginAction": {
+    "description": "Leaves the ritual for today's task list."
+  },
+  "ritualDeckTitle": "Ritual Deck",
+  "@ritualDeckTitle": {
+    "description": "Title of the card deck browser."
+  },
+  "ritualDeckAll": "All",
+  "@ritualDeckAll": {
+    "description": "Deck filter chip: show every theme."
+  },
+  "ritualDeckDue": "Due",
+  "@ritualDeckDue": {
+    "description": "Badge on a card that is ready to come back today."
+  },
+  "ritualDeckUnseen": "New",
+  "@ritualDeckUnseen": {
+    "description": "Badge on a card that has never been shown."
+  },
+  "ritualDeckSeenCount": "{count, plural, one{Seen once} other{Seen {count} times}}",
+  "@ritualDeckSeenCount": {
+    "description": "How many times a card has been rated.",
+    "placeholders": {
+      "count": {
+        "type": "num",
+        "format": "compact"
+      }
+    }
+  },
+  "ritualDeckEmpty": "No cards in this theme.",
+  "@ritualDeckEmpty": {
+    "description": "Shown when a deck filter matches nothing."
+  },
+  "ritualPastDayNote": "The ritual runs for today only.",
+  "@ritualPastDayNote": {
+    "description": "Shown if the ritual is opened on a day that is not today."
+  },
+  "ritualThemeDharma": "Dharma",
+  "@ritualThemeDharma": {
+    "description": "Ritual deck theme: right action and duty."
+  },
+  "ritualThemeKarma": "Karma",
+  "@ritualThemeKarma": {
+    "description": "Ritual deck theme: action and its fruit."
+  },
+  "ritualThemeBhakti": "Bhakti",
+  "@ritualThemeBhakti": {
+    "description": "Ritual deck theme: love and devotion."
+  },
+  "ritualThemeJnana": "Jnana",
+  "@ritualThemeJnana": {
+    "description": "Ritual deck theme: knowledge and discernment."
+  },
+  "ritualThemeYoga": "Yoga",
+  "@ritualThemeYoga": {
+    "description": "Ritual deck theme: union and steadiness."
+  },
+  "ritualThemeAhimsa": "Ahimsa",
+  "@ritualThemeAhimsa": {
+    "description": "Ritual deck theme: non-harm and compassion."
+  },
+  "ritualThemeSathya": "Sathya",
+  "@ritualThemeSathya": {
+    "description": "Ritual deck theme: truth."
+  },
+  "ritualThemeVairagya": "Vairagya",
+  "@ritualThemeVairagya": {
+    "description": "Ritual deck theme: letting go."
+  },
+  "ritualThemeSeva": "Seva",
+  "@ritualThemeSeva": {
+    "description": "Ritual deck theme: service to others."
+  },
+  "ritualThemeShanti": "Shanti",
+  "@ritualThemeShanti": {
+    "description": "Ritual deck theme: peace."
+  },
+  "ritualCardSd01Title": "Your Swadharma",
+  "@ritualCardSd01Title": {
+    "description": "Ritual deck card sd_01: card title."
+  },
+  "ritualCardSd01Prompt": "What is the unique duty or calling that only you can fulfil in this season of your life? How are you honouring it today?",
+  "@ritualCardSd01Prompt": {
+    "description": "Ritual deck card sd_01: the reflection question."
+  },
+  "ritualCardSd01Quote": "It is better to perform one's own duty imperfectly than to perform another's duty perfectly.",
+  "@ritualCardSd01Quote": {
+    "description": "Ritual deck card sd_01: the grounding quote."
+  },
+  "ritualCardSd01QuoteAuthor": "Bhagavad Gita 3.35",
+  "@ritualCardSd01QuoteAuthor": {
+    "description": "Ritual deck card sd_01: who the quote is from."
+  },
+  "ritualCardSd02Title": "Righteousness in the Small",
+  "@ritualCardSd02Title": {
+    "description": "Ritual deck card sd_02: card title."
+  },
+  "ritualCardSd02Prompt": "In what small, everyday action today can you choose what is right over what is easy or popular?",
+  "@ritualCardSd02Prompt": {
+    "description": "Ritual deck card sd_02: the reflection question."
+  },
+  "ritualCardSd02Quote": "Dharma exists for the welfare of all beings. Hence, that by which the welfare of all living beings is sustained, that is Dharma.",
+  "@ritualCardSd02Quote": {
+    "description": "Ritual deck card sd_02: the grounding quote."
+  },
+  "ritualCardSd02QuoteAuthor": "Mahabharata, Shanti Parva 109.10",
+  "@ritualCardSd02QuoteAuthor": {
+    "description": "Ritual deck card sd_02: who the quote is from."
+  },
+  "ritualCardSd03Title": "The Wheel of Dharma",
+  "@ritualCardSd03Title": {
+    "description": "Ritual deck card sd_03: card title."
+  },
+  "ritualCardSd03Prompt": "Reflect on one relationship or responsibility you hold. Are you nurturing it with integrity, or have you been neglecting its call?",
+  "@ritualCardSd03Prompt": {
+    "description": "Ritual deck card sd_03: the reflection question."
+  },
+  "ritualCardSd03Quote": "When Dharma is protected, Dharma protects.",
+  "@ritualCardSd03Quote": {
+    "description": "Ritual deck card sd_03: the grounding quote."
+  },
+  "ritualCardSd03QuoteAuthor": "Manusmriti 8.15",
+  "@ritualCardSd03QuoteAuthor": {
+    "description": "Ritual deck card sd_03: who the quote is from."
+  },
+  "ritualCardSd04Title": "The Eternal Order",
+  "@ritualCardSd04Title": {
+    "description": "Ritual deck card sd_04: card title."
+  },
+  "ritualCardSd04Prompt": "Where in nature — the rising sun, the changing seasons, the flowing river — do you see the rhythm of Rta (cosmic order), and how does it mirror your own life?",
+  "@ritualCardSd04Prompt": {
+    "description": "Ritual deck card sd_04: the reflection question."
+  },
+  "ritualCardSd04Quote": "The rivers flow into the ocean but the ocean never overflows. Likewise, desires flow into the wise one, who remains ever at peace.",
+  "@ritualCardSd04Quote": {
+    "description": "Ritual deck card sd_04: the grounding quote."
+  },
+  "ritualCardSd04QuoteAuthor": "Bhagavad Gita 2.70",
+  "@ritualCardSd04QuoteAuthor": {
+    "description": "Ritual deck card sd_04: who the quote is from."
+  },
+  "ritualCardSd05Title": "Dharma in Adversity",
+  "@ritualCardSd05Title": {
+    "description": "Ritual deck card sd_05: card title."
+  },
+  "ritualCardSd05Prompt": "When life tests you, what principle or value do you refuse to compromise? Why does it matter to you?",
+  "@ritualCardSd05Prompt": {
+    "description": "Ritual deck card sd_05: the reflection question."
+  },
+  "ritualCardSd05Quote": "Even in the most difficult of times, one should not abandon Dharma.",
+  "@ritualCardSd05Quote": {
+    "description": "Ritual deck card sd_05: the grounding quote."
+  },
+  "ritualCardSd05QuoteAuthor": "Ramayana, Ayodhya Kanda",
+  "@ritualCardSd05QuoteAuthor": {
+    "description": "Ritual deck card sd_05: who the quote is from."
+  },
+  "ritualCardSd06Title": "Action Without Attachment",
+  "@ritualCardSd06Title": {
+    "description": "Ritual deck card sd_06: card title."
+  },
+  "ritualCardSd06Prompt": "What is one task or effort you are doing today where you can let go of the result and focus purely on the quality of your action?",
+  "@ritualCardSd06Prompt": {
+    "description": "Ritual deck card sd_06: the reflection question."
+  },
+  "ritualCardSd06Quote": "You have the right to perform your duty, but you are not entitled to the fruits of your actions.",
+  "@ritualCardSd06Quote": {
+    "description": "Ritual deck card sd_06: the grounding quote."
+  },
+  "ritualCardSd06QuoteAuthor": "Bhagavad Gita 2.47",
+  "@ritualCardSd06QuoteAuthor": {
+    "description": "Ritual deck card sd_06: who the quote is from."
+  },
+  "ritualCardSd07Title": "The Seed You Plant Today",
+  "@ritualCardSd07Title": {
+    "description": "Ritual deck card sd_07: card title."
+  },
+  "ritualCardSd07Prompt": "Every action is a seed. What kind of seed — patience, kindness, discipline, or something else — are you planting today?",
+  "@ritualCardSd07Prompt": {
+    "description": "Ritual deck card sd_07: the reflection question."
+  },
+  "ritualCardSd07Quote": "As a man sows, so shall he reap. There is no escape from the fruits of one's actions.",
+  "@ritualCardSd07Quote": {
+    "description": "Ritual deck card sd_07: the grounding quote."
+  },
+  "ritualCardSd07QuoteAuthor": "Mahabharata, Vana Parva",
+  "@ritualCardSd07QuoteAuthor": {
+    "description": "Ritual deck card sd_07: who the quote is from."
+  },
+  "ritualCardSd08Title": "Nishkama Karma",
+  "@ritualCardSd08Title": {
+    "description": "Ritual deck card sd_08: card title."
+  },
+  "ritualCardSd08Prompt": "Think of something you did purely for its own sake, without wanting praise or reward. How did that feel? Can you bring that spirit to more of your day?",
+  "@ritualCardSd08Prompt": {
+    "description": "Ritual deck card sd_08: the reflection question."
+  },
+  "ritualCardSd08Quote": "The wise, engaged in selfless action, surrender all attachment to results and attain supreme peace.",
+  "@ritualCardSd08Quote": {
+    "description": "Ritual deck card sd_08: the grounding quote."
+  },
+  "ritualCardSd08QuoteAuthor": "Bhagavad Gita 5.12",
+  "@ritualCardSd08QuoteAuthor": {
+    "description": "Ritual deck card sd_08: who the quote is from."
+  },
+  "ritualCardSd09Title": "Breaking the Chain",
+  "@ritualCardSd09Title": {
+    "description": "Ritual deck card sd_09: card title."
+  },
+  "ritualCardSd09Prompt": "Is there a pattern of reaction — anger, avoidance, blame — that you keep repeating? What would it look like to consciously choose a different response today?",
+  "@ritualCardSd09Prompt": {
+    "description": "Ritual deck card sd_09: the reflection question."
+  },
+  "ritualCardSd09Quote": "One who restrains the senses and organs of action, but whose mind dwells on sense objects, is deluded and called a hypocrite.",
+  "@ritualCardSd09Quote": {
+    "description": "Ritual deck card sd_09: the grounding quote."
+  },
+  "ritualCardSd09QuoteAuthor": "Bhagavad Gita 3.6",
+  "@ritualCardSd09QuoteAuthor": {
+    "description": "Ritual deck card sd_09: who the quote is from."
+  },
+  "ritualCardSd10Title": "Karma Yoga in Daily Life",
+  "@ritualCardSd10Title": {
+    "description": "Ritual deck card sd_10: card title."
+  },
+  "ritualCardSd10Prompt": "How can you transform an ordinary task today — cooking, cleaning, working — into an offering, performing it with full attention and devotion?",
+  "@ritualCardSd10Prompt": {
+    "description": "Ritual deck card sd_10: the reflection question."
+  },
+  "ritualCardSd10Quote": "Whatever you do, whatever you eat, whatever you offer in sacrifice, whatever you give, whatever austerity you practise — do it as an offering to Me.",
+  "@ritualCardSd10Quote": {
+    "description": "Ritual deck card sd_10: the grounding quote."
+  },
+  "ritualCardSd10QuoteAuthor": "Bhagavad Gita 9.27",
+  "@ritualCardSd10QuoteAuthor": {
+    "description": "Ritual deck card sd_10: who the quote is from."
+  },
+  "ritualCardSd11Title": "The Heart of Devotion",
+  "@ritualCardSd11Title": {
+    "description": "Ritual deck card sd_11: card title."
+  },
+  "ritualCardSd11Prompt": "What fills your heart with reverence and love — a prayer, a memory, a place, the thought of the Divine? Dwell on it now.",
+  "@ritualCardSd11Prompt": {
+    "description": "Ritual deck card sd_11: the reflection question."
+  },
+  "ritualCardSd11Quote": "Whoever offers Me with devotion a leaf, a flower, a fruit, or water — that offering of love I accept from the pure-hearted.",
+  "@ritualCardSd11Quote": {
+    "description": "Ritual deck card sd_11: the grounding quote."
+  },
+  "ritualCardSd11QuoteAuthor": "Bhagavad Gita 9.26",
+  "@ritualCardSd11QuoteAuthor": {
+    "description": "Ritual deck card sd_11: who the quote is from."
+  },
+  "ritualCardSd12Title": "Surrender and Trust",
+  "@ritualCardSd12Title": {
+    "description": "Ritual deck card sd_12: card title."
+  },
+  "ritualCardSd12Prompt": "What worry or burden can you mentally place at the feet of the Divine today, trusting that grace will carry you through?",
+  "@ritualCardSd12Prompt": {
+    "description": "Ritual deck card sd_12: the reflection question."
+  },
+  "ritualCardSd12Quote": "Abandon all varieties of Dharma and simply surrender unto Me. I shall deliver you from all sinful reactions; do not fear.",
+  "@ritualCardSd12Quote": {
+    "description": "Ritual deck card sd_12: the grounding quote."
+  },
+  "ritualCardSd12QuoteAuthor": "Bhagavad Gita 18.66",
+  "@ritualCardSd12QuoteAuthor": {
+    "description": "Ritual deck card sd_12: who the quote is from."
+  },
+  "ritualCardSd13Title": "Seeing God in All",
+  "@ritualCardSd13Title": {
+    "description": "Ritual deck card sd_13: card title."
+  },
+  "ritualCardSd13Prompt": "Can you look at every person you meet today as a form of the Divine? How would that change the way you speak and listen?",
+  "@ritualCardSd13Prompt": {
+    "description": "Ritual deck card sd_13: the reflection question."
+  },
+  "ritualCardSd13Quote": "The wise see the same Divine Self equally in a learned Brahmin, a cow, an elephant, a dog, and an outcaste.",
+  "@ritualCardSd13Quote": {
+    "description": "Ritual deck card sd_13: the grounding quote."
+  },
+  "ritualCardSd13QuoteAuthor": "Bhagavad Gita 5.18",
+  "@ritualCardSd13QuoteAuthor": {
+    "description": "Ritual deck card sd_13: who the quote is from."
+  },
+  "ritualCardSd14Title": "The Name that Purifies",
+  "@ritualCardSd14Title": {
+    "description": "Ritual deck card sd_14: card title."
+  },
+  "ritualCardSd14Prompt": "When was the last time you sat quietly and repeated a sacred name or mantra? What feelings arose when you did?",
+  "@ritualCardSd14Prompt": {
+    "description": "Ritual deck card sd_14: the reflection question."
+  },
+  "ritualCardSd14Quote": "The name of the Lord is the boat that will take you across the ocean of worldly existence.",
+  "@ritualCardSd14Quote": {
+    "description": "Ritual deck card sd_14: the grounding quote."
+  },
+  "ritualCardSd14QuoteAuthor": "Tulsidas, Ramcharitmanas",
+  "@ritualCardSd14QuoteAuthor": {
+    "description": "Ritual deck card sd_14: who the quote is from."
+  },
+  "ritualCardSd15Title": "Grace in Gratitude",
+  "@ritualCardSd15Title": {
+    "description": "Ritual deck card sd_15: card title."
+  },
+  "ritualCardSd15Prompt": "What unexpected blessing or moment of grace have you received recently that you have not yet paused to acknowledge?",
+  "@ritualCardSd15Prompt": {
+    "description": "Ritual deck card sd_15: the reflection question."
+  },
+  "ritualCardSd15Quote": "I am the origin of all. Everything emanates from Me. The wise who know this worship Me with loving devotion.",
+  "@ritualCardSd15Quote": {
+    "description": "Ritual deck card sd_15: the grounding quote."
+  },
+  "ritualCardSd15QuoteAuthor": "Bhagavad Gita 10.8",
+  "@ritualCardSd15QuoteAuthor": {
+    "description": "Ritual deck card sd_15: who the quote is from."
+  },
+  "ritualCardSd16Title": "Who Am I?",
+  "@ritualCardSd16Title": {
+    "description": "Ritual deck card sd_16: card title."
+  },
+  "ritualCardSd16Prompt": "Strip away your name, your job, your roles, your body. What remains? Sit with this question: Who am I beyond all labels?",
+  "@ritualCardSd16Prompt": {
+    "description": "Ritual deck card sd_16: the reflection question."
+  },
+  "ritualCardSd16Quote": "Tat Tvam Asi — Thou art That.",
+  "@ritualCardSd16Quote": {
+    "description": "Ritual deck card sd_16: the grounding quote."
+  },
+  "ritualCardSd16QuoteAuthor": "Chandogya Upanishad 6.8.7",
+  "@ritualCardSd16QuoteAuthor": {
+    "description": "Ritual deck card sd_16: who the quote is from."
+  },
+  "ritualCardSd17Title": "The Eternal Witness",
+  "@ritualCardSd17Title": {
+    "description": "Ritual deck card sd_17: card title."
+  },
+  "ritualCardSd17Prompt": "Observe your thoughts passing by without grasping any of them. Who is the one watching? Can that awareness itself ever be harmed?",
+  "@ritualCardSd17Prompt": {
+    "description": "Ritual deck card sd_17: the reflection question."
+  },
+  "ritualCardSd17Quote": "The Self is never born, nor does it die. It is eternal, ever-existing, and primeval. It is not slain when the body is slain.",
+  "@ritualCardSd17Quote": {
+    "description": "Ritual deck card sd_17: the grounding quote."
+  },
+  "ritualCardSd17QuoteAuthor": "Bhagavad Gita 2.20",
+  "@ritualCardSd17QuoteAuthor": {
+    "description": "Ritual deck card sd_17: who the quote is from."
+  },
+  "ritualCardSd18Title": "Knowledge That Frees",
+  "@ritualCardSd18Title": {
+    "description": "Ritual deck card sd_18: card title."
+  },
+  "ritualCardSd18Prompt": "What is one truth about yourself or about life that, once you truly accepted it, freed you from suffering?",
+  "@ritualCardSd18Prompt": {
+    "description": "Ritual deck card sd_18: the reflection question."
+  },
+  "ritualCardSd18Quote": "There is nothing as purifying in this world as knowledge. One who has attained purity of mind through prolonged Yoga discovers this knowledge within, in due course of time.",
+  "@ritualCardSd18Quote": {
+    "description": "Ritual deck card sd_18: the grounding quote."
+  },
+  "ritualCardSd18QuoteAuthor": "Bhagavad Gita 4.38",
+  "@ritualCardSd18QuoteAuthor": {
+    "description": "Ritual deck card sd_18: who the quote is from."
+  },
+  "ritualCardSd19Title": "Beyond the Senses",
+  "@ritualCardSd19Title": {
+    "description": "Ritual deck card sd_19: card title."
+  },
+  "ritualCardSd19Prompt": "Your senses show you the surface of things. What deeper truth lies beneath the situation you are facing right now?",
+  "@ritualCardSd19Prompt": {
+    "description": "Ritual deck card sd_19: the reflection question."
+  },
+  "ritualCardSd19Quote": "Beyond the senses are the objects; beyond the objects is the mind; beyond the mind is the intellect; beyond the intellect is the Great Self.",
+  "@ritualCardSd19Quote": {
+    "description": "Ritual deck card sd_19: the grounding quote."
+  },
+  "ritualCardSd19QuoteAuthor": "Katha Upanishad 1.3.10",
+  "@ritualCardSd19QuoteAuthor": {
+    "description": "Ritual deck card sd_19: who the quote is from."
+  },
+  "ritualCardSd20Title": "The Light Within",
+  "@ritualCardSd20Title": {
+    "description": "Ritual deck card sd_20: card title."
+  },
+  "ritualCardSd20Prompt": "Close your eyes. Imagine a steady flame burning in your heart that no wind can extinguish. What does this light illuminate for you?",
+  "@ritualCardSd20Prompt": {
+    "description": "Ritual deck card sd_20: the reflection question."
+  },
+  "ritualCardSd20Quote": "Asato ma sadgamaya, tamaso ma jyotirgamaya, mrityorma amritam gamaya. Lead me from the unreal to the Real, from darkness to Light, from death to Immortality.",
+  "@ritualCardSd20Quote": {
+    "description": "Ritual deck card sd_20: the grounding quote."
+  },
+  "ritualCardSd20QuoteAuthor": "Brihadaranyaka Upanishad 1.3.28",
+  "@ritualCardSd20QuoteAuthor": {
+    "description": "Ritual deck card sd_20: who the quote is from."
+  },
+  "ritualCardSd21Title": "The Fullness of Being",
+  "@ritualCardSd21Title": {
+    "description": "Ritual deck card sd_21: card title."
+  },
+  "ritualCardSd21Prompt": "If you lack nothing at the deepest level, why do you feel incomplete? Reflect on what it means to be already whole.",
+  "@ritualCardSd21Prompt": {
+    "description": "Ritual deck card sd_21: the reflection question."
+  },
+  "ritualCardSd21Quote": "Om Purnamadah Purnamidam — That is Whole, this is Whole. From the Whole, the Whole arises. When the Whole is taken from the Whole, the Whole still remains.",
+  "@ritualCardSd21Quote": {
+    "description": "Ritual deck card sd_21: the grounding quote."
+  },
+  "ritualCardSd21QuoteAuthor": "Isha Upanishad, Invocation",
+  "@ritualCardSd21QuoteAuthor": {
+    "description": "Ritual deck card sd_21: who the quote is from."
+  },
+  "ritualCardSd22Title": "Brahman in Everything",
+  "@ritualCardSd22Title": {
+    "description": "Ritual deck card sd_22: card title."
+  },
+  "ritualCardSd22Prompt": "The same consciousness that shines through you shines through every living being. How does this awareness change the way you see the world today?",
+  "@ritualCardSd22Prompt": {
+    "description": "Ritual deck card sd_22: the reflection question."
+  },
+  "ritualCardSd22Quote": "Aham Brahmasmi — I am Brahman.",
+  "@ritualCardSd22Quote": {
+    "description": "Ritual deck card sd_22: the grounding quote."
+  },
+  "ritualCardSd22QuoteAuthor": "Brihadaranyaka Upanishad 1.4.10",
+  "@ritualCardSd22QuoteAuthor": {
+    "description": "Ritual deck card sd_22: who the quote is from."
+  },
+  "ritualCardSd23Title": "Stilling the Mind",
+  "@ritualCardSd23Title": {
+    "description": "Ritual deck card sd_23: card title."
+  },
+  "ritualCardSd23Prompt": "Right now, observe the fluctuations of your mind — planning, worrying, remembering. Can you gently bring all of them to stillness, even for a few breaths?",
+  "@ritualCardSd23Prompt": {
+    "description": "Ritual deck card sd_23: the reflection question."
+  },
+  "ritualCardSd23Quote": "Yogas chitta vritti nirodhah — Yoga is the cessation of the fluctuations of the mind.",
+  "@ritualCardSd23Quote": {
+    "description": "Ritual deck card sd_23: the grounding quote."
+  },
+  "ritualCardSd23QuoteAuthor": "Yoga Sutras of Patanjali 1.2",
+  "@ritualCardSd23QuoteAuthor": {
+    "description": "Ritual deck card sd_23: who the quote is from."
+  },
+  "ritualCardSd24Title": "Steady Practice",
+  "@ritualCardSd24Title": {
+    "description": "Ritual deck card sd_24: card title."
+  },
+  "ritualCardSd24Prompt": "What is one positive habit or practice you can commit to with patience and devotion, knowing that consistency matters more than intensity?",
+  "@ritualCardSd24Prompt": {
+    "description": "Ritual deck card sd_24: the reflection question."
+  },
+  "ritualCardSd24Quote": "Abhyasa — practice becomes firmly grounded when it is pursued for a long time, without interruption, and with sincere devotion.",
+  "@ritualCardSd24Quote": {
+    "description": "Ritual deck card sd_24: the grounding quote."
+  },
+  "ritualCardSd24QuoteAuthor": "Yoga Sutras of Patanjali 1.14",
+  "@ritualCardSd24QuoteAuthor": {
+    "description": "Ritual deck card sd_24: who the quote is from."
+  },
+  "ritualCardSd25Title": "Evenness of Mind",
+  "@ritualCardSd25Title": {
+    "description": "Ritual deck card sd_25: card title."
+  },
+  "ritualCardSd25Prompt": "Recall a recent moment of success and a moment of failure. Can you hold both with the same steady awareness, without elation or despair?",
+  "@ritualCardSd25Prompt": {
+    "description": "Ritual deck card sd_25: the reflection question."
+  },
+  "ritualCardSd25Quote": "Yoga is equanimity of mind — samatvam yoga uchyate.",
+  "@ritualCardSd25Quote": {
+    "description": "Ritual deck card sd_25: the grounding quote."
+  },
+  "ritualCardSd25QuoteAuthor": "Bhagavad Gita 2.48",
+  "@ritualCardSd25QuoteAuthor": {
+    "description": "Ritual deck card sd_25: who the quote is from."
+  },
+  "ritualCardSd26Title": "The Five Yamas",
+  "@ritualCardSd26Title": {
+    "description": "Ritual deck card sd_26: card title."
+  },
+  "ritualCardSd26Prompt": "Non-violence, truthfulness, non-stealing, moderation, non-possessiveness — which of the five Yamas is the hardest for you right now, and why?",
+  "@ritualCardSd26Prompt": {
+    "description": "Ritual deck card sd_26: the reflection question."
+  },
+  "ritualCardSd26Quote": "Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha — these are the great universal vows.",
+  "@ritualCardSd26Quote": {
+    "description": "Ritual deck card sd_26: the grounding quote."
+  },
+  "ritualCardSd26QuoteAuthor": "Yoga Sutras of Patanjali 2.30",
+  "@ritualCardSd26QuoteAuthor": {
+    "description": "Ritual deck card sd_26: who the quote is from."
+  },
+  "ritualCardSd27Title": "Ishvara Pranidhana",
+  "@ritualCardSd27Title": {
+    "description": "Ritual deck card sd_27: card title."
+  },
+  "ritualCardSd27Prompt": "What does it feel like to offer your effort completely — not to achieve, but to dedicate? Try offering your next action to something greater than yourself.",
+  "@ritualCardSd27Prompt": {
+    "description": "Ritual deck card sd_27: the reflection question."
+  },
+  "ritualCardSd27Quote": "By total surrender to Ishvara, Samadhi is attained.",
+  "@ritualCardSd27Quote": {
+    "description": "Ritual deck card sd_27: the grounding quote."
+  },
+  "ritualCardSd27QuoteAuthor": "Yoga Sutras of Patanjali 2.45",
+  "@ritualCardSd27QuoteAuthor": {
+    "description": "Ritual deck card sd_27: who the quote is from."
+  },
+  "ritualCardSd28Title": "Non-Violence in Thought",
+  "@ritualCardSd28Title": {
+    "description": "Ritual deck card sd_28: card title."
+  },
+  "ritualCardSd28Prompt": "Have you directed harsh, violent thoughts towards yourself or someone else today? What would it mean to replace them with understanding?",
+  "@ritualCardSd28Prompt": {
+    "description": "Ritual deck card sd_28: the reflection question."
+  },
+  "ritualCardSd28Quote": "Ahimsa Paramo Dharma — Non-violence is the highest Dharma.",
+  "@ritualCardSd28Quote": {
+    "description": "Ritual deck card sd_28: the grounding quote."
+  },
+  "ritualCardSd28QuoteAuthor": "Mahabharata, Anushasana Parva 116.38",
+  "@ritualCardSd28QuoteAuthor": {
+    "description": "Ritual deck card sd_28: who the quote is from."
+  },
+  "ritualCardSd29Title": "Compassion for All Beings",
+  "@ritualCardSd29Title": {
+    "description": "Ritual deck card sd_29: card title."
+  },
+  "ritualCardSd29Prompt": "Think of a creature — an animal, an insect, a bird — you encountered recently. What would the world be like if you extended the same care to all living beings?",
+  "@ritualCardSd29Prompt": {
+    "description": "Ritual deck card sd_29: the reflection question."
+  },
+  "ritualCardSd29Quote": "One who sees all beings in the Self and the Self in all beings, never turns away from it.",
+  "@ritualCardSd29Quote": {
+    "description": "Ritual deck card sd_29: the grounding quote."
+  },
+  "ritualCardSd29QuoteAuthor": "Isha Upanishad, Verse 6",
+  "@ritualCardSd29QuoteAuthor": {
+    "description": "Ritual deck card sd_29: who the quote is from."
+  },
+  "ritualCardSd30Title": "Gentle Speech",
+  "@ritualCardSd30Title": {
+    "description": "Ritual deck card sd_30: card title."
+  },
+  "ritualCardSd30Prompt": "Before you speak today, pause and ask: Is it true? Is it kind? Is it necessary? How does this filter change your conversations?",
+  "@ritualCardSd30Prompt": {
+    "description": "Ritual deck card sd_30: the reflection question."
+  },
+  "ritualCardSd30Quote": "Words that do not cause distress, that are truthful, pleasant, and beneficial — this is called the austerity of speech.",
+  "@ritualCardSd30Quote": {
+    "description": "Ritual deck card sd_30: the grounding quote."
+  },
+  "ritualCardSd30QuoteAuthor": "Bhagavad Gita 17.15",
+  "@ritualCardSd30QuoteAuthor": {
+    "description": "Ritual deck card sd_30: who the quote is from."
+  },
+  "ritualCardSd31Title": "Forgiving the Hurt",
+  "@ritualCardSd31Title": {
+    "description": "Ritual deck card sd_31: card title."
+  },
+  "ritualCardSd31Prompt": "Who has caused you pain that you are still carrying? What would it take to forgive — not for them, but to free your own heart?",
+  "@ritualCardSd31Prompt": {
+    "description": "Ritual deck card sd_31: the reflection question."
+  },
+  "ritualCardSd31Quote": "Forgiveness is the ornament of the brave.",
+  "@ritualCardSd31Quote": {
+    "description": "Ritual deck card sd_31: the grounding quote."
+  },
+  "ritualCardSd31QuoteAuthor": "Mahabharata, Udyoga Parva 33.48",
+  "@ritualCardSd31QuoteAuthor": {
+    "description": "Ritual deck card sd_31: who the quote is from."
+  },
+  "ritualCardSd32Title": "Living in Truth",
+  "@ritualCardSd32Title": {
+    "description": "Ritual deck card sd_32: card title."
+  },
+  "ritualCardSd32Prompt": "Is there something in your life where you are being less than truthful — with yourself or with others? What would honest alignment look like?",
+  "@ritualCardSd32Prompt": {
+    "description": "Ritual deck card sd_32: the reflection question."
+  },
+  "ritualCardSd32Quote": "Satyameva Jayate — Truth alone triumphs.",
+  "@ritualCardSd32Quote": {
+    "description": "Ritual deck card sd_32: the grounding quote."
+  },
+  "ritualCardSd32QuoteAuthor": "Mundaka Upanishad 3.1.6",
+  "@ritualCardSd32QuoteAuthor": {
+    "description": "Ritual deck card sd_32: who the quote is from."
+  },
+  "ritualCardSd33Title": "The Courage of Honesty",
+  "@ritualCardSd33Title": {
+    "description": "Ritual deck card sd_33: card title."
+  },
+  "ritualCardSd33Prompt": "What is one truth you have been avoiding because it is uncomfortable? What would it take to face it with courage today?",
+  "@ritualCardSd33Prompt": {
+    "description": "Ritual deck card sd_33: the reflection question."
+  },
+  "ritualCardSd33Quote": "Speak the truth. Practise Dharma. Do not neglect the study of the scriptures.",
+  "@ritualCardSd33Quote": {
+    "description": "Ritual deck card sd_33: the grounding quote."
+  },
+  "ritualCardSd33QuoteAuthor": "Taittiriya Upanishad 1.11.1",
+  "@ritualCardSd33QuoteAuthor": {
+    "description": "Ritual deck card sd_33: who the quote is from."
+  },
+  "ritualCardSd34Title": "Truth Beyond Words",
+  "@ritualCardSd34Title": {
+    "description": "Ritual deck card sd_34: card title."
+  },
+  "ritualCardSd34Prompt": "Truth is not only in what you say, but in what you do. Are your actions today aligned with the truth you hold in your heart?",
+  "@ritualCardSd34Prompt": {
+    "description": "Ritual deck card sd_34: the reflection question."
+  },
+  "ritualCardSd34Quote": "By truthfulness, man reaches the station of God.",
+  "@ritualCardSd34Quote": {
+    "description": "Ritual deck card sd_34: the grounding quote."
+  },
+  "ritualCardSd34QuoteAuthor": "Chanakya Niti 14.3",
+  "@ritualCardSd34QuoteAuthor": {
+    "description": "Ritual deck card sd_34: who the quote is from."
+  },
+  "ritualCardSd35Title": "The Promise You Keep",
+  "@ritualCardSd35Title": {
+    "description": "Ritual deck card sd_35: card title."
+  },
+  "ritualCardSd35Prompt": "What is a promise you have made — to yourself, to another, or to the Divine — that you must honour? Recommit to it now.",
+  "@ritualCardSd35Prompt": {
+    "description": "Ritual deck card sd_35: the reflection question."
+  },
+  "ritualCardSd35Quote": "Let your word be your bond. A person who breaks a promise breaks trust, and trust once broken is hard to rebuild.",
+  "@ritualCardSd35Quote": {
+    "description": "Ritual deck card sd_35: the grounding quote."
+  },
+  "ritualCardSd35QuoteAuthor": "Vidura Niti, Mahabharata",
+  "@ritualCardSd35QuoteAuthor": {
+    "description": "Ritual deck card sd_35: who the quote is from."
+  },
+  "ritualCardSd36Title": "Letting Go",
+  "@ritualCardSd36Title": {
+    "description": "Ritual deck card sd_36: card title."
+  },
+  "ritualCardSd36Prompt": "What possession, expectation, or desire are you clinging to that no longer serves your growth? Imagine gently releasing it.",
+  "@ritualCardSd36Prompt": {
+    "description": "Ritual deck card sd_36: the reflection question."
+  },
+  "ritualCardSd36Quote": "Vairagya is the mastery of consciousness in which one is free from craving for sense objects, whether experienced directly or described.",
+  "@ritualCardSd36Quote": {
+    "description": "Ritual deck card sd_36: the grounding quote."
+  },
+  "ritualCardSd36QuoteAuthor": "Yoga Sutras of Patanjali 1.15",
+  "@ritualCardSd36QuoteAuthor": {
+    "description": "Ritual deck card sd_36: who the quote is from."
+  },
+  "ritualCardSd37Title": "The Unchanging Self",
+  "@ritualCardSd37Title": {
+    "description": "Ritual deck card sd_37: card title."
+  },
+  "ritualCardSd37Prompt": "Everything around you changes — moods, fortunes, relationships. What part of you has remained unchanged through all of life's storms?",
+  "@ritualCardSd37Prompt": {
+    "description": "Ritual deck card sd_37: the reflection question."
+  },
+  "ritualCardSd37Quote": "That which is not real never was and never will be. That which is real always was and can never cease to be.",
+  "@ritualCardSd37Quote": {
+    "description": "Ritual deck card sd_37: the grounding quote."
+  },
+  "ritualCardSd37QuoteAuthor": "Bhagavad Gita 2.16",
+  "@ritualCardSd37QuoteAuthor": {
+    "description": "Ritual deck card sd_37: who the quote is from."
+  },
+  "ritualCardSd38Title": "Contentment",
+  "@ritualCardSd38Title": {
+    "description": "Ritual deck card sd_38: card title."
+  },
+  "ritualCardSd38Prompt": "What do you already have that is truly enough? Reflect on the difference between want and need in your life right now.",
+  "@ritualCardSd38Prompt": {
+    "description": "Ritual deck card sd_38: the reflection question."
+  },
+  "ritualCardSd38Quote": "From contentment comes unsurpassed happiness.",
+  "@ritualCardSd38Quote": {
+    "description": "Ritual deck card sd_38: the grounding quote."
+  },
+  "ritualCardSd38QuoteAuthor": "Yoga Sutras of Patanjali 2.42",
+  "@ritualCardSd38QuoteAuthor": {
+    "description": "Ritual deck card sd_38: who the quote is from."
+  },
+  "ritualCardSd39Title": "Beyond Pleasure and Pain",
+  "@ritualCardSd39Title": {
+    "description": "Ritual deck card sd_39: card title."
+  },
+  "ritualCardSd39Prompt": "Can you sit with discomfort without fleeing, and with pleasure without grasping? What happens when you simply observe both?",
+  "@ritualCardSd39Prompt": {
+    "description": "Ritual deck card sd_39: the reflection question."
+  },
+  "ritualCardSd39Quote": "One who is not disturbed by happiness and distress and is steady in both is certainly eligible for liberation.",
+  "@ritualCardSd39Quote": {
+    "description": "Ritual deck card sd_39: the grounding quote."
+  },
+  "ritualCardSd39QuoteAuthor": "Bhagavad Gita 2.15",
+  "@ritualCardSd39QuoteAuthor": {
+    "description": "Ritual deck card sd_39: who the quote is from."
+  },
+  "ritualCardSd40Title": "The Joy of Giving",
+  "@ritualCardSd40Title": {
+    "description": "Ritual deck card sd_40: card title."
+  },
+  "ritualCardSd40Prompt": "What can you give today — time, attention, a kind word, a helping hand — without expecting anything in return?",
+  "@ritualCardSd40Prompt": {
+    "description": "Ritual deck card sd_40: the reflection question."
+  },
+  "ritualCardSd40Quote": "The highest form of charity is helping those who are helpless.",
+  "@ritualCardSd40Quote": {
+    "description": "Ritual deck card sd_40: the grounding quote."
+  },
+  "ritualCardSd40QuoteAuthor": "Thirukkural 221",
+  "@ritualCardSd40QuoteAuthor": {
+    "description": "Ritual deck card sd_40: who the quote is from."
+  },
+  "ritualCardSd41Title": "Serving the Divine in Others",
+  "@ritualCardSd41Title": {
+    "description": "Ritual deck card sd_41: card title."
+  },
+  "ritualCardSd41Prompt": "If the person standing in front of you were God in disguise, how would you treat them? Try living this for the next hour.",
+  "@ritualCardSd41Prompt": {
+    "description": "Ritual deck card sd_41: the reflection question."
+  },
+  "ritualCardSd41Quote": "Service to humanity is service to God.",
+  "@ritualCardSd41Quote": {
+    "description": "Ritual deck card sd_41: the grounding quote."
+  },
+  "ritualCardSd41QuoteAuthor": "Swami Vivekananda",
+  "@ritualCardSd41QuoteAuthor": {
+    "description": "Ritual deck card sd_41: who the quote is from."
+  },
+  "ritualCardSd42Title": "Selfless Work",
+  "@ritualCardSd42Title": {
+    "description": "Ritual deck card sd_42: card title."
+  },
+  "ritualCardSd42Prompt": "Recall a time when you helped someone and felt a quiet, deep joy that had nothing to do with recognition. What did that teach you?",
+  "@ritualCardSd42Prompt": {
+    "description": "Ritual deck card sd_42: the reflection question."
+  },
+  "ritualCardSd42Quote": "Arise, awake, and stop not till the goal is reached.",
+  "@ritualCardSd42Quote": {
+    "description": "Ritual deck card sd_42: the grounding quote."
+  },
+  "ritualCardSd42QuoteAuthor": "Katha Upanishad 1.3.14 / Swami Vivekananda",
+  "@ritualCardSd42QuoteAuthor": {
+    "description": "Ritual deck card sd_42: who the quote is from."
+  },
+  "ritualCardSd43Title": "Vasudhaiva Kutumbakam",
+  "@ritualCardSd43Title": {
+    "description": "Ritual deck card sd_43: card title."
+  },
+  "ritualCardSd43Prompt": "The whole world is one family. What is one step you can take today to live as though every person's well-being matters to you?",
+  "@ritualCardSd43Prompt": {
+    "description": "Ritual deck card sd_43: the reflection question."
+  },
+  "ritualCardSd43Quote": "Vasudhaiva Kutumbakam — the entire world is one family.",
+  "@ritualCardSd43Quote": {
+    "description": "Ritual deck card sd_43: the grounding quote."
+  },
+  "ritualCardSd43QuoteAuthor": "Maha Upanishad 6.71",
+  "@ritualCardSd43QuoteAuthor": {
+    "description": "Ritual deck card sd_43: who the quote is from."
+  },
+  "ritualCardSd44Title": "The Wealth of Kindness",
+  "@ritualCardSd44Title": {
+    "description": "Ritual deck card sd_44: card title."
+  },
+  "ritualCardSd44Prompt": "What small act of kindness did someone do for you that you still remember? How can you pass that same kindness forward today?",
+  "@ritualCardSd44Prompt": {
+    "description": "Ritual deck card sd_44: the reflection question."
+  },
+  "ritualCardSd44Quote": "Even the poverty of the poor will depart if they give, with compassion, even what little they have.",
+  "@ritualCardSd44Quote": {
+    "description": "Ritual deck card sd_44: the grounding quote."
+  },
+  "ritualCardSd44QuoteAuthor": "Thirukkural 247",
+  "@ritualCardSd44QuoteAuthor": {
+    "description": "Ritual deck card sd_44: who the quote is from."
+  },
+  "ritualCardSd45Title": "The Peace Within",
+  "@ritualCardSd45Title": {
+    "description": "Ritual deck card sd_45: card title."
+  },
+  "ritualCardSd45Prompt": "Close your eyes and take three slow breaths. Feel the silence between each breath. That silence is who you truly are. Can you carry it through the day?",
+  "@ritualCardSd45Prompt": {
+    "description": "Ritual deck card sd_45: the reflection question."
+  },
+  "ritualCardSd45Quote": "For one who has conquered the mind, the mind is the best of friends; but for one who has failed to do so, the mind will remain the greatest enemy.",
+  "@ritualCardSd45Quote": {
+    "description": "Ritual deck card sd_45: the grounding quote."
+  },
+  "ritualCardSd45QuoteAuthor": "Bhagavad Gita 6.6",
+  "@ritualCardSd45QuoteAuthor": {
+    "description": "Ritual deck card sd_45: who the quote is from."
+  },
+  "ritualCardSd46Title": "Equanimity in Praise and Blame",
+  "@ritualCardSd46Title": {
+    "description": "Ritual deck card sd_46: card title."
+  },
+  "ritualCardSd46Prompt": "Recall a recent praise and a recent criticism you received. Can you hold both with the same calm composure, without clinging to one or rejecting the other?",
+  "@ritualCardSd46Prompt": {
+    "description": "Ritual deck card sd_46: the reflection question."
+  },
+  "ritualCardSd46Quote": "One who is the same to friend and foe, in honour and dishonour, in heat and cold, in pleasure and pain, and is free from attachment — such a person is dear to Me.",
+  "@ritualCardSd46Quote": {
+    "description": "Ritual deck card sd_46: the grounding quote."
+  },
+  "ritualCardSd46QuoteAuthor": "Bhagavad Gita 12.18–19",
+  "@ritualCardSd46QuoteAuthor": {
+    "description": "Ritual deck card sd_46: who the quote is from."
+  },
+  "ritualCardSd47Title": "The Lotus in Mud",
+  "@ritualCardSd47Title": {
+    "description": "Ritual deck card sd_47: card title."
+  },
+  "ritualCardSd47Prompt": "A lotus blooms in muddy water yet remains unstained. What is the muddy situation in your life right now, and how can you remain untouched by it while still growing?",
+  "@ritualCardSd47Prompt": {
+    "description": "Ritual deck card sd_47: the reflection question."
+  },
+  "ritualCardSd47Quote": "One who performs actions without attachment, surrendering them to Brahman, is untouched by sin, like a lotus leaf by water.",
+  "@ritualCardSd47Quote": {
+    "description": "Ritual deck card sd_47: the grounding quote."
+  },
+  "ritualCardSd47QuoteAuthor": "Bhagavad Gita 5.10",
+  "@ritualCardSd47QuoteAuthor": {
+    "description": "Ritual deck card sd_47: who the quote is from."
+  },
+  "ritualCardSd48Title": "Om Shanti",
+  "@ritualCardSd48Title": {
+    "description": "Ritual deck card sd_48: card title."
+  },
+  "ritualCardSd48Prompt": "Sit still and repeat Om Shanti three times — peace in body, peace in mind, peace in spirit. What disturbance melts away as you do this?",
+  "@ritualCardSd48Prompt": {
+    "description": "Ritual deck card sd_48: the reflection question."
+  },
+  "ritualCardSd48Quote": "Om Shantih Shantih Shantih — Om, Peace, Peace, Peace.",
+  "@ritualCardSd48Quote": {
+    "description": "Ritual deck card sd_48: the grounding quote."
+  },
+  "ritualCardSd48QuoteAuthor": "Upanishadic Shanti Mantra",
+  "@ritualCardSd48QuoteAuthor": {
+    "description": "Ritual deck card sd_48: who the quote is from."
+  },
+  "ritualCardSd49Title": "May All Be Happy",
+  "@ritualCardSd49Title": {
+    "description": "Ritual deck card sd_49: card title."
+  },
+  "ritualCardSd49Prompt": "Silently wish well-being for yourself, then for your loved ones, then for strangers, then for all beings. Notice how your heart expands as the circle widens.",
+  "@ritualCardSd49Prompt": {
+    "description": "Ritual deck card sd_49: the reflection question."
+  },
+  "ritualCardSd49Quote": "Sarve bhavantu sukhinah, sarve santu niramayah. Sarve bhadrani pashyantu, ma kashchit duhkhabhag bhavet. — May all be happy, may all be free from disease, may all see auspiciousness, may none suffer.",
+  "@ritualCardSd49Quote": {
+    "description": "Ritual deck card sd_49: the grounding quote."
+  },
+  "ritualCardSd49QuoteAuthor": "Upanishadic Prayer",
+  "@ritualCardSd49QuoteAuthor": {
+    "description": "Ritual deck card sd_49: who the quote is from."
+  },
+  "ritualCardSd50Title": "Strength and Peace Together",
+  "@ritualCardSd50Title": {
+    "description": "Ritual deck card sd_50: card title."
+  },
+  "ritualCardSd50Prompt": "True strength does not come from tension; it comes from deep inner peace. Where in your life can you replace force with calm resolve today?",
+  "@ritualCardSd50Prompt": {
+    "description": "Ritual deck card sd_50: the reflection question."
+  },
+  "ritualCardSd50Quote": "Strength is life, weakness is death. Strength is the medicine, strength is the cure. Strength, strength is what the Upanishads preach.",
+  "@ritualCardSd50Quote": {
+    "description": "Ritual deck card sd_50: the grounding quote."
+  },
+  "ritualCardSd50QuoteAuthor": "Swami Vivekananda",
+  "@ritualCardSd50QuoteAuthor": {
+    "description": "Ritual deck card sd_50: who the quote is from."
+  },
+  "pendingAlertsTitle": "Pending Task Alerts",
+  "@pendingAlertsTitle": {
+    "description": "Title for pending task alerts settings and modal."
+  },
+  "pendingAlertsSubtitle": "Reminders at day start and periodic intervals for pending tasks.",
+  "@pendingAlertsSubtitle": {
+    "description": "Subtitle describing pending task alerts in settings."
+  },
+  "pendingAlertsEnabled": "Enable Pending Alerts",
+  "@pendingAlertsEnabled": {
+    "description": "Master switch label for pending alerts."
+  },
+  "pendingAlertsEnabledDetail": "Show an interactive list of pending tasks when alerts trigger.",
+  "@pendingAlertsEnabledDetail": {
+    "description": "Master switch subtitle for pending alerts."
+  },
+  "pendingAlertsDayStart": "Day Start Alert",
+  "@pendingAlertsDayStart": {
+    "description": "Switch for morning/day start pending task alert."
+  },
+  "pendingAlertsDayStartDetail": "Show pending tasks alert at the beginning of each day.",
+  "@pendingAlertsDayStartDetail": {
+    "description": "Subtitle for day start pending alert."
+  },
+  "pendingAlertsDayStartTime": "Alert Time",
+  "@pendingAlertsDayStartTime": {
+    "description": "Time picker label for day start alert."
+  },
+  "pendingAlertsInterval": "Reminder Interval",
+  "@pendingAlertsInterval": {
+    "description": "Title for interval reminder settings choice."
+  },
+  "pendingAlertsIntervalDetail": "How often to remind you about pending tasks while using the app.",
+  "@pendingAlertsIntervalDetail": {
+    "description": "Subtitle for interval reminder settings choice."
+  },
+  "pendingAlertsIntervalOff": "Off",
+  "@pendingAlertsIntervalOff": {
+    "description": "Interval choice: Off."
+  },
+  "pendingAlertsInterval30m": "Every 30 minutes",
+  "@pendingAlertsInterval30m": {
+    "description": "Interval choice: 30 minutes."
+  },
+  "pendingAlertsInterval1h": "Every 1 hour",
+  "@pendingAlertsInterval1h": {
+    "description": "Interval choice: 1 hour."
+  },
+  "pendingAlertsInterval2h": "Every 2 hours",
+  "@pendingAlertsInterval2h": {
+    "description": "Interval choice: 2 hours."
+  },
+  "pendingAlertsInterval3h": "Every 3 hours",
+  "@pendingAlertsInterval3h": {
+    "description": "Interval choice: 3 hours."
+  },
+  "pendingAlertsInterval4h": "Every 4 hours",
+  "@pendingAlertsInterval4h": {
+    "description": "Interval choice: 4 hours."
+  },
+  "pendingAlertsHaptic": "Vibrate / Haptic",
+  "@pendingAlertsHaptic": {
+    "description": "Toggle for haptic feedback when alert triggers."
+  },
+  "pendingAlertsHapticDetail": "Vibrate device gently when a pending task alert appears.",
+  "@pendingAlertsHapticDetail": {
+    "description": "Subtitle for haptic feedback switch."
+  },
+  "pendingAlertsPreview": "Preview Pending Tasks Alert",
+  "@pendingAlertsPreview": {
+    "description": "Button label to test and preview pending alert sheet."
+  },
+  "pendingAlertsSheetTitle": "Pending Tasks Alert",
+  "@pendingAlertsSheetTitle": {
+    "description": "Header title of the pending tasks alert modal sheet."
+  },
+  "pendingAlertsSheetCount": "{count, plural, =1{1 pending task remaining today} other{{count} pending tasks remaining today}}",
+  "@pendingAlertsSheetCount": {
+    "description": "Pending task count summary.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingAlertsSheetEmpty": "Great job! No pending tasks remaining for today.",
+  "@pendingAlertsSheetEmpty": {
+    "description": "Message when no pending tasks exist for today."
+  },
+  "pendingAlertsStartTimer": "Start",
+  "@pendingAlertsStartTimer": {
+    "description": "Button label to start timer for task from alert."
+  },
+  "pendingAlertsGoToToday": "Open Daily List",
+  "@pendingAlertsGoToToday": {
+    "description": "Action button to navigate to today list."
+  },
+  "pendingAlertsSnooze": "Snooze (1 hour)",
+  "@pendingAlertsSnooze": {
+    "description": "Action button to snooze interval alert for 1 hour."
+  },
+  "pendingAlertsDismiss": "Dismiss",
+  "@pendingAlertsDismiss": {
+    "description": "Button to dismiss alert sheet."
+  },
+  "trackingRunningNotification": "Running task notification",
+  "@trackingRunningNotification": {
+    "description": "Label for showing ongoing notification for running task."
+  },
+  "trackingRunningNotificationDetail": "Show an ongoing notification with a live timer while tracking time",
+  "@trackingRunningNotificationDetail": {
+    "description": "Explanation for running task notification setting."
+  },
+  "permissionsNotificationTitle": "Notifications",
+  "@permissionsNotificationTitle": {
+    "description": "Item title explaining notification permission."
+  },
+  "permissionsNotificationBody": "Used to display an ongoing live timer in the notification drawer while tracking tasks, and for optional daily reminders. Operates 100% offline with zero cloud access.",
+  "@permissionsNotificationBody": {
+    "description": "Detailed explanation of notification permission usage."
+  },
+  "pendingAlertsTodaySection": "Today's Tasks",
+  "@pendingAlertsTodaySection": {
+    "description": "Section header for today's pending tasks in alert sheet."
+  },
+  "pendingAlertsPreviousSection": "From Previous Days",
+  "@pendingAlertsPreviousSection": {
+    "description": "Section header for unfinished tasks from previous dates in alert sheet."
+  },
+  "pendingAlertsPortToToday": "Port to Today",
+  "@pendingAlertsPortToToday": {
+    "description": "Action button to port previous pending task to today."
+  },
+  "pendingAlertsPortedSuccess": "Task ported to today",
+  "@pendingAlertsPortedSuccess": {
+    "description": "Confirmation message when previous task is ported to today."
+  },
+  "pendingAlertsNotificationTitle": "Pending Tasks Reminder",
+  "@pendingAlertsNotificationTitle": {
+    "description": "Title for system status-bar notification."
+  },
+  "pendingAlertsNotificationBody": "{count, plural, =1{You have 1 pending task waiting} other{You have {count} pending tasks waiting}}",
+  "@pendingAlertsNotificationBody": {
+    "description": "Body message for system status-bar notification.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "taskHistory": "Task History",
+  "@taskHistory": {
+    "description": "Title of the Task History screen and menu item."
+  },
+  "taskHistorySubtitle": "Full lifecycle and activity timeline for this task",
+  "@taskHistorySubtitle": {
+    "description": "Subtitle describing the task history screen."
+  },
+  "taskHistoryEmpty": "No activity history recorded for this task yet.",
+  "@taskHistoryEmpty": {
+    "description": "Empty state message when no history records exist."
+  },
+  "eventCreated": "Task created",
+  "@eventCreated": {
+    "description": "History event label when task is created."
+  },
+  "eventMoved": "Task moved",
+  "@eventMoved": {
+    "description": "History event label when task is moved."
+  },
+  "eventMovedFromTo": "Moved from {fromDate} to {toDate}",
+  "@eventMovedFromTo": {
+    "description": "History event description for moved task.",
+    "placeholders": {
+      "fromDate": {
+        "type": "String"
+      },
+      "toDate": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTimerStarted": "Timer started",
+  "@eventTimerStarted": {
+    "description": "History event label when timer starts."
+  },
+  "eventTimerStopped": "Timer stopped ({duration})",
+  "@eventTimerStopped": {
+    "description": "History event label when timer stops.",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "eventTimerPaused": "Timer paused ({duration})",
+  "@eventTimerPaused": {
+    "description": "History event label when timer is paused.",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "eventManualSegment": "Manual time added ({duration})",
+  "@eventManualSegment": {
+    "description": "History event label when manual time segment is added.",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "eventStatusChanged": "Status changed to {status}",
+  "@eventStatusChanged": {
+    "description": "History event label when status changes.",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "eventSubtaskToggled": "Sub-task updated",
+  "@eventSubtaskToggled": {
+    "description": "History event label when subtask completion changes."
+  },
+  "eventEdited": "Task details edited",
+  "@eventEdited": {
+    "description": "History event label when task title/details are edited."
+  },
+  "moveToToday": "Move to Today",
+  "@moveToToday": {
+    "description": "Action label to move task to today."
+  },
+  "taskMovedToToday": "Task moved to today",
+  "@taskMovedToToday": {
+    "description": "SnackBar confirmation when task is moved to today."
+  },
+  "taskMovedSuccess": "Task moved to {date}",
+  "@taskMovedSuccess": {
+    "description": "SnackBar confirmation when task is moved to date.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
   }
 }
+

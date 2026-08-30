@@ -34,46 +34,49 @@ class TypographyScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.appearanceTypography)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AppSectionCard(
-            title: l10n.typographyFontLabel,
-            child: Column(
-              children: [
-                for (final font in AppFont.values) ...[
-                  if (font != AppFont.values.first) const SizedBox(height: 10),
-                  _FontTile(
-                    label: fontLabel(l10n, font),
-                    fontFamily: font.family,
-                    selected: appearance.font == font,
-                    onTap: () => notifier.setFont(font),
-                  ),
-                ],
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: l10n.typographyTextSizeLabel,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SegmentedButton<AppTextScale>(
-                showSelectedIcon: false,
-                segments: [
-                  for (final scale in AppTextScale.values)
-                    ButtonSegment(
-                      value: scale,
-                      label: Text(textScaleLabel(l10n, scale)),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            AppSectionCard(
+              title: l10n.typographyFontLabel,
+              child: Column(
+                children: [
+                  for (final font in AppFont.values) ...[
+                    if (font != AppFont.values.first)
+                      const SizedBox(height: 10),
+                    _FontTile(
+                      label: fontLabel(l10n, font),
+                      fontFamily: font.family,
+                      selected: appearance.font == font,
+                      onTap: () => notifier.setFont(font),
                     ),
+                  ],
                 ],
-                selected: {appearance.textScale},
-                onSelectionChanged: (selection) =>
-                    notifier.setTextScale(selection.first),
               ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: l10n.typographyTextSizeLabel,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SegmentedButton<AppTextScale>(
+                  showSelectedIcon: false,
+                  segments: [
+                    for (final scale in AppTextScale.values)
+                      ButtonSegment(
+                        value: scale,
+                        label: Text(textScaleLabel(l10n, scale)),
+                      ),
+                  ],
+                  selected: {appearance.textScale},
+                  onSelectionChanged: (selection) =>
+                      notifier.setTextScale(selection.first),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

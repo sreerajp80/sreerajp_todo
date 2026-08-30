@@ -24,91 +24,93 @@ class AboutScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(context.l10n.aboutLabel)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AppSectionCard(
-            title: config.appName.isNotEmpty ? config.appName : kAppName,
-            subtitle: context.l10n.aboutHeadline,
-            child: Text(
-              config.description.isNotEmpty
-                  ? config.description
-                  : context.l10n.aboutSummary,
-              style: theme.textTheme.bodyLarge,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            AppSectionCard(
+              title: config.appName.isNotEmpty ? config.appName : kAppName,
+              subtitle: context.l10n.aboutHeadline,
+              child: Text(
+                config.description.isNotEmpty
+                    ? config.description
+                    : context.l10n.aboutSummary,
+                style: theme.textTheme.bodyLarge,
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            child: Column(
-              children: [
-                _AboutDetailRow(
-                  icon: Icons.info_outline_rounded,
-                  label: context.l10n.aboutAppVersion,
-                  value: config.version,
-                ),
-                if (config.build.trim().isNotEmpty) ...[
+            const SizedBox(height: 16),
+            AppSectionCard(
+              child: Column(
+                children: [
+                  _AboutDetailRow(
+                    icon: Icons.info_outline_rounded,
+                    label: context.l10n.aboutAppVersion,
+                    value: config.version,
+                  ),
+                  if (config.build.trim().isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    _AboutDetailRow(
+                      icon: Icons.tag_rounded,
+                      label: context.l10n.aboutBuildNumber,
+                      value: config.build,
+                    ),
+                  ],
                   const SizedBox(height: 12),
                   _AboutDetailRow(
-                    icon: Icons.tag_rounded,
-                    label: context.l10n.aboutBuildNumber,
-                    value: config.build,
+                    icon: Icons.calendar_today_outlined,
+                    label: context.l10n.aboutBuildDate,
+                    value: kBuildDate,
+                  ),
+                  for (final entry in detailEntries) ...[
+                    const SizedBox(height: 12),
+                    _AboutDetailRow(
+                      icon: _iconForDetailKey(entry.key),
+                      label: entry.key,
+                      value: entry.value,
+                    ),
+                  ],
+                  const SizedBox(height: 16),
+                  Text(
+                    context.l10n.aboutMadeWithLoveIn,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
-                const SizedBox(height: 12),
-                _AboutDetailRow(
-                  icon: Icons.calendar_today_outlined,
-                  label: context.l10n.aboutBuildDate,
-                  value: kBuildDate,
-                ),
-                for (final entry in detailEntries) ...[
-                  const SizedBox(height: 12),
-                  _AboutDetailRow(
-                    icon: _iconForDetailKey(entry.key),
-                    label: entry.key,
-                    value: entry.value,
+              ),
+            ),
+            const SizedBox(height: 16),
+            AppSectionCard(
+              child: Column(
+                children: [
+                  AboutInfoTile(
+                    icon: Icons.lock_outline_rounded,
+                    title: context.l10n.aboutLocalOnlyTitle,
+                    body: context.l10n.aboutLocalOnlyBody,
+                  ),
+                  const SizedBox(height: 16),
+                  AboutInfoTile(
+                    icon: Icons.key_rounded,
+                    title: context.l10n.aboutBackupTitle,
+                    body: context.l10n.aboutBackupBody,
+                  ),
+                  const SizedBox(height: 16),
+                  AboutInfoTile(
+                    icon: Icons.translate_rounded,
+                    title: context.l10n.aboutUnicodeTitle,
+                    body: context.l10n.aboutUnicodeBody,
+                  ),
+                  const SizedBox(height: 16),
+                  AboutInfoTile(
+                    icon: Icons.dashboard_customize_outlined,
+                    title: context.l10n.aboutNavigationTitle,
+                    body: context.l10n.aboutNavigationBody,
                   ),
                 ],
-                const SizedBox(height: 16),
-                Text(
-                  context.l10n.aboutMadeWithLoveIn,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            child: Column(
-              children: [
-                AboutInfoTile(
-                  icon: Icons.lock_outline_rounded,
-                  title: context.l10n.aboutLocalOnlyTitle,
-                  body: context.l10n.aboutLocalOnlyBody,
-                ),
-                const SizedBox(height: 16),
-                AboutInfoTile(
-                  icon: Icons.key_rounded,
-                  title: context.l10n.aboutBackupTitle,
-                  body: context.l10n.aboutBackupBody,
-                ),
-                const SizedBox(height: 16),
-                AboutInfoTile(
-                  icon: Icons.translate_rounded,
-                  title: context.l10n.aboutUnicodeTitle,
-                  body: context.l10n.aboutUnicodeBody,
-                ),
-                const SizedBox(height: 16),
-                AboutInfoTile(
-                  icon: Icons.dashboard_customize_outlined,
-                  title: context.l10n.aboutNavigationTitle,
-                  body: context.l10n.aboutNavigationBody,
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

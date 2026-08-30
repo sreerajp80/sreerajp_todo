@@ -12,133 +12,135 @@ class HelpHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Help & User Guides')),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-        children: [
-          _buildHeaderCard(context),
-          const SizedBox(height: 20),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            _buildHeaderCard(context),
+            const SizedBox(height: 20),
 
-          _buildSectionHeader(
-            context,
-            'Task Management & Workflow',
-            Icons.checklist_rounded,
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.calendar_month_outlined,
-            title: 'Daily Lists & Day Lock',
-            subtitle:
-                'How the daily timeline, day-lock immutability, and terminal status locks protect your records.',
-            onTap: () => context.push(AppRoutes.helpTaskManagement),
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.repeat_rounded,
-            title: 'Recurring Tasks & Bulk Copy',
-            subtitle:
-                'Setting up automated recurrence rules (daily, weekly, monthly) and bulk copying past tasks.',
-            onTap: () => context.push(AppRoutes.helpRecurringTasks),
-          ),
-          const SizedBox(height: 22),
+            _buildSectionHeader(
+              context,
+              'Task Management & Workflow',
+              Icons.checklist_rounded,
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.calendar_month_outlined,
+              title: 'Daily Lists & Day Lock',
+              subtitle:
+                  'How the daily timeline, day-lock immutability, and terminal status locks protect your records.',
+              onTap: () => context.push(AppRoutes.helpTaskManagement),
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.repeat_rounded,
+              title: 'Recurring Tasks & Bulk Copy',
+              subtitle:
+                  'Setting up automated recurrence rules (daily, weekly, monthly) and bulk copying past tasks.',
+              onTap: () => context.push(AppRoutes.helpRecurringTasks),
+            ),
+            const SizedBox(height: 22),
 
-          _buildSectionHeader(
-            context,
-            'Time Tracking & Focus',
-            Icons.timer_outlined,
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.more_time_rounded,
-            title: 'Time Tracking & Segments',
-            subtitle:
-                'How multi-segment logging, target durations, and the single running timer rule work.',
-            onTap: () => context.push(AppRoutes.helpTimeTracking),
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.center_focus_strong_rounded,
-            title: 'Focus Mode & Pomodoro',
-            subtitle:
-                'Using the distraction-free focus screen, Pomodoro countdowns, and auto-stop safeguards.',
-            onTap: () => context.push(AppRoutes.helpFocus),
-          ),
-          const SizedBox(height: 22),
+            _buildSectionHeader(
+              context,
+              'Time Tracking & Focus',
+              Icons.timer_outlined,
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.more_time_rounded,
+              title: 'Time Tracking & Segments',
+              subtitle:
+                  'How multi-segment logging, target durations, and the single running timer rule work.',
+              onTap: () => context.push(AppRoutes.helpTimeTracking),
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.center_focus_strong_rounded,
+              title: 'Focus Mode & Pomodoro',
+              subtitle:
+                  'Using the distraction-free focus screen, Pomodoro countdowns, and auto-stop safeguards.',
+              onTap: () => context.push(AppRoutes.helpFocus),
+            ),
+            const SizedBox(height: 22),
 
-          _buildSectionHeader(
-            context,
-            'Mastery Deck & Spaced Repetition',
-            Icons.school_outlined,
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.psychology_outlined,
-            title: 'Mastery Deck & Flashcards',
-            subtitle:
-                'How card decks, spaced repetition review intervals, and mastery scoring operate.',
-            onTap: () => context.push(AppRoutes.helpMasteryDeck),
-          ),
-          const SizedBox(height: 22),
+            _buildSectionHeader(
+              context,
+              'Mastery Deck & Spaced Repetition',
+              Icons.school_outlined,
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.psychology_outlined,
+              title: 'Mastery Deck & Flashcards',
+              subtitle:
+                  'How card decks, spaced repetition review intervals, and mastery scoring operate.',
+              onTap: () => context.push(AppRoutes.helpMasteryDeck),
+            ),
+            const SizedBox(height: 22),
 
-          _buildSectionHeader(
-            context,
-            'Sync & Offline Transfer',
-            Icons.sync_alt_rounded,
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.wifi_tethering_rounded,
-            title: 'Local Wi-Fi P2P Device Sync',
-            subtitle:
-                'Direct device-to-device synchronization over local Wi-Fi with end-to-end encryption and zero cloud.',
-            onTap: () => context.push(AppRoutes.helpWifiSync),
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.qr_code_scanner_rounded,
-            title: 'Air QR Scanner & Data Handoff',
-            subtitle:
-                'Transferring tasks and decks offline via visual animated QR code streams and clipboard handoff.',
-            onTap: () => context.push(AppRoutes.helpQrHandoff),
-          ),
-          const SizedBox(height: 22),
+            _buildSectionHeader(
+              context,
+              'Sync & Offline Transfer',
+              Icons.sync_alt_rounded,
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.wifi_tethering_rounded,
+              title: 'Local Wi-Fi P2P Device Sync',
+              subtitle:
+                  'Direct device-to-device synchronization over local Wi-Fi with end-to-end encryption and zero cloud.',
+              onTap: () => context.push(AppRoutes.helpWifiSync),
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.qr_code_scanner_rounded,
+              title: 'Air QR Scanner & Data Handoff',
+              subtitle:
+                  'Transferring tasks and decks offline via visual animated QR code streams and clipboard handoff.',
+              onTap: () => context.push(AppRoutes.helpQrHandoff),
+            ),
+            const SizedBox(height: 22),
 
-          _buildSectionHeader(
-            context,
-            'Privacy, Security & Backups',
-            Icons.shield_outlined,
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.security_rounded,
-            title: 'Security, App Lock & Encryption',
-            subtitle:
-                'SQLCipher AES-256 database encryption, biometric authentication, and screenshot guard.',
-            onTap: () => context.push(AppRoutes.helpPrivacySecurity),
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.backup_rounded,
-            title: 'Encrypted Backup & Restore',
-            subtitle:
-                'Creating password-protected ZIP backup files, safety practices, and full restore steps.',
-            onTap: () => context.push(AppRoutes.helpBackup),
-          ),
-          const SizedBox(height: 22),
+            _buildSectionHeader(
+              context,
+              'Privacy, Security & Backups',
+              Icons.shield_outlined,
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.security_rounded,
+              title: 'Security, App Lock & Encryption',
+              subtitle:
+                  'SQLCipher AES-256 database encryption, biometric authentication, and screenshot guard.',
+              onTap: () => context.push(AppRoutes.helpPrivacySecurity),
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.backup_rounded,
+              title: 'Encrypted Backup & Restore',
+              subtitle:
+                  'Creating password-protected ZIP backup files, safety practices, and full restore steps.',
+              onTap: () => context.push(AppRoutes.helpBackup),
+            ),
+            const SizedBox(height: 22),
 
-          _buildSectionHeader(
-            context,
-            'Frequently Asked Questions',
-            Icons.question_answer_outlined,
-          ),
-          const SizedBox(height: 10),
-          HelpTopicCard(
-            icon: Icons.help_outline_rounded,
-            title: 'FAQs & Troubleshooting Guide',
-            subtitle:
-                'Direct answers to common questions about day lock, offline operation, and database safety.',
-            onTap: () => context.push(AppRoutes.helpFaq),
-          ),
-        ],
+            _buildSectionHeader(
+              context,
+              'Frequently Asked Questions',
+              Icons.question_answer_outlined,
+            ),
+            const SizedBox(height: 10),
+            HelpTopicCard(
+              icon: Icons.help_outline_rounded,
+              title: 'FAQs & Troubleshooting Guide',
+              subtitle:
+                  'Direct answers to common questions about day lock, offline operation, and database safety.',
+              onTap: () => context.push(AppRoutes.helpFaq),
+            ),
+          ],
+        ),
       ),
     );
   }

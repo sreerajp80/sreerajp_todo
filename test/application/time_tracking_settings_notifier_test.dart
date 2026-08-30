@@ -26,6 +26,7 @@ void main() {
       expect(state.format, DurationFormat.hhmmss);
       expect(state.minimumSegmentLength, MinimumSegmentLength.off);
       expect(state.keepScreenAwake, isFalse);
+      expect(state.showRunningNotification, isTrue);
       expect(state.manualEntryDuration, ManualEntryDuration.oneHour);
       expect(state.pomodoroEnabled, isFalse);
       expect(state.pomodoroWorkMinutes, 25);
@@ -71,6 +72,7 @@ void main() {
       await notifier.setSingleTimer(true);
       await notifier.setAutoPauseOnBackground(true);
       await notifier.setKeepScreenAwake(true);
+      await notifier.setShowRunningNotification(false);
       await notifier.setPomodoroEnabled(true);
       await notifier.setPomodoroAutoStartNext(true);
 
@@ -78,6 +80,7 @@ void main() {
       expect(reloaded.singleTimer, isTrue);
       expect(reloaded.autoPauseOnBackground, isTrue);
       expect(reloaded.keepScreenAwake, isTrue);
+      expect(reloaded.showRunningNotification, isFalse);
       expect(reloaded.pomodoroEnabled, isTrue);
       expect(reloaded.pomodoroAutoStartNext, isTrue);
     });

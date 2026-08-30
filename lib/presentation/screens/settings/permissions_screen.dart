@@ -12,74 +12,82 @@ class PermissionsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(strings.permissionsLabel)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Text(
-            strings.permissionsSummary,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            Text(
+              strings.permissionsSummary,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
             ),
-          ),
-          const SizedBox(height: 20),
-          AppSectionCard(
-            title: strings.permissionsImplicit,
-            child: Column(
-              children: [
-                _PermissionTile(
-                  icon: Icons.folder_outlined,
-                  title: strings.permissionsStorageTitle,
-                  body: strings.permissionsStorageBody,
-                ),
-                const Divider(height: 24),
-                _PermissionTile(
-                  icon: Icons.file_open_outlined,
-                  title: strings.permissionsFilePickerTitle,
-                  body: strings.permissionsFilePickerBody,
-                ),
-                const Divider(height: 24),
-                _PermissionTile(
-                  icon: Icons.schedule_outlined,
-                  title: strings.permissionsSystemClockTitle,
-                  body: strings.permissionsSystemClockBody,
-                ),
-                const Divider(height: 24),
-                _PermissionTile(
-                  icon: Icons.text_fields_outlined,
-                  title: strings.permissionsTextProcessingTitle,
-                  body: strings.permissionsTextProcessingBody,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: strings.permissionsExplicit,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _PermissionTile(
-                  icon: Icons.photo_camera_outlined,
-                  title: strings.permissionsCameraTitle,
-                  body: strings.permissionsCameraBody,
-                ),
-                const Divider(height: 24),
-                _PermissionTile(
-                  icon: Icons.mic_none_outlined,
-                  title: strings.permissionsMicrophoneTitle,
-                  body: strings.permissionsMicrophoneBody,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  strings.permissionsExplicitNote,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+            const SizedBox(height: 20),
+            AppSectionCard(
+              title: strings.permissionsImplicit,
+              child: Column(
+                children: [
+                  _PermissionTile(
+                    icon: Icons.folder_outlined,
+                    title: strings.permissionsStorageTitle,
+                    body: strings.permissionsStorageBody,
                   ),
-                ),
-              ],
+                  const Divider(height: 24),
+                  _PermissionTile(
+                    icon: Icons.file_open_outlined,
+                    title: strings.permissionsFilePickerTitle,
+                    body: strings.permissionsFilePickerBody,
+                  ),
+                  const Divider(height: 24),
+                  _PermissionTile(
+                    icon: Icons.schedule_outlined,
+                    title: strings.permissionsSystemClockTitle,
+                    body: strings.permissionsSystemClockBody,
+                  ),
+                  const Divider(height: 24),
+                  _PermissionTile(
+                    icon: Icons.text_fields_outlined,
+                    title: strings.permissionsTextProcessingTitle,
+                    body: strings.permissionsTextProcessingBody,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: strings.permissionsExplicit,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _PermissionTile(
+                    icon: Icons.photo_camera_outlined,
+                    title: strings.permissionsCameraTitle,
+                    body: strings.permissionsCameraBody,
+                  ),
+                  const Divider(height: 24),
+                  _PermissionTile(
+                    icon: Icons.mic_none_outlined,
+                    title: strings.permissionsMicrophoneTitle,
+                    body: strings.permissionsMicrophoneBody,
+                  ),
+                  const Divider(height: 24),
+                  _PermissionTile(
+                    icon: Icons.notifications_none_outlined,
+                    title: strings.permissionsNotificationTitle,
+                    body: strings.permissionsNotificationBody,
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    strings.permissionsExplicitNote,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

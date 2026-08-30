@@ -6,6 +6,7 @@ import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
@@ -118,6 +119,21 @@ class _FakeTodoRepository implements TodoRepository {
     String recurrenceRuleId,
     String fromDate,
   ) async => 0;
+
+  @override
+  Future<void> moveTodo(String todoId, String targetDate) async {}
+
+  @override
+  Future<List<TodoHistoryEntity>> getHistoryForTodo(String todoId) async => [];
+
+  @override
+  Future<void> logHistoryEvent({
+    required String todoId,
+    required TodoHistoryEventType eventType,
+    required String description,
+    String? metadata,
+    String? eventTime,
+  }) async {}
 }
 
 class _FakeTimeSegmentRepository implements TimeSegmentRepository {

@@ -115,7 +115,20 @@ void main() {
   group('CarryOverLookBack', () {
     test('names how many days back are searched', () {
       expect(CarryOverLookBack.previousDay.days, 1);
+      expect(CarryOverLookBack.threeDays.days, 3);
       expect(CarryOverLookBack.lastSevenDays.days, 7);
+      expect(CarryOverLookBack.fourteenDays.days, 14);
+      expect(CarryOverLookBack.thirtyDays.days, 30);
+      expect(CarryOverLookBack.fortyFiveDays.days, 45);
+    });
+
+    test('sanitizeCarryOverLookBackDays clamps between 1 and 45', () {
+      expect(sanitizeCarryOverLookBackDays(null), 7);
+      expect(sanitizeCarryOverLookBackDays(0), 1);
+      expect(sanitizeCarryOverLookBackDays(-5), 1);
+      expect(sanitizeCarryOverLookBackDays(10), 10);
+      expect(sanitizeCarryOverLookBackDays(45), 45);
+      expect(sanitizeCarryOverLookBackDays(100), 45);
     });
   });
 

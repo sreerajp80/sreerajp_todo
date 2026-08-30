@@ -20,6 +20,8 @@ class PortTodo {
   final TodoRepository _todoRepository;
   final TimeSegmentRepository _timeSegmentRepository;
 
+  TimeSegmentRepository get timeSegmentRepository => _timeSegmentRepository;
+
   static const _uuid = Uuid();
 
   /// Ports a todo to [targetDate].

@@ -29,8 +29,10 @@ void main() {
       expect(state.sinkFinished, isFalse);
       expect(state.confirmDrop, isTrue);
       expect(state.confirmComplete, isFalse);
+      expect(state.autoCarryOverEnabled, isTrue);
       expect(state.carryOverEnabled, isFalse);
-      expect(state.carryOverLookBack, CarryOverLookBack.previousDay);
+      expect(state.carryOverLookBack, CarryOverLookBack.lastSevenDays);
+      expect(state.carryOverLookBackDays, 7);
       expect(state.carryOverLastAsked, isNull);
       expect(state.autocompleteEnabled, isTrue);
       expect(state.suggestionCount, SuggestionCount.twenty);
@@ -59,8 +61,10 @@ void main() {
         kShowCompletedKey: false,
         kSinkFinishedKey: true,
         kConfirmCompleteKey: true,
+        kAutoCarryOverEnabledKey: false,
         kCarryOverEnabledKey: true,
         kCarryOverLookBackKey: CarryOverLookBack.lastSevenDays.index,
+        kCarryOverLookBackDaysKey: 14,
         kCarryOverLastAskedKey: '2026-08-18',
         kSuggestionCountKey: SuggestionCount.fifty.index,
       });
@@ -74,8 +78,9 @@ void main() {
       expect(state.showCompleted, isFalse);
       expect(state.sinkFinished, isTrue);
       expect(state.confirmComplete, isTrue);
+      expect(state.autoCarryOverEnabled, isFalse);
       expect(state.carryOverEnabled, isTrue);
-      expect(state.carryOverLookBack, CarryOverLookBack.lastSevenDays);
+      expect(state.carryOverLookBackDays, 14);
       expect(state.carryOverLastAsked, '2026-08-18');
       expect(state.suggestionCount, SuggestionCount.fifty);
     });
@@ -87,12 +92,14 @@ void main() {
           kDefaultPriorityKey: 99,
           kDefaultSortOptionKey: -3,
           kSuggestionCountKey: 42,
+          kCarryOverLookBackDaysKey: 100,
         });
         final state = TaskDefaultsNotifier(prefs).state;
 
         expect(state.priority, TodoPriority.normal);
         expect(state.sortOption, TodoSortOption.manual);
         expect(state.suggestionCount, SuggestionCount.twenty);
+        expect(state.carryOverLookBackDays, 45);
       },
     );
   });
@@ -109,8 +116,10 @@ void main() {
       await notifier.setShowDropped(false);
       await notifier.setSinkFinished(true);
       await notifier.setConfirmDrop(false);
+      await notifier.setAutoCarryOverEnabled(false);
       await notifier.setCarryOverEnabled(true);
       await notifier.setCarryOverLookBack(CarryOverLookBack.lastSevenDays);
+      await notifier.setCarryOverLookBackDays(30);
       await notifier.markCarryOverAsked('2026-08-19');
       await notifier.setAutocompleteEnabled(false);
 
@@ -127,11 +136,9 @@ void main() {
       expect(prefs.getBool(kShowDroppedKey), isFalse);
       expect(prefs.getBool(kSinkFinishedKey), isTrue);
       expect(prefs.getBool(kConfirmDropKey), isFalse);
+      expect(prefs.getBool(kAutoCarryOverEnabledKey), isFalse);
       expect(prefs.getBool(kCarryOverEnabledKey), isTrue);
-      expect(
-        prefs.getInt(kCarryOverLookBackKey),
-        CarryOverLookBack.lastSevenDays.index,
-      );
+      expect(prefs.getInt(kCarryOverLookBackDaysKey), 30);
       expect(prefs.getString(kCarryOverLastAskedKey), '2026-08-19');
       expect(prefs.getBool(kAutocompleteEnabledKey), isFalse);
     });

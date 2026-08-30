@@ -19,69 +19,73 @@ class PomodoroScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.trackingPomodoro)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AppSectionCard(
-            child: SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              value: enabled,
-              onChanged: notifier.setPomodoroEnabled,
-              title: Text(l10n.trackingPomodoroEnabled),
-              subtitle: Text(l10n.trackingPomodoroEnabledDetail),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            AppSectionCard(
+              child: SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: enabled,
+                onChanged: notifier.setPomodoroEnabled,
+                title: Text(l10n.trackingPomodoroEnabled),
+                subtitle: Text(l10n.trackingPomodoroEnabledDetail),
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: l10n.trackingPomodoro,
-            child: Column(
-              children: [
-                _MinuteStepper(
-                  label: l10n.trackingPomodoroWork,
-                  minutes: settings.pomodoroWorkMinutes,
-                  enabled: enabled,
-                  onChanged: notifier.setPomodoroWorkMinutes,
-                ),
-                _MinuteStepper(
-                  label: l10n.trackingPomodoroShortBreak,
-                  minutes: settings.pomodoroShortBreakMinutes,
-                  enabled: enabled,
-                  onChanged: notifier.setPomodoroShortBreakMinutes,
-                ),
-                _MinuteStepper(
-                  label: l10n.trackingPomodoroLongBreak,
-                  minutes: settings.pomodoroLongBreakMinutes,
-                  enabled: enabled,
-                  onChanged: notifier.setPomodoroLongBreakMinutes,
-                ),
-                _Stepper(
-                  label: l10n.trackingPomodoroBlocks,
-                  value: settings.pomodoroBlocksBeforeLongBreak,
-                  valueLabel: l10n.trackingBlocks(
-                    settings.pomodoroBlocksBeforeLongBreak,
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: l10n.trackingPomodoro,
+              child: Column(
+                children: [
+                  _MinuteStepper(
+                    label: l10n.trackingPomodoroWork,
+                    minutes: settings.pomodoroWorkMinutes,
+                    enabled: enabled,
+                    onChanged: notifier.setPomodoroWorkMinutes,
                   ),
-                  min: kPomodoroMinBlocks,
-                  max: kPomodoroMaxBlocks,
-                  step: 1,
-                  enabled: enabled,
-                  onChanged: notifier.setPomodoroBlocksBeforeLongBreak,
-                ),
-                SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  value: settings.pomodoroAutoStartNext,
-                  onChanged: enabled ? notifier.setPomodoroAutoStartNext : null,
-                  title: Text(l10n.trackingPomodoroAutoStart),
-                  subtitle: Text(l10n.trackingPomodoroAutoStartDetail),
-                ),
-              ],
+                  _MinuteStepper(
+                    label: l10n.trackingPomodoroShortBreak,
+                    minutes: settings.pomodoroShortBreakMinutes,
+                    enabled: enabled,
+                    onChanged: notifier.setPomodoroShortBreakMinutes,
+                  ),
+                  _MinuteStepper(
+                    label: l10n.trackingPomodoroLongBreak,
+                    minutes: settings.pomodoroLongBreakMinutes,
+                    enabled: enabled,
+                    onChanged: notifier.setPomodoroLongBreakMinutes,
+                  ),
+                  _Stepper(
+                    label: l10n.trackingPomodoroBlocks,
+                    value: settings.pomodoroBlocksBeforeLongBreak,
+                    valueLabel: l10n.trackingBlocks(
+                      settings.pomodoroBlocksBeforeLongBreak,
+                    ),
+                    min: kPomodoroMinBlocks,
+                    max: kPomodoroMaxBlocks,
+                    step: 1,
+                    enabled: enabled,
+                    onChanged: notifier.setPomodoroBlocksBeforeLongBreak,
+                  ),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    value: settings.pomodoroAutoStartNext,
+                    onChanged: enabled
+                        ? notifier.setPomodoroAutoStartNext
+                        : null,
+                    title: Text(l10n.trackingPomodoroAutoStart),
+                    subtitle: Text(l10n.trackingPomodoroAutoStartDetail),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          SettingsNoteCard(
-            icon: Icons.notifications_off_outlined,
-            text: l10n.trackingPomodoroNote,
-          ),
-        ],
+            const SizedBox(height: 16),
+            SettingsNoteCard(
+              icon: Icons.notifications_off_outlined,
+              text: l10n.trackingPomodoroNote,
+            ),
+          ],
+        ),
       ),
     );
   }

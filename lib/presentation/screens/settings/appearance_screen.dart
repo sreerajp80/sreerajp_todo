@@ -15,30 +15,32 @@ class AppearanceScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsAppearance)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsNavCard(
-            icon: Icons.brightness_6_outlined,
-            title: l10n.settingsThemeMode,
-            subtitle: l10n.appearanceThemeModeSubtitle,
-            onTap: () => context.push(AppRoutes.themeMode),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.text_fields_rounded,
-            title: l10n.appearanceTypography,
-            subtitle: l10n.appearanceTypographySubtitle,
-            onTap: () => context.push(AppRoutes.typography),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.color_lens_outlined,
-            title: l10n.appearanceAccentColor,
-            subtitle: l10n.appearanceAccentColorSubtitle,
-            onTap: () => context.push(AppRoutes.accentColor),
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsNavCard(
+              icon: Icons.brightness_6_outlined,
+              title: l10n.settingsThemeMode,
+              subtitle: l10n.appearanceThemeModeSubtitle,
+              onTap: () => context.push(AppRoutes.themeMode),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.text_fields_rounded,
+              title: l10n.appearanceTypography,
+              subtitle: l10n.appearanceTypographySubtitle,
+              onTap: () => context.push(AppRoutes.typography),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.color_lens_outlined,
+              title: l10n.appearanceAccentColor,
+              subtitle: l10n.appearanceAccentColorSubtitle,
+              onTap: () => context.push(AppRoutes.accentColor),
+            ),
+          ],
+        ),
       ),
     );
   }

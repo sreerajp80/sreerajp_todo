@@ -146,6 +146,34 @@ class FeaturesScreen extends StatelessWidget {
       ],
     ),
     _FeatureCategory(
+      name: 'Ritual Mode',
+      subtitle: 'A quiet, guided way to open and close the day',
+      icon: Icons.self_improvement_rounded,
+      features: [
+        _AppFeature(
+          title: 'Guided Day Open',
+          description:
+              'Breathe, read one reflection card, settle what is left over from before, then begin the day. Off by default, and every step can be skipped.',
+          icon: Icons.wb_sunny_outlined,
+          highlights: ['Breathing timer', 'Carry over', "Today's three"],
+        ),
+        _AppFeature(
+          title: 'Ritual Deck',
+          description:
+              'Fifty reflection cards in English and Malayalam, each with a question and a grounding quote, resurfaced by their own spaced repetition.',
+          icon: Icons.style_outlined,
+          highlights: ['50 cards', 'Bilingual', 'Comes back when due'],
+        ),
+        _AppFeature(
+          title: 'Evening Close',
+          description:
+              'Once a day, later on, the day list offers the evening reflection so the day is closed as deliberately as it was opened.',
+          icon: Icons.nightlight_outlined,
+          highlights: ['Once a day', 'Optional', 'Your chosen hour'],
+        ),
+      ],
+    ),
+    _FeatureCategory(
       name: 'Mastery Deck & Spaced Repetition',
       subtitle: 'Flashcards, spaced repetition retention, and recurring habits',
       icon: Icons.school_outlined,
@@ -347,18 +375,20 @@ class FeaturesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Features')),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-        children: [
-          _buildHeaderCard(context),
-          const SizedBox(height: 20),
-          for (final category in _categories) ...[
-            _buildCategoryHeader(context, category),
-            const SizedBox(height: 10),
-            _buildCategoryCard(context, category),
-            const SizedBox(height: 24),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            _buildHeaderCard(context),
+            const SizedBox(height: 20),
+            for (final category in _categories) ...[
+              _buildCategoryHeader(context, category),
+              const SizedBox(height: 10),
+              _buildCategoryCard(context, category),
+              const SizedBox(height: 24),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

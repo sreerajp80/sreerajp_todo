@@ -23,6 +23,8 @@ class UndoEntry with _$UndoEntry {
     required TodoStatus oldStatus,
     required TodoStatus newStatus,
     String? copiedTodoId,
+    String? sourceDate,
+    String? targetDate,
     required DateTime timestamp,
   }) = _UndoEntry;
 }

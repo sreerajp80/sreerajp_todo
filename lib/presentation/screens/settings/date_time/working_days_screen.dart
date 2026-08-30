@@ -19,44 +19,46 @@ class WorkingDaysScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.dateTimeWorkingDays)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AppSectionCard(
-            title: l10n.workingDaysTitle,
-            subtitle: l10n.workingDaysSubtitle,
-            child: Column(
-              children: [
-                for (final weekday in kAllWeekdays)
-                  SwitchListTile(
-                    contentPadding: EdgeInsets.zero,
-                    value: settings.workingDays.contains(weekday),
-                    onChanged: (value) =>
-                        notifier.toggleWorkingDay(weekday, value),
-                    title: Text(weekdayName(weekday)),
-                  ),
-              ],
-            ),
-          ),
-          if (settings.workingDays.isEmpty) ...[
-            const SizedBox(height: 16),
-            SettingsNoteCard(
-              icon: Icons.warning_amber_rounded,
-              text: l10n.workingDaysNoneWarning,
-            ),
-          ],
-          const SizedBox(height: 16),
-          AppSectionCard(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: OutlinedButton.icon(
-                onPressed: notifier.resetWorkingDays,
-                icon: const Icon(Icons.restart_alt_rounded),
-                label: Text(l10n.workingDaysReset),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            AppSectionCard(
+              title: l10n.workingDaysTitle,
+              subtitle: l10n.workingDaysSubtitle,
+              child: Column(
+                children: [
+                  for (final weekday in kAllWeekdays)
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: settings.workingDays.contains(weekday),
+                      onChanged: (value) =>
+                          notifier.toggleWorkingDay(weekday, value),
+                      title: Text(weekdayName(weekday)),
+                    ),
+                ],
               ),
             ),
-          ),
-        ],
+            if (settings.workingDays.isEmpty) ...[
+              const SizedBox(height: 16),
+              SettingsNoteCard(
+                icon: Icons.warning_amber_rounded,
+                text: l10n.workingDaysNoneWarning,
+              ),
+            ],
+            const SizedBox(height: 16),
+            AppSectionCard(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: OutlinedButton.icon(
+                  onPressed: notifier.resetWorkingDays,
+                  icon: const Icon(Icons.restart_alt_rounded),
+                  label: Text(l10n.workingDaysReset),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

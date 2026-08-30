@@ -2,16 +2,23 @@ import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
+import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
+import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
+import 'package:uuid/uuid.dart';
 
 class TodoRepositoryImpl implements TodoRepository {
-  TodoRepositoryImpl(this._todoDao);
+  TodoRepositoryImpl(this._todoDao, {this.todoHistoryDao, this.timeSegmentDao});
 
   final TodoDao _todoDao;
+  final TodoHistoryDao? todoHistoryDao;
+  final TimeSegmentDao? timeSegmentDao;
+  static const _uuid = Uuid();
 
   void _checkDayLock(String date, {bool bypassLock = false}) {
     if (!bypassLock && isPastDate(date)) {
@@ -51,6 +58,13 @@ class TodoRepositoryImpl implements TodoRepository {
     }
 
     await _todoDao.insert(normalized);
+
+    await logHistoryEvent(
+      todoId: normalized.id,
+      eventType: TodoHistoryEventType.created,
+      description: 'Task created for ${normalized.date}',
+      eventTime: normalized.createdAt,
+    );
   }
 
   @override
@@ -67,6 +81,12 @@ class TodoRepositoryImpl implements TodoRepository {
     }
 
     await _todoDao.update(normalized);
+
+    await logHistoryEvent(
+      todoId: normalized.id,
+      eventType: TodoHistoryEventType.edited,
+      description: 'Task details updated',
+    );
   }
 
   @override
@@ -110,6 +130,13 @@ class TodoRepositoryImpl implements TodoRepository {
     );
 
     await _todoDao.update(updated);
+
+    await logHistoryEvent(
+      todoId: id,
+      eventType: TodoHistoryEventType.statusChanged,
+      description: 'Status changed to ${status.name}',
+      metadata: '{"status":"${status.name}"}',
+    );
   }
 
   @override
@@ -178,6 +205,13 @@ class TodoRepositoryImpl implements TodoRepository {
     _checkDayLock(todo.date, bypassLock: bypassLock);
     final now = DateTime.now().toUtc().toIso8601String();
     await _todoDao.subTaskDao.toggleSubTask(subTaskId, isCompleted, now);
+
+    await logHistoryEvent(
+      todoId: todoId,
+      eventType: TodoHistoryEventType.subtaskToggled,
+      description: isCompleted ? 'Sub-task completed' : 'Sub-task reopened',
+      metadata: '{"subtask_id":"$subTaskId","is_completed":$isCompleted}',
+    );
   }
 
   @override
@@ -191,5 +225,134 @@ class TodoRepositoryImpl implements TodoRepository {
       todoId,
     );
     return pending.isNotEmpty;
+  }
+
+  @override
+  Future<void> logHistoryEvent({
+    required String todoId,
+    required TodoHistoryEventType eventType,
+    required String description,
+    String? metadata,
+    String? eventTime,
+  }) async {
+    final historyDao = todoHistoryDao;
+    if (historyDao == null) return;
+    final nowIso = DateTime.now().toUtc().toIso8601String();
+    final event = TodoHistoryEntity(
+      id: _uuid.v4(),
+      todoId: todoId,
+      eventType: eventType,
+      eventTime: eventTime ?? nowIso,
+      description: description,
+      metadata: metadata,
+      createdAt: nowIso,
+    );
+    await historyDao.insert(event);
+  }
+
+  @override
+  Future<List<TodoHistoryEntity>> getHistoryForTodo(String todoId) async {
+    final historyDao = todoHistoryDao;
+    final recorded = historyDao != null
+        ? await historyDao.findByTodoId(todoId)
+        : <TodoHistoryEntity>[];
+
+    final todo = await _todoDao.findById(todoId);
+    if (todo == null) return recorded;
+
+    final hasCreated = recorded.any(
+      (e) => e.eventType == TodoHistoryEventType.created,
+    );
+    final events = [...recorded];
+
+    if (!hasCreated) {
+      final originalDate = todo.sourceDate ?? todo.date;
+      events.add(
+        TodoHistoryEntity(
+          id: 'synth-created-$todoId',
+          todoId: todoId,
+          eventType: TodoHistoryEventType.created,
+          eventTime: todo.createdAt,
+          description: 'Task created for $originalDate',
+          createdAt: todo.createdAt,
+        ),
+      );
+    }
+
+    final segmentDao = timeSegmentDao;
+    if (segmentDao != null) {
+      final segments = await segmentDao.findByTodoId(todoId);
+      final segmentIdsRecorded = recorded
+          .where(
+            (e) => e.metadata != null && e.metadata!.contains('segment_id'),
+          )
+          .map((e) => e.metadata!)
+          .toSet();
+
+      for (final segment in segments) {
+        if (!segmentIdsRecorded.any((m) => m.contains(segment.id))) {
+          if (segment.endTime != null && segment.durationSeconds != null) {
+            events.add(
+              TodoHistoryEntity(
+                id: 'synth-segment-${segment.id}',
+                todoId: todoId,
+                eventType: segment.manual
+                    ? TodoHistoryEventType.manualSegmentAdded
+                    : TodoHistoryEventType.timerStopped,
+                eventTime: segment.endTime!,
+                description: segment.manual
+                    ? 'Manual time recorded (${segment.durationSeconds}s)'
+                    : 'Timer session completed (${segment.durationSeconds}s)',
+                metadata:
+                    '{"segment_id":"${segment.id}","duration_seconds":${segment.durationSeconds}}',
+                createdAt: segment.createdAt,
+              ),
+            );
+          }
+        }
+      }
+    }
+
+    events.sort((a, b) => a.eventTime.compareTo(b.eventTime));
+    return events;
+  }
+
+  @override
+  Future<void> moveTodo(String todoId, String targetDate) async {
+    final todo = await _todoDao.findById(todoId);
+    if (todo == null) throw const TodoNotFoundException();
+
+    final normalizedTitle = nfcNormalize(todo.title);
+    if (await _todoDao.existsTitleOnDate(
+      normalizedTitle,
+      targetDate,
+      excludeId: todo.id,
+    )) {
+      throw const DuplicateTitleException();
+    }
+
+    final maxSort = await _todoDao.maxSortOrder(targetDate);
+    final newSortOrder = maxSort < 0 ? 0 : maxSort + 1;
+    final fromDate = todo.date;
+
+    final updated = todo.copyWith(
+      date: targetDate,
+      sortOrder: newSortOrder,
+      status: todo.status == TodoStatus.ported
+          ? TodoStatus.pending
+          : todo.status,
+      portedTo: null,
+      sourceDate: todo.sourceDate ?? fromDate,
+      updatedAt: DateTime.now().toUtc().toIso8601String(),
+    );
+
+    await _todoDao.update(updated);
+
+    await logHistoryEvent(
+      todoId: todoId,
+      eventType: TodoHistoryEventType.moved,
+      description: 'Moved from $fromDate to $targetDate',
+      metadata: '{"from_date":"$fromDate","to_date":"$targetDate"}',
+    );
   }
 }

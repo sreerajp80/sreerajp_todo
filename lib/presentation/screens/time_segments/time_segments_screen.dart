@@ -47,6 +47,12 @@ class TimeSegmentsScreen extends ConsumerWidget {
           appBar: AppBar(
             title: Text(context.l10n.timeSegments),
             actions: [
+              IconButton(
+                icon: const Icon(Icons.history_rounded),
+                tooltip: context.l10n.taskHistory,
+                onPressed: () =>
+                    context.push(AppRoutes.todoHistoryPath(todoId)),
+              ),
               // Only offered while a timer runs, because the Focus view is
               // about the block happening right now.
               if (trackingState.runningSegment != null)
@@ -57,17 +63,19 @@ class TimeSegmentsScreen extends ConsumerWidget {
                 ),
             ],
           ),
-          body: trackingState.isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : _SegmentsBody(
-                  todo: todo,
-                  segments: trackingState.segments,
-                  runningSegment: trackingState.runningSegment,
-                  totalDurationSeconds: trackingState.totalDurationSeconds,
-                  isPast: past,
-                  isTerminal: isTerminal,
-                  todoId: todoId,
-                ),
+          body: SafeArea(
+            child: trackingState.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _SegmentsBody(
+                    todo: todo,
+                    segments: trackingState.segments,
+                    runningSegment: trackingState.runningSegment,
+                    totalDurationSeconds: trackingState.totalDurationSeconds,
+                    isPast: past,
+                    isTerminal: isTerminal,
+                    todoId: todoId,
+                  ),
+          ),
           floatingActionButton: canAddManual
               ? FloatingActionButton.extended(
                   onPressed: () => _showManualSegmentDialog(context, ref, todo),
@@ -79,11 +87,13 @@ class TimeSegmentsScreen extends ConsumerWidget {
       },
       loading: () => Scaffold(
         appBar: AppBar(title: Text(context.l10n.timeSegments)),
-        body: const Center(child: CircularProgressIndicator()),
+        body: const SafeArea(child: Center(child: CircularProgressIndicator())),
       ),
       error: (error, _) => Scaffold(
         appBar: AppBar(title: Text(context.l10n.timeSegments)),
-        body: AppErrorState(message: mapErrorToMessage(context.l10n, error)),
+        body: SafeArea(
+          child: AppErrorState(message: mapErrorToMessage(context.l10n, error)),
+        ),
       ),
     );
   }
@@ -95,6 +105,7 @@ class TimeSegmentsScreen extends ConsumerWidget {
   ) async {
     final result = await showModalBottomSheet<TimeSegmentEntity>(
       context: context,
+      useSafeArea: true,
       isScrollControlled: true,
       builder: (ctx) => ManualSegmentForm(
         todoId: todoId,
@@ -218,7 +229,7 @@ class _SegmentsBody extends ConsumerWidget {
         else
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.only(top: 8, bottom: 80),
               itemCount: segments.length,
               itemBuilder: (context, index) {
                 final segment = segments[index];

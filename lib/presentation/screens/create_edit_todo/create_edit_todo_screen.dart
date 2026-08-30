@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
+import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
@@ -434,6 +435,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       try {
         final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
         await notifier.portTodo(_existingTodo!.id, targetDate);
+        ref.invalidate(dailyTodoProvider(targetDate));
         if (mounted) {
           ScaffoldMessenger.of(
             context,
@@ -477,6 +479,13 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       appBar: AppBar(
         title: Text(title),
         actions: [
+          if (widget.isEditing && widget.todoId != null)
+            IconButton(
+              icon: const Icon(Icons.history_rounded),
+              tooltip: context.l10n.taskHistory,
+              onPressed: () =>
+                  context.push(AppRoutes.todoHistoryPath(widget.todoId!)),
+            ),
           if (_isPast)
             Padding(
               padding: const EdgeInsets.only(right: 16),
@@ -499,145 +508,147 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
             ),
         ],
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            AppSectionCard(
-              title: context.l10n.details,
-              subtitle: formatDateFromIso(_effectiveDate),
-              child: Column(
-                children: [
-                  TitleAutocompleteField(
-                    controller: _titleController,
-                    focusNode: _titleFocusNode,
-                    enabled: !_isReadOnly,
-                    onChanged: _checkTitleUniqueness,
-                    validator: (value) {
-                      if (value == null || value.trim().isEmpty) {
-                        return context.l10n.titleRequired;
-                      }
-                      if (_uniquenessError != null) {
-                        return _uniquenessError;
-                      }
-                      return null;
-                    },
-                  ),
-                  if (_uniquenessError != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 6, left: 12),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          _uniquenessError!,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.error,
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+            children: [
+              AppSectionCard(
+                title: context.l10n.details,
+                subtitle: formatDateFromIso(_effectiveDate),
+                child: Column(
+                  children: [
+                    TitleAutocompleteField(
+                      controller: _titleController,
+                      focusNode: _titleFocusNode,
+                      enabled: !_isReadOnly,
+                      onChanged: _checkTitleUniqueness,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return context.l10n.titleRequired;
+                        }
+                        if (_uniquenessError != null) {
+                          return _uniquenessError;
+                        }
+                        return null;
+                      },
+                    ),
+                    if (_uniquenessError != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 6, left: 12),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            _uniquenessError!,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.error,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  const SizedBox(height: 14),
-                  _buildDescriptionField(),
-                  if (_existingTodo?.sourceDate != null) ...[
                     const SizedBox(height: 14),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '${context.l10n.copiedFrom} ${_existingTodo!.sourceDate}',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontStyle: FontStyle.italic,
-                          color: theme.colorScheme.onSurfaceVariant,
+                    _buildDescriptionField(),
+                    if (_existingTodo?.sourceDate != null) ...[
+                      const SizedBox(height: 14),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '${context.l10n.copiedFrom} ${_existingTodo!.sourceDate}',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            AppSectionCard(
-              title: context.l10n.priorityLabel,
-              child: PrioritySelector(
-                selected: _priority,
-                enabled: !_isReadOnly,
-                onChanged: (priority) => setState(() => _priority = priority),
-              ),
-            ),
-            const SizedBox(height: 16),
-            AppSectionCard(
-              title: context.l10n.targetTimeLabel,
-              child: TargetTimeField(
-                targetSeconds: _targetSeconds,
-                enabled: !_isReadOnly,
-                onChanged: (seconds) => _targetSeconds = seconds,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildSubTaskCard(),
-            if (_availablePrerequisites.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              _buildPrerequisitesCard(),
-            ],
-            if (!_isReadOnly) ...[
               const SizedBox(height: 16),
               AppSectionCard(
-                title: context.l10n.repeat,
-                child: RepeatOptionPicker(
-                  selected: _repeatOption,
-                  onChanged: (option) {
-                    setState(() => _repeatOption = option);
-                  },
-                  onRepeatRequested: _showCustomRecurrenceSheet,
-                  summaryLabel: _repeatSummary,
+                title: context.l10n.priorityLabel,
+                child: PrioritySelector(
+                  selected: _priority,
+                  enabled: !_isReadOnly,
+                  onChanged: (priority) => setState(() => _priority = priority),
                 ),
               ),
-              if (_repeatOption == SimpleRepeatOption.repeat) ...[
-                const SizedBox(height: 8),
-                RrulePreview(
-                  rruleString: _buildRruleFromRepeatOption(),
-                  startDate: _effectiveDate,
-                  endDate: _hasCustomEndDate ? _customEndDate : null,
+              const SizedBox(height: 16),
+              AppSectionCard(
+                title: context.l10n.targetTimeLabel,
+                child: TargetTimeField(
+                  targetSeconds: _targetSeconds,
+                  enabled: !_isReadOnly,
+                  onChanged: (seconds) => _targetSeconds = seconds,
                 ),
+              ),
+              const SizedBox(height: 16),
+              _buildSubTaskCard(),
+              if (_availablePrerequisites.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                _buildPrerequisitesCard(),
               ],
-            ],
-            const SizedBox(height: 16),
-            AppSectionCard(
-              title: context.l10n.taskStatus,
-              subtitle: widget.isEditing
-                  ? context.l10n.editTodo
-                  : context.l10n.createTodo,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildStatusSelector(),
-                  if (_status == TodoStatus.ported && _portedTo != null) ...[
-                    const SizedBox(height: 10),
-                    Text(
-                      '${context.l10n.portedTo}: $_portedTo',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.tertiary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
+              if (!_isReadOnly) ...[
+                const SizedBox(height: 16),
+                AppSectionCard(
+                  title: context.l10n.repeat,
+                  child: RepeatOptionPicker(
+                    selected: _repeatOption,
+                    onChanged: (option) {
+                      setState(() => _repeatOption = option);
+                    },
+                    onRepeatRequested: _showCustomRecurrenceSheet,
+                    summaryLabel: _repeatSummary,
+                  ),
+                ),
+                if (_repeatOption == SimpleRepeatOption.repeat) ...[
+                  const SizedBox(height: 8),
+                  RrulePreview(
+                    rruleString: _buildRruleFromRepeatOption(),
+                    startDate: _effectiveDate,
+                    endDate: _hasCustomEndDate ? _customEndDate : null,
+                  ),
                 ],
+              ],
+              const SizedBox(height: 16),
+              AppSectionCard(
+                title: context.l10n.taskStatus,
+                subtitle: widget.isEditing
+                    ? context.l10n.editTodo
+                    : context.l10n.createTodo,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildStatusSelector(),
+                    if (_status == TodoStatus.ported && _portedTo != null) ...[
+                      const SizedBox(height: 10),
+                      Text(
+                        '${context.l10n.portedTo}: $_portedTo',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: theme.colorScheme.tertiary,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 18),
-            if (!_isReadOnly)
-              FilledButton.icon(
-                onPressed: _isSaving ? null : _save,
-                icon: _isSaving
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.save_rounded),
-                label: Text(context.l10n.save),
-              ),
-          ],
+              const SizedBox(height: 18),
+              if (!_isReadOnly)
+                FilledButton.icon(
+                  onPressed: _isSaving ? null : _save,
+                  icon: _isSaving
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.save_rounded),
+                  label: Text(context.l10n.save),
+                ),
+            ],
+          ),
         ),
       ),
     );

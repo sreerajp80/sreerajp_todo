@@ -299,6 +299,16 @@ class TodoListTile extends ConsumerWidget {
             ),
           ),
         PopupMenuItem(
+          value: 'history',
+          child: Row(
+            children: [
+              const Icon(Icons.history_rounded, size: 20),
+              const SizedBox(width: 8),
+              Text(context.l10n.taskHistory),
+            ],
+          ),
+        ),
+        PopupMenuItem(
           value: 'segments',
           child: Row(
             children: [
@@ -343,6 +353,8 @@ class TodoListTile extends ConsumerWidget {
         switch (value) {
           case 'port':
             onPort();
+          case 'history':
+            context.push(AppRoutes.todoHistoryPath(todo.id));
           case 'segments':
             onViewSegments();
           case 'edit':

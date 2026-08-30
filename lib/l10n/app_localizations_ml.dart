@@ -1406,57 +1406,59 @@ class AppLocalizationsMl extends AppLocalizations {
   String get dataHandoffTitle => 'ഡാറ്റ ഹാൻഡോഫ് (JSON & MD)';
 
   @override
-  String get actionChange => 'Change';
+  String get actionChange => 'മാറ്റുക';
 
   @override
-  String get dataHandoffHeader => 'JSON & Markdown Data Handoff';
+  String get dataHandoffHeader => 'JSON & Markdown ഡാറ്റാ കൈമാറ്റം';
 
   @override
   String get dataHandoffSubtitle =>
-      'Ingest and export task lists, subtask checklists, and timecard summaries fully offline.';
+      'ടാസ്ക് ലിസ്റ്റുകൾ, സബ്-ടാസ്ക് ചെക്ക്‌ലിസ്റ്റുകൾ, സമയ വിവരങ്ങൾ എന്നിവ പൂർണ്ണമായും ഓഫ്‌ലൈനായി ഇമ്പോർട്ട് ചെയ്യാനും എക്സ്പോർട്ട് ചെയ്യാനും സാധിക്കുന്നു.';
 
   @override
-  String get exportJsonLabel => 'Export JSON Data Payload';
+  String get exportJsonLabel => 'JSON ഡാറ്റ ഫയൽ എക്സ്പോർട്ട് ചെയ്യുക';
 
   @override
   String get exportJsonDesc =>
-      'Exports tasks, subtasks, recurrence rules, time segments, and Markdown notes to a structured JSON file.';
+      'ടാസ്കുകൾ, സബ്-ടാസ്കുകൾ, ആവർത്തന നിയമങ്ങൾ, സമയ സെഗ്‌മെന്റുകൾ, മാർക്ക്ഡൗൺ കുറിപ്പുകൾ എന്നിവ അടങ്ങിയ ക്രമീകരിച്ച JSON ഫയലായി സേവ് ചെയ്യുന്നു.';
 
   @override
-  String get exportMarkdownLabel => 'Export Markdown Checklist';
+  String get exportMarkdownLabel =>
+      'മാർക്ക്ഡൗൺ ചെക്ക്‌ലിസ്റ്റ് എക്സ്പോർട്ട് ചെയ്യുക';
 
   @override
   String get exportMarkdownDesc =>
-      'Generates a clean Markdown checklist file (- [ ] / - [x]) and timecard summary.';
+      'വൃത്തിയുള്ള മാർക്ക്ഡൗൺ ചെക്ക്‌ലിസ്റ്റ് ഫയലും (- [ ] / - [x]) സമയ വിവര സംഗ്രഹവും തയ്യാറാക്കുന്നു.';
 
   @override
-  String get importFileLabel => 'Import JSON / Markdown File';
+  String get importFileLabel => 'JSON / മാർക്ക്ഡൗൺ ഫയൽ ഇമ്പോർട്ട് ചെയ്യുക';
 
   @override
   String get importFileDesc =>
-      'Pick a .json or .md file from device storage to convert and merge into tasks.';
+      'ഡിവൈസ് സ്റ്റോറേജിൽ നിന്ന് ഒരു .json അല്ലെങ്കിൽ .md ഫയൽ തിരഞ്ഞെടുത്ത് ടാസ്കുകളിലേക്ക് ചേർക്കുക.';
 
   @override
-  String get pasteMarkdownLabel => 'Paste Raw Markdown Text';
+  String get pasteMarkdownLabel => 'മാർക്ക്ഡൗൺ ടെക്സ്റ്റ് ഒട്ടിക്കുക';
 
   @override
   String get pasteMarkdownDesc =>
-      'Paste raw Markdown text containing - [ ] and - [x] checklist items to parse.';
+      '- [ ] ഉം - [x] ഉം അടങ്ങിയ മാർക്ക്ഡൗൺ ചെക്ക്‌ലിസ്റ്റ് ടെക്സ്റ്റ് നേരിട്ട് പേസ്റ്റ് ചെയ്ത് ഇമ്പോർട്ട് ചെയ്യുക.';
 
   @override
-  String get targetDateLabel => 'Target Date for Data Handoff';
+  String get targetDateLabel => 'ഡാറ്റാ കൈമാറ്റത്തിനുള്ള തീയതി';
 
   @override
-  String get markdownImportTitle => 'Paste Markdown Checklist Text';
+  String get markdownImportTitle =>
+      'മാർക്ക്ഡൗൺ ചെക്ക്‌ലിസ്റ്റ് ടെക്സ്റ്റ് പേസ്റ്റ് ചെയ്യുക';
 
   @override
-  String get parseMarkdownPreview => 'Parsed Tasks Preview';
+  String get parseMarkdownPreview => 'കണ്ടെത്തിയ ടാസ്കുകളുടെ പ്രിവ്യൂ';
 
   @override
-  String get importSuccessMsg => 'Successfully imported tasks.';
+  String get importSuccessMsg => 'ടാസ്കുകൾ വിജയകരമായി ഇമ്പോർട്ട് ചെയ്തു.';
 
   @override
-  String get exportSuccessMsg => 'Export saved successfully to file.';
+  String get exportSuccessMsg => 'എക്സ്പോർട്ട് ഫയൽ വിജയകരമായി സേവ് ചെയ്തു.';
 
   @override
   String get wifiSyncTitle => 'ലോക്കൽ P2P വൈഫൈ സിങ്ക്';
@@ -1645,6 +1647,25 @@ class AppLocalizationsMl extends AppLocalizations {
   @override
   String get confirmCompleteBody =>
       'ഈ ടാസ്ക് പൂർത്തിയായി അടയാളപ്പെടുത്തും. ഓടുന്ന ടൈമർ നിർത്തും.';
+
+  @override
+  String get defaultsAutoCarryOver =>
+      'സ്വയമേവ അപൂർണ്ണമായ ടാസ്കുകൾ അടുത്ത ദിവസത്തേക്ക് മാറ്റുക';
+
+  @override
+  String get defaultsAutoCarryOverDetail =>
+      'ആപ്പ് തുറക്കുമ്പോൾ മുൻ ദിവസങ്ങളിലെ പൂർത്തിയാക്കാത്ത ടാസ്കുകൾ ചോദിക്കാതെ ഇന്നത്തേക്ക് പകർത്തുക.';
+
+  @override
+  String autoCarryOverDone(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ടാസ്കുകൾ സ്വയമേവ ഇന്നത്തേക്ക് മാറ്റി',
+      one: '1 ടാസ്ക് സ്വയമേവ ഇന്നത്തേക്ക് മാറ്റി',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get defaultsCarryOver => 'തീരാത്ത ടാസ്കുകൾ കൊണ്ടുവരാൻ ചോദിക്കുക';
@@ -2267,5 +2288,1236 @@ class AppLocalizationsMl extends AppLocalizations {
   @override
   String voiceTimeNote(String time) {
     return 'സമയം $time';
+  }
+
+  @override
+  String get settingsRitual => 'അനുഷ്ഠാന മോഡ്';
+
+  @override
+  String get settingsRitualSubtitle =>
+      'ദിവസം ശാന്തമായി തുടങ്ങാൻ ഒരു ചെറിയ ക്രമം';
+
+  @override
+  String get ritualTitle => 'അനുഷ്ഠാന മോഡ്';
+
+  @override
+  String get ritualEnabled => 'അനുഷ്ഠാന മോഡ്';
+
+  @override
+  String get ritualEnabledDetail =>
+      'ശ്വാസം എടുക്കുക, ഒരു കാർഡ് വായിക്കുക, ദിവസം ഒരുക്കുക, പിന്നെ തുടങ്ങുക.';
+
+  @override
+  String get ritualOpenOnLaunch => 'ദിവസത്തിലെ ആദ്യ തുറക്കലിൽ കാണിക്കുക';
+
+  @override
+  String get ritualOpenOnLaunchDetail =>
+      'ഇത് ഓഫാണെങ്കിൽ, ടാസ്ക് പട്ടികയിൽ നിന്ന് നിങ്ങൾ തന്നെ തുടങ്ങാം.';
+
+  @override
+  String get ritualBreathSection => 'ശ്വസനം';
+
+  @override
+  String get ritualBreathTechnique => 'താളം';
+
+  @override
+  String get ritualBreathBox => 'സമചതുര ശ്വസനം (4-4-4-4)';
+
+  @override
+  String get ritualBreathRelaxing => 'വിശ്രമ ശ്വസനം (4-7-8)';
+
+  @override
+  String get ritualBreathCalm => 'ശാന്ത താളം (4-4)';
+
+  @override
+  String get ritualBreathCyclesLabel => 'ശ്വാസങ്ങൾ';
+
+  @override
+  String ritualBreathCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString ശ്വാസങ്ങൾ',
+      one: '$countString ശ്വാസം',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualHaptic => 'ഓരോ മാറ്റത്തിലും നേരിയ വിറയൽ';
+
+  @override
+  String get ritualHapticDetail =>
+      'ശ്വാസം എടുക്കാനും പിടിക്കാനും വിടാനുമുള്ള നേരത്ത് ഒരു ചെറിയ വിറയൽ, കണ്ണ് അടച്ചിരിക്കാൻ.';
+
+  @override
+  String get ritualStepsSection => 'ഘട്ടങ്ങൾ';
+
+  @override
+  String get ritualCardStepSwitch => 'ഒരു ചിന്താ കാർഡ് കാണിക്കുക';
+
+  @override
+  String get ritualCardStepDetail =>
+      'അവസാനം കണ്ടത് എപ്പോൾ എന്നതനുസരിച്ച് ഡെക്കിൽ നിന്ന് ഒരു കാർഡ്.';
+
+  @override
+  String get ritualSettleStepSwitch => 'ദിവസം ഒരുക്കുക';
+
+  @override
+  String get ritualSettleStepDetail =>
+      'ബാക്കിയായവ ഇന്നത്തേക്ക് കൊണ്ടുവരിക, പിന്നെ ഇന്ന് നയിക്കേണ്ട മൂന്ന് ടാസ്കുകൾ തിരഞ്ഞെടുക്കുക.';
+
+  @override
+  String get ritualEveningSection => 'സന്ധ്യാ സമാപനം';
+
+  @override
+  String get ritualEveningClose => 'സന്ധ്യയിൽ ഒരു അവലോകനം ചോദിക്കുക';
+
+  @override
+  String get ritualEveningCloseDetail =>
+      'ദിവസത്തിൽ ഒരിക്കൽ, വൈകി, ദിവസം അടയ്ക്കാൻ ടാസ്ക് പട്ടിക ചോദിക്കും.';
+
+  @override
+  String get ritualEveningFrom => 'ഈ സമയം മുതൽ ചോദിക്കുക';
+
+  @override
+  String get ritualDeckSection => 'ഡെക്ക്';
+
+  @override
+  String get ritualBrowseDeck => 'അനുഷ്ഠാന ഡെക്ക് കാണുക';
+
+  @override
+  String get ritualBrowseDeckDetail =>
+      'എല്ലാ കാർഡുകളും, ഓരോന്നും എപ്പോൾ തിരികെ വരും എന്നതും.';
+
+  @override
+  String get ritualResetReviews => 'കാർഡ് അവലോകനങ്ങൾ പുനഃസജ്ജമാക്കുക';
+
+  @override
+  String get ritualResetReviewsDetail =>
+      'എല്ലാ കാർഡും വീണ്ടും പുതിയതാകും. നിങ്ങളുടെ ടാസ്കുകളെ ഇത് ബാധിക്കില്ല.';
+
+  @override
+  String get ritualResetConfirmTitle => 'കാർഡ് അവലോകനങ്ങൾ പുനഃസജ്ജമാക്കണോ?';
+
+  @override
+  String get ritualResetConfirmBody =>
+      'ഡെക്ക് ആദ്യ കാർഡിൽ നിന്ന് വീണ്ടും തുടങ്ങും. മറ്റൊന്നും മാറില്ല.';
+
+  @override
+  String get ritualResetDone => 'കാർഡ് അവലോകനങ്ങൾ പുനഃസജ്ജമാക്കി.';
+
+  @override
+  String get ritualRunNow => 'ഇപ്പോൾ അനുഷ്ഠാനം നടത്തുക';
+
+  @override
+  String get ritualStepBreathe => 'ശ്വാസം';
+
+  @override
+  String get ritualStepReflect => 'ചിന്ത';
+
+  @override
+  String get ritualStepSettle => 'ഒരുക്കം';
+
+  @override
+  String get ritualStepBegin => 'തുടക്കം';
+
+  @override
+  String get ritualSkip => 'അനുഷ്ഠാനം ഒഴിവാക്കുക';
+
+  @override
+  String get ritualContinue => 'തുടരുക';
+
+  @override
+  String get ritualBreathIn => 'ശ്വാസം എടുക്കുക';
+
+  @override
+  String get ritualBreathHold => 'പിടിക്കുക';
+
+  @override
+  String get ritualBreathOut => 'ശ്വാസം വിടുക';
+
+  @override
+  String get ritualBreathRest => 'വിശ്രമിക്കുക';
+
+  @override
+  String get ritualBreathInHint => 'പതുക്കെ, മൂക്കിലൂടെ.';
+
+  @override
+  String get ritualBreathHoldHint => 'മുകളിൽ സൗമ്യമായി പിടിക്കുക.';
+
+  @override
+  String get ritualBreathOutHint => 'ധൃതി കൂടാതെ എല്ലാം വിട്ടുകളയുക.';
+
+  @override
+  String get ritualBreathRestHint => 'ഒരു നിമിഷം ആ ശാന്തതയിൽ ഇരിക്കുക.';
+
+  @override
+  String ritualBreathProgress(int current, int total) {
+    return '$total-ൽ $current-ാം ശ്വാസം';
+  }
+
+  @override
+  String get ritualBreathFinished => 'അത്രയും മതി.';
+
+  @override
+  String ritualCardProgress(int number, int total) {
+    return '$total-ൽ $number-ാം കാർഡ്';
+  }
+
+  @override
+  String get ritualCardAnother => 'മറ്റൊരു കാർഡ് കാണിക്കുക';
+
+  @override
+  String get ritualMakeIntention => 'ഇത് ഇന്നത്തെ സങ്കൽപ്പമാക്കുക';
+
+  @override
+  String get ritualIntentionSaved => 'ഇന്നത്തെ സങ്കൽപ്പമായി സൂക്ഷിച്ചു.';
+
+  @override
+  String get ritualRateQuestion => 'ഈ കാർഡ് എപ്പോൾ തിരികെ വരണം?';
+
+  @override
+  String get ritualRateHard => 'പ്രയാസം';
+
+  @override
+  String get ritualRateRevision => 'ആവർത്തനം';
+
+  @override
+  String get ritualRateEasy => 'എളുപ്പം';
+
+  @override
+  String get ritualRateTomorrow => 'നാളെ';
+
+  @override
+  String ritualRateInDays(num days) {
+    final intl.NumberFormat daysNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String daysString = daysNumberFormat.format(days);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$daysString ദിവസത്തിൽ',
+      one: '$daysString ദിവസത്തിൽ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualSettleCarryTitle => 'മുൻപ് ബാക്കിയായവ';
+
+  @override
+  String get ritualSettleCarryEmpty => 'ഒന്നും ബാക്കിയില്ല. വൃത്തിയായ തുടക്കം.';
+
+  @override
+  String get ritualSettleFocusTitle => 'ഇന്നത്തെ മൂന്ന്';
+
+  @override
+  String get ritualSettleFocusHint =>
+      'ദിവസം നയിക്കാൻ മൂന്ന് ടാസ്ക് വരെ തിരഞ്ഞെടുക്കുക. അവ ഉയർന്ന മുൻഗണനയിലേക്ക് മാറും.';
+
+  @override
+  String get ritualSettleFocusEmpty =>
+      'ഇന്നത്തേക്ക് ഇതുവരെ ടാസ്ക് ഒന്നുമില്ല. അനുഷ്ഠാനത്തിനു ശേഷം ചേർക്കാം.';
+
+  @override
+  String get ritualSettleFocusLimit =>
+      'മൂന്നാണ് പരിധി. ആദ്യം ഒന്ന് ഒഴിവാക്കുക.';
+
+  @override
+  String get ritualBeginTitle => 'തയ്യാർ';
+
+  @override
+  String ritualBeginCarried(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString ടാസ്കുകൾ കൊണ്ടുവന്നു',
+      one: '1 ടാസ്ക് കൊണ്ടുവന്നു',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String ritualBeginFocused(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString ടാസ്കുകൾ ശ്രദ്ധയിൽ',
+      one: '1 ടാസ്ക് ശ്രദ്ധയിൽ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualBeginNothing => 'ഒന്നും മാറിയില്ല. അതും കുഴപ്പമില്ല.';
+
+  @override
+  String get ritualBeginAction => 'ദിവസം തുടങ്ങുക';
+
+  @override
+  String get ritualDeckTitle => 'അനുഷ്ഠാന ഡെക്ക്';
+
+  @override
+  String get ritualDeckAll => 'എല്ലാം';
+
+  @override
+  String get ritualDeckDue => 'ഇന്ന്';
+
+  @override
+  String get ritualDeckUnseen => 'പുതിയത്';
+
+  @override
+  String ritualDeckSeenCount(num count) {
+    final intl.NumberFormat countNumberFormat = intl.NumberFormat.compact(
+      locale: localeName,
+    );
+    final String countString = countNumberFormat.format(count);
+
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$countString തവണ കണ്ടു',
+      one: 'ഒരിക്കൽ കണ്ടു',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ritualDeckEmpty => 'ഈ വിഷയത്തിൽ കാർഡുകളില്ല.';
+
+  @override
+  String get ritualPastDayNote => 'അനുഷ്ഠാനം ഇന്നത്തേക്ക് മാത്രമാണ്.';
+
+  @override
+  String get ritualThemeDharma => 'ധർമ്മം';
+
+  @override
+  String get ritualThemeKarma => 'കർമ്മം';
+
+  @override
+  String get ritualThemeBhakti => 'ഭക്തി';
+
+  @override
+  String get ritualThemeJnana => 'ജ്ഞാനം';
+
+  @override
+  String get ritualThemeYoga => 'യോഗം';
+
+  @override
+  String get ritualThemeAhimsa => 'അഹിംസ';
+
+  @override
+  String get ritualThemeSathya => 'സത്യം';
+
+  @override
+  String get ritualThemeVairagya => 'വൈരാഗ്യം';
+
+  @override
+  String get ritualThemeSeva => 'സേവനം';
+
+  @override
+  String get ritualThemeShanti => 'ശാന്തി';
+
+  @override
+  String get ritualCardSd01Title => 'സ്വധർമ്മം';
+
+  @override
+  String get ritualCardSd01Prompt =>
+      'നിങ്ങളുടെ ജീവിതത്തിന്റെ ഈ ഘട്ടത്തിൽ നിങ്ങൾക്ക് മാത്രം നിറവേറ്റാൻ കഴിയുന്ന സവിശേഷമായ കടമ എന്താണ്? ഇന്ന് നിങ്ങളത് എങ്ങനെ നിർവഹിക്കുന്നു?';
+
+  @override
+  String get ritualCardSd01Quote =>
+      'മറ്റൊരാളുടെ ധർമ്മം ഭംഗിയായി ചെയ്യുന്നതിനേക്കാൾ ശ്രേഷ്ഠമാണ് സ്വന്തം ധർമ്മം അപൂർണ്ണമായെങ്കിലും അനുഷ്ഠിക്കുന്നത്.';
+
+  @override
+  String get ritualCardSd01QuoteAuthor => 'ഭഗവദ്ഗീത 3.35';
+
+  @override
+  String get ritualCardSd02Title => 'ചെറിയ കാര്യങ്ങളിലെ ധർമ്മം';
+
+  @override
+  String get ritualCardSd02Prompt =>
+      'ഇന്നത്തെ നിങ്ങളുടെ നിത്യജീവിതത്തിലെ ഏത് ചെറിയ കാര്യത്തിലാണ് എളുപ്പമുള്ളതിനേക്കാൾ ശരിയായ വഴി തിരഞ്ഞെടുക്കാൻ സാധിക്കുക?';
+
+  @override
+  String get ritualCardSd02Quote =>
+      'സർവ്വ ജീവികളുടെയും ക്ഷേമത്തിനായാണ് ധർമ്മം നിലകൊള്ളുന്നത്. എന്തിലൂടെയാണോ സർവ്വ ജീവജാലങ്ങളും നിലനിൽക്കുന്നത്, അതാണ് ധർമ്മം.';
+
+  @override
+  String get ritualCardSd02QuoteAuthor => 'മഹാഭാരതം, ശാന്തിപർവ്വം 109.10';
+
+  @override
+  String get ritualCardSd03Title => 'ധർമ്മചക്രം';
+
+  @override
+  String get ritualCardSd03Prompt =>
+      'നിങ്ങൾക്കുള്ള ഒരു ബന്ധത്തെയോ ഉത്തരവാദിത്തത്തെയോ കുറിച്ച് ചിന്തിക്കുക. സത്യസന്ധതയോടെയാണോ നിങ്ങൾ അതിനെ പരിപാലിക്കുന്നത്, അതോ അവഗണിക്കുകയാണോ?';
+
+  @override
+  String get ritualCardSd03Quote =>
+      'ധർമ്മോ രക്ഷതി രക്ഷിതഃ — സംരക്ഷിക്കപ്പെടുന്ന ധർമ്മം നമ്മെ സംരക്ഷിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd03QuoteAuthor => 'മനുസ്മൃതി 8.15';
+
+  @override
+  String get ritualCardSd04Title => 'ശാശ്വത ക്രമം';
+
+  @override
+  String get ritualCardSd04Prompt =>
+      'പ്രകൃതിയിൽ — ഉദയസൂര്യനിലും ഋതുഭേദങ്ങളിലും ഒഴുകുന്ന നദിയിലും — ഋതത്തിന്റെ (പ്രപഞ്ച ക്രമം) താളം എവിടെയാണ് കാണുന്നത്? അത് നിങ്ങളുടെ ജീവിതത്തെ എങ്ങനെ പ്രതിഫലിപ്പിക്കുന്നു?';
+
+  @override
+  String get ritualCardSd04Quote =>
+      'സമുദ്രത്തിലേക്ക് നദികൾ ഒഴുകിയെത്തിയാലും സമുദ്രം കരകവിയാത്തതുപോലെ, ആഗ്രഹങ്ങൾ ഉള്ളിലൊഴുകിയെത്തുമ്പോഴും ജ്ഞാനി സദാ ശാന്തനായിരിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd04QuoteAuthor => 'ഭഗവദ്ഗീത 2.70';
+
+  @override
+  String get ritualCardSd05Title => 'പ്രതിസന്ധിയിലെ ധർമ്മം';
+
+  @override
+  String get ritualCardSd05Prompt =>
+      'ജീവിതം പരീക്ഷണങ്ങൾ നേരിടുമ്പോൾ, വിട്ടുവീഴ്ച ചെയ്യാൻ നിങ്ങൾ വിസമ്മതിക്കുന്ന മൂല്യം ഏതാണ്? എന്തുകൊണ്ടാണ് അത് നിങ്ങൾക്ക് അത്ര പ്രധാനമാകുന്നത്?';
+
+  @override
+  String get ritualCardSd05Quote =>
+      'ഏറ്റവും കഠിനമായ പ്രതിസന്ധികളിലും ഒരാൾ ധർമ്മം ഉപേക്ഷിക്കാൻ പാടില്ല.';
+
+  @override
+  String get ritualCardSd05QuoteAuthor => 'രാമായണം, അയോദ്ധ്യാകാണ്ഡം';
+
+  @override
+  String get ritualCardSd06Title => 'നിഷ്കാമ കർമ്മം';
+
+  @override
+  String get ritualCardSd06Prompt =>
+      'ഫലത്തെക്കുറിച്ചുള്ള ആശങ്ക ഉപേക്ഷിച്ച്, പ്രവൃത്തിയുടെ ഗുണമേന്മയിൽ മാത്രം ശ്രദ്ധ കേന്ദ്രീകരിക്കാൻ നിങ്ങൾക്ക് കഴിയുന്ന ഒരു കാര്യം എന്താണ്?';
+
+  @override
+  String get ritualCardSd06Quote =>
+      'കർമ്മണ്യേവാധികാരസ്തേ മാ ഫലേഷു കദാചന — കർമ്മം ചെയ്യാൻ മാത്രമേ നിങ്ങൾക്ക് അധികാരമുള്ളൂ, ഫലങ്ങളിൽ ഒരിക്കലുമില്ല.';
+
+  @override
+  String get ritualCardSd06QuoteAuthor => 'ഭഗവദ്ഗീത 2.47';
+
+  @override
+  String get ritualCardSd07Title => 'ഇന്ന് നടുന്ന വിത്ത്';
+
+  @override
+  String get ritualCardSd07Prompt =>
+      'ഓരോ പ്രവൃത്തിയും ഒരു വിത്താണ്. ക്ഷമ, ദയ, അച്ചടക്കം — ഇതിൽ ഏതുതരം വിത്താണ് നിങ്ങൾ ഇന്ന് നടുന്നത്?';
+
+  @override
+  String get ritualCardSd07Quote =>
+      'ഒരുവൻ എന്താണോ വിതയ്ക്കുന്നത്, അത് അവൻ കൊയ്യും. സ്വന്തം കർമ്മഫലങ്ങളിൽ നിന്ന് ആർക്കും ഒഴിഞ്ഞുമാറാനാവില്ല.';
+
+  @override
+  String get ritualCardSd07QuoteAuthor => 'മഹാഭാരതം, വനപർവ്വം';
+
+  @override
+  String get ritualCardSd08Title => 'നിസ്വാർത്ഥ സേവനം';
+
+  @override
+  String get ritualCardSd08Prompt =>
+      'പ്രശംസയോ പ്രതിഫലമോ ആഗ്രഹിക്കാതെ ചെയ്ത ഒരു കാര്യത്തെക്കുറിച്ച് ചിന്തിക്കുക. അപ്പോൾ എന്ത് തോന്നി? ആ മനോഭാവം ഇന്നത്തെ കൂടുതൽ കാര്യങ്ങളിലേക്ക് കൊണ്ടുവരാനാകുമോ?';
+
+  @override
+  String get ritualCardSd08Quote =>
+      'നിസ്വാർത്ഥ കർമ്മങ്ങളിൽ മുഴുകുന്ന ജ്ഞാനികൾ ഫലത്തിലുള്ള ആസക്തി വെടിഞ്ഞ് പരമശാന്തി പ്രാപിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd08QuoteAuthor => 'ഭഗവദ്ഗീത 5.12';
+
+  @override
+  String get ritualCardSd09Title => 'ശീലങ്ങളുടെ ചങ്ങല പൊട്ടിക്കുക';
+
+  @override
+  String get ritualCardSd09Prompt =>
+      'ദേഷ്യം, ഒളിച്ചോട്ടം, പഴിചാരൽ തുടങ്ങി നിങ്ങൾ ആവർത്തിക്കുന്ന എന്തെങ്കിലും പ്രതികരണ രീതിയുണ്ടോ? ഇന്ന് ബോധപൂർവ്വം മറ്റൊരു പ്രതികരണം തിരഞ്ഞെടുത്താൽ എങ്ങനെയിരിക്കും?';
+
+  @override
+  String get ritualCardSd09Quote =>
+      'കർമ്മേന്ദ്രിയങ്ങളെ അടക്കി നിർത്തുമ്പോഴും മനസ്സ് വിഷയങ്ങളിൽ വ്യാപരിക്കുന്നവൻ വ്യാജനാണ്.';
+
+  @override
+  String get ritualCardSd09QuoteAuthor => 'ഭഗവദ്ഗീത 3.6';
+
+  @override
+  String get ritualCardSd10Title => 'നിത്യജീവിതത്തിലെ കർമ്മയോഗം';
+
+  @override
+  String get ritualCardSd10Prompt =>
+      'പാചകം, ജോലി തുടങ്ങിയ ദൈനംദിന കാര്യങ്ങളെ പൂർണ്ണ ശ്രദ്ധയോടും സമർപ്പണത്തോടും കൂടി ഒരു വഴിപാടായി മാറ്റാൻ എങ്ങനെ സാധിക്കും?';
+
+  @override
+  String get ritualCardSd10Quote =>
+      'നീ എന്തു ചെയ്യുന്നുവോ, എന്ത് ഭക്ഷിക്കുന്നുവോ, എന്ത് ഹോമിക്കുന്നുവോ, എന്ത് ദാനം ചെയ്യുന്നുവോ, അതെല്ലാം എനിക്കുള്ള സമർപ്പണമായി ചെയ്യുക.';
+
+  @override
+  String get ritualCardSd10QuoteAuthor => 'ഭഗവദ്ഗീത 9.27';
+
+  @override
+  String get ritualCardSd11Title => 'ഭക്തിയുടെ ഹൃദയം';
+
+  @override
+  String get ritualCardSd11Prompt =>
+      'ഒരു പ്രാർത്ഥന, ഒരു ഓർമ്മ, ഒരു പുണ്യസ്ഥലം, ദൈവചിന്ത — നിങ്ങളുടെ ഹൃദയത്തിൽ ആദരവും സ്നേഹവും നിറയ്ക്കുന്നത് എന്താണ്? അതിൽ മനസ്സ് ഏകാഗ്രമാക്കുക.';
+
+  @override
+  String get ritualCardSd11Quote =>
+      'ഭക്തിയോടെ ഒരു ഇലയോ പൂവോ ഫലമോ ജലമോ എനിക്ക് സമർപ്പിച്ചാൽ, ശുദ്ധമനസ്സോടെയുള്ള ആ സ്നേഹസമർപ്പണം ഞാൻ സ്വീകരിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd11QuoteAuthor => 'ഭഗവദ്ഗീത 9.26';
+
+  @override
+  String get ritualCardSd12Title => 'ആത്മസമർപ്പണവും വിശ്വാസവും';
+
+  @override
+  String get ritualCardSd12Prompt =>
+      'ഈശ്വരകൃപ നിങ്ങളെ നയിക്കുമെന്ന പൂർണ്ണവിശ്വാസത്തോടെ ഇന്ന് ഏത് ഭാരമാണ് ഈശ്വരപാദങ്ങളിൽ സമർപ്പിക്കാൻ കഴിയുക?';
+
+  @override
+  String get ritualCardSd12Quote =>
+      'സർവ്വധർമ്മാൻ പരിത്യജ്യ മാമേകം ശരണം വ്രജ — സർവ്വ ധർമ്മങ്ങളും ഉപേക്ഷിച്ച് എന്നെ മാത്രം ശരണം പ്രാപിക്കുക. ഞാൻ നിന്നെ സർവ്വ പാപങ്ങളിൽ നിന്നും മോചിപ്പിക്കാം; ഭയപ്പെടേണ്ട.';
+
+  @override
+  String get ritualCardSd12QuoteAuthor => 'ഭഗവദ്ഗീത 18.66';
+
+  @override
+  String get ritualCardSd13Title => 'സർവ്വത്തിലും ഈശ്വരദർശനം';
+
+  @override
+  String get ritualCardSd13Prompt =>
+      'ഇന്ന് നിങ്ങൾ കണ്ടുമുട്ടുന്ന ഓരോ വ്യക്തിയെയും ഈശ്വരസ്വരൂപമായി കാണാൻ കഴിയുമോ? അത് നിങ്ങളുടെ സംസാരത്തെയും കേൾവിയെയും എങ്ങനെ മാറ്റും?';
+
+  @override
+  String get ritualCardSd13Quote =>
+      'വിദ്യാസമ്പന്നനായ ബ്രാഹ്മണനിലും പശുവിലും ആനയിലും നായയിലും ചണ്ഡാളനിലും ജ്ഞാനികൾ ഒരേ ആത്മാവിനെ തുല്യമായി ദർശിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd13QuoteAuthor => 'ഭഗവദ്ഗീത 5.18';
+
+  @override
+  String get ritualCardSd14Title => 'വിശുദ്ധമാക്കുന്ന നാമം';
+
+  @override
+  String get ritualCardSd14Prompt =>
+      'ശാന്തമായിരുന്ന് ഒരു പുണ്യനാമമോ മന്ത്രമോ ഉരുവിട്ടത് എപ്പോഴായിരുന്നു? അത് നിങ്ങളുടെ മനസ്സിൽ എന്ത് മാറ്റമാണുണ്ടാക്കിയത്?';
+
+  @override
+  String get ritualCardSd14Quote =>
+      'ഭവസമുദ്രം കടക്കാൻ ഭഗവാന്റെ നാമമെന്ന തോണിയല്ലാതെ മറ്റൊന്നുമില്ല.';
+
+  @override
+  String get ritualCardSd14QuoteAuthor => 'തുളസീദാസ്, രാമചരിതമാനസം';
+
+  @override
+  String get ritualCardSd15Title => 'കൃതജ്ഞതയിലെ കൃപ';
+
+  @override
+  String get ritualCardSd15Prompt =>
+      'നിങ്ങൾക്ക് ലഭിച്ച അപ്രതീക്ഷിതമായ അനുഗ്രഹങ്ങളിൽ ഇതുവരെ കൃതജ്ഞതയോടെ ഓർക്കാത്ത ഒന്ന് ഏതാണ്?';
+
+  @override
+  String get ritualCardSd15Quote =>
+      'ഞാൻ സർവ്വത്തിന്റെയും ഉത്ഭവസ്ഥാനമാണ്. എല്ലാം എന്നിൽ നിന്നാണ് ഉണ്ടാകുന്നത്. ഇതറിയുന്ന ജ്ഞാനികൾ ഭക്തിയോടെ എന്നെ ഭജിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd15QuoteAuthor => 'ഭഗവദ്ഗീത 10.8';
+
+  @override
+  String get ritualCardSd16Title => 'ഞാൻ ആര്?';
+
+  @override
+  String get ritualCardSd16Prompt =>
+      'പേര്, ജോലി, സ്ഥാനമാനങ്ങൾ, ശരീരം എന്നിവയെല്ലാം മാറ്റിവെച്ചാൽ എന്താണ് ബാക്കിയുള്ളത്? ഈ ചോദ്യവുമായി അല്പനേരം ഇരിക്കുക: എല്ലാ ലേബലുകൾക്കും അപ്പുറം ഞാൻ ആരാണ്?';
+
+  @override
+  String get ritualCardSd16Quote => 'തത്ത്വമസി — അത് നീയാകുന്നു.';
+
+  @override
+  String get ritualCardSd16QuoteAuthor => 'ഛാന്ദോഗ്യോപനിഷത്ത് 6.8.7';
+
+  @override
+  String get ritualCardSd17Title => 'സാക്ഷിചൈതന്യം';
+
+  @override
+  String get ritualCardSd17Prompt =>
+      'ചിന്തകളെ പിടിച്ചുവെക്കാതെ കടന്നുപോകുന്നത് നിരീക്ഷിക്കുക. അതിനെ വീക്ഷിക്കുന്ന സാക്ഷി ആരാണ്? ആ ബോധത്തിന് എപ്പോഴെങ്കിലും മുറിവേൽക്കാൻ കഴിയുമോ?';
+
+  @override
+  String get ritualCardSd17Quote =>
+      'ആത്മാവ് ജനിക്കുന്നില്ല, മരിക്കുന്നതുമില്ല. അത് നിത്യവും ശാശ്വതവുമാണ്. ശരീരം നശിക്കുമ്പോഴും അത് നശിക്കുന്നില്ല.';
+
+  @override
+  String get ritualCardSd17QuoteAuthor => 'ഭഗവദ്ഗീത 2.20';
+
+  @override
+  String get ritualCardSd18Title => 'മുക്തിയേകുന്ന ജ്ഞാനം';
+
+  @override
+  String get ritualCardSd18Prompt =>
+      'ജീവിതത്തെക്കുറിച്ചോ നിങ്ങളെക്കുറിച്ചോ ഉള്ള ഏത് സത്യമാണ് പൂർണ്ണമായി ഉൾക്കൊണ്ടപ്പോൾ നിങ്ങളെ ദുഃഖങ്ങളിൽ നിന്ന് മോചിപ്പിച്ചത്?';
+
+  @override
+  String get ritualCardSd18Quote =>
+      'ജ്ഞാനത്തിന് തുല്യമായി പവിത്രമായത് ഈ ലോകത്തിൽ മറ്റൊന്നുമില്ല. യോഗനിഷ്ഠയിലൂടെ മനസ്സ് ശുദ്ധമായവൻ ഈ ജ്ഞാനം തന്നിൽത്തന്നെ കണ്ടെത്തുന്നു.';
+
+  @override
+  String get ritualCardSd18QuoteAuthor => 'ഭഗവദ്ഗീത 4.38';
+
+  @override
+  String get ritualCardSd19Title => 'ഇന്ദ്രിയങ്ങൾക്കപ്പുറം';
+
+  @override
+  String get ritualCardSd19Prompt =>
+      'ഇന്ദ്രിയങ്ങൾ ബാഹ്യമായ കാഴ്ചകൾ മാത്രമാണ് കാണിക്കുന്നത്. നിങ്ങൾ ഇപ്പോൾ അഭിമുഖീകരിക്കുന്ന സാഹചര്യത്തിന് പിന്നിലുള്ള ആഴമേറിയ സത്യം എന്താണ്?';
+
+  @override
+  String get ritualCardSd19Quote =>
+      'ഇന്ദ്രിയങ്ങൾക്ക് അപ്പുറം വിഷയങ്ങളും, വിഷയങ്ങൾക്ക് അപ്പുറം മനസ്സും, മനസ്സിന് അപ്പുറം ബുദ്ധിയും, ബുദ്ധിക്ക് അപ്പുറം ആത്മാവും സ്ഥിതിചെയ്യുന്നു.';
+
+  @override
+  String get ritualCardSd19QuoteAuthor => 'കഠോപനിഷത്ത് 1.3.10';
+
+  @override
+  String get ritualCardSd20Title => 'ഉള്ളിലെ പ്രകാശം';
+
+  @override
+  String get ritualCardSd20Prompt =>
+      'കണ്ണുകളടച്ച് ഹൃദയത്തിൽ കെടാതെ കത്തുന്ന ഒരു തിരിനാളം സങ്കൽപ്പിക്കുക. ആ പ്രകാശം നിങ്ങളുടെ ഉള്ളിൽ എന്തിനെയാണ് വെളിച്ചത്തു കൊണ്ടുവരുന്നത്?';
+
+  @override
+  String get ritualCardSd20Quote =>
+      'അസതോ മാ സദ്ഗമയ, തമസോ മാ ജ്യോതിർഗമയ, മൃത്യോർ മാ അമൃതം ഗമയ — അസത്യത്തിൽ നിന്ന് സത്യത്തിലേക്കും, ഇരുളിൽ നിന്ന് വെളിച്ചത്തിലേക്കും, മരണത്തിൽ നിന്ന് അമരത്വത്തിലേക്കും നയിച്ചാലും.';
+
+  @override
+  String get ritualCardSd20QuoteAuthor => 'ബൃഹദാരണ്യകോപനിഷത്ത് 1.3.28';
+
+  @override
+  String get ritualCardSd21Title => 'പൂർണ്ണത';
+
+  @override
+  String get ritualCardSd21Prompt =>
+      'ആന്തരിക തലത്തിൽ നിങ്ങൾക്ക് ഒന്നിനും കുറവില്ലെങ്കിൽ, എന്തുകൊണ്ടാണ് അപൂർണ്ണത തോന്നുന്നത്? നിങ്ങൾ ഇതിനകം പൂർണ്ണനാണെന്ന സത്യത്തെക്കുറിച്ച് ചിന്തിക്കുക.';
+
+  @override
+  String get ritualCardSd21Quote =>
+      'ഓം പൂർണ്ണമദഃ പൂർണ്ണമിദം — അതും പൂർണ്ണം, ഇതും പൂർണ്ണം. പൂർണ്ണത്തിൽ നിന്ന് പൂർണ്ണമുണ്ടാകുന്നു. പൂർണ്ണത്തിൽ നിന്ന് പൂർണ്ണമെടുത്താലും പൂർണ്ണം അവശേഷിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd21QuoteAuthor => 'ഈശാവാസ്യോപനിഷത്ത്, ശാന്തിപാഠം';
+
+  @override
+  String get ritualCardSd22Title => 'സർവ്വവ്യാപിയായ ബ്രഹ്മം';
+
+  @override
+  String get ritualCardSd22Prompt =>
+      'നിങ്ങളിൽ പ്രകാശിക്കുന്ന അതേ ചൈതന്യമാണ് സർവ്വ ജീവജാലങ്ങളിലും പ്രകാശിക്കുന്നത്. ഈ അറിവ് ഇന്ന് ലോകത്തെ നോക്കിക്കാണുന്ന രീതിയെ എങ്ങനെ മാറ്റുന്നു?';
+
+  @override
+  String get ritualCardSd22Quote => 'അഹം ബ്രഹ്മാസ്മി — ഞാൻ ബ്രഹ്മമാകുന്നു.';
+
+  @override
+  String get ritualCardSd22QuoteAuthor => 'ബൃഹദാരണ്യകോപനിഷത്ത് 1.4.10';
+
+  @override
+  String get ritualCardSd23Title => 'മനസ്സിനെ അടക്കൽ';
+
+  @override
+  String get ritualCardSd23Prompt =>
+      'ചിന്തകൾ, ആകുലതകൾ, ഓർമ്മകൾ — മനസ്സിന്റെ ചാഞ്ചാട്ടങ്ങൾ ഇപ്പോൾ നിരീക്ഷിക്കുക. ഏതാനും ശ്വാസനേരത്തേക്ക് അവയെ ശാന്തമാക്കാൻ കഴിയുമോ?';
+
+  @override
+  String get ritualCardSd23Quote =>
+      'യോഗശ്ചിത്തവൃത്തിനിരോധഃ — മനസ്സിന്റെ വൃത്തികളെ അടക്കുന്നതാണ് യോഗം.';
+
+  @override
+  String get ritualCardSd23QuoteAuthor => 'പതഞ്ജലി യോഗസൂത്രം 1.2';
+
+  @override
+  String get ritualCardSd24Title => 'നിരന്തര അഭ്യാസം';
+
+  @override
+  String get ritualCardSd24Prompt =>
+      'തീവ്രതയേക്കാൾ പ്രധാനം സ്ഥിരതയാണെന്നറിഞ്ഞ്, ക്ഷമയോടും ഭക്തിയോടും കൂടി നിങ്ങൾക്ക് തുടരാൻ കഴിയുന്ന നല്ലൊരു ശീലം ഏതാണ്?';
+
+  @override
+  String get ritualCardSd24Quote =>
+      'ദീർഘകാലം, ഇടവേളകളില്ലാതെ, ആത്മാർത്ഥതയോടെ ശീലിക്കുമ്പോൾ അഭ്യാസം ദൃഢമായിത്തീരുന്നു.';
+
+  @override
+  String get ritualCardSd24QuoteAuthor => 'പതഞ്ജലി യോഗസൂത്രം 1.14';
+
+  @override
+  String get ritualCardSd25Title => 'സമചിത്തത';
+
+  @override
+  String get ritualCardSd25Prompt =>
+      'അടുത്തിടെയുണ്ടായ ഒരു വിജയവും പരാജയവും ഓർക്കുക. അമിതാഹ്ലാദമോ നിരാശയോ ഇല്ലാതെ രണ്ടിനെയും സമചിത്തതയോടെ കാണാൻ കഴിയുമോ?';
+
+  @override
+  String get ritualCardSd25Quote => 'സമത്വം യോഗ ഉച്യതേ — സമചിത്തതയാണ് യോഗം.';
+
+  @override
+  String get ritualCardSd25QuoteAuthor => 'ഭഗവദ്ഗീത 2.48';
+
+  @override
+  String get ritualCardSd26Title => 'പഞ്ചയമങ്ങൾ';
+
+  @override
+  String get ritualCardSd26Prompt =>
+      'അഹിംസ, സത്യം, അസ്തേയം, ബ്രഹ്മచర్യം, അപരിഗ്രഹം — ഈ അഞ്ചിൽ ഇപ്പോൾ നിങ്ങൾക്ക് ഏറ്റവും വെല്ലുവിളിയാകുന്നത് ഏതാണ്, എന്തുകൊണ്ട്?';
+
+  @override
+  String get ritualCardSd26Quote =>
+      'അഹിംസ, സത്യം, അസ്തേയം, ബ്രഹ്മచర్യം, അപരിഗ്രഹം — ഇവ സാർവ്വലൗകികമായ മഹാവ്രതങ്ങളാണ്.';
+
+  @override
+  String get ritualCardSd26QuoteAuthor => 'പതഞ്ജലി യോഗസൂത്രം 2.30';
+
+  @override
+  String get ritualCardSd27Title => 'ഈശ്വരപ്രണിധാനം';
+
+  @override
+  String get ritualCardSd27Prompt =>
+      'സ്വന്തം നേട്ടത്തിനല്ലാതെ, പൂർണ്ണ സമർപ്പണമായി പ്രവൃത്തി ചെയ്യുമ്പോൾ എന്ത് അനുഭവപ്പെടുന്നു? നിങ്ങളുടെ അടുത്ത പ്രവൃത്തി മഹത്തായ ഒന്നിനായി സമർപ്പിക്കുക.';
+
+  @override
+  String get ritualCardSd27Quote =>
+      'ഈശ്വരനിലുള്ള പൂർണ്ണ സമർപ്പണത്തിലൂടെ സമാധി സിദ്ധിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd27QuoteAuthor => 'പതഞ്ജലി യോഗസൂത്രം 2.45';
+
+  @override
+  String get ritualCardSd28Title => 'മനസ്സിലെ അഹിംസ';
+
+  @override
+  String get ritualCardSd28Prompt =>
+      'ഇന്ന് നിങ്ങളോടോ മറ്റുള്ളവരോടോ പരുഷമായ ചിന്തകൾ പുലർത്തിയിട്ടുണ്ടോ? അവയ്ക്ക് പകരം സ്നേഹവും കാരുണ്യവും പകരുന്നത് എങ്ങനെയുണ്ടാകും?';
+
+  @override
+  String get ritualCardSd28Quote =>
+      'അഹിംസാ പരമോ ധർമ്മഃ — അഹിംസയാണ് പരമമായ ധർമ്മം.';
+
+  @override
+  String get ritualCardSd28QuoteAuthor => 'മഹാഭാരതം, അനുശാസനപർവ്വം 116.38';
+
+  @override
+  String get ritualCardSd29Title => 'സർവ്വഭൂതദയ';
+
+  @override
+  String get ritualCardSd29Prompt =>
+      'അടുത്തിടെ കണ്ട ഒരു പക്ഷിയെക്കുറിച്ചോ മൃഗത്തെക്കുറിച്ചോ ചിന്തിക്കുക. സർവ്വ ജീവജാലങ്ങളോടും ആ കാരുണ്യം കാണിച്ചാൽ ഈ ലോകം എത്ര സുന്ദരമാകും?';
+
+  @override
+  String get ritualCardSd29Quote =>
+      'സർവ്വ ജീവികളിലും ആത്മാവിനെയും ആത്മാവിൽ സർവ്വ ജീവികളെയും ദർശിക്കുന്നവൻ ആരെയും വെറുക്കുന്നില്ല.';
+
+  @override
+  String get ritualCardSd29QuoteAuthor => 'ഈശാവാസ്യോപനിഷത്ത്, മന്ത്രം 6';
+
+  @override
+  String get ritualCardSd30Title => 'മൃദുവായ വാക്ക്';
+
+  @override
+  String get ritualCardSd30Prompt =>
+      'സംസാരിക്കുന്നതിന് മുൻപ് സ്വയം ചോദിക്കുക: ഇത് സത്യമാണോ? പ്രിയമുള്ളതാണോ? ആവശ്യമാണോ? ഈ ചിന്ത നിങ്ങളുടെ സംഭാഷണങ്ങളെ എങ്ങനെ മാറ്റുന്നു?';
+
+  @override
+  String get ritualCardSd30Quote =>
+      'ഉദ്വേഗമുണ്ടാക്കാത്തതും സത്യവും പ്രിയവും ഹിതവുമായ സംസാരമാണ് വാങ്മയ തപസ്സ്.';
+
+  @override
+  String get ritualCardSd30QuoteAuthor => 'ഭഗവദ്ഗീത 17.15';
+
+  @override
+  String get ritualCardSd31Title => 'ക്ഷമയുടെ മഹത്വം';
+
+  @override
+  String get ritualCardSd31Prompt =>
+      'നിങ്ങളെ വേദനിപ്പിച്ച ആരുടെ ഓർമ്മയാണ് ഇപ്പോഴും ചുമക്കുന്നത്? സ്വന്തം മനസ്സിന്റെ സ്വാതന്ത്ര്യത്തിനായി അവരോട് ക്ഷമിക്കാൻ എന്ത് മാറ്റമാണ് വേണ്ടത്?';
+
+  @override
+  String get ritualCardSd31Quote => 'ക്ഷമ വീരന്മാരുടെ ഭൂഷണമാണ്.';
+
+  @override
+  String get ritualCardSd31QuoteAuthor => 'മഹാഭാരതം, ഉദ്യോഗപർവ്വം 33.48';
+
+  @override
+  String get ritualCardSd32Title => 'സത്യത്തിൽ ജീവിക്കുക';
+
+  @override
+  String get ritualCardSd32Prompt =>
+      'നിങ്ങളോടോ മറ്റുള്ളവരോടോ സത്യസന്ധതയില്ലാതെ പെരുമാറുന്ന എന്തെങ്കിലും ഉണ്ടോ? പൂർണ്ണമായ സത്യസന്ധത പുലർത്തിയാൽ അത് എങ്ങനെയുണ്ടാകും?';
+
+  @override
+  String get ritualCardSd32Quote => 'സത്യമേവ ജയതേ — സത്യം മാത്രം ജയിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd32QuoteAuthor => 'മുണ്ഡകോപനിഷത്ത് 3.1.6';
+
+  @override
+  String get ritualCardSd33Title => 'നേരിന്റെ ധൈര്യം';
+
+  @override
+  String get ritualCardSd33Prompt =>
+      'അസ്വസ്ഥത തോന്നുമെന്നതിനാൽ നിങ്ങൾ അഭിമുഖീകരിക്കാൻ മടിക്കുന്ന ഒരു സത്യം എന്താണ്? ധൈര്യത്തോടെ അതിനെ നേരിടാൻ എന്ത് വേണം?';
+
+  @override
+  String get ritualCardSd33Quote =>
+      'സത്യം വദ, ധർമ്മം ചര — സത്യം പറയുക, ധർമ്മം അനുഷ്ഠിക്കുക.';
+
+  @override
+  String get ritualCardSd33QuoteAuthor => 'തൈത്തിരീയോപനിഷത്ത് 1.11.1';
+
+  @override
+  String get ritualCardSd34Title => 'വാക്കുകൾക്കപ്പുറമുള്ള സത്യം';
+
+  @override
+  String get ritualCardSd34Prompt =>
+      'സത്യം വാക്കുകളിൽ മാത്രമല്ല, പ്രവൃത്തിയിലുമാണ്. നിങ്ങളുടെ ഇന്നത്തെ പ്രവൃത്തികൾ ഹൃദയത്തിലെ സത്യവുമായി പൊരുത്തപ്പെടുന്നുണ്ടോ?';
+
+  @override
+  String get ritualCardSd34Quote =>
+      'സത്യനിഷ്ഠയിലൂടെ മനുഷ്യൻ ദൈവികതയെ പ്രാപിക്കുന്നു.';
+
+  @override
+  String get ritualCardSd34QuoteAuthor => 'ചാണക്യനീതി 14.3';
+
+  @override
+  String get ritualCardSd35Title => 'വാഗ്ദാനപാലനം';
+
+  @override
+  String get ritualCardSd35Prompt =>
+      'നിങ്ങളോടോ മറ്റുള്ളവരോടോ ഈശ്വരനോടോ ചെയ്ത പാലിക്കേണ്ട ഒരു വാഗ്ദാനം എന്താണ്? അത് വീണ്ടും ഓർമ്മിച്ച് ഉറപ്പിക്കുക.';
+
+  @override
+  String get ritualCardSd35Quote =>
+      'വാക്ക് പാലിക്കുക. വാക്ക് തെറ്റിക്കുന്നവൻ വിശ്വാസം തകർക്കുന്നു; തകർന്ന വിശ്വാസം തിരിച്ചുപിടിക്കാൻ പ്രയാസമാണ്.';
+
+  @override
+  String get ritualCardSd35QuoteAuthor => 'വിദുരനീതി, മഹാഭാരതം';
+
+  @override
+  String get ritualCardSd36Title => 'ത്യജിക്കൽ';
+
+  @override
+  String get ritualCardSd36Prompt =>
+      'നിങ്ങളുടെ വളർച്ചയെ തടയുന്ന ഏത് ആഗ്രഹത്തെയും വസ്തുവിനെയുമാണ് നിങ്ങൾ മുറുകെ പിടിച്ചിരിക്കുന്നത്? അതിനെ ശാന്തമായി മനസ്സിൽ നിന്ന് വിട്ടൊഴിയുക.';
+
+  @override
+  String get ritualCardSd36Quote =>
+      'കണ്ടതോ കേട്ടതോ ആയ വിഷയങ്ങളിലുള്ള ആഗ്രഹങ്ങളിൽ നിന്നുള്ള പൂർണ്ണമായ വിടുതലാണ് വൈരാഗ്യം.';
+
+  @override
+  String get ritualCardSd36QuoteAuthor => 'പതഞ്ജലി യോഗസൂത്രം 1.15';
+
+  @override
+  String get ritualCardSd37Title => 'മാറ്റമില്ലാത്ത ആത്മാവ്';
+
+  @override
+  String get ritualCardSd37Prompt =>
+      'വികാരങ്ങൾ, സാഹചര്യങ്ങൾ, ബന്ധങ്ങൾ — ചുറ്റുമുള്ളതെല്ലാം മാറുന്നു. ജീവിതത്തിലെ പ്രതിസന്ധികളിലും നിങ്ങളിൽ മാറ്റമില്ലാതെ തുടരുന്ന ഭാഗം ഏതാണ്?';
+
+  @override
+  String get ritualCardSd37Quote =>
+      'അസത്യമായതിന് നിലനിൽപ്പില്ല. സത്യമായതിന് നാശവുമില്ല.';
+
+  @override
+  String get ritualCardSd37QuoteAuthor => 'ഭഗവദ്ഗീത 2.16';
+
+  @override
+  String get ritualCardSd38Title => 'സന്തോഷവും സംതൃപ്തിയും';
+
+  @override
+  String get ritualCardSd38Prompt =>
+      'ജീവിതത്തിൽ ഇപ്പോൾത്തന്നെ മതിയായതായി എന്തെല്ലാമുണ്ട്? ആഗ്രഹങ്ങളും യഥാർത്ഥ ആവശ്യങ്ങളും തമ്മിലുള്ള വ്യത്യാസത്തെക്കുറിച്ച് ചിന്തിക്കുക.';
+
+  @override
+  String get ritualCardSd38Quote =>
+      'സന്തോഷാദനൃത്തമഃ സുഖലാഭഃ — സംതൃപ്തിയിൽ നിന്നാണ് ഉത്തമമായ ആനന്ദമുണ്ടാകുന്നത്.';
+
+  @override
+  String get ritualCardSd38QuoteAuthor => 'പതഞ്ജലി യോഗസൂത്രം 2.42';
+
+  @override
+  String get ritualCardSd39Title => 'സുഖദുഃഖങ്ങൾക്കപ്പുറം';
+
+  @override
+  String get ritualCardSd39Prompt =>
+      'അസ്വസ്ഥതകളിൽ നിന്ന് ഒളിച്ചോടാതെയും സുഖങ്ങളിൽ ഭ്രമിക്കാതെയും ഇരിക്കാൻ കഴിയുമോ? രണ്ടിനെയും വെറുതെ നിരീക്ഷിക്കുമ്പോൾ എന്താണ് സംഭവിക്കുന്നത്?';
+
+  @override
+  String get ritualCardSd39Quote =>
+      'സുഖത്തിലും ദുഃഖത്തിലും ഇളകാതെ സമചിത്തത പാലിക്കുന്നവൻ മോക്ഷത്തിന് അർഹനായിത്തീരുന്നു.';
+
+  @override
+  String get ritualCardSd39QuoteAuthor => 'ഭഗവദ്ഗീത 2.15';
+
+  @override
+  String get ritualCardSd40Title => 'ദാനത്തിന്റെ ആനന്ദം';
+
+  @override
+  String get ritualCardSd40Prompt =>
+      'പ്രതിഫലം ഇച്ഛിക്കാതെ സമയം, ശ്രദ്ധ, നല്ലൊരു വാക്ക്, ഒരു സഹായഹസ്തം — ഇന്ന് നിങ്ങൾക്ക് എന്ത് നൽകാൻ കഴിയും?';
+
+  @override
+  String get ritualCardSd40Quote =>
+      'നിസ്സഹായരായവരെ സഹായിക്കുന്നതാണ് ഏറ്റവും ശ്രേഷ്ഠമായ ദാനം.';
+
+  @override
+  String get ritualCardSd40QuoteAuthor => 'തിരുക്കുറൾ 221';
+
+  @override
+  String get ritualCardSd41Title => 'മനുഷ്യനിലെ ഈശ്വരനെ സേവിക്കുക';
+
+  @override
+  String get ritualCardSd41Prompt =>
+      'നിങ്ങളുടെ മുന്നിൽ നിൽക്കുന്ന വ്യക്തി ഈശ്വരനാണെങ്കിൽ നിങ്ങളവരോട് എങ്ങനെ പെരുമാറും? അടുത്ത ഒരു മണിക്കൂർ ഈ ഭാവത്തോടെ ജീവിച്ചുനോക്കൂ.';
+
+  @override
+  String get ritualCardSd41Quote => 'മാനവ സേവയാണ് മാധവ സേവ.';
+
+  @override
+  String get ritualCardSd41QuoteAuthor => 'സ്വാമി വിവേകാനന്ദൻ';
+
+  @override
+  String get ritualCardSd42Title => 'നിസ്വാർത്ഥ പ്രവർത്തനം';
+
+  @override
+  String get ritualCardSd42Prompt =>
+      'അംഗീകാരങ്ങൾ ആഗ്രഹിക്കാതെ ആരെയെങ്കിലും സഹായിച്ചപ്പോൾ തോന്നിയ ആത്മനിർവൃതി ഓർക്കുക. അത് നിങ്ങളെ എന്ത് പഠിപ്പിച്ചു?';
+
+  @override
+  String get ritualCardSd42Quote =>
+      'ഉത്തിഷ്ഠത ജാഗ്രത പ്രാപ്യ വരാൻ നിബോധത — എഴുന്നേൽക്കുക, ഉണരുക, ലക്ഷ്യത്തിലെത്തും വരെ മുന്നേറുക.';
+
+  @override
+  String get ritualCardSd42QuoteAuthor =>
+      'കഠോപനിഷത്ത് 1.3.14 / സ്വാമി വിവേകാനന്ദൻ';
+
+  @override
+  String get ritualCardSd43Title => 'വസുധൈവ കുടുംബകം';
+
+  @override
+  String get ritualCardSd43Prompt =>
+      'ലോകം മുഴുവൻ ഒരു കുടുംബമാണ്. എല്ലാവരുടെയും ക്ഷേമം പ്രധാനമാണെന്ന ചിന്തയോടെ ഇന്ന് നിങ്ങൾക്ക് ചെയ്യാൻ കഴിയുന്ന ഒരു കാര്യം എന്താണ്?';
+
+  @override
+  String get ritualCardSd43Quote =>
+      'വസുധൈവ കുടുംബകം — ഈ ലോകം മുഴുവൻ ഒരു കുടുംബമാകുന്നു.';
+
+  @override
+  String get ritualCardSd43QuoteAuthor => 'മഹോപനിഷത്ത് 6.71';
+
+  @override
+  String get ritualCardSd44Title => 'കാരുണ്യത്തിന്റെ സമ്പത്ത്';
+
+  @override
+  String get ritualCardSd44Prompt =>
+      'നിങ്ങളോട് മറ്റൊരാൾ കാട്ടിയ എളിമയുള്ള കാരുണ്യം ഓർക്കുക. അതേ ദയ ഇന്ന് മറ്റൊരാളിലേക്ക് എങ്ങനെ പകരാം?';
+
+  @override
+  String get ritualCardSd44Quote =>
+      'ഉള്ളതിൽ നിന്ന് കാരുണ്യത്തോടെ ദാനം ചെയ്താൽ ദരിദ്രന്റെ ദാരിദ്ര്യം പോലും ഇല്ലാതാകും.';
+
+  @override
+  String get ritualCardSd44QuoteAuthor => 'തിരുക്കുറൾ 247';
+
+  @override
+  String get ritualCardSd45Title => 'ആന്തരിക ശാന്തി';
+
+  @override
+  String get ritualCardSd45Prompt =>
+      'കണ്ണുകളടച്ച് പതുക്കെ മൂന്ന് തവണ ശ്വാസമെടുക്കുക. ഓരോ ശ്വാസത്തിനും ഇടയിലുള്ള നിശബ്ദത അറിയുക. ആ നിശബ്ദതയാണ് നിങ്ങളുടെ സത്യം. അത് ദിവസം മുഴുവൻ കൊണ്ടുനടക്കാമോ?';
+
+  @override
+  String get ritualCardSd45Quote =>
+      'മനസ്സിനെ കീഴടക്കിയവന് മനസ്സ് ഉത്തമ മിത്രമാണ്; കീഴടക്കാൻ കഴിയാത്തവന് മനസ്സ് പരമശത്രുവായിത്തീരുന്നു.';
+
+  @override
+  String get ritualCardSd45QuoteAuthor => 'ഭഗവദ്ഗീത 6.6';
+
+  @override
+  String get ritualCardSd46Title => 'സ്തുതിനിന്ദകളിൽ സമഭാവം';
+
+  @override
+  String get ritualCardSd46Prompt =>
+      'അടുത്തിടെ കേട്ട ഒരു പ്രശംസയും വിമർശനവും ഓർക്കുക. ഒന്നിൽ അഭിരമിക്കാതെയും മറ്റൊന്നിനെ വെറുക്കാതെയും രണ്ടിനെയും ശാന്തതയോടെ കാണാൻ കഴിയുമോ?';
+
+  @override
+  String get ritualCardSd46Quote =>
+      'ശത്രുവിനോടും മിത്രത്തോടും മാനാപമാനങ്ങളിലും ശീതോഷ്ണങ്ങളിലും സുഖദുഃഖങ്ങളിലും സമഭാവം പുലർത്തുന്നവൻ എനിക്ക് പ്രിയപ്പെട്ടവനാണ്.';
+
+  @override
+  String get ritualCardSd46QuoteAuthor => 'ഭഗവദ്ഗീത 12.18–19';
+
+  @override
+  String get ritualCardSd47Title => 'ചെളിയിലെ താമര';
+
+  @override
+  String get ritualCardSd47Prompt =>
+      'ചെളിയിലാണ് വിരിയുന്നതെങ്കിലും താമരപ്പൂവിൽ ചെളി പറ്റുന്നില്ല. നിങ്ങളുടെ ജീവിതത്തിലെ പ്രയാസകരമായ സാഹചര്യം എന്താണ്? അതിൽ കളങ്കപ്പെടാതെ വളരാൻ എങ്ങനെ കഴിയും?';
+
+  @override
+  String get ritualCardSd47Quote =>
+      'ആസക്തികളില്ലാതെ കർമ്മങ്ങളെ ബ്രഹ്മത്തിൽ സമർപ്പിച്ച് പ്രവർത്തിക്കുന്നവനെ പാപങ്ങൾ സ്പർശിക്കുന്നില്ല; താമരയിലയിലെ വെള്ളത്തുള്ളിപോലെ.';
+
+  @override
+  String get ritualCardSd47QuoteAuthor => 'ഭഗവദ്ഗീത 5.10';
+
+  @override
+  String get ritualCardSd48Title => 'ഓം ശാന്തി';
+
+  @override
+  String get ritualCardSd48Prompt =>
+      'നിശ്ചലമായിരുന്ന് മൂന്ന് തവണ \"ഓം ശാന്തി\" ജപിക്കുക — ശരീരത്തിലും മനസ്സിലും ആത്മാവിലും ശാന്തി. അങ്ങനെ ചെയ്യുമ്പോൾ ഉള്ളിൽ നിന്ന് അലിഞ്ഞുപോകുന്ന അസ്വസ്ഥതകൾ എന്തൊക്കെയാണ്?';
+
+  @override
+  String get ritualCardSd48Quote =>
+      'ഓം ശാന്തിഃ ശാന്തിഃ ശാന്തിഃ — ശാന്തി, ശാന്തി, ശാന്തി.';
+
+  @override
+  String get ritualCardSd48QuoteAuthor => 'ഉപനിഷത് ശാന്തിമന്ത്രം';
+
+  @override
+  String get ritualCardSd49Title => 'സർവ്വർക്കും ക്ഷേമം';
+
+  @override
+  String get ritualCardSd49Prompt =>
+      'നിങ്ങൾക്കും പ്രിയപ്പെട്ടവർക്കും അപരിചിതർക്കും സർവ്വ ജീവജാലങ്ങൾക്കും മനസ്സാൽ മംഗളങ്ങൾ നേരുക. കാരുണ്യത്തിന്റെ വൃത്തം വികസിക്കുമ്പോൾ ഹൃദയം നിറയുന്നത് അനുഭവിക്കുക.';
+
+  @override
+  String get ritualCardSd49Quote =>
+      'സർവേ ഭവന്തു സുഖിനഃ സർവേ സന്തു നിരാമയാഃ, സർവേ ഭദ്രാണി പശ്യന്തു മാ കശ്ചിദ്ദുഃഖഭാഗ് ഭവേത് — എല്ലാവരും സുഖമായിരിക്കട്ടെ, എല്ലാവരും രോഗവിമുക്തരാകട്ടെ, എല്ലാവരും മംഗളങ്ങൾ കാണട്ടെ, ആർക്കും ദുഃഖമുണ്ടാകാതിരിക്കട്ടെ.';
+
+  @override
+  String get ritualCardSd49QuoteAuthor => 'ഉപനിഷത് പ്രാർത്ഥന';
+
+  @override
+  String get ritualCardSd50Title => 'ശക്തിയും ശാന്തിയും';
+
+  @override
+  String get ritualCardSd50Prompt =>
+      'യഥാർത്ഥ കരുത്ത് കഠിനമായ സമ്മർദ്ദത്തിൽ നിന്നല്ല, ആഴത്തിലുള്ള ആന്തരിക ശാന്തിയിൽ നിന്നാണ് വരുന്നത്. ശാന്തമായ ദൃഢനിശ്ചയത്തോടെ ചെയ്യാൻ കഴിയുന്ന കാര്യം എന്താണ്?';
+
+  @override
+  String get ritualCardSd50Quote =>
+      'ശക്തിയാണ് ജീവിതം, ബലഹീനതയാണ് മരണം. ശക്തിയാണ് മരുന്ന്, ശക്തിയാണ് പരിഹാരം. ശക്തിയാണ് ഉപനിഷത്തുകൾ പഠിപ്പിക്കുന്നത്.';
+
+  @override
+  String get ritualCardSd50QuoteAuthor => 'സ്വാമി വിവേകാനന്ദൻ';
+
+  @override
+  String get pendingAlertsTitle => 'ബാക്കിയുള്ള ടാസ്ക് മുന്നറിയിപ്പുകൾ';
+
+  @override
+  String get pendingAlertsSubtitle =>
+      'ദിവസാരംഭത്തിലും കൃത്യമായ ഇടവേളകളിലും ബാക്കിയുള്ള ടാസ്കുകളെക്കുറിച്ചുള്ള ഓർമ്മപ്പെടുത്തലുകൾ.';
+
+  @override
+  String get pendingAlertsEnabled => 'മുന്നറിയിപ്പുകൾ സജീവമാക്കുക';
+
+  @override
+  String get pendingAlertsEnabledDetail =>
+      'മുന്നറിയിപ്പ് വരുമ്പോൾ ബാക്കിയുള്ള ടാസ്കുകളുടെ പട്ടിക കാണിക്കുക.';
+
+  @override
+  String get pendingAlertsDayStart => 'ദിവസാരംഭ മുന്നറിയിപ്പ്';
+
+  @override
+  String get pendingAlertsDayStartDetail =>
+      'ഓരോ ദിവസവും തുടങ്ങുമ്പോൾ ബാക്കിയുള്ള ജോലികളെക്കുറിച്ച് ഓർമ്മിപ്പിക്കുക.';
+
+  @override
+  String get pendingAlertsDayStartTime => 'മുന്നറിയിപ്പ് സമയം';
+
+  @override
+  String get pendingAlertsInterval => 'ഓർമ്മപ്പെടുത്തൽ ഇടവേള';
+
+  @override
+  String get pendingAlertsIntervalDetail =>
+      'ആപ്പ് ഉപയോഗിക്കുമ്പോൾ എത്ര ഇടവേളകളിൽ ഓർമ്മിപ്പിക്കണം.';
+
+  @override
+  String get pendingAlertsIntervalOff => 'ഓഫ്';
+
+  @override
+  String get pendingAlertsInterval30m => 'ഓരോ 30 മിനിറ്റിലും';
+
+  @override
+  String get pendingAlertsInterval1h => 'ഓരോ 1 മണിക്കൂറിലും';
+
+  @override
+  String get pendingAlertsInterval2h => 'ഓരോ 2 മണിക്കൂറിലും';
+
+  @override
+  String get pendingAlertsInterval3h => 'ഓരോ 3 മണിക്കൂറിലും';
+
+  @override
+  String get pendingAlertsInterval4h => 'ഓരോ 4 മണിക്കൂറിലും';
+
+  @override
+  String get pendingAlertsHaptic => 'വൈബ്രേഷൻ / ഹാപ്റ്റിക്';
+
+  @override
+  String get pendingAlertsHapticDetail =>
+      'മുന്നറിയിപ്പ് വരുമ്പോൾ ഉപകരണം ചെറുതായി വൈബ്രേറ്റ് ചെയ്യുക.';
+
+  @override
+  String get pendingAlertsPreview => 'മുന്നറിയിപ്പ് കാണിച്ച് നോക്കുക';
+
+  @override
+  String get pendingAlertsSheetTitle => 'ബാക്കിയുള്ള ടാസ്കുകൾ';
+
+  @override
+  String pendingAlertsSheetCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ഇന്ന് $count ടാസ്കുകൾ ബാക്കിയുണ്ട്',
+      one: 'ഇന്ന് 1 ടാസ്ക് ബാക്കിയുണ്ട്',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get pendingAlertsSheetEmpty =>
+      'അഭിനന്ദനങ്ങൾ! ഇന്നത്തേക്ക് ബാക്കി ടാസ്കുകളൊന്നുമില്ല.';
+
+  @override
+  String get pendingAlertsStartTimer => 'തുടങ്ങുക';
+
+  @override
+  String get pendingAlertsGoToToday => 'ഇന്നത്തെ പട്ടിക തുറക്കുക';
+
+  @override
+  String get pendingAlertsSnooze => 'സ്നൂസ് ചെയ്യുക (1 മണിക്കൂർ)';
+
+  @override
+  String get pendingAlertsDismiss => 'വേണ്ട';
+
+  @override
+  String get trackingRunningNotification => 'പ്രവർത്തിക്കുന്ന ടാസ്ക് അറിയിപ്പ്';
+
+  @override
+  String get trackingRunningNotificationDetail =>
+      'സമയം ട്രാക്ക് ചെയ്യുമ്പോൾ ലൈവ് ടൈമറുമായി അറിയിപ്പ് കാണിക്കുക';
+
+  @override
+  String get permissionsNotificationTitle => 'അറിയിപ്പുകൾ';
+
+  @override
+  String get permissionsNotificationBody =>
+      'ടാസ്കുകൾ ചെയ്യുമ്പോൾ ലൈവ് ടൈമർ അറിയിപ്പ് കാണിക്കാനും ഓർമ്മപ്പെടുത്തലുകൾ നൽകാനും ഉപയോഗിക്കുന്നു. പൂർണ്ണമായും ഓഫ്‍ലൈനായി പ്രവർത്തിക്കുന്നു.';
+
+  @override
+  String get pendingAlertsTodaySection => 'ഇന്നത്തെ ടാസ്കുകൾ';
+
+  @override
+  String get pendingAlertsPreviousSection => 'കഴിഞ്ഞ ദിവസങ്ങളിൽ നിന്ന്';
+
+  @override
+  String get pendingAlertsPortToToday => 'ഇന്നത്തേക്ക് മാറ്റുക';
+
+  @override
+  String get pendingAlertsPortedSuccess => 'ടാസ്ക് ഇന്നത്തേക്ക് മാറ്റി';
+
+  @override
+  String get pendingAlertsNotificationTitle =>
+      'ബാക്കിയുള്ള ടാസ്ക് ഓർമ്മപ്പെടുത്തൽ';
+
+  @override
+  String pendingAlertsNotificationBody(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'നിങ്ങൾക്ക് ചെയ്യാനായി $count ടാസ്കുകൾ ബാക്കിയുണ്ട്',
+      one: 'നിങ്ങൾക്ക് ചെയ്യാനായി 1 ടാസ്ക് ബാക്കിയുണ്ട്',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get taskHistory => 'ടാസ്ക് ചരിത്രം';
+
+  @override
+  String get taskHistorySubtitle => 'ഈ ടാസ്കിന്റെ സമ്പൂർണ്ണ പ്രവർത്തന വിവരങ്ങൾ';
+
+  @override
+  String get taskHistoryEmpty => 'ഈ ടാസ്കിന് ചരിത്ര രേഖകളൊന്നുമില്ല.';
+
+  @override
+  String get eventCreated => 'ടാസ്ക് സൃഷ്ടിച്ചു';
+
+  @override
+  String get eventMoved => 'ടാസ്ക് മാറ്റി';
+
+  @override
+  String eventMovedFromTo(String fromDate, String toDate) {
+    return '$fromDate-ൽ നിന്ന് $toDate-ലേക്ക് മാറ്റി';
+  }
+
+  @override
+  String get eventTimerStarted => 'ടൈമർ ആരംഭിച്ചു';
+
+  @override
+  String eventTimerStopped(String duration) {
+    return 'ടൈമർ നിർത്തി ($duration)';
+  }
+
+  @override
+  String eventTimerPaused(String duration) {
+    return 'ടൈമർ താൽക്കാലികമായി നിർത്തി ($duration)';
+  }
+
+  @override
+  String eventManualSegment(String duration) {
+    return 'സമയം സ്വമേധയാ രേഖപ്പെടുത്തി ($duration)';
+  }
+
+  @override
+  String eventStatusChanged(String status) {
+    return 'നില $status ആയി മാറ്റി';
+  }
+
+  @override
+  String get eventSubtaskToggled => 'ഉപ-ടാസ്ക് പുതുക്കി';
+
+  @override
+  String get eventEdited => 'ടാസ്ക് വിവരങ്ങൾ പുതുക്കി';
+
+  @override
+  String get moveToToday => 'ഇന്നത്തേക്ക് മാറ്റുക';
+
+  @override
+  String get taskMovedToToday => 'ടാസ്ക് ഇന്നത്തേക്ക് മാറ്റി';
+
+  @override
+  String taskMovedSuccess(String date) {
+    return 'ടാസ്ക് $date-ലേക്ക് മാറ്റി';
   }
 }

@@ -64,111 +64,113 @@ class _AccentColorScreenState extends ConsumerState<AccentColorScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.appearanceAccentColor)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AppSectionCard(
-            title: l10n.accentLivePreview,
-            subtitle: isDark
-                ? l10n.accentAppliesToDark
-                : l10n.accentAppliesToLight,
-            child: Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 22,
-                  vertical: 12,
-                ),
-                decoration: BoxDecoration(
-                  color: selected,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: selected.withValues(alpha: 0.42),
-                      blurRadius: 18,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.palette_outlined, color: onAccent, size: 18),
-                    const SizedBox(width: 8),
-                    Text(
-                      l10n.accentSampleText,
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: onAccent,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            AppSectionCard(
+              title: l10n.accentLivePreview,
+              subtitle: isDark
+                  ? l10n.accentAppliesToDark
+                  : l10n.accentAppliesToLight,
+              child: Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 22,
+                    vertical: 12,
+                  ),
+                  decoration: BoxDecoration(
+                    color: selected,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: selected.withValues(alpha: 0.42),
+                        blurRadius: 18,
+                        offset: const Offset(0, 8),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.palette_outlined, color: onAccent, size: 18),
+                      const SizedBox(width: 8),
+                      Text(
+                        l10n.accentSampleText,
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: onAccent,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: l10n.accentPresets,
-            child: Wrap(
-              spacing: 12,
-              runSpacing: 12,
-              alignment: WrapAlignment.center,
-              children: [
-                for (final color in AppTheme.presetAccents)
-                  _PresetSwatch(
-                    color: color,
-                    selected: color.toARGB32() == selected.toARGB32(),
-                    onTap: () => _apply(HSVColor.fromColor(color)),
-                  ),
-              ],
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: l10n.accentPresets,
+              child: Wrap(
+                spacing: 12,
+                runSpacing: 12,
+                alignment: WrapAlignment.center,
+                children: [
+                  for (final color in AppTheme.presetAccents)
+                    _PresetSwatch(
+                      color: color,
+                      selected: color.toARGB32() == selected.toARGB32(),
+                      onTap: () => _apply(HSVColor.fromColor(color)),
+                    ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: l10n.accentCustomWheel,
-            child: Column(
-              children: [
-                Center(
-                  child: _HueWheel(
-                    size: 248,
-                    hsv: hsv,
-                    onChanged: (hue, saturation) =>
-                        _apply(hsv.withHue(hue).withSaturation(saturation)),
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: l10n.accentCustomWheel,
+              child: Column(
+                children: [
+                  Center(
+                    child: _HueWheel(
+                      size: 248,
+                      hsv: hsv,
+                      onChanged: (hue, saturation) =>
+                          _apply(hsv.withHue(hue).withSaturation(saturation)),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    const Icon(Icons.brightness_6_outlined, size: 20),
-                    Expanded(
-                      child: Slider(
-                        value: hsv.value,
-                        onChanged: (value) =>
-                            _apply(hsv.withValue(value.clamp(0.05, 1.0))),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      const Icon(Icons.brightness_6_outlined, size: 20),
+                      Expanded(
+                        child: Slider(
+                          value: hsv.value,
+                          onChanged: (value) =>
+                              _apply(hsv.withValue(value.clamp(0.05, 1.0))),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Center(
+                    child: TextButton.icon(
+                      onPressed: _reset,
+                      icon: const Icon(Icons.restart_alt),
+                      label: Text(
+                        isDark ? l10n.accentResetDark : l10n.accentResetLight,
                       ),
                     ),
-                  ],
-                ),
-                Center(
-                  child: TextButton.icon(
-                    onPressed: _reset,
-                    icon: const Icon(Icons.restart_alt),
-                    label: Text(
-                      isDark ? l10n.accentResetDark : l10n.accentResetLight,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.accentContrastNote,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  l10n.accentContrastNote,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

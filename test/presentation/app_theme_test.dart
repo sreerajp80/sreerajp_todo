@@ -56,5 +56,28 @@ void main() {
       expect(AppTheme.light().colorScheme.primary, AppTheme.defaultLightAccent);
       expect(AppTheme.dark().colorScheme.primary, AppTheme.defaultDarkAccent);
     });
+
+    test('onPrimary has readable contrast against primary in all themes', () {
+      for (final theme in <ThemeData>[AppTheme.light(), AppTheme.dark()]) {
+        expect(
+          _contrast(theme.colorScheme.onPrimary, theme.colorScheme.primary),
+          greaterThan(4.5),
+          reason: 'onPrimary must have readable contrast on primary button',
+        );
+      }
+
+      for (final accent in AppTheme.presetAccents) {
+        for (final isDark in [false, true]) {
+          final theme = isDark
+              ? AppTheme.dark(accent: accent)
+              : AppTheme.light(accent: accent);
+          expect(
+            _contrast(theme.colorScheme.onPrimary, theme.colorScheme.primary),
+            greaterThan(4.5),
+            reason: 'onPrimary must have readable contrast with accent $accent',
+          );
+        }
+      }
+    });
   });
 }

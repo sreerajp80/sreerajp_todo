@@ -3038,6 +3038,24 @@ abstract class AppLocalizations {
   /// **'This task will be marked as complete. Any running timer is stopped.'**
   String get confirmCompleteBody;
 
+  /// Switch label for automatic carry-over of incomplete tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto carry-over incomplete tasks'**
+  String get defaultsAutoCarryOver;
+
+  /// Help line for the automatic carry-over switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatically carry over unfinished tasks from earlier days into today without asking.'**
+  String get defaultsAutoCarryOverDetail;
+
+  /// SnackBar notification after automatically carrying over unfinished tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Automatically carried over 1 task to today} other{Automatically carried over {count} tasks to today}}'**
+  String autoCarryOverDone(int count);
+
   /// Switch label for the carry-over prompt.
   ///
   /// In en, this message translates to:
@@ -4099,6 +4117,2040 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'At {time}'**
   String voiceTimeNote(String time);
+
+  /// Settings row that opens the Ritual mode page.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual mode'**
+  String get settingsRitual;
+
+  /// Subtitle under the Ritual mode row in Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'A quiet, guided start to the day'**
+  String get settingsRitualSubtitle;
+
+  /// Title of the ritual flow and its settings page.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual mode'**
+  String get ritualTitle;
+
+  /// Main on/off switch for Ritual mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual mode'**
+  String get ritualEnabled;
+
+  /// Explains what Ritual mode does, under its switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe, read one card, settle the day, then begin.'**
+  String get ritualEnabledDetail;
+
+  /// Switch: run the ritual automatically once a day.
+  ///
+  /// In en, this message translates to:
+  /// **'Open on the first launch of a day'**
+  String get ritualOpenOnLaunch;
+
+  /// Explains the automatic-open switch.
+  ///
+  /// In en, this message translates to:
+  /// **'With this off, start it yourself from the day list.'**
+  String get ritualOpenOnLaunchDetail;
+
+  /// Section heading for the breathing settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathing'**
+  String get ritualBreathSection;
+
+  /// Choice list title for the breathing rhythm.
+  ///
+  /// In en, this message translates to:
+  /// **'Rhythm'**
+  String get ritualBreathTechnique;
+
+  /// Breathing rhythm: four seconds in, hold, out, hold.
+  ///
+  /// In en, this message translates to:
+  /// **'Box breathing (4-4-4-4)'**
+  String get ritualBreathBox;
+
+  /// Breathing rhythm: four in, seven hold, eight out.
+  ///
+  /// In en, this message translates to:
+  /// **'Relaxing breath (4-7-8)'**
+  String get ritualBreathRelaxing;
+
+  /// Breathing rhythm: four seconds in, four seconds out.
+  ///
+  /// In en, this message translates to:
+  /// **'Calm rhythm (4-4)'**
+  String get ritualBreathCalm;
+
+  /// Label on the stepper that sets how many breaths.
+  ///
+  /// In en, this message translates to:
+  /// **'Breaths'**
+  String get ritualBreathCyclesLabel;
+
+  /// How many breaths the first step runs for.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} breath} other{{count} breaths}}'**
+  String ritualBreathCount(num count);
+
+  /// Switch: vibrate when the breathing phase changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle buzz at each change'**
+  String get ritualHaptic;
+
+  /// Explains the breathing haptic switch.
+  ///
+  /// In en, this message translates to:
+  /// **'A short tap when it is time to breathe in, hold or let go, so the eyes can stay closed.'**
+  String get ritualHapticDetail;
+
+  /// Section heading for turning ritual steps on or off.
+  ///
+  /// In en, this message translates to:
+  /// **'Steps'**
+  String get ritualStepsSection;
+
+  /// Switch: include the card step in the ritual.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a reflection card'**
+  String get ritualCardStepSwitch;
+
+  /// Explains the card step switch.
+  ///
+  /// In en, this message translates to:
+  /// **'One card from the Ritual Deck, chosen by when you last saw it.'**
+  String get ritualCardStepDetail;
+
+  /// Switch: include the settle step in the ritual.
+  ///
+  /// In en, this message translates to:
+  /// **'Settle the day'**
+  String get ritualSettleStepSwitch;
+
+  /// Explains the settle step switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry over what is left from before, then pick the three tasks to lead today.'**
+  String get ritualSettleStepDetail;
+
+  /// Section heading for the evening reflection offer.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening close'**
+  String get ritualEveningSection;
+
+  /// Switch: offer the evening reflection once a day.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer an evening reflection'**
+  String get ritualEveningClose;
+
+  /// Explains the evening close switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Once a day, later on, the day list offers to close the day.'**
+  String get ritualEveningCloseDetail;
+
+  /// Label for the hour the evening close starts being offered.
+  ///
+  /// In en, this message translates to:
+  /// **'Offer it from'**
+  String get ritualEveningFrom;
+
+  /// Section heading for the Ritual Deck actions.
+  ///
+  /// In en, this message translates to:
+  /// **'The deck'**
+  String get ritualDeckSection;
+
+  /// Opens the deck browser from Settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse the Ritual Deck'**
+  String get ritualBrowseDeck;
+
+  /// Subtitle for the deck browser row.
+  ///
+  /// In en, this message translates to:
+  /// **'All the cards, and when each one comes back.'**
+  String get ritualBrowseDeckDetail;
+
+  /// Clears the spaced repetition history for every card.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset card reviews'**
+  String get ritualResetReviews;
+
+  /// Subtitle for the reset reviews row.
+  ///
+  /// In en, this message translates to:
+  /// **'Every card becomes new again. Your tasks are not touched.'**
+  String get ritualResetReviewsDetail;
+
+  /// Title of the confirm dialog for resetting reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset card reviews?'**
+  String get ritualResetConfirmTitle;
+
+  /// Body of the confirm dialog for resetting reviews.
+  ///
+  /// In en, this message translates to:
+  /// **'The deck starts from the first card again. Nothing else changes.'**
+  String get ritualResetConfirmBody;
+
+  /// SnackBar after the card reviews are cleared.
+  ///
+  /// In en, this message translates to:
+  /// **'Card reviews reset.'**
+  String get ritualResetDone;
+
+  /// Starts the ritual by hand from Settings or the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'Run the ritual now'**
+  String get ritualRunNow;
+
+  /// Name of the first ritual step.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe'**
+  String get ritualStepBreathe;
+
+  /// Name of the second ritual step.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflect'**
+  String get ritualStepReflect;
+
+  /// Name of the third ritual step.
+  ///
+  /// In en, this message translates to:
+  /// **'Settle'**
+  String get ritualStepSettle;
+
+  /// Name of the last ritual step.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin'**
+  String get ritualStepBegin;
+
+  /// Leaves the ritual and goes straight to the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip ritual'**
+  String get ritualSkip;
+
+  /// Moves to the next ritual step.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get ritualContinue;
+
+  /// Breathing phase label: inhale.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe in'**
+  String get ritualBreathIn;
+
+  /// Breathing phase label: hold after breathing in.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold'**
+  String get ritualBreathHold;
+
+  /// Breathing phase label: exhale.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe out'**
+  String get ritualBreathOut;
+
+  /// Breathing phase label: hold after breathing out.
+  ///
+  /// In en, this message translates to:
+  /// **'Rest'**
+  String get ritualBreathRest;
+
+  /// Guidance under the inhale phase.
+  ///
+  /// In en, this message translates to:
+  /// **'Slowly, through the nose.'**
+  String get ritualBreathInHint;
+
+  /// Guidance under the hold phase.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold it gently at the top.'**
+  String get ritualBreathHoldHint;
+
+  /// Guidance under the exhale phase.
+  ///
+  /// In en, this message translates to:
+  /// **'Let it all go, without hurry.'**
+  String get ritualBreathOutHint;
+
+  /// Guidance under the rest phase.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay in the quiet for a moment.'**
+  String get ritualBreathRestHint;
+
+  /// Counter shown under the breathing circle.
+  ///
+  /// In en, this message translates to:
+  /// **'Breath {current} of {total}'**
+  String ritualBreathProgress(int current, int total);
+
+  /// Shown when the breathing step has run its course.
+  ///
+  /// In en, this message translates to:
+  /// **'That is enough.'**
+  String get ritualBreathFinished;
+
+  /// Which card of the deck is on screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Card {number} of {total}'**
+  String ritualCardProgress(int number, int total);
+
+  /// Moves to the next card in the deck.
+  ///
+  /// In en, this message translates to:
+  /// **'Show another card'**
+  String get ritualCardAnother;
+
+  /// Saves the card title as the day's intention.
+  ///
+  /// In en, this message translates to:
+  /// **'Make this today\'s intention'**
+  String get ritualMakeIntention;
+
+  /// SnackBar after the card is saved as the intention.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved as today\'s intention.'**
+  String get ritualIntentionSaved;
+
+  /// Asked above the Hard / Revision / Easy buttons.
+  ///
+  /// In en, this message translates to:
+  /// **'When should this card come back?'**
+  String get ritualRateQuestion;
+
+  /// Recall rating: bring this card back tomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get ritualRateHard;
+
+  /// Recall rating: bring this card back in a few days.
+  ///
+  /// In en, this message translates to:
+  /// **'Revision'**
+  String get ritualRateRevision;
+
+  /// Recall rating: this one has sunk in, leave it a while.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get ritualRateEasy;
+
+  /// Badge under a rating button meaning one day away.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get ritualRateTomorrow;
+
+  /// Badge under a rating button, or when a card returns.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, one{In {days} day} other{In {days} days}}'**
+  String ritualRateInDays(num days);
+
+  /// Heading above the unfinished tasks in the settle step.
+  ///
+  /// In en, this message translates to:
+  /// **'Left over from before'**
+  String get ritualSettleCarryTitle;
+
+  /// Shown when there is nothing to carry over.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing was left unfinished. A clean start.'**
+  String get ritualSettleCarryEmpty;
+
+  /// Heading above today's tasks in the settle step.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s three'**
+  String get ritualSettleFocusTitle;
+
+  /// Explains what picking a focus task does.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick up to three tasks to lead the day. They move to high priority.'**
+  String get ritualSettleFocusHint;
+
+  /// Shown when today has no tasks to choose from.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks for today yet. You can add them after the ritual.'**
+  String get ritualSettleFocusEmpty;
+
+  /// SnackBar when a fourth focus task is tapped.
+  ///
+  /// In en, this message translates to:
+  /// **'Three is the limit. Untick one first.'**
+  String get ritualSettleFocusLimit;
+
+  /// Heading of the last ritual step.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get ritualBeginTitle;
+
+  /// Summary line: how many tasks were carried over.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 task carried over} other{{count} tasks carried over}}'**
+  String ritualBeginCarried(num count);
+
+  /// Summary line: how many tasks were put in focus.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{1 task in focus} other{{count} tasks in focus}}'**
+  String ritualBeginFocused(num count);
+
+  /// Summary line when the ritual changed nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing changed. That is fine too.'**
+  String get ritualBeginNothing;
+
+  /// Leaves the ritual for today's task list.
+  ///
+  /// In en, this message translates to:
+  /// **'Begin the day'**
+  String get ritualBeginAction;
+
+  /// Title of the card deck browser.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual Deck'**
+  String get ritualDeckTitle;
+
+  /// Deck filter chip: show every theme.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get ritualDeckAll;
+
+  /// Badge on a card that is ready to come back today.
+  ///
+  /// In en, this message translates to:
+  /// **'Due'**
+  String get ritualDeckDue;
+
+  /// Badge on a card that has never been shown.
+  ///
+  /// In en, this message translates to:
+  /// **'New'**
+  String get ritualDeckUnseen;
+
+  /// How many times a card has been rated.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{Seen once} other{Seen {count} times}}'**
+  String ritualDeckSeenCount(num count);
+
+  /// Shown when a deck filter matches nothing.
+  ///
+  /// In en, this message translates to:
+  /// **'No cards in this theme.'**
+  String get ritualDeckEmpty;
+
+  /// Shown if the ritual is opened on a day that is not today.
+  ///
+  /// In en, this message translates to:
+  /// **'The ritual runs for today only.'**
+  String get ritualPastDayNote;
+
+  /// Ritual deck theme: right action and duty.
+  ///
+  /// In en, this message translates to:
+  /// **'Dharma'**
+  String get ritualThemeDharma;
+
+  /// Ritual deck theme: action and its fruit.
+  ///
+  /// In en, this message translates to:
+  /// **'Karma'**
+  String get ritualThemeKarma;
+
+  /// Ritual deck theme: love and devotion.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhakti'**
+  String get ritualThemeBhakti;
+
+  /// Ritual deck theme: knowledge and discernment.
+  ///
+  /// In en, this message translates to:
+  /// **'Jnana'**
+  String get ritualThemeJnana;
+
+  /// Ritual deck theme: union and steadiness.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga'**
+  String get ritualThemeYoga;
+
+  /// Ritual deck theme: non-harm and compassion.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahimsa'**
+  String get ritualThemeAhimsa;
+
+  /// Ritual deck theme: truth.
+  ///
+  /// In en, this message translates to:
+  /// **'Sathya'**
+  String get ritualThemeSathya;
+
+  /// Ritual deck theme: letting go.
+  ///
+  /// In en, this message translates to:
+  /// **'Vairagya'**
+  String get ritualThemeVairagya;
+
+  /// Ritual deck theme: service to others.
+  ///
+  /// In en, this message translates to:
+  /// **'Seva'**
+  String get ritualThemeSeva;
+
+  /// Ritual deck theme: peace.
+  ///
+  /// In en, this message translates to:
+  /// **'Shanti'**
+  String get ritualThemeShanti;
+
+  /// Ritual deck card sd_01: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Swadharma'**
+  String get ritualCardSd01Title;
+
+  /// Ritual deck card sd_01: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the unique duty or calling that only you can fulfil in this season of your life? How are you honouring it today?'**
+  String get ritualCardSd01Prompt;
+
+  /// Ritual deck card sd_01: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'It is better to perform one\'s own duty imperfectly than to perform another\'s duty perfectly.'**
+  String get ritualCardSd01Quote;
+
+  /// Ritual deck card sd_01: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 3.35'**
+  String get ritualCardSd01QuoteAuthor;
+
+  /// Ritual deck card sd_02: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Righteousness in the Small'**
+  String get ritualCardSd02Title;
+
+  /// Ritual deck card sd_02: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'In what small, everyday action today can you choose what is right over what is easy or popular?'**
+  String get ritualCardSd02Prompt;
+
+  /// Ritual deck card sd_02: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Dharma exists for the welfare of all beings. Hence, that by which the welfare of all living beings is sustained, that is Dharma.'**
+  String get ritualCardSd02Quote;
+
+  /// Ritual deck card sd_02: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Mahabharata, Shanti Parva 109.10'**
+  String get ritualCardSd02QuoteAuthor;
+
+  /// Ritual deck card sd_03: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Wheel of Dharma'**
+  String get ritualCardSd03Title;
+
+  /// Ritual deck card sd_03: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Reflect on one relationship or responsibility you hold. Are you nurturing it with integrity, or have you been neglecting its call?'**
+  String get ritualCardSd03Prompt;
+
+  /// Ritual deck card sd_03: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'When Dharma is protected, Dharma protects.'**
+  String get ritualCardSd03Quote;
+
+  /// Ritual deck card sd_03: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Manusmriti 8.15'**
+  String get ritualCardSd03QuoteAuthor;
+
+  /// Ritual deck card sd_04: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Eternal Order'**
+  String get ritualCardSd04Title;
+
+  /// Ritual deck card sd_04: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Where in nature — the rising sun, the changing seasons, the flowing river — do you see the rhythm of Rta (cosmic order), and how does it mirror your own life?'**
+  String get ritualCardSd04Prompt;
+
+  /// Ritual deck card sd_04: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'The rivers flow into the ocean but the ocean never overflows. Likewise, desires flow into the wise one, who remains ever at peace.'**
+  String get ritualCardSd04Quote;
+
+  /// Ritual deck card sd_04: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 2.70'**
+  String get ritualCardSd04QuoteAuthor;
+
+  /// Ritual deck card sd_05: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Dharma in Adversity'**
+  String get ritualCardSd05Title;
+
+  /// Ritual deck card sd_05: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'When life tests you, what principle or value do you refuse to compromise? Why does it matter to you?'**
+  String get ritualCardSd05Prompt;
+
+  /// Ritual deck card sd_05: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Even in the most difficult of times, one should not abandon Dharma.'**
+  String get ritualCardSd05Quote;
+
+  /// Ritual deck card sd_05: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Ramayana, Ayodhya Kanda'**
+  String get ritualCardSd05QuoteAuthor;
+
+  /// Ritual deck card sd_06: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Action Without Attachment'**
+  String get ritualCardSd06Title;
+
+  /// Ritual deck card sd_06: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What is one task or effort you are doing today where you can let go of the result and focus purely on the quality of your action?'**
+  String get ritualCardSd06Prompt;
+
+  /// Ritual deck card sd_06: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'You have the right to perform your duty, but you are not entitled to the fruits of your actions.'**
+  String get ritualCardSd06Quote;
+
+  /// Ritual deck card sd_06: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 2.47'**
+  String get ritualCardSd06QuoteAuthor;
+
+  /// Ritual deck card sd_07: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Seed You Plant Today'**
+  String get ritualCardSd07Title;
+
+  /// Ritual deck card sd_07: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Every action is a seed. What kind of seed — patience, kindness, discipline, or something else — are you planting today?'**
+  String get ritualCardSd07Prompt;
+
+  /// Ritual deck card sd_07: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'As a man sows, so shall he reap. There is no escape from the fruits of one\'s actions.'**
+  String get ritualCardSd07Quote;
+
+  /// Ritual deck card sd_07: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Mahabharata, Vana Parva'**
+  String get ritualCardSd07QuoteAuthor;
+
+  /// Ritual deck card sd_08: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nishkama Karma'**
+  String get ritualCardSd08Title;
+
+  /// Ritual deck card sd_08: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Think of something you did purely for its own sake, without wanting praise or reward. How did that feel? Can you bring that spirit to more of your day?'**
+  String get ritualCardSd08Prompt;
+
+  /// Ritual deck card sd_08: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'The wise, engaged in selfless action, surrender all attachment to results and attain supreme peace.'**
+  String get ritualCardSd08Quote;
+
+  /// Ritual deck card sd_08: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 5.12'**
+  String get ritualCardSd08QuoteAuthor;
+
+  /// Ritual deck card sd_09: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Breaking the Chain'**
+  String get ritualCardSd09Title;
+
+  /// Ritual deck card sd_09: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Is there a pattern of reaction — anger, avoidance, blame — that you keep repeating? What would it look like to consciously choose a different response today?'**
+  String get ritualCardSd09Prompt;
+
+  /// Ritual deck card sd_09: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'One who restrains the senses and organs of action, but whose mind dwells on sense objects, is deluded and called a hypocrite.'**
+  String get ritualCardSd09Quote;
+
+  /// Ritual deck card sd_09: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 3.6'**
+  String get ritualCardSd09QuoteAuthor;
+
+  /// Ritual deck card sd_10: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Karma Yoga in Daily Life'**
+  String get ritualCardSd10Title;
+
+  /// Ritual deck card sd_10: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'How can you transform an ordinary task today — cooking, cleaning, working — into an offering, performing it with full attention and devotion?'**
+  String get ritualCardSd10Prompt;
+
+  /// Ritual deck card sd_10: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Whatever you do, whatever you eat, whatever you offer in sacrifice, whatever you give, whatever austerity you practise — do it as an offering to Me.'**
+  String get ritualCardSd10Quote;
+
+  /// Ritual deck card sd_10: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 9.27'**
+  String get ritualCardSd10QuoteAuthor;
+
+  /// Ritual deck card sd_11: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Heart of Devotion'**
+  String get ritualCardSd11Title;
+
+  /// Ritual deck card sd_11: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What fills your heart with reverence and love — a prayer, a memory, a place, the thought of the Divine? Dwell on it now.'**
+  String get ritualCardSd11Prompt;
+
+  /// Ritual deck card sd_11: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Whoever offers Me with devotion a leaf, a flower, a fruit, or water — that offering of love I accept from the pure-hearted.'**
+  String get ritualCardSd11Quote;
+
+  /// Ritual deck card sd_11: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 9.26'**
+  String get ritualCardSd11QuoteAuthor;
+
+  /// Ritual deck card sd_12: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Surrender and Trust'**
+  String get ritualCardSd12Title;
+
+  /// Ritual deck card sd_12: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What worry or burden can you mentally place at the feet of the Divine today, trusting that grace will carry you through?'**
+  String get ritualCardSd12Prompt;
+
+  /// Ritual deck card sd_12: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Abandon all varieties of Dharma and simply surrender unto Me. I shall deliver you from all sinful reactions; do not fear.'**
+  String get ritualCardSd12Quote;
+
+  /// Ritual deck card sd_12: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 18.66'**
+  String get ritualCardSd12QuoteAuthor;
+
+  /// Ritual deck card sd_13: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Seeing God in All'**
+  String get ritualCardSd13Title;
+
+  /// Ritual deck card sd_13: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Can you look at every person you meet today as a form of the Divine? How would that change the way you speak and listen?'**
+  String get ritualCardSd13Prompt;
+
+  /// Ritual deck card sd_13: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'The wise see the same Divine Self equally in a learned Brahmin, a cow, an elephant, a dog, and an outcaste.'**
+  String get ritualCardSd13Quote;
+
+  /// Ritual deck card sd_13: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 5.18'**
+  String get ritualCardSd13QuoteAuthor;
+
+  /// Ritual deck card sd_14: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Name that Purifies'**
+  String get ritualCardSd14Title;
+
+  /// Ritual deck card sd_14: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'When was the last time you sat quietly and repeated a sacred name or mantra? What feelings arose when you did?'**
+  String get ritualCardSd14Prompt;
+
+  /// Ritual deck card sd_14: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'The name of the Lord is the boat that will take you across the ocean of worldly existence.'**
+  String get ritualCardSd14Quote;
+
+  /// Ritual deck card sd_14: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Tulsidas, Ramcharitmanas'**
+  String get ritualCardSd14QuoteAuthor;
+
+  /// Ritual deck card sd_15: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Grace in Gratitude'**
+  String get ritualCardSd15Title;
+
+  /// Ritual deck card sd_15: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What unexpected blessing or moment of grace have you received recently that you have not yet paused to acknowledge?'**
+  String get ritualCardSd15Prompt;
+
+  /// Ritual deck card sd_15: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'I am the origin of all. Everything emanates from Me. The wise who know this worship Me with loving devotion.'**
+  String get ritualCardSd15Quote;
+
+  /// Ritual deck card sd_15: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 10.8'**
+  String get ritualCardSd15QuoteAuthor;
+
+  /// Ritual deck card sd_16: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Who Am I?'**
+  String get ritualCardSd16Title;
+
+  /// Ritual deck card sd_16: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Strip away your name, your job, your roles, your body. What remains? Sit with this question: Who am I beyond all labels?'**
+  String get ritualCardSd16Prompt;
+
+  /// Ritual deck card sd_16: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Tat Tvam Asi — Thou art That.'**
+  String get ritualCardSd16Quote;
+
+  /// Ritual deck card sd_16: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Chandogya Upanishad 6.8.7'**
+  String get ritualCardSd16QuoteAuthor;
+
+  /// Ritual deck card sd_17: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Eternal Witness'**
+  String get ritualCardSd17Title;
+
+  /// Ritual deck card sd_17: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Observe your thoughts passing by without grasping any of them. Who is the one watching? Can that awareness itself ever be harmed?'**
+  String get ritualCardSd17Prompt;
+
+  /// Ritual deck card sd_17: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'The Self is never born, nor does it die. It is eternal, ever-existing, and primeval. It is not slain when the body is slain.'**
+  String get ritualCardSd17Quote;
+
+  /// Ritual deck card sd_17: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 2.20'**
+  String get ritualCardSd17QuoteAuthor;
+
+  /// Ritual deck card sd_18: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Knowledge That Frees'**
+  String get ritualCardSd18Title;
+
+  /// Ritual deck card sd_18: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What is one truth about yourself or about life that, once you truly accepted it, freed you from suffering?'**
+  String get ritualCardSd18Prompt;
+
+  /// Ritual deck card sd_18: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'There is nothing as purifying in this world as knowledge. One who has attained purity of mind through prolonged Yoga discovers this knowledge within, in due course of time.'**
+  String get ritualCardSd18Quote;
+
+  /// Ritual deck card sd_18: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 4.38'**
+  String get ritualCardSd18QuoteAuthor;
+
+  /// Ritual deck card sd_19: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Beyond the Senses'**
+  String get ritualCardSd19Title;
+
+  /// Ritual deck card sd_19: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Your senses show you the surface of things. What deeper truth lies beneath the situation you are facing right now?'**
+  String get ritualCardSd19Prompt;
+
+  /// Ritual deck card sd_19: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Beyond the senses are the objects; beyond the objects is the mind; beyond the mind is the intellect; beyond the intellect is the Great Self.'**
+  String get ritualCardSd19Quote;
+
+  /// Ritual deck card sd_19: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Katha Upanishad 1.3.10'**
+  String get ritualCardSd19QuoteAuthor;
+
+  /// Ritual deck card sd_20: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Light Within'**
+  String get ritualCardSd20Title;
+
+  /// Ritual deck card sd_20: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Close your eyes. Imagine a steady flame burning in your heart that no wind can extinguish. What does this light illuminate for you?'**
+  String get ritualCardSd20Prompt;
+
+  /// Ritual deck card sd_20: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Asato ma sadgamaya, tamaso ma jyotirgamaya, mrityorma amritam gamaya. Lead me from the unreal to the Real, from darkness to Light, from death to Immortality.'**
+  String get ritualCardSd20Quote;
+
+  /// Ritual deck card sd_20: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Brihadaranyaka Upanishad 1.3.28'**
+  String get ritualCardSd20QuoteAuthor;
+
+  /// Ritual deck card sd_21: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Fullness of Being'**
+  String get ritualCardSd21Title;
+
+  /// Ritual deck card sd_21: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'If you lack nothing at the deepest level, why do you feel incomplete? Reflect on what it means to be already whole.'**
+  String get ritualCardSd21Prompt;
+
+  /// Ritual deck card sd_21: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Om Purnamadah Purnamidam — That is Whole, this is Whole. From the Whole, the Whole arises. When the Whole is taken from the Whole, the Whole still remains.'**
+  String get ritualCardSd21Quote;
+
+  /// Ritual deck card sd_21: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Isha Upanishad, Invocation'**
+  String get ritualCardSd21QuoteAuthor;
+
+  /// Ritual deck card sd_22: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Brahman in Everything'**
+  String get ritualCardSd22Title;
+
+  /// Ritual deck card sd_22: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'The same consciousness that shines through you shines through every living being. How does this awareness change the way you see the world today?'**
+  String get ritualCardSd22Prompt;
+
+  /// Ritual deck card sd_22: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Aham Brahmasmi — I am Brahman.'**
+  String get ritualCardSd22Quote;
+
+  /// Ritual deck card sd_22: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Brihadaranyaka Upanishad 1.4.10'**
+  String get ritualCardSd22QuoteAuthor;
+
+  /// Ritual deck card sd_23: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Stilling the Mind'**
+  String get ritualCardSd23Title;
+
+  /// Ritual deck card sd_23: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Right now, observe the fluctuations of your mind — planning, worrying, remembering. Can you gently bring all of them to stillness, even for a few breaths?'**
+  String get ritualCardSd23Prompt;
+
+  /// Ritual deck card sd_23: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Yogas chitta vritti nirodhah — Yoga is the cessation of the fluctuations of the mind.'**
+  String get ritualCardSd23Quote;
+
+  /// Ritual deck card sd_23: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga Sutras of Patanjali 1.2'**
+  String get ritualCardSd23QuoteAuthor;
+
+  /// Ritual deck card sd_24: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady Practice'**
+  String get ritualCardSd24Title;
+
+  /// Ritual deck card sd_24: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What is one positive habit or practice you can commit to with patience and devotion, knowing that consistency matters more than intensity?'**
+  String get ritualCardSd24Prompt;
+
+  /// Ritual deck card sd_24: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Abhyasa — practice becomes firmly grounded when it is pursued for a long time, without interruption, and with sincere devotion.'**
+  String get ritualCardSd24Quote;
+
+  /// Ritual deck card sd_24: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga Sutras of Patanjali 1.14'**
+  String get ritualCardSd24QuoteAuthor;
+
+  /// Ritual deck card sd_25: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Evenness of Mind'**
+  String get ritualCardSd25Title;
+
+  /// Ritual deck card sd_25: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Recall a recent moment of success and a moment of failure. Can you hold both with the same steady awareness, without elation or despair?'**
+  String get ritualCardSd25Prompt;
+
+  /// Ritual deck card sd_25: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga is equanimity of mind — samatvam yoga uchyate.'**
+  String get ritualCardSd25Quote;
+
+  /// Ritual deck card sd_25: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 2.48'**
+  String get ritualCardSd25QuoteAuthor;
+
+  /// Ritual deck card sd_26: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Five Yamas'**
+  String get ritualCardSd26Title;
+
+  /// Ritual deck card sd_26: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-violence, truthfulness, non-stealing, moderation, non-possessiveness — which of the five Yamas is the hardest for you right now, and why?'**
+  String get ritualCardSd26Prompt;
+
+  /// Ritual deck card sd_26: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahimsa, Satya, Asteya, Brahmacharya, Aparigraha — these are the great universal vows.'**
+  String get ritualCardSd26Quote;
+
+  /// Ritual deck card sd_26: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga Sutras of Patanjali 2.30'**
+  String get ritualCardSd26QuoteAuthor;
+
+  /// Ritual deck card sd_27: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ishvara Pranidhana'**
+  String get ritualCardSd27Title;
+
+  /// Ritual deck card sd_27: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What does it feel like to offer your effort completely — not to achieve, but to dedicate? Try offering your next action to something greater than yourself.'**
+  String get ritualCardSd27Prompt;
+
+  /// Ritual deck card sd_27: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'By total surrender to Ishvara, Samadhi is attained.'**
+  String get ritualCardSd27Quote;
+
+  /// Ritual deck card sd_27: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga Sutras of Patanjali 2.45'**
+  String get ritualCardSd27QuoteAuthor;
+
+  /// Ritual deck card sd_28: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-Violence in Thought'**
+  String get ritualCardSd28Title;
+
+  /// Ritual deck card sd_28: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Have you directed harsh, violent thoughts towards yourself or someone else today? What would it mean to replace them with understanding?'**
+  String get ritualCardSd28Prompt;
+
+  /// Ritual deck card sd_28: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahimsa Paramo Dharma — Non-violence is the highest Dharma.'**
+  String get ritualCardSd28Quote;
+
+  /// Ritual deck card sd_28: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Mahabharata, Anushasana Parva 116.38'**
+  String get ritualCardSd28QuoteAuthor;
+
+  /// Ritual deck card sd_29: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compassion for All Beings'**
+  String get ritualCardSd29Title;
+
+  /// Ritual deck card sd_29: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Think of a creature — an animal, an insect, a bird — you encountered recently. What would the world be like if you extended the same care to all living beings?'**
+  String get ritualCardSd29Prompt;
+
+  /// Ritual deck card sd_29: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'One who sees all beings in the Self and the Self in all beings, never turns away from it.'**
+  String get ritualCardSd29Quote;
+
+  /// Ritual deck card sd_29: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Isha Upanishad, Verse 6'**
+  String get ritualCardSd29QuoteAuthor;
+
+  /// Ritual deck card sd_30: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Gentle Speech'**
+  String get ritualCardSd30Title;
+
+  /// Ritual deck card sd_30: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Before you speak today, pause and ask: Is it true? Is it kind? Is it necessary? How does this filter change your conversations?'**
+  String get ritualCardSd30Prompt;
+
+  /// Ritual deck card sd_30: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Words that do not cause distress, that are truthful, pleasant, and beneficial — this is called the austerity of speech.'**
+  String get ritualCardSd30Quote;
+
+  /// Ritual deck card sd_30: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 17.15'**
+  String get ritualCardSd30QuoteAuthor;
+
+  /// Ritual deck card sd_31: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgiving the Hurt'**
+  String get ritualCardSd31Title;
+
+  /// Ritual deck card sd_31: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Who has caused you pain that you are still carrying? What would it take to forgive — not for them, but to free your own heart?'**
+  String get ritualCardSd31Prompt;
+
+  /// Ritual deck card sd_31: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgiveness is the ornament of the brave.'**
+  String get ritualCardSd31Quote;
+
+  /// Ritual deck card sd_31: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Mahabharata, Udyoga Parva 33.48'**
+  String get ritualCardSd31QuoteAuthor;
+
+  /// Ritual deck card sd_32: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Living in Truth'**
+  String get ritualCardSd32Title;
+
+  /// Ritual deck card sd_32: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Is there something in your life where you are being less than truthful — with yourself or with others? What would honest alignment look like?'**
+  String get ritualCardSd32Prompt;
+
+  /// Ritual deck card sd_32: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Satyameva Jayate — Truth alone triumphs.'**
+  String get ritualCardSd32Quote;
+
+  /// Ritual deck card sd_32: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Mundaka Upanishad 3.1.6'**
+  String get ritualCardSd32QuoteAuthor;
+
+  /// Ritual deck card sd_33: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Courage of Honesty'**
+  String get ritualCardSd33Title;
+
+  /// Ritual deck card sd_33: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What is one truth you have been avoiding because it is uncomfortable? What would it take to face it with courage today?'**
+  String get ritualCardSd33Prompt;
+
+  /// Ritual deck card sd_33: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Speak the truth. Practise Dharma. Do not neglect the study of the scriptures.'**
+  String get ritualCardSd33Quote;
+
+  /// Ritual deck card sd_33: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Taittiriya Upanishad 1.11.1'**
+  String get ritualCardSd33QuoteAuthor;
+
+  /// Ritual deck card sd_34: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Truth Beyond Words'**
+  String get ritualCardSd34Title;
+
+  /// Ritual deck card sd_34: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Truth is not only in what you say, but in what you do. Are your actions today aligned with the truth you hold in your heart?'**
+  String get ritualCardSd34Prompt;
+
+  /// Ritual deck card sd_34: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'By truthfulness, man reaches the station of God.'**
+  String get ritualCardSd34Quote;
+
+  /// Ritual deck card sd_34: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Chanakya Niti 14.3'**
+  String get ritualCardSd34QuoteAuthor;
+
+  /// Ritual deck card sd_35: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Promise You Keep'**
+  String get ritualCardSd35Title;
+
+  /// Ritual deck card sd_35: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What is a promise you have made — to yourself, to another, or to the Divine — that you must honour? Recommit to it now.'**
+  String get ritualCardSd35Prompt;
+
+  /// Ritual deck card sd_35: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Let your word be your bond. A person who breaks a promise breaks trust, and trust once broken is hard to rebuild.'**
+  String get ritualCardSd35Quote;
+
+  /// Ritual deck card sd_35: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Vidura Niti, Mahabharata'**
+  String get ritualCardSd35QuoteAuthor;
+
+  /// Ritual deck card sd_36: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Letting Go'**
+  String get ritualCardSd36Title;
+
+  /// Ritual deck card sd_36: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What possession, expectation, or desire are you clinging to that no longer serves your growth? Imagine gently releasing it.'**
+  String get ritualCardSd36Prompt;
+
+  /// Ritual deck card sd_36: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Vairagya is the mastery of consciousness in which one is free from craving for sense objects, whether experienced directly or described.'**
+  String get ritualCardSd36Quote;
+
+  /// Ritual deck card sd_36: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga Sutras of Patanjali 1.15'**
+  String get ritualCardSd36QuoteAuthor;
+
+  /// Ritual deck card sd_37: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Unchanging Self'**
+  String get ritualCardSd37Title;
+
+  /// Ritual deck card sd_37: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything around you changes — moods, fortunes, relationships. What part of you has remained unchanged through all of life\'s storms?'**
+  String get ritualCardSd37Prompt;
+
+  /// Ritual deck card sd_37: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'That which is not real never was and never will be. That which is real always was and can never cease to be.'**
+  String get ritualCardSd37Quote;
+
+  /// Ritual deck card sd_37: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 2.16'**
+  String get ritualCardSd37QuoteAuthor;
+
+  /// Ritual deck card sd_38: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Contentment'**
+  String get ritualCardSd38Title;
+
+  /// Ritual deck card sd_38: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What do you already have that is truly enough? Reflect on the difference between want and need in your life right now.'**
+  String get ritualCardSd38Prompt;
+
+  /// Ritual deck card sd_38: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'From contentment comes unsurpassed happiness.'**
+  String get ritualCardSd38Quote;
+
+  /// Ritual deck card sd_38: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Yoga Sutras of Patanjali 2.42'**
+  String get ritualCardSd38QuoteAuthor;
+
+  /// Ritual deck card sd_39: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Beyond Pleasure and Pain'**
+  String get ritualCardSd39Title;
+
+  /// Ritual deck card sd_39: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Can you sit with discomfort without fleeing, and with pleasure without grasping? What happens when you simply observe both?'**
+  String get ritualCardSd39Prompt;
+
+  /// Ritual deck card sd_39: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'One who is not disturbed by happiness and distress and is steady in both is certainly eligible for liberation.'**
+  String get ritualCardSd39Quote;
+
+  /// Ritual deck card sd_39: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 2.15'**
+  String get ritualCardSd39QuoteAuthor;
+
+  /// Ritual deck card sd_40: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Joy of Giving'**
+  String get ritualCardSd40Title;
+
+  /// Ritual deck card sd_40: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What can you give today — time, attention, a kind word, a helping hand — without expecting anything in return?'**
+  String get ritualCardSd40Prompt;
+
+  /// Ritual deck card sd_40: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'The highest form of charity is helping those who are helpless.'**
+  String get ritualCardSd40Quote;
+
+  /// Ritual deck card sd_40: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Thirukkural 221'**
+  String get ritualCardSd40QuoteAuthor;
+
+  /// Ritual deck card sd_41: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Serving the Divine in Others'**
+  String get ritualCardSd41Title;
+
+  /// Ritual deck card sd_41: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'If the person standing in front of you were God in disguise, how would you treat them? Try living this for the next hour.'**
+  String get ritualCardSd41Prompt;
+
+  /// Ritual deck card sd_41: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Service to humanity is service to God.'**
+  String get ritualCardSd41Quote;
+
+  /// Ritual deck card sd_41: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Swami Vivekananda'**
+  String get ritualCardSd41QuoteAuthor;
+
+  /// Ritual deck card sd_42: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Selfless Work'**
+  String get ritualCardSd42Title;
+
+  /// Ritual deck card sd_42: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Recall a time when you helped someone and felt a quiet, deep joy that had nothing to do with recognition. What did that teach you?'**
+  String get ritualCardSd42Prompt;
+
+  /// Ritual deck card sd_42: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Arise, awake, and stop not till the goal is reached.'**
+  String get ritualCardSd42Quote;
+
+  /// Ritual deck card sd_42: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Katha Upanishad 1.3.14 / Swami Vivekananda'**
+  String get ritualCardSd42QuoteAuthor;
+
+  /// Ritual deck card sd_43: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Vasudhaiva Kutumbakam'**
+  String get ritualCardSd43Title;
+
+  /// Ritual deck card sd_43: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'The whole world is one family. What is one step you can take today to live as though every person\'s well-being matters to you?'**
+  String get ritualCardSd43Prompt;
+
+  /// Ritual deck card sd_43: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Vasudhaiva Kutumbakam — the entire world is one family.'**
+  String get ritualCardSd43Quote;
+
+  /// Ritual deck card sd_43: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Maha Upanishad 6.71'**
+  String get ritualCardSd43QuoteAuthor;
+
+  /// Ritual deck card sd_44: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Wealth of Kindness'**
+  String get ritualCardSd44Title;
+
+  /// Ritual deck card sd_44: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'What small act of kindness did someone do for you that you still remember? How can you pass that same kindness forward today?'**
+  String get ritualCardSd44Prompt;
+
+  /// Ritual deck card sd_44: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Even the poverty of the poor will depart if they give, with compassion, even what little they have.'**
+  String get ritualCardSd44Quote;
+
+  /// Ritual deck card sd_44: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Thirukkural 247'**
+  String get ritualCardSd44QuoteAuthor;
+
+  /// Ritual deck card sd_45: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Peace Within'**
+  String get ritualCardSd45Title;
+
+  /// Ritual deck card sd_45: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Close your eyes and take three slow breaths. Feel the silence between each breath. That silence is who you truly are. Can you carry it through the day?'**
+  String get ritualCardSd45Prompt;
+
+  /// Ritual deck card sd_45: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'For one who has conquered the mind, the mind is the best of friends; but for one who has failed to do so, the mind will remain the greatest enemy.'**
+  String get ritualCardSd45Quote;
+
+  /// Ritual deck card sd_45: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 6.6'**
+  String get ritualCardSd45QuoteAuthor;
+
+  /// Ritual deck card sd_46: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Equanimity in Praise and Blame'**
+  String get ritualCardSd46Title;
+
+  /// Ritual deck card sd_46: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Recall a recent praise and a recent criticism you received. Can you hold both with the same calm composure, without clinging to one or rejecting the other?'**
+  String get ritualCardSd46Prompt;
+
+  /// Ritual deck card sd_46: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'One who is the same to friend and foe, in honour and dishonour, in heat and cold, in pleasure and pain, and is free from attachment — such a person is dear to Me.'**
+  String get ritualCardSd46Quote;
+
+  /// Ritual deck card sd_46: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 12.18–19'**
+  String get ritualCardSd46QuoteAuthor;
+
+  /// Ritual deck card sd_47: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Lotus in Mud'**
+  String get ritualCardSd47Title;
+
+  /// Ritual deck card sd_47: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'A lotus blooms in muddy water yet remains unstained. What is the muddy situation in your life right now, and how can you remain untouched by it while still growing?'**
+  String get ritualCardSd47Prompt;
+
+  /// Ritual deck card sd_47: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'One who performs actions without attachment, surrendering them to Brahman, is untouched by sin, like a lotus leaf by water.'**
+  String get ritualCardSd47Quote;
+
+  /// Ritual deck card sd_47: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Bhagavad Gita 5.10'**
+  String get ritualCardSd47QuoteAuthor;
+
+  /// Ritual deck card sd_48: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Om Shanti'**
+  String get ritualCardSd48Title;
+
+  /// Ritual deck card sd_48: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Sit still and repeat Om Shanti three times — peace in body, peace in mind, peace in spirit. What disturbance melts away as you do this?'**
+  String get ritualCardSd48Prompt;
+
+  /// Ritual deck card sd_48: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Om Shantih Shantih Shantih — Om, Peace, Peace, Peace.'**
+  String get ritualCardSd48Quote;
+
+  /// Ritual deck card sd_48: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Upanishadic Shanti Mantra'**
+  String get ritualCardSd48QuoteAuthor;
+
+  /// Ritual deck card sd_49: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'May All Be Happy'**
+  String get ritualCardSd49Title;
+
+  /// Ritual deck card sd_49: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'Silently wish well-being for yourself, then for your loved ones, then for strangers, then for all beings. Notice how your heart expands as the circle widens.'**
+  String get ritualCardSd49Prompt;
+
+  /// Ritual deck card sd_49: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Sarve bhavantu sukhinah, sarve santu niramayah. Sarve bhadrani pashyantu, ma kashchit duhkhabhag bhavet. — May all be happy, may all be free from disease, may all see auspiciousness, may none suffer.'**
+  String get ritualCardSd49Quote;
+
+  /// Ritual deck card sd_49: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Upanishadic Prayer'**
+  String get ritualCardSd49QuoteAuthor;
+
+  /// Ritual deck card sd_50: card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength and Peace Together'**
+  String get ritualCardSd50Title;
+
+  /// Ritual deck card sd_50: the reflection question.
+  ///
+  /// In en, this message translates to:
+  /// **'True strength does not come from tension; it comes from deep inner peace. Where in your life can you replace force with calm resolve today?'**
+  String get ritualCardSd50Prompt;
+
+  /// Ritual deck card sd_50: the grounding quote.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength is life, weakness is death. Strength is the medicine, strength is the cure. Strength, strength is what the Upanishads preach.'**
+  String get ritualCardSd50Quote;
+
+  /// Ritual deck card sd_50: who the quote is from.
+  ///
+  /// In en, this message translates to:
+  /// **'Swami Vivekananda'**
+  String get ritualCardSd50QuoteAuthor;
+
+  /// Title for pending task alerts settings and modal.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Task Alerts'**
+  String get pendingAlertsTitle;
+
+  /// Subtitle describing pending task alerts in settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminders at day start and periodic intervals for pending tasks.'**
+  String get pendingAlertsSubtitle;
+
+  /// Master switch label for pending alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Pending Alerts'**
+  String get pendingAlertsEnabled;
+
+  /// Master switch subtitle for pending alerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Show an interactive list of pending tasks when alerts trigger.'**
+  String get pendingAlertsEnabledDetail;
+
+  /// Switch for morning/day start pending task alert.
+  ///
+  /// In en, this message translates to:
+  /// **'Day Start Alert'**
+  String get pendingAlertsDayStart;
+
+  /// Subtitle for day start pending alert.
+  ///
+  /// In en, this message translates to:
+  /// **'Show pending tasks alert at the beginning of each day.'**
+  String get pendingAlertsDayStartDetail;
+
+  /// Time picker label for day start alert.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Time'**
+  String get pendingAlertsDayStartTime;
+
+  /// Title for interval reminder settings choice.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder Interval'**
+  String get pendingAlertsInterval;
+
+  /// Subtitle for interval reminder settings choice.
+  ///
+  /// In en, this message translates to:
+  /// **'How often to remind you about pending tasks while using the app.'**
+  String get pendingAlertsIntervalDetail;
+
+  /// Interval choice: Off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get pendingAlertsIntervalOff;
+
+  /// Interval choice: 30 minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 30 minutes'**
+  String get pendingAlertsInterval30m;
+
+  /// Interval choice: 1 hour.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 1 hour'**
+  String get pendingAlertsInterval1h;
+
+  /// Interval choice: 2 hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 2 hours'**
+  String get pendingAlertsInterval2h;
+
+  /// Interval choice: 3 hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 3 hours'**
+  String get pendingAlertsInterval3h;
+
+  /// Interval choice: 4 hours.
+  ///
+  /// In en, this message translates to:
+  /// **'Every 4 hours'**
+  String get pendingAlertsInterval4h;
+
+  /// Toggle for haptic feedback when alert triggers.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrate / Haptic'**
+  String get pendingAlertsHaptic;
+
+  /// Subtitle for haptic feedback switch.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrate device gently when a pending task alert appears.'**
+  String get pendingAlertsHapticDetail;
+
+  /// Button label to test and preview pending alert sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Preview Pending Tasks Alert'**
+  String get pendingAlertsPreview;
+
+  /// Header title of the pending tasks alert modal sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Tasks Alert'**
+  String get pendingAlertsSheetTitle;
+
+  /// Pending task count summary.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 pending task remaining today} other{{count} pending tasks remaining today}}'**
+  String pendingAlertsSheetCount(int count);
+
+  /// Message when no pending tasks exist for today.
+  ///
+  /// In en, this message translates to:
+  /// **'Great job! No pending tasks remaining for today.'**
+  String get pendingAlertsSheetEmpty;
+
+  /// Button label to start timer for task from alert.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get pendingAlertsStartTimer;
+
+  /// Action button to navigate to today list.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Daily List'**
+  String get pendingAlertsGoToToday;
+
+  /// Action button to snooze interval alert for 1 hour.
+  ///
+  /// In en, this message translates to:
+  /// **'Snooze (1 hour)'**
+  String get pendingAlertsSnooze;
+
+  /// Button to dismiss alert sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Dismiss'**
+  String get pendingAlertsDismiss;
+
+  /// Label for showing ongoing notification for running task.
+  ///
+  /// In en, this message translates to:
+  /// **'Running task notification'**
+  String get trackingRunningNotification;
+
+  /// Explanation for running task notification setting.
+  ///
+  /// In en, this message translates to:
+  /// **'Show an ongoing notification with a live timer while tracking time'**
+  String get trackingRunningNotificationDetail;
+
+  /// Item title explaining notification permission.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get permissionsNotificationTitle;
+
+  /// Detailed explanation of notification permission usage.
+  ///
+  /// In en, this message translates to:
+  /// **'Used to display an ongoing live timer in the notification drawer while tracking tasks, and for optional daily reminders. Operates 100% offline with zero cloud access.'**
+  String get permissionsNotificationBody;
+
+  /// Section header for today's pending tasks in alert sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Tasks'**
+  String get pendingAlertsTodaySection;
+
+  /// Section header for unfinished tasks from previous dates in alert sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'From Previous Days'**
+  String get pendingAlertsPreviousSection;
+
+  /// Action button to port previous pending task to today.
+  ///
+  /// In en, this message translates to:
+  /// **'Port to Today'**
+  String get pendingAlertsPortToToday;
+
+  /// Confirmation message when previous task is ported to today.
+  ///
+  /// In en, this message translates to:
+  /// **'Task ported to today'**
+  String get pendingAlertsPortedSuccess;
+
+  /// Title for system status-bar notification.
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Tasks Reminder'**
+  String get pendingAlertsNotificationTitle;
+
+  /// Body message for system status-bar notification.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You have 1 pending task waiting} other{You have {count} pending tasks waiting}}'**
+  String pendingAlertsNotificationBody(int count);
+
+  /// Title of the Task History screen and menu item.
+  ///
+  /// In en, this message translates to:
+  /// **'Task History'**
+  String get taskHistory;
+
+  /// Subtitle describing the task history screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Full lifecycle and activity timeline for this task'**
+  String get taskHistorySubtitle;
+
+  /// Empty state message when no history records exist.
+  ///
+  /// In en, this message translates to:
+  /// **'No activity history recorded for this task yet.'**
+  String get taskHistoryEmpty;
+
+  /// History event label when task is created.
+  ///
+  /// In en, this message translates to:
+  /// **'Task created'**
+  String get eventCreated;
+
+  /// History event label when task is moved.
+  ///
+  /// In en, this message translates to:
+  /// **'Task moved'**
+  String get eventMoved;
+
+  /// History event description for moved task.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved from {fromDate} to {toDate}'**
+  String eventMovedFromTo(String fromDate, String toDate);
+
+  /// History event label when timer starts.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer started'**
+  String get eventTimerStarted;
+
+  /// History event label when timer stops.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer stopped ({duration})'**
+  String eventTimerStopped(String duration);
+
+  /// History event label when timer is paused.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer paused ({duration})'**
+  String eventTimerPaused(String duration);
+
+  /// History event label when manual time segment is added.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual time added ({duration})'**
+  String eventManualSegment(String duration);
+
+  /// History event label when status changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Status changed to {status}'**
+  String eventStatusChanged(String status);
+
+  /// History event label when subtask completion changes.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub-task updated'**
+  String get eventSubtaskToggled;
+
+  /// History event label when task title/details are edited.
+  ///
+  /// In en, this message translates to:
+  /// **'Task details edited'**
+  String get eventEdited;
+
+  /// Action label to move task to today.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to Today'**
+  String get moveToToday;
+
+  /// SnackBar confirmation when task is moved to today.
+  ///
+  /// In en, this message translates to:
+  /// **'Task moved to today'**
+  String get taskMovedToToday;
+
+  /// SnackBar confirmation when task is moved to date.
+  ///
+  /// In en, this message translates to:
+  /// **'Task moved to {date}'**
+  String taskMovedSuccess(String date);
 }
 
 class _AppLocalizationsDelegate

@@ -18,25 +18,27 @@ class DateFormatScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.dateTimeDateFormat)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsChoiceList<AppDateFormat>(
-            title: l10n.dateFormatTitle,
-            subtitle: l10n.dateFormatSubtitle,
-            selected: settings.dateFormat,
-            onChanged: notifier.setDateFormat,
-            choices: [
-              for (final option in AppDateFormat.values)
-                SettingsChoice(
-                  value: option,
-                  label: dateFormatName(l10n, option),
-                  // Today written in that style, so the choice is obvious.
-                  detail: dateFormatSample(option),
-                ),
-            ],
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsChoiceList<AppDateFormat>(
+              title: l10n.dateFormatTitle,
+              subtitle: l10n.dateFormatSubtitle,
+              selected: settings.dateFormat,
+              onChanged: notifier.setDateFormat,
+              choices: [
+                for (final option in AppDateFormat.values)
+                  SettingsChoice(
+                    value: option,
+                    label: dateFormatName(l10n, option),
+                    // Today written in that style, so the choice is obvious.
+                    detail: dateFormatSample(option),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

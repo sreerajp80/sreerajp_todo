@@ -69,12 +69,14 @@ void main() {
 
     await pumpSettings(tester);
 
-    expect(find.byType(SettingsNavCard), findsNWidgets(10));
+    expect(find.byType(SettingsNavCard), findsNWidgets(12));
     expect(find.text(testL10n.settingsAppearance), findsOneWidget);
     expect(find.text(testL10n.settingsFeatures), findsOneWidget);
     expect(find.text(testL10n.settingsHelp), findsOneWidget);
     expect(find.text(testL10n.settingsLanguage), findsOneWidget);
     expect(find.text(testL10n.settingsTaskDefaults), findsOneWidget);
+    expect(find.text(testL10n.pendingAlertsTitle), findsOneWidget);
+    expect(find.text(testL10n.settingsRitual), findsOneWidget);
     expect(find.text(testL10n.settingsTimeTracking), findsOneWidget);
     expect(find.text(testL10n.settingsDateTime), findsOneWidget);
     expect(find.text(testL10n.backupLabel), findsOneWidget);

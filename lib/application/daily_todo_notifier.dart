@@ -13,6 +13,7 @@ import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/delete_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
+import 'package:sreerajp_todo/domain/usecases/move_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
 
 class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
@@ -24,9 +25,17 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     required this.portTodoUseCase,
     required this.copyTodosUseCase,
     required this.deleteRecurringTodos,
+    MoveTodo? moveTodoUseCase,
     this.onDataChanged,
     this.onTimerStopped,
-  }) : super(const DailyTodoState()) {
+  }) : moveTodoUseCase =
+           moveTodoUseCase ??
+           MoveTodo(
+             todoRepository,
+             // fallback if not directly passed in test
+             portTodoUseCase.timeSegmentRepository,
+           ),
+       super(const DailyTodoState()) {
     loadTodos();
   }
 
@@ -37,6 +46,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   final PortTodo portTodoUseCase;
   final CopyTodos copyTodosUseCase;
   final DeleteRecurringTodos deleteRecurringTodos;
+  final MoveTodo moveTodoUseCase;
   final void Function()? onDataChanged;
   final void Function(String todoId)? onTimerStopped;
 
@@ -213,18 +223,27 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   }
 
   Future<void> portTodo(String todoId, String targetDate) async {
+    await moveTodo(todoId, targetDate);
+  }
+
+  Future<void> moveTodo(String todoId, String targetDate) async {
     try {
-      final result = await portTodoUseCase(todoId, targetDate);
+      final todo = await todoRepository.getTodoById(todoId);
+      final oldStatus = todo?.status ?? TodoStatus.pending;
+
+      final result = await moveTodoUseCase(todoId, targetDate);
       _pushUndo(
         UndoEntry(
           todoId: todoId,
-          oldStatus: result.oldStatus,
-          newStatus: TodoStatus.ported,
-          copiedTodoId: result.copiedTodoId,
+          oldStatus: oldStatus,
+          newStatus: TodoStatus.pending,
+          sourceDate: result.fromDate,
+          targetDate: result.toDate,
           timestamp: DateTime.now(),
         ),
       );
       await loadTodos();
+      onDataChanged?.call();
     } on DuplicateTitleException {
       rethrow;
     } on DayLockedException {
@@ -291,6 +310,13 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     state = state.copyWith(undoStack: newStack);
 
     try {
+      if (entry.sourceDate != null && entry.targetDate != null) {
+        await moveTodoUseCase(entry.todoId, entry.sourceDate!);
+        await loadTodos();
+        onDataChanged?.call();
+        return;
+      }
+
       if (entry.copiedTodoId != null) {
         await todoRepository.deleteTodo(entry.copiedTodoId!, bypassLock: true);
       }

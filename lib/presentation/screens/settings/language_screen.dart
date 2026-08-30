@@ -34,33 +34,35 @@ class LanguageScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsLanguage)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          AppSectionCard(
-            title: l10n.settingsLanguage,
-            subtitle: l10n.settingsLanguageSubtitle,
-            padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
-            child: RadioGroup<String>(
-              groupValue: selected,
-              onChanged: (value) {
-                if (value == null) return;
-                ref.read(localeProvider.notifier).setLocale(value);
-              },
-              child: Column(
-                children: [
-                  for (final option in options)
-                    RadioListTile<String>(
-                      value: option.code,
-                      contentPadding: EdgeInsets.zero,
-                      secondary: Icon(option.icon),
-                      title: Text(option.label),
-                    ),
-                ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            AppSectionCard(
+              title: l10n.settingsLanguage,
+              subtitle: l10n.settingsLanguageSubtitle,
+              padding: const EdgeInsets.fromLTRB(18, 18, 18, 8),
+              child: RadioGroup<String>(
+                groupValue: selected,
+                onChanged: (value) {
+                  if (value == null) return;
+                  ref.read(localeProvider.notifier).setLocale(value);
+                },
+                child: Column(
+                  children: [
+                    for (final option in options)
+                      RadioListTile<String>(
+                        value: option.code,
+                        contentPadding: EdgeInsets.zero,
+                        secondary: Icon(option.icon),
+                        title: Text(option.label),
+                      ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

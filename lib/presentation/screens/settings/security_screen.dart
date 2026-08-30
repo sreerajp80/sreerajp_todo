@@ -26,49 +26,53 @@ class SecurityScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsSecurity)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsNavCard(
-            icon: Icons.lock_outline_rounded,
-            title: l10n.securityAppLock,
-            subtitle: appLockModeName(l10n, settings.lockMode),
-            onTap: () => context.push(AppRoutes.appLock),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.timer_off_outlined,
-            title: l10n.securityAutoLock,
-            subtitle: settings.isLockEnabled
-                ? autoLockDelayName(l10n, settings.autoLockDelay)
-                : l10n.securityAutoLockSubtitle,
-            onTap: () => context.push(AppRoutes.autoLock),
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: l10n.securityScreenPrivacy,
-            child: SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              value: settings.secureScreen,
-              onChanged: secureFlagSupported ? notifier.setSecureScreen : null,
-              title: Text(l10n.securitySecureScreen),
-              subtitle: Text(
-                secureFlagSupported
-                    ? l10n.securitySecureScreenDetail
-                    : l10n.securitySecureScreenUnsupported,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsNavCard(
+              icon: Icons.lock_outline_rounded,
+              title: l10n.securityAppLock,
+              subtitle: appLockModeName(l10n, settings.lockMode),
+              onTap: () => context.push(AppRoutes.appLock),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.timer_off_outlined,
+              title: l10n.securityAutoLock,
+              subtitle: settings.isLockEnabled
+                  ? autoLockDelayName(l10n, settings.autoLockDelay)
+                  : l10n.securityAutoLockSubtitle,
+              onTap: () => context.push(AppRoutes.autoLock),
+            ),
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: l10n.securityScreenPrivacy,
+              child: SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: settings.secureScreen,
+                onChanged: secureFlagSupported
+                    ? notifier.setSecureScreen
+                    : null,
+                title: Text(l10n.securitySecureScreen),
+                subtitle: Text(
+                  secureFlagSupported
+                      ? l10n.securitySecureScreenDetail
+                      : l10n.securitySecureScreenUnsupported,
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          SettingsNoteCard(text: l10n.securityNotificationsNote),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.key_outlined,
-            title: l10n.securityDatabaseKey,
-            subtitle: l10n.securityDatabaseKeySubtitle,
-            onTap: () => context.push(AppRoutes.databaseKey),
-          ),
-        ],
+            const SizedBox(height: 16),
+            SettingsNoteCard(text: l10n.securityNotificationsNote),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.key_outlined,
+              title: l10n.securityDatabaseKey,
+              subtitle: l10n.securityDatabaseKeySubtitle,
+              onTap: () => context.push(AppRoutes.databaseKey),
+            ),
+          ],
+        ),
       ),
     );
   }

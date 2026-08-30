@@ -19,56 +19,58 @@ class DefaultsNewTaskScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.defaultsNewTask)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsChoiceList<NewTaskStatus>(
-            title: l10n.defaultsStatusTitle,
-            subtitle: l10n.defaultsStatusSubtitle,
-            selected: defaults.newTaskStatus,
-            onChanged: notifier.setNewTaskStatus,
-            choices: [
-              SettingsChoice(
-                value: NewTaskStatus.pending,
-                label: l10n.statusPending,
-                detail: l10n.defaultsStatusPendingDetail,
-              ),
-              SettingsChoice(
-                value: NewTaskStatus.working,
-                label: l10n.statusWorking,
-                detail: l10n.defaultsStatusWorkingDetail,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          SettingsChoiceList<TodoPriority>(
-            title: l10n.defaultsPriorityTitle,
-            subtitle: l10n.defaultsPrioritySubtitle,
-            selected: defaults.priority,
-            onChanged: notifier.setPriority,
-            choices: [
-              for (final priority in TodoPriority.values)
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsChoiceList<NewTaskStatus>(
+              title: l10n.defaultsStatusTitle,
+              subtitle: l10n.defaultsStatusSubtitle,
+              selected: defaults.newTaskStatus,
+              onChanged: notifier.setNewTaskStatus,
+              choices: [
                 SettingsChoice(
-                  value: priority,
-                  label: priorityName(l10n, priority),
+                  value: NewTaskStatus.pending,
+                  label: l10n.statusPending,
+                  detail: l10n.defaultsStatusPendingDetail,
                 ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          SettingsChoiceList<DefaultTargetTime>(
-            title: l10n.defaultsTargetTitle,
-            subtitle: l10n.defaultsTargetSubtitle,
-            selected: defaults.targetTime,
-            onChanged: notifier.setTargetTime,
-            choices: [
-              for (final target in DefaultTargetTime.values)
                 SettingsChoice(
-                  value: target,
-                  label: defaultTargetName(l10n, target),
+                  value: NewTaskStatus.working,
+                  label: l10n.statusWorking,
+                  detail: l10n.defaultsStatusWorkingDetail,
                 ),
-            ],
-          ),
-        ],
+              ],
+            ),
+            const SizedBox(height: 16),
+            SettingsChoiceList<TodoPriority>(
+              title: l10n.defaultsPriorityTitle,
+              subtitle: l10n.defaultsPrioritySubtitle,
+              selected: defaults.priority,
+              onChanged: notifier.setPriority,
+              choices: [
+                for (final priority in TodoPriority.values)
+                  SettingsChoice(
+                    value: priority,
+                    label: priorityName(l10n, priority),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SettingsChoiceList<DefaultTargetTime>(
+              title: l10n.defaultsTargetTitle,
+              subtitle: l10n.defaultsTargetSubtitle,
+              selected: defaults.targetTime,
+              onChanged: notifier.setTargetTime,
+              choices: [
+                for (final target in DefaultTargetTime.values)
+                  SettingsChoice(
+                    value: target,
+                    label: defaultTargetName(l10n, target),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

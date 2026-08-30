@@ -15,44 +15,46 @@ class TimeTrackingScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTimeTracking)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsNavCard(
-            icon: Icons.timer_off_outlined,
-            title: l10n.trackingAutoStop,
-            subtitle: l10n.trackingAutoStopSubtitle,
-            onTap: () => context.push(AppRoutes.autoStop),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.tune_rounded,
-            title: l10n.trackingTimerBehaviour,
-            subtitle: l10n.trackingTimerBehaviourSubtitle,
-            onTap: () => context.push(AppRoutes.timerBehaviour),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.av_timer_rounded,
-            title: l10n.trackingPomodoro,
-            subtitle: l10n.trackingPomodoroSubtitle,
-            onTap: () => context.push(AppRoutes.pomodoro),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.center_focus_strong_rounded,
-            title: l10n.trackingFocusMode,
-            subtitle: l10n.trackingFocusModeSubtitle,
-            onTap: () => context.push(AppRoutes.focusMode),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.schedule_rounded,
-            title: l10n.trackingTimeDisplay,
-            subtitle: l10n.trackingTimeDisplaySubtitle,
-            onTap: () => context.push(AppRoutes.timeDisplay),
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsNavCard(
+              icon: Icons.timer_off_outlined,
+              title: l10n.trackingAutoStop,
+              subtitle: l10n.trackingAutoStopSubtitle,
+              onTap: () => context.push(AppRoutes.autoStop),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.tune_rounded,
+              title: l10n.trackingTimerBehaviour,
+              subtitle: l10n.trackingTimerBehaviourSubtitle,
+              onTap: () => context.push(AppRoutes.timerBehaviour),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.av_timer_rounded,
+              title: l10n.trackingPomodoro,
+              subtitle: l10n.trackingPomodoroSubtitle,
+              onTap: () => context.push(AppRoutes.pomodoro),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.center_focus_strong_rounded,
+              title: l10n.trackingFocusMode,
+              subtitle: l10n.trackingFocusModeSubtitle,
+              onTap: () => context.push(AppRoutes.focusMode),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.schedule_rounded,
+              title: l10n.trackingTimeDisplay,
+              subtitle: l10n.trackingTimeDisplaySubtitle,
+              onTap: () => context.push(AppRoutes.timeDisplay),
+            ),
+          ],
+        ),
       ),
     );
   }

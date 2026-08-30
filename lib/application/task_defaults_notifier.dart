@@ -35,11 +35,17 @@ const String kConfirmCompleteKey = 'defaults_confirm_complete';
 /// SharedPreferences key for "ask before dropping a task".
 const String kConfirmDropKey = 'defaults_confirm_drop';
 
+/// SharedPreferences key for the automatic carry-over on/off switch.
+const String kAutoCarryOverEnabledKey = 'defaults_auto_carry_over_enabled';
+
 /// SharedPreferences key for the carry-over prompt on/off switch.
 const String kCarryOverEnabledKey = 'defaults_carry_over_enabled';
 
-/// SharedPreferences key for how far back the carry-over sheet looks.
+/// SharedPreferences key for how far back the carry-over sheet looks (enum index).
 const String kCarryOverLookBackKey = 'defaults_carry_over_look_back';
+
+/// SharedPreferences key for how far back carry-over looks in integer days (1..45).
+const String kCarryOverLookBackDaysKey = 'defaults_carry_over_look_back_days';
 
 /// SharedPreferences key for the day the carry-over sheet was last shown.
 const String kCarryOverLastAskedKey = 'defaults_carry_over_last_asked';
@@ -67,8 +73,10 @@ class TaskDefaults {
     this.sinkFinished = false,
     this.confirmComplete = false,
     this.confirmDrop = true,
+    this.autoCarryOverEnabled = true,
     this.carryOverEnabled = false,
-    this.carryOverLookBack = CarryOverLookBack.previousDay,
+    this.carryOverLookBack = CarryOverLookBack.lastSevenDays,
+    this.carryOverLookBackDays = kDefaultCarryOverLookBackDays,
     this.carryOverLastAsked,
     this.autocompleteEnabled = true,
     this.suggestionCount = SuggestionCount.twenty,
@@ -105,11 +113,17 @@ class TaskDefaults {
   /// When true, dropping a task asks first.
   final bool confirmDrop;
 
+  /// When true, unfinished tasks from past days are automatically carried over.
+  final bool autoCarryOverEnabled;
+
   /// When true, the carry-over sheet is offered once a day.
   final bool carryOverEnabled;
 
   /// How far back the carry-over sheet looks for unfinished tasks.
   final CarryOverLookBack carryOverLookBack;
+
+  /// How many days back (1..45) carry-over looks for unfinished tasks.
+  final int carryOverLookBackDays;
 
   /// The day the carry-over sheet was last shown, as `yyyy-MM-dd`.
   final String? carryOverLastAsked;
@@ -143,13 +157,20 @@ class TaskDefaults {
     bool? sinkFinished,
     bool? confirmComplete,
     bool? confirmDrop,
+    bool? autoCarryOverEnabled,
     bool? carryOverEnabled,
     CarryOverLookBack? carryOverLookBack,
+    int? carryOverLookBackDays,
     String? carryOverLastAsked,
     bool? autocompleteEnabled,
     SuggestionCount? suggestionCount,
     bool? voiceInputEnabled,
   }) {
+    final newDays =
+        carryOverLookBackDays ??
+        (carryOverLookBack != null
+            ? carryOverLookBack.days
+            : this.carryOverLookBackDays);
     return TaskDefaults(
       newTaskStatus: newTaskStatus ?? this.newTaskStatus,
       priority: priority ?? this.priority,
@@ -161,8 +182,10 @@ class TaskDefaults {
       sinkFinished: sinkFinished ?? this.sinkFinished,
       confirmComplete: confirmComplete ?? this.confirmComplete,
       confirmDrop: confirmDrop ?? this.confirmDrop,
+      autoCarryOverEnabled: autoCarryOverEnabled ?? this.autoCarryOverEnabled,
       carryOverEnabled: carryOverEnabled ?? this.carryOverEnabled,
       carryOverLookBack: carryOverLookBack ?? this.carryOverLookBack,
+      carryOverLookBackDays: sanitizeCarryOverLookBackDays(newDays),
       carryOverLastAsked: carryOverLastAsked ?? this.carryOverLastAsked,
       autocompleteEnabled: autocompleteEnabled ?? this.autocompleteEnabled,
       suggestionCount: suggestionCount ?? this.suggestionCount,
@@ -183,6 +206,17 @@ class TaskDefaultsNotifier extends StateNotifier<TaskDefaults> {
 
   static TaskDefaults _loadInitialState(SharedPreferences prefs) {
     const defaults = TaskDefaults();
+    final lookBackEnum = _readEnum(
+      prefs.getInt(kCarryOverLookBackKey),
+      CarryOverLookBack.values,
+      defaults.carryOverLookBack,
+    );
+    final savedDays =
+        prefs.getInt(kCarryOverLookBackDaysKey) ??
+        (prefs.getInt(kCarryOverLookBackKey) != null
+            ? lookBackEnum.days
+            : defaults.carryOverLookBackDays);
+
     return TaskDefaults(
       newTaskStatus: _readEnum(
         prefs.getInt(kDefaultNewTaskStatusKey),
@@ -212,13 +246,13 @@ class TaskDefaultsNotifier extends StateNotifier<TaskDefaults> {
       confirmComplete:
           prefs.getBool(kConfirmCompleteKey) ?? defaults.confirmComplete,
       confirmDrop: prefs.getBool(kConfirmDropKey) ?? defaults.confirmDrop,
+      autoCarryOverEnabled:
+          prefs.getBool(kAutoCarryOverEnabledKey) ??
+          defaults.autoCarryOverEnabled,
       carryOverEnabled:
           prefs.getBool(kCarryOverEnabledKey) ?? defaults.carryOverEnabled,
-      carryOverLookBack: _readEnum(
-        prefs.getInt(kCarryOverLookBackKey),
-        CarryOverLookBack.values,
-        defaults.carryOverLookBack,
-      ),
+      carryOverLookBack: lookBackEnum,
+      carryOverLookBackDays: sanitizeCarryOverLookBackDays(savedDays),
       carryOverLastAsked: prefs.getString(kCarryOverLastAskedKey),
       autocompleteEnabled:
           prefs.getBool(kAutocompleteEnabledKey) ??
@@ -319,6 +353,13 @@ class TaskDefaultsNotifier extends StateNotifier<TaskDefaults> {
     await _prefs.setBool(kConfirmDropKey, value);
   }
 
+  /// Turns automatic carry-over of incomplete tasks on or off.
+  Future<void> setAutoCarryOverEnabled(bool value) async {
+    if (value == state.autoCarryOverEnabled) return;
+    state = state.copyWith(autoCarryOverEnabled: value);
+    await _prefs.setBool(kAutoCarryOverEnabledKey, value);
+  }
+
   /// Turns the carry-over prompt on or off.
   Future<void> setCarryOverEnabled(bool value) async {
     if (value == state.carryOverEnabled) return;
@@ -326,11 +367,35 @@ class TaskDefaultsNotifier extends StateNotifier<TaskDefaults> {
     await _prefs.setBool(kCarryOverEnabledKey, value);
   }
 
-  /// Sets how far back the carry-over sheet looks.
+  /// Sets how far back the carry-over sheet looks (enum preset).
   Future<void> setCarryOverLookBack(CarryOverLookBack value) async {
-    if (value == state.carryOverLookBack) return;
-    state = state.copyWith(carryOverLookBack: value);
+    if (value == state.carryOverLookBack &&
+        value.days == state.carryOverLookBackDays) {
+      return;
+    }
+    state = state.copyWith(
+      carryOverLookBack: value,
+      carryOverLookBackDays: value.days,
+    );
     await _prefs.setInt(kCarryOverLookBackKey, value.index);
+    await _prefs.setInt(kCarryOverLookBackDaysKey, value.days);
+  }
+
+  /// Sets how far back carry-over looks in integer days (1..45).
+  Future<void> setCarryOverLookBackDays(int days) async {
+    final sanitized = sanitizeCarryOverLookBackDays(days);
+    if (sanitized == state.carryOverLookBackDays) return;
+    final matchingEnum =
+        CarryOverLookBack.values
+            .where((e) => e.days == sanitized)
+            .firstOrNull ??
+        state.carryOverLookBack;
+    state = state.copyWith(
+      carryOverLookBackDays: sanitized,
+      carryOverLookBack: matchingEnum,
+    );
+    await _prefs.setInt(kCarryOverLookBackDaysKey, sanitized);
+    await _prefs.setInt(kCarryOverLookBackKey, matchingEnum.index);
   }
 
   /// Records that the carry-over sheet was shown on [isoDate], so it is not

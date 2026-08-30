@@ -45,13 +45,36 @@ enum SuggestionCount {
   final int limit;
 }
 
-/// How far back the carry-over sheet looks for unfinished tasks.
+/// Minimum and maximum days the carry-over look-back window can be set to.
+const int kMinCarryOverLookBackDays = 1;
+const int kMaxCarryOverLookBackDays = 45;
+const int kDefaultCarryOverLookBackDays = 7;
+
+/// Clamps look-back days within the allowed 1..45 range.
+int sanitizeCarryOverLookBackDays(int? days) {
+  if (days == null) return kDefaultCarryOverLookBackDays;
+  return days.clamp(kMinCarryOverLookBackDays, kMaxCarryOverLookBackDays);
+}
+
+/// Common preset look-back durations.
 enum CarryOverLookBack {
-  /// Only the day before today.
+  /// Only the day before today (1 day).
   previousDay(1),
 
-  /// Today minus one through today minus seven.
-  lastSevenDays(7);
+  /// 3 days before today.
+  threeDays(3),
+
+  /// 7 days before today (1 week).
+  lastSevenDays(7),
+
+  /// 14 days before today (2 weeks).
+  fourteenDays(14),
+
+  /// 30 days before today (~1 month).
+  thirtyDays(30),
+
+  /// 45 days before today (maximum).
+  fortyFiveDays(45);
 
   const CarryOverLookBack(this.days);
 

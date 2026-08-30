@@ -3,9 +3,11 @@ import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
+import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:uuid/uuid.dart';
@@ -14,14 +16,38 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
   TimeSegmentRepositoryImpl(
     this._timeSegmentDao,
     this._todoDao,
-    this._databaseService,
-  );
+    this._databaseService, {
+    this.todoHistoryDao,
+  });
 
   final TimeSegmentDao _timeSegmentDao;
   final TodoDao _todoDao;
   final DatabaseService _databaseService;
+  final TodoHistoryDao? todoHistoryDao;
 
   static const _uuid = Uuid();
+
+  Future<void> _logHistoryEvent({
+    required String todoId,
+    required TodoHistoryEventType eventType,
+    required String description,
+    String? metadata,
+    String? eventTime,
+  }) async {
+    final historyDao = todoHistoryDao;
+    if (historyDao == null) return;
+    final nowIso = DateTime.now().toUtc().toIso8601String();
+    final event = TodoHistoryEntity(
+      id: _uuid.v4(),
+      todoId: todoId,
+      eventType: eventType,
+      eventTime: eventTime ?? nowIso,
+      description: description,
+      metadata: metadata,
+      createdAt: nowIso,
+    );
+    await historyDao.insert(event);
+  }
 
   void _checkTerminalStatus(TodoStatus status) {
     if (status == TodoStatus.completed || status == TodoStatus.dropped) {
@@ -76,6 +102,13 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
       await _timeSegmentDao.insert(segment, executor: txn);
       await _promoteTodoToWorking(todo, executor: txn);
     });
+
+    await _logHistoryEvent(
+      todoId: todoId,
+      eventType: TodoHistoryEventType.timerStarted,
+      description: 'Timer started',
+      metadata: '{"segment_id":"${segment.id}"}',
+    );
   }
 
   @override
@@ -101,7 +134,20 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
     final endTime = at.isBefore(startTime) ? startTime : at;
 
     await _timeSegmentDao.closeSegment(running.id, endTime);
-    return _timeSegmentDao.findById(running.id);
+    final saved = await _timeSegmentDao.findById(running.id);
+
+    if (saved != null) {
+      final dur = saved.durationSeconds ?? 0;
+      await _logHistoryEvent(
+        todoId: todoId,
+        eventType: TodoHistoryEventType.timerStopped,
+        description: 'Timer session completed (${dur}s)',
+        metadata: '{"segment_id":"${saved.id}","duration_seconds":$dur}',
+        eventTime: endTime.toUtc().toIso8601String(),
+      );
+    }
+
+    return saved;
   }
 
   @override
@@ -175,6 +221,15 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
       await _timeSegmentDao.insert(segment, executor: txn);
       await _promoteTodoToWorking(todo, executor: txn);
     });
+
+    final dur = segment.durationSeconds ?? 0;
+    await _logHistoryEvent(
+      todoId: segment.todoId,
+      eventType: TodoHistoryEventType.manualSegmentAdded,
+      description: 'Manual time recorded (${dur}s)',
+      metadata: '{"segment_id":"${segment.id}","duration_seconds":$dur}',
+      eventTime: segment.startTime,
+    );
   }
 
   @override

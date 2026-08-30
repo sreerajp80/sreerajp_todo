@@ -88,6 +88,7 @@ visible in `MainActivity.kt` instead of inside someone else's plugin.
 | Keep the screen on while a timer runs | `in.sreerajp.todo/screen_wake` | a wakelock package |
 | `FLAG_SECURE` and the device unlock screen | `in.sreerajp.todo/app_lock` | a biometrics package |
 | On-device speech-to-text for the voice sheet | `in.sreerajp.todo/speech` (+ `…/speech_events`) | `speech_to_text` |
+| Ongoing live chronometer notification for running task | `in.sreerajp.todo/running_notification` | a local-notifications package |
 
 ---
 

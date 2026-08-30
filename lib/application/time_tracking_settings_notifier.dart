@@ -32,6 +32,9 @@ const String kMinimumSegmentLengthKey = 'tracking_minimum_segment_length';
 /// SharedPreferences key for "keep the screen awake while a timer runs".
 const String kKeepScreenAwakeKey = 'tracking_keep_screen_awake';
 
+/// SharedPreferences key for "show live ongoing notification while a timer runs".
+const String kShowRunningNotificationKey = 'tracking_show_running_notification';
+
 /// SharedPreferences key for the manual entry default duration.
 const String kManualEntryDurationKey = 'tracking_manual_entry_duration';
 
@@ -87,6 +90,7 @@ class TimeTrackingSettings {
     this.format = DurationFormat.hhmmss,
     this.minimumSegmentLength = MinimumSegmentLength.off,
     this.keepScreenAwake = false,
+    this.showRunningNotification = true,
     this.manualEntryDuration = ManualEntryDuration.oneHour,
     this.pomodoroEnabled = false,
     this.pomodoroWorkMinutes = 25,
@@ -127,6 +131,9 @@ class TimeTrackingSettings {
 
   /// When true, the screen stays on while a timer runs. Android only.
   final bool keepScreenAwake;
+
+  /// When true, an ongoing notification with a live chronometer is shown. Android only.
+  final bool showRunningNotification;
 
   /// The gap pre-filled in the manual time entry form.
   final ManualEntryDuration manualEntryDuration;
@@ -180,6 +187,7 @@ class TimeTrackingSettings {
     DurationFormat? format,
     MinimumSegmentLength? minimumSegmentLength,
     bool? keepScreenAwake,
+    bool? showRunningNotification,
     ManualEntryDuration? manualEntryDuration,
     bool? pomodoroEnabled,
     int? pomodoroWorkMinutes,
@@ -202,6 +210,8 @@ class TimeTrackingSettings {
       format: format ?? this.format,
       minimumSegmentLength: minimumSegmentLength ?? this.minimumSegmentLength,
       keepScreenAwake: keepScreenAwake ?? this.keepScreenAwake,
+      showRunningNotification:
+          showRunningNotification ?? this.showRunningNotification,
       manualEntryDuration: manualEntryDuration ?? this.manualEntryDuration,
       pomodoroEnabled: pomodoroEnabled ?? this.pomodoroEnabled,
       pomodoroWorkMinutes: pomodoroWorkMinutes ?? this.pomodoroWorkMinutes,
@@ -272,6 +282,9 @@ class TimeTrackingSettingsNotifier extends StateNotifier<TimeTrackingSettings> {
       ),
       keepScreenAwake:
           prefs.getBool(kKeepScreenAwakeKey) ?? defaults.keepScreenAwake,
+      showRunningNotification:
+          prefs.getBool(kShowRunningNotificationKey) ??
+          defaults.showRunningNotification,
       manualEntryDuration: _readEnum(
         prefs.getInt(kManualEntryDurationKey),
         ManualEntryDuration.values,
@@ -392,6 +405,13 @@ class TimeTrackingSettingsNotifier extends StateNotifier<TimeTrackingSettings> {
     if (value == state.keepScreenAwake) return;
     state = state.copyWith(keepScreenAwake: value);
     await _prefs.setBool(kKeepScreenAwakeKey, value);
+  }
+
+  /// Turns "show live notification while a timer runs" on or off.
+  Future<void> setShowRunningNotification(bool value) async {
+    if (value == state.showRunningNotification) return;
+    state = state.copyWith(showRunningNotification: value);
+    await _prefs.setBool(kShowRunningNotificationKey, value);
   }
 
   /// Sets the gap pre-filled in the manual time entry form.

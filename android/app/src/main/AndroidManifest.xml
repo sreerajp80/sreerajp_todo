@@ -7,6 +7,10 @@
         declared anywhere in this file, and none may ever be added.
     -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!--
+        Needed for showing the ongoing live timer notification for running tasks.
+    -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:label="@string/app_name"
         android:allowBackup="false"

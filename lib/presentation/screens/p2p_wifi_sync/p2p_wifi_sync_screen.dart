@@ -308,293 +308,297 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
   }
 
   Widget _buildHostTab(ThemeData theme) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: _isHostRunning
-                              ? Colors.green.withAlpha(30)
-                              : Colors.grey.withAlpha(30),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          _isHostRunning
-                              ? Icons.wifi_tethering
-                              : Icons.portable_wifi_off,
-                          color: _isHostRunning ? Colors.green : Colors.grey,
-                          size: 32,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              _isHostRunning
-                                  ? 'Host Server Active'
-                                  : 'Host Server Stopped',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              _isHostRunning
-                                  ? 'Listening on TCP $_hostIp:$_hostPort'
-                                  : 'Tap below to open encrypted TCP socket.',
-                              style: theme.textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (_isHostRunning) ...[
-                    const SizedBox(height: 20),
-                    const Divider(),
-                    const SizedBox(height: 12),
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Column(
-                          children: [
-                            const Text(
-                              'PAIRING PIN',
-                              style: TextStyle(
-                                fontSize: 10,
-                                letterSpacing: 1.2,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            SelectableText(
-                              _pairingPin,
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 4,
-                              ),
-                            ),
-                          ],
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: _isHostRunning
+                                ? Colors.green.withAlpha(30)
+                                : Colors.grey.withAlpha(30),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            _isHostRunning
+                                ? Icons.wifi_tethering
+                                : Icons.portable_wifi_off,
+                            color: _isHostRunning ? Colors.green : Colors.grey,
+                            size: 32,
+                          ),
                         ),
-                        Column(
-                          children: [
-                            const Text(
-                              'PORT',
-                              style: TextStyle(
-                                fontSize: 10,
-                                letterSpacing: 1.2,
-                                color: Colors.grey,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _isHostRunning
+                                    ? 'Host Server Active'
+                                    : 'Host Server Stopped',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '$_hostPort',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
+                              const SizedBox(height: 4),
+                              Text(
+                                _isHostRunning
+                                    ? 'Listening on TCP $_hostIp:$_hostPort'
+                                    : 'Tap below to open encrypted TCP socket.',
+                                style: theme.textTheme.bodySmall,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
-                    if (_qrPayload.isNotEmpty)
-                      Center(
-                        child: QrImageView(
-                          data: _qrPayload,
-                          version: QrVersions.auto,
-                          size: 180.0,
-                          backgroundColor: Colors.white,
-                        ),
+                    if (_isHostRunning) ...[
+                      const SizedBox(height: 20),
+                      const Divider(),
+                      const SizedBox(height: 12),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            children: [
+                              const Text(
+                                'PAIRING PIN',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  letterSpacing: 1.2,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              SelectableText(
+                                _pairingPin,
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 4,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              const Text(
+                                'PORT',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  letterSpacing: 1.2,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '$_hostPort',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    const SizedBox(height: 8),
-                    IconButton(
-                      icon: const Icon(Icons.copy),
-                      tooltip: 'Copy Pairing Details',
-                      onPressed: () {
-                        Clipboard.setData(ClipboardData(text: _qrPayload));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              'Pairing payload copied to clipboard!',
+                      const SizedBox(height: 16),
+                      if (_qrPayload.isNotEmpty)
+                        Center(
+                          child: QrImageView(
+                            data: _qrPayload,
+                            version: QrVersions.auto,
+                            size: 180.0,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                      IconButton(
+                        icon: const Icon(Icons.copy),
+                        tooltip: 'Copy Pairing Details',
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: _qrPayload));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                'Pairing payload copied to clipboard!',
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Select Sync Scope',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          _buildScopeSelector(
-            scope: _hostScope,
-            onChanged: (newScope) {
-              setState(() {
-                _hostScope = newScope;
-              });
-            },
-          ),
-          const SizedBox(height: 24),
-          ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 14),
-              backgroundColor: _isHostRunning
-                  ? Colors.redAccent
-                  : theme.colorScheme.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            onPressed: _toggleHostServer,
-            icon: Icon(
-              _isHostRunning ? Icons.stop_circle_outlined : Icons.play_arrow,
-            ),
-            label: Text(
-              _isHostRunning ? 'Stop Host Server' : 'Start Host Server',
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPeerTab(ThemeData theme) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Connect to Host Device',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  TextField(
-                    controller: _hostIpController,
-                    decoration: const InputDecoration(
-                      labelText: 'Host IP Address',
-                      hintText: 'e.g. 192.168.1.105',
-                      prefixIcon: Icon(Icons.wifi),
-                      border: OutlineInputBorder(),
-                    ),
-                    keyboardType: TextInputType.datetime,
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _hostPortController,
-                          decoration: const InputDecoration(
-                            labelText: 'Port',
-                            hintText: 'Port',
-                            prefixIcon: Icon(Icons.numbers),
-                            border: OutlineInputBorder(),
-                          ),
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: TextField(
-                          controller: _pinController,
-                          decoration: const InputDecoration(
-                            labelText: 'Pairing PIN',
-                            hintText: '6-digit PIN',
-                            prefixIcon: Icon(Icons.lock_outline),
-                            border: OutlineInputBorder(),
-                          ),
-                          keyboardType: TextInputType.number,
-                          maxLength: 6,
-                        ),
+                          );
+                        },
                       ),
                     ],
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Requested Sync Scope',
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 8),
-          _buildScopeSelector(
-            scope: _peerScope,
-            onChanged: (newScope) {
-              setState(() {
-                _peerScope = newScope;
-              });
-            },
-          ),
-          const SizedBox(height: 24),
-          if (_isPeerSyncing) ...[
-            const Center(child: CircularProgressIndicator()),
-            const SizedBox(height: 12),
-            Center(
-              child: Text(
-                _peerStatusMessage,
-                style: theme.textTheme.bodyMedium,
+            const SizedBox(height: 20),
+            Text(
+              'Select Sync Scope',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ] else
+            const SizedBox(height: 8),
+            _buildScopeSelector(
+              scope: _hostScope,
+              onChanged: (newScope) {
+                setState(() {
+                  _hostScope = newScope;
+                });
+              },
+            ),
+            const SizedBox(height: 24),
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 14),
-                backgroundColor: theme.colorScheme.primary,
+                backgroundColor: _isHostRunning
+                    ? Colors.redAccent
+                    : theme.colorScheme.primary,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
-              onPressed: _startPeerSync,
-              icon: const Icon(Icons.sync_outlined),
-              label: const Text('Connect & Sync'),
+              onPressed: _toggleHostServer,
+              icon: Icon(
+                _isHostRunning ? Icons.stop_circle_outlined : Icons.play_arrow,
+              ),
+              label: Text(
+                _isHostRunning ? 'Stop Host Server' : 'Start Host Server',
+              ),
             ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPeerTab(ThemeData theme) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Card(
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Connect to Host Device',
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _hostIpController,
+                      decoration: const InputDecoration(
+                        labelText: 'Host IP Address',
+                        hintText: 'e.g. 192.168.1.105',
+                        prefixIcon: Icon(Icons.wifi),
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.datetime,
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: _hostPortController,
+                            decoration: const InputDecoration(
+                              labelText: 'Port',
+                              hintText: 'Port',
+                              prefixIcon: Icon(Icons.numbers),
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: TextField(
+                            controller: _pinController,
+                            decoration: const InputDecoration(
+                              labelText: 'Pairing PIN',
+                              hintText: '6-digit PIN',
+                              prefixIcon: Icon(Icons.lock_outline),
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.number,
+                            maxLength: 6,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Requested Sync Scope',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            _buildScopeSelector(
+              scope: _peerScope,
+              onChanged: (newScope) {
+                setState(() {
+                  _peerScope = newScope;
+                });
+              },
+            ),
+            const SizedBox(height: 24),
+            if (_isPeerSyncing) ...[
+              const Center(child: CircularProgressIndicator()),
+              const SizedBox(height: 12),
+              Center(
+                child: Text(
+                  _peerStatusMessage,
+                  style: theme.textTheme.bodyMedium,
+                ),
+              ),
+            ] else
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: _startPeerSync,
+                icon: const Icon(Icons.sync_outlined),
+                label: const Text('Connect & Sync'),
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -280,193 +280,199 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.dataHandoffHeader)),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header Banner Card
-            Card(
-              elevation: 0,
-              color: theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(
-                  color: theme.colorScheme.primary.withValues(alpha: 0.2),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Header Banner Card
+              Card(
+                elevation: 0,
+                color: theme.colorScheme.primaryContainer.withValues(
+                  alpha: 0.4,
                 ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.swap_horiz_rounded,
-                        color: theme.colorScheme.onPrimary,
-                        size: 26,
-                      ),
-                    ),
-                    const SizedBox(width: 14),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            l10n.dataHandoffTitle,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            l10n.dataHandoffSubtitle,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Target Date Bar
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: theme.colorScheme.outlineVariant),
-              ),
-              child: ListTile(
-                leading: Icon(
-                  Icons.calendar_month_rounded,
-                  color: theme.colorScheme.primary,
-                ),
-                title: Text(
-                  l10n.targetDateLabel,
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  side: BorderSide(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.2),
                   ),
                 ),
-                subtitle: Text(
-                  _targetDate,
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (isPast)
-                      Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Chip(
-                          avatar: const Icon(Icons.lock_rounded, size: 14),
-                          label: const Text('Day Locked'),
-                          visualDensity: VisualDensity.compact,
-                          backgroundColor: theme.colorScheme.errorContainer,
-                          labelStyle: TextStyle(
-                            color: theme.colorScheme.onErrorContainer,
-                            fontSize: 11,
-                          ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.primary,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          Icons.swap_horiz_rounded,
+                          color: theme.colorScheme.onPrimary,
+                          size: 26,
                         ),
                       ),
-                    OutlinedButton(
-                      onPressed: _selectDate,
-                      child: Text(l10n.actionChange),
+                      const SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              l10n.dataHandoffTitle,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              l10n.dataHandoffSubtitle,
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              // Target Date Bar
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(color: theme.colorScheme.outlineVariant),
+                ),
+                child: ListTile(
+                  leading: Icon(
+                    Icons.calendar_month_rounded,
+                    color: theme.colorScheme.primary,
+                  ),
+                  title: Text(
+                    l10n.targetDateLabel,
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+                  subtitle: Text(
+                    _targetDate,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (isPast)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Chip(
+                            avatar: const Icon(Icons.lock_rounded, size: 14),
+                            label: const Text('Day Locked'),
+                            visualDensity: VisualDensity.compact,
+                            backgroundColor: theme.colorScheme.errorContainer,
+                            labelStyle: TextStyle(
+                              color: theme.colorScheme.onErrorContainer,
+                              fontSize: 11,
+                            ),
+                          ),
+                        ),
+                      OutlinedButton(
+                        onPressed: _selectDate,
+                        child: Text(l10n.actionChange),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              // Export Actions Section
+              Text(
+                'Export Data Options',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(color: theme.colorScheme.outlineVariant),
+                ),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.data_object_rounded),
+                      title: Text(l10n.exportJsonLabel),
+                      subtitle: Text(l10n.exportJsonDesc),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: _isProcessing ? null : _handleExportJson,
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.checklist_rounded),
+                      title: Text(l10n.exportMarkdownLabel),
+                      subtitle: Text(l10n.exportMarkdownDesc),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: _isProcessing ? null : _handleExportMarkdown,
                     ),
                   ],
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-
-            // Export Actions Section
-            Text(
-              'Export Data Options',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: theme.colorScheme.outlineVariant),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.data_object_rounded),
-                    title: Text(l10n.exportJsonLabel),
-                    subtitle: Text(l10n.exportJsonDesc),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: _isProcessing ? null : _handleExportJson,
-                  ),
-                  const Divider(height: 1),
-                  ListTile(
-                    leading: const Icon(Icons.checklist_rounded),
-                    title: Text(l10n.exportMarkdownLabel),
-                    subtitle: Text(l10n.exportMarkdownDesc),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: _isProcessing ? null : _handleExportMarkdown,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Import Actions Section
-            Text(
-              'Ingest & Import Options',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 12),
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-                side: BorderSide(color: theme.colorScheme.outlineVariant),
-              ),
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.file_open_rounded),
-                    title: Text(l10n.importFileLabel),
-                    subtitle: Text(l10n.importFileDesc),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: (_isProcessing || isPast) ? null : _handleImportFile,
-                  ),
-                  const Divider(height: 1),
-                  ListTile(
-                    leading: const Icon(Icons.edit_note_rounded),
-                    title: Text(l10n.pasteMarkdownLabel),
-                    subtitle: Text(l10n.pasteMarkdownDesc),
-                    trailing: const Icon(Icons.chevron_right_rounded),
-                    onTap: (_isProcessing || isPast)
-                        ? null
-                        : _handlePasteMarkdown,
-                  ),
-                ],
-              ),
-            ),
-
-            if (_isProcessing) ...[
               const SizedBox(height: 24),
-              const Center(child: CircularProgressIndicator()),
+
+              // Import Actions Section
+              Text(
+                'Ingest & Import Options',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  side: BorderSide(color: theme.colorScheme.outlineVariant),
+                ),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.file_open_rounded),
+                      title: Text(l10n.importFileLabel),
+                      subtitle: Text(l10n.importFileDesc),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: (_isProcessing || isPast)
+                          ? null
+                          : _handleImportFile,
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(Icons.edit_note_rounded),
+                      title: Text(l10n.pasteMarkdownLabel),
+                      subtitle: Text(l10n.pasteMarkdownDesc),
+                      trailing: const Icon(Icons.chevron_right_rounded),
+                      onTap: (_isProcessing || isPast)
+                          ? null
+                          : _handlePasteMarkdown,
+                    ),
+                  ],
+                ),
+              ),
+
+              if (_isProcessing) ...[
+                const SizedBox(height: 24),
+                const Center(child: CircularProgressIndicator()),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );

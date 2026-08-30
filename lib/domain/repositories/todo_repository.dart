@@ -1,5 +1,6 @@
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 
@@ -45,4 +46,13 @@ abstract class TodoRepository {
   });
   Future<List<TodoEntity>> getPendingPrerequisites(String todoId);
   Future<bool> isTodoBlocked(String todoId);
+  Future<void> moveTodo(String todoId, String targetDate);
+  Future<List<TodoHistoryEntity>> getHistoryForTodo(String todoId);
+  Future<void> logHistoryEvent({
+    required String todoId,
+    required TodoHistoryEventType eventType,
+    required String description,
+    String? metadata,
+    String? eventTime,
+  });
 }

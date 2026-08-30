@@ -45,6 +45,7 @@ class VoiceCommandSheet extends ConsumerStatefulWidget {
   static Future<void> show(BuildContext context, {required String date}) {
     return showModalBottomSheet<void>(
       context: context,
+      useSafeArea: true,
       isScrollControlled: true,
       showDragHandle: true,
       builder: (_) => VoiceCommandSheet(fallbackDate: date),
@@ -153,96 +154,98 @@ class _VoiceCommandSheetState extends ConsumerState<VoiceCommandSheet> {
           : _VoiceLanguage.english;
     }
 
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(strings.voiceSheetTitle, style: theme.textTheme.titleLarge),
-            const SizedBox(height: 4),
-            Text(
-              strings.voiceSheetOfflineNote,
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _LanguagePicker(
-              value: _language,
-              onChanged: (value) => setState(() {
-                _language = value;
-                _languageChosen = true;
-              }),
-            ),
-            const SizedBox(height: 16),
-            if (state.canListen)
-              _MicrophoneButton(
-                isListening: state.stage == VoiceCaptureStage.listening,
-                onPressed: () => _toggleListening(state),
-              ),
-            if (state.canListen) const SizedBox(height: 16),
-            TextField(
-              controller: _controller,
-              focusNode: _focusNode,
-              minLines: 1,
-              maxLines: 3,
-              textInputAction: TextInputAction.done,
-              textDirection: _directionOf(state.text),
-              decoration: InputDecoration(
-                labelText: strings.voiceSheetFieldLabel,
-                hintText: strings.voiceSheetExample,
-                border: const OutlineInputBorder(),
-                suffixIcon: state.text.isEmpty
-                    ? null
-                    : IconButton(
-                        icon: const Icon(Icons.clear),
-                        tooltip: strings.voiceClear,
-                        onPressed: () {
-                          _controller.clear();
-                          notifier.reset();
-                        },
-                      ),
-              ),
-              onChanged: notifier.setText,
-            ),
-            const SizedBox(height: 12),
-            _StatusLine(state: state),
-            if (state.result != null) ...[
-              const SizedBox(height: 12),
-              _UnderstoodChips(
-                result: state.result!,
-                effectiveDate: _effectiveDate(state.result!),
-              ),
-            ],
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text(strings.cancel),
-                  ),
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(strings.voiceSheetTitle, style: theme.textTheme.titleLarge),
+              const SizedBox(height: 4),
+              Text(
+                strings.voiceSheetOfflineNote,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: state.canCreate
-                        ? () => _create(state.result!)
-                        : null,
-                    icon: const Icon(Icons.arrow_forward),
-                    label: Text(strings.voiceCreateTask),
-                  ),
+              ),
+              const SizedBox(height: 16),
+              _LanguagePicker(
+                value: _language,
+                onChanged: (value) => setState(() {
+                  _language = value;
+                  _languageChosen = true;
+                }),
+              ),
+              const SizedBox(height: 16),
+              if (state.canListen)
+                _MicrophoneButton(
+                  isListening: state.stage == VoiceCaptureStage.listening,
+                  onPressed: () => _toggleListening(state),
+                ),
+              if (state.canListen) const SizedBox(height: 16),
+              TextField(
+                controller: _controller,
+                focusNode: _focusNode,
+                minLines: 1,
+                maxLines: 3,
+                textInputAction: TextInputAction.done,
+                textDirection: _directionOf(state.text),
+                decoration: InputDecoration(
+                  labelText: strings.voiceSheetFieldLabel,
+                  hintText: strings.voiceSheetExample,
+                  border: const OutlineInputBorder(),
+                  suffixIcon: state.text.isEmpty
+                      ? null
+                      : IconButton(
+                          icon: const Icon(Icons.clear),
+                          tooltip: strings.voiceClear,
+                          onPressed: () {
+                            _controller.clear();
+                            notifier.reset();
+                          },
+                        ),
+                ),
+                onChanged: notifier.setText,
+              ),
+              const SizedBox(height: 12),
+              _StatusLine(state: state),
+              if (state.result != null) ...[
+                const SizedBox(height: 12),
+                _UnderstoodChips(
+                  result: state.result!,
+                  effectiveDate: _effectiveDate(state.result!),
                 ),
               ],
-            ),
-            const SizedBox(height: 8),
-          ],
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: Text(strings.cancel),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: state.canCreate
+                          ? () => _create(state.result!)
+                          : null,
+                      icon: const Icon(Icons.arrow_forward),
+                      label: Text(strings.voiceCreateTask),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
         ),
       ),
     );

@@ -20,66 +20,68 @@ class FocusModeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.trackingFocusMode)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsChoiceList<FocusPulseMode>(
-            title: l10n.trackingFocusPulse,
-            selected: settings.focusPulseMode,
-            onChanged: notifier.setFocusPulseMode,
-            choices: [
-              SettingsChoice(
-                value: FocusPulseMode.off,
-                label: l10n.trackingFocusPulseOff,
-              ),
-              SettingsChoice(
-                value: FocusPulseMode.vibration,
-                label: l10n.trackingFocusPulseVibration,
-              ),
-              SettingsChoice(
-                value: FocusPulseMode.sound,
-                label: l10n.trackingFocusPulseSound,
-              ),
-              SettingsChoice(
-                value: FocusPulseMode.both,
-                label: l10n.trackingFocusPulseBoth,
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          AppSectionCard(
-            child: _MinuteStepper(
-              label: l10n.trackingFocusPulseEvery,
-              minutes: settings.focusPulseIntervalMinutes,
-              enabled: pulseOn,
-              onChanged: notifier.setFocusPulseIntervalMinutes,
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsChoiceList<FocusPulseMode>(
+              title: l10n.trackingFocusPulse,
+              selected: settings.focusPulseMode,
+              onChanged: notifier.setFocusPulseMode,
+              choices: [
+                SettingsChoice(
+                  value: FocusPulseMode.off,
+                  label: l10n.trackingFocusPulseOff,
+                ),
+                SettingsChoice(
+                  value: FocusPulseMode.vibration,
+                  label: l10n.trackingFocusPulseVibration,
+                ),
+                SettingsChoice(
+                  value: FocusPulseMode.sound,
+                  label: l10n.trackingFocusPulseSound,
+                ),
+                SettingsChoice(
+                  value: FocusPulseMode.both,
+                  label: l10n.trackingFocusPulseBoth,
+                ),
+              ],
             ),
-          ),
-          const SizedBox(height: 16),
-          SettingsNoteCard(
-            icon: Icons.notifications_off_outlined,
-            text: l10n.trackingFocusNote,
-          ),
-          // Pomodoro makes its own noise, so the two never sound together.
-          if (settings.pomodoroEnabled) ...[
+            const SizedBox(height: 16),
+            AppSectionCard(
+              child: _MinuteStepper(
+                label: l10n.trackingFocusPulseEvery,
+                minutes: settings.focusPulseIntervalMinutes,
+                enabled: pulseOn,
+                onChanged: notifier.setFocusPulseIntervalMinutes,
+              ),
+            ),
             const SizedBox(height: 16),
             SettingsNoteCard(
-              icon: Icons.av_timer_rounded,
-              text: l10n.trackingFocusPomodoroNote,
+              icon: Icons.notifications_off_outlined,
+              text: l10n.trackingFocusNote,
+            ),
+            // Pomodoro makes its own noise, so the two never sound together.
+            if (settings.pomodoroEnabled) ...[
+              const SizedBox(height: 16),
+              SettingsNoteCard(
+                icon: Icons.av_timer_rounded,
+                text: l10n.trackingFocusPomodoroNote,
+              ),
+            ],
+            const SizedBox(height: 16),
+            AppSectionCard(
+              title: l10n.trackingFocusView,
+              child: SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                value: settings.focusImmersive,
+                onChanged: notifier.setFocusImmersive,
+                title: Text(l10n.trackingFocusImmersive),
+                subtitle: Text(l10n.trackingFocusImmersiveDetail),
+              ),
             ),
           ],
-          const SizedBox(height: 16),
-          AppSectionCard(
-            title: l10n.trackingFocusView,
-            child: SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              value: settings.focusImmersive,
-              onChanged: notifier.setFocusImmersive,
-              title: Text(l10n.trackingFocusImmersive),
-              subtitle: Text(l10n.trackingFocusImmersiveDetail),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

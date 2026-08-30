@@ -547,6 +547,34 @@ and the keep-awake flag.
   note. Saved per date in `daily_reflections` together with `completedSeconds` and
   `droppedSeconds`.
 
+### 8.1 Ritual Mode (Guided Day Open)
+
+Off by default. Turned on in **Settings -> Ritual mode** (`/settings/ritual`).
+
+- **When it opens:** on the first launch of a day, if "Open on the first launch of a day"
+  is on. Otherwise it is started by hand from the day list app bar or from Settings. It
+  runs for today only, and once a day: skipping still counts as running, so nobody is
+  asked twice.
+- **Step 1, Breathe:** a slow circle in one of three rhythms — Box 4-4-4-4, Relaxing 4-7-8,
+  or Calm 4-4 — for 1 to 5 breaths, with an optional buzz at each change of phase. The
+  button below it works from the first second.
+- **Step 2, Reflect:** one card from the Ritual Deck, with its question, quote and
+  attribution. "Show another card" moves along the deck. "Make this today's intention"
+  saves the card title as the day's intention, so the Morning Intention Card above then
+  shows the same words. Rating the card Hard / Revision / Easy decides when it returns:
+  1 day, 3 days, or 7 days times its level.
+- **Step 3, Settle:** what is left unfinished from before, with a Carry over button, and
+  then up to three of today's tasks marked as the day's focus. Focus is stored as the
+  ordinary `high` priority, so it shows everywhere priority already shows.
+- **Step 4, Begin:** a one-line summary, then today's list.
+- **Evening close:** optional. Once a day, from a chosen hour (default 20:00), the day list
+  offers the Evening Reflection Modal above.
+- **Ritual Deck** (`/ritual/deck`): all 50 cards, filterable by theme, showing which are
+  new, which are due today, and how far off the rest are. Read-only.
+- **Where it is kept:** entirely in device preferences. Nothing about the ritual or the
+  card schedule is written to the database, so none of it is part of a backup, an export
+  or a sync.
+
 ---
 
 ## 9. Bulk Operations & Multi-Select UX
@@ -701,8 +729,11 @@ and the keep-awake flag.
 | **Wi-Fi Sync** | `/wifi-sync` | Host or join an encrypted local-network sync session with PIN pairing and add-only merge. |
 | **AirQR Scan** | `/air-qr-scan` | Camera scanner that rebuilds a QR frame stream and imports the data. |
 | **Focus view** | `/focus/:id` | Full-screen, dark, distraction-free view of one running task: large elapsed time, ambient ring, step checklist, pause and stop. |
+| **Ritual mode** | `/ritual` | The guided day open: breathe, one reflection card with its recall rating, settle the day (carry over and pick today's three), then begin. Every step skippable. |
+| **Ritual Deck** | `/ritual/deck` | All 50 reflection cards, filterable by theme, showing new / due / days away. Read-only. |
 | **Data Handoff** | `/data-handoff` | JSON and Markdown export and import. |
-| **Settings** | `/settings` | Hub with cards for Appearance, Language, Time tracking, Backup, About and Permissions, plus offline policy info. |
+| **Settings** | `/settings` | Hub with cards for Appearance, Language, Ritual mode, Task defaults, Date & time, Time tracking, Backup, About and Permissions, plus offline policy info. |
+| **Ritual mode** | `/settings/ritual` | The on/off switch, automatic opening, breathing rhythm and breath count, the phase buzz, the two optional steps, evening close and its hour, the deck browser, resetting card reviews, and "Run the ritual now". |
 | **Time Tracking** | `/settings/time-tracking` | Hub for how the timer behaves: Auto-stop, Timer behaviour, Pomodoro, Focus mode, and Time display. |
 | **Auto-stop** | `/settings/time-tracking/auto-stop` | Never / at midnight / at a set time, plus the time picker and a plain note about the offline limit. |
 | **Timer behaviour** | `/settings/time-tracking/timer` | Only one timer at a time, pause when the app is closed, keep the screen on (Android), and the shortest segment worth keeping. |

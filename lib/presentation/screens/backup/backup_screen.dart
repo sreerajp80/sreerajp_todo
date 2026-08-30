@@ -271,112 +271,114 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              const BackupHealthDashboard(),
-              const SizedBox(height: 16),
-              AppSectionCard(
-                title: context.l10n.backupLabel,
-                subtitle: _backupDirectory == null
-                    ? null
-                    : '${context.l10n.backupDirectory}: $_backupDirectory',
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final compact = constraints.maxWidth < 420;
-                    final exportButton = FilledButton.icon(
-                      onPressed: _isBusy ? null : _handleExport,
-                      icon: const Icon(Icons.upload_file_outlined),
-                      label: Text(context.l10n.backupExportTitle),
-                    );
-                    final importButton = ElevatedButton.icon(
-                      onPressed: _isBusy ? null : _handleImport,
-                      icon: const Icon(Icons.download_for_offline_outlined),
-                      label: Text(context.l10n.backupImportTitle),
-                    );
+      body: SafeArea(
+        child: Stack(
+          children: [
+            ListView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+              children: [
+                const BackupHealthDashboard(),
+                const SizedBox(height: 16),
+                AppSectionCard(
+                  title: context.l10n.backupLabel,
+                  subtitle: _backupDirectory == null
+                      ? null
+                      : '${context.l10n.backupDirectory}: $_backupDirectory',
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final compact = constraints.maxWidth < 420;
+                      final exportButton = FilledButton.icon(
+                        onPressed: _isBusy ? null : _handleExport,
+                        icon: const Icon(Icons.upload_file_outlined),
+                        label: Text(context.l10n.backupExportTitle),
+                      );
+                      final importButton = ElevatedButton.icon(
+                        onPressed: _isBusy ? null : _handleImport,
+                        icon: const Icon(Icons.download_for_offline_outlined),
+                        label: Text(context.l10n.backupImportTitle),
+                      );
 
-                    if (compact) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                      if (compact) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            exportButton,
+                            const SizedBox(height: 12),
+                            importButton,
+                          ],
+                        );
+                      }
+
+                      return Row(
                         children: [
-                          exportButton,
-                          const SizedBox(height: 12),
-                          importButton,
+                          Expanded(child: exportButton),
+                          const SizedBox(width: 12),
+                          Expanded(child: importButton),
                         ],
                       );
-                    }
-
-                    return Row(
+                    },
+                  ),
+                ),
+                const SizedBox(height: 16),
+                if (_isLoading)
+                  const AppSectionCard(
+                    child: SizedBox(
+                      height: 220,
+                      child: Center(child: CircularProgressIndicator()),
+                    ),
+                  )
+                else if (_backups.isEmpty)
+                  AppSectionCard(
+                    title: context.l10n.backupRecentBackups,
+                    child: AppEmptyState(
+                      icon: Icons.backup_outlined,
+                      title: context.l10n.backupNoBackupsFound,
+                      message: context.l10n.backupNoBackupsFoundDetailed,
+                    ),
+                  )
+                else
+                  AppSectionCard(
+                    title: context.l10n.backupRecentBackups,
+                    child: Column(
                       children: [
-                        Expanded(child: exportButton),
-                        const SizedBox(width: 12),
-                        Expanded(child: importButton),
-                      ],
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              if (_isLoading)
-                const AppSectionCard(
-                  child: SizedBox(
-                    height: 220,
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                )
-              else if (_backups.isEmpty)
-                AppSectionCard(
-                  title: context.l10n.backupRecentBackups,
-                  child: AppEmptyState(
-                    icon: Icons.backup_outlined,
-                    title: context.l10n.backupNoBackupsFound,
-                    message: context.l10n.backupNoBackupsFoundDetailed,
-                  ),
-                )
-              else
-                AppSectionCard(
-                  title: context.l10n.backupRecentBackups,
-                  child: Column(
-                    children: [
-                      for (var i = 0; i < _backups.length; i++) ...[
-                        BackupListTile(
-                          info: _backups[i],
-                          onDelete: _isBusy
-                              ? null
-                              : () => _handleDelete(_backups[i]),
-                        ),
-                        if (i != _backups.length - 1)
-                          const SizedBox(height: 12),
-                      ],
-                    ],
-                  ),
-                ),
-            ],
-          ),
-          if (_busyMessage != null)
-            Positioned.fill(
-              child: ColoredBox(
-                color: theme.colorScheme.surface.withValues(alpha: 0.8),
-                child: Center(
-                  child: SizedBox(
-                    width: 280,
-                    child: AppSectionCard(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const CircularProgressIndicator(),
-                          const SizedBox(height: 16),
-                          Text(_busyMessage!, textAlign: TextAlign.center),
+                        for (var i = 0; i < _backups.length; i++) ...[
+                          BackupListTile(
+                            info: _backups[i],
+                            onDelete: _isBusy
+                                ? null
+                                : () => _handleDelete(_backups[i]),
+                          ),
+                          if (i != _backups.length - 1)
+                            const SizedBox(height: 12),
                         ],
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+            if (_busyMessage != null)
+              Positioned.fill(
+                child: ColoredBox(
+                  color: theme.colorScheme.surface.withValues(alpha: 0.8),
+                  child: Center(
+                    child: SizedBox(
+                      width: 280,
+                      child: AppSectionCard(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const CircularProgressIndicator(),
+                            const SizedBox(height: 16),
+                            Text(_busyMessage!, textAlign: TextAlign.center),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }

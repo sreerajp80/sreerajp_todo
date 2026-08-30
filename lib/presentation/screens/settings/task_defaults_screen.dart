@@ -15,37 +15,39 @@ class TaskDefaultsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settingsTaskDefaults)),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          SettingsNavCard(
-            icon: Icons.add_task_rounded,
-            title: l10n.defaultsNewTask,
-            subtitle: l10n.defaultsNewTaskSubtitle,
-            onTap: () => context.push(AppRoutes.defaultsNewTask),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.view_day_outlined,
-            title: l10n.defaultsDayList,
-            subtitle: l10n.defaultsDayListSubtitle,
-            onTap: () => context.push(AppRoutes.defaultsDayList),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.rule_rounded,
-            title: l10n.defaultsTaskActions,
-            subtitle: l10n.defaultsTaskActionsSubtitle,
-            onTap: () => context.push(AppRoutes.defaultsTaskActions),
-          ),
-          const SizedBox(height: 16),
-          SettingsNavCard(
-            icon: Icons.keyboard_alt_outlined,
-            title: l10n.defaultsAutocomplete,
-            subtitle: l10n.defaultsAutocompleteSubtitle,
-            onTap: () => context.push(AppRoutes.defaultsAutocomplete),
-          ),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
+          children: [
+            SettingsNavCard(
+              icon: Icons.add_task_rounded,
+              title: l10n.defaultsNewTask,
+              subtitle: l10n.defaultsNewTaskSubtitle,
+              onTap: () => context.push(AppRoutes.defaultsNewTask),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.view_day_outlined,
+              title: l10n.defaultsDayList,
+              subtitle: l10n.defaultsDayListSubtitle,
+              onTap: () => context.push(AppRoutes.defaultsDayList),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.rule_rounded,
+              title: l10n.defaultsTaskActions,
+              subtitle: l10n.defaultsTaskActionsSubtitle,
+              onTap: () => context.push(AppRoutes.defaultsTaskActions),
+            ),
+            const SizedBox(height: 16),
+            SettingsNavCard(
+              icon: Icons.keyboard_alt_outlined,
+              title: l10n.defaultsAutocomplete,
+              subtitle: l10n.defaultsAutocompleteSubtitle,
+              onTap: () => context.push(AppRoutes.defaultsAutocomplete),
+            ),
+          ],
+        ),
       ),
     );
   }
