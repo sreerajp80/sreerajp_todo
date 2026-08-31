@@ -240,6 +240,8 @@ class _SegmentsBody extends ConsumerWidget {
                   segment: segment,
                   isRunning: isRunning,
                   todoId: todoId,
+                  isPast: isPast,
+                  isTerminal: isTerminal,
                 );
               },
             ),
@@ -304,12 +306,16 @@ class _SegmentTile extends ConsumerWidget {
     required this.segment,
     required this.isRunning,
     required this.todoId,
+    required this.isPast,
+    required this.isTerminal,
   });
 
   final int index;
   final TimeSegmentEntity segment;
   final bool isRunning;
   final String todoId;
+  final bool isPast;
+  final bool isTerminal;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -393,19 +399,27 @@ class _SegmentTile extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Text(startStr, style: theme.textTheme.bodyMedium),
+                          _buildTappableTime(
+                            context,
+                            ref,
+                            label: startStr,
+                            isStart: true,
+                            theme: theme,
+                            colorScheme: colorScheme,
+                          ),
                           Text(
                             ' -> ',
                             style: theme.textTheme.bodyMedium?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
-                          Text(
-                            endStr,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: isRunning ? colorScheme.primary : null,
-                              fontWeight: isRunning ? FontWeight.w700 : null,
-                            ),
+                          _buildTappableTime(
+                            context,
+                            ref,
+                            label: endStr,
+                            isStart: false,
+                            theme: theme,
+                            colorScheme: colorScheme,
                           ),
                         ],
                       ),
@@ -465,6 +479,111 @@ class _SegmentTile extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  /// Whether the segment times can be edited: not running, not past, not
+  /// terminal, and the segment has an end time (closed).
+  bool get _canEditTimes =>
+      !isRunning && !isPast && !isTerminal && segment.endTime != null;
+
+  Widget _buildTappableTime(
+    BuildContext context,
+    WidgetRef ref, {
+    required String label,
+    required bool isStart,
+    required ThemeData theme,
+    required ColorScheme colorScheme,
+  }) {
+    final style = theme.textTheme.bodyMedium?.copyWith(
+      color: isRunning && !isStart ? colorScheme.primary : null,
+      fontWeight: isRunning && !isStart ? FontWeight.w700 : null,
+    );
+
+    if (!_canEditTimes) {
+      return Text(label, style: style);
+    }
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(6),
+      onTap: () => _editTime(context, ref, isStart: isStart),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: style?.copyWith(
+                decoration: TextDecoration.underline,
+                decorationStyle: TextDecorationStyle.dotted,
+                decorationColor: colorScheme.primary.withValues(alpha: 0.5),
+              ),
+            ),
+            const SizedBox(width: 2),
+            Icon(
+              Icons.edit_outlined,
+              size: 12,
+              color: colorScheme.primary.withValues(alpha: 0.5),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _editTime(
+    BuildContext context,
+    WidgetRef ref, {
+    required bool isStart,
+  }) async {
+    final startDt = DateTime.parse(segment.startTime);
+    final endDt = segment.endTime != null
+        ? DateTime.parse(segment.endTime!)
+        : null;
+
+    if (endDt == null) return;
+
+    final initial = isStart
+        ? TimeOfDay.fromDateTime(startDt)
+        : TimeOfDay.fromDateTime(endDt);
+
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: initial,
+      helpText: context.l10n.editSegmentTime,
+    );
+    if (picked == null || !context.mounted) return;
+
+    final newDt = DateTime(
+      startDt.year,
+      startDt.month,
+      startDt.day,
+      picked.hour,
+      picked.minute,
+    );
+
+    final newStart = isStart ? newDt : startDt;
+    final newEnd = isStart ? endDt : newDt;
+
+    try {
+      await ref
+          .read(timeTrackingProvider(todoId).notifier)
+          .updateSegmentTimes(segment.id, newStart, newEnd);
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(context.l10n.segmentTimeUpdated)),
+        );
+      }
+    } on Exception catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _editNote(BuildContext context, WidgetRef ref) async {

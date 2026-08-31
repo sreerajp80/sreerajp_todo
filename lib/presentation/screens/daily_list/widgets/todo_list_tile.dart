@@ -27,6 +27,7 @@ class TodoListTile extends ConsumerWidget {
     required this.onCopy,
     required this.onEdit,
     required this.onDelete,
+    required this.onMove,
     required this.onViewSegments,
     required this.animationIndex,
   });
@@ -43,6 +44,7 @@ class TodoListTile extends ConsumerWidget {
   final VoidCallback onCopy;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  final VoidCallback onMove;
   final VoidCallback onViewSegments;
   final int animationIndex;
 
@@ -338,6 +340,17 @@ class TodoListTile extends ConsumerWidget {
             ],
           ),
         ),
+        if (!isPast && _canPort(displayStatus))
+          PopupMenuItem(
+            value: 'move',
+            child: Row(
+              children: [
+                const Icon(Icons.drive_file_move_outline, size: 20),
+                const SizedBox(width: 8),
+                Text(context.l10n.moveTodo),
+              ],
+            ),
+          ),
         PopupMenuItem(
           value: 'delete',
           child: Row(
@@ -361,6 +374,8 @@ class TodoListTile extends ConsumerWidget {
             onEdit();
           case 'copy':
             onCopy();
+          case 'move':
+            onMove();
           case 'delete':
             onDelete();
         }
@@ -389,7 +404,9 @@ class TodoListTile extends ConsumerWidget {
       totalDurationSeconds: totalSeconds,
     );
     final statusColor = AppTheme.statusColor(theme, displayStatus);
-    final tileTap = isMultiSelectMode ? (isPast ? null : onTap) : onEdit;
+    final tileTap = isMultiSelectMode
+        ? (isPast ? null : onTap)
+        : onViewSegments;
     final tileLongPress = isPast ? null : onLongPress;
     final showQuickActions =
         !isMultiSelectMode && !isPast && _canShowQuickActions(displayStatus);
@@ -911,7 +928,7 @@ class TodoListTile extends ConsumerWidget {
       ),
     );
 
-    return TweenAnimationBuilder<double>(
+    final animatedTile = TweenAnimationBuilder<double>(
       tween: Tween(begin: 0, end: 1),
       duration: Duration(
         milliseconds: 180 + (animationIndex * 24).clamp(0, 220),
@@ -927,6 +944,223 @@ class TodoListTile extends ConsumerWidget {
         );
       },
       child: isPast ? Opacity(opacity: 0.74, child: tile) : tile,
+    );
+
+    // Swipe-right reveal is only for today's todos, and not in multi-select.
+    if (isPast || isMultiSelectMode) {
+      return animatedTile;
+    }
+
+    return _SwipeRevealWrapper(
+      onEdit: onEdit,
+      onDelete: onDelete,
+      onCopy: onCopy,
+      onMove: onMove,
+      child: animatedTile,
+    );
+  }
+}
+
+/// Slides a child widget to the right to reveal action buttons behind it.
+///
+/// Four action buttons are revealed: Edit, Copy, Move, Delete.
+/// Tapping an action or tapping anywhere else closes the panel.
+class _SwipeRevealWrapper extends StatefulWidget {
+  const _SwipeRevealWrapper({
+    required this.onEdit,
+    required this.onDelete,
+    required this.onCopy,
+    required this.onMove,
+    required this.child,
+  });
+
+  final VoidCallback onEdit;
+  final VoidCallback onDelete;
+  final VoidCallback onCopy;
+  final VoidCallback onMove;
+  final Widget child;
+
+  @override
+  State<_SwipeRevealWrapper> createState() => _SwipeRevealWrapperState();
+}
+
+class _SwipeRevealWrapperState extends State<_SwipeRevealWrapper>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<Offset> _slideAnimation;
+
+  /// Width of the revealed action area.
+  static const double _revealWidth = 200;
+
+  bool _isOpen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+    _slideAnimation = Tween<Offset>(
+      begin: Offset.zero,
+      end: const Offset(0.35, 0),
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _open() {
+    if (!_isOpen) {
+      _controller.forward();
+      setState(() => _isOpen = true);
+    }
+  }
+
+  void _close() {
+    if (_isOpen) {
+      _controller.reverse();
+      setState(() => _isOpen = false);
+    }
+  }
+
+  void _handleAction(VoidCallback action) {
+    _close();
+    action();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) {
+        if (details.delta.dx > 2) {
+          _open();
+        } else if (details.delta.dx < -2) {
+          _close();
+        }
+      },
+      child: Stack(
+        children: [
+          // Action buttons revealed behind the card
+          Positioned.fill(
+            child: AnimatedBuilder(
+              animation: _controller,
+              builder: (context, child) =>
+                  Opacity(opacity: _controller.value, child: child),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHigh,
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.only(left: 12),
+                  child: SizedBox(
+                    width: _revealWidth,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _SwipeActionButton(
+                          icon: Icons.edit_outlined,
+                          label: context.l10n.edit,
+                          color: colorScheme.primary,
+                          onTap: () => _handleAction(widget.onEdit),
+                        ),
+                        _SwipeActionButton(
+                          icon: Icons.copy_outlined,
+                          label: context.l10n.copy,
+                          color: colorScheme.tertiary,
+                          onTap: () => _handleAction(widget.onCopy),
+                        ),
+                        _SwipeActionButton(
+                          icon: Icons.drive_file_move_outline,
+                          label: context.l10n.moveTodo,
+                          color: colorScheme.secondary,
+                          onTap: () => _handleAction(widget.onMove),
+                        ),
+                        _SwipeActionButton(
+                          icon: Icons.delete_outline,
+                          label: context.l10n.delete,
+                          color: colorScheme.error,
+                          onTap: () => _handleAction(widget.onDelete),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          // The card itself slides right
+          SlideTransition(
+            position: _slideAnimation,
+            child: GestureDetector(
+              onTap: _isOpen ? _close : null,
+              behavior: _isOpen
+                  ? HitTestBehavior.opaque
+                  : HitTestBehavior.translucent,
+              child: AbsorbPointer(absorbing: _isOpen, child: widget.child),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SwipeActionButton extends StatelessWidget {
+  const _SwipeActionButton({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Semantics(
+        button: true,
+        label: label,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(12),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(icon, size: 22, color: color),
+                const SizedBox(height: 4),
+                Text(
+                  label,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: color,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

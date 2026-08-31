@@ -2903,7 +2903,7 @@ abstract class AppLocalizations {
   /// Help line under the target time field.
   ///
   /// In en, this message translates to:
-  /// **'Leave both at zero for no target.'**
+  /// **'Estimated duration to complete this task. Leave both at zero for no target.'**
   String get targetTimeHint;
 
   /// Label of the hours box in the target time field.
@@ -6151,6 +6151,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Task moved to {date}'**
   String taskMovedSuccess(String date);
+
+  /// Tooltip for tapping a segment time to edit it.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit time'**
+  String get editSegmentTime;
+
+  /// SnackBar message after successfully editing a segment time.
+  ///
+  /// In en, this message translates to:
+  /// **'Segment time updated'**
+  String get segmentTimeUpdated;
+
+  /// Error message when user tries to edit times on a running segment.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop the timer before editing times'**
+  String get cannotEditRunningSegment;
+
+  /// Action label to move a todo to another date.
+  ///
+  /// In en, this message translates to:
+  /// **'Move'**
+  String get moveTodo;
+
+  /// Title for the date picker dialog when moving a todo.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to date'**
+  String get moveTodoTo;
+
+  /// Message shown when a todo has no time segments.
+  ///
+  /// In en, this message translates to:
+  /// **'Not started yet'**
+  String get notStartedYet;
 }
 
 class _AppLocalizationsDelegate

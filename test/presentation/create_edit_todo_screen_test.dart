@@ -241,6 +241,8 @@ void main() {
       find.byType(ListView),
       const Offset(0, -100),
     );
+    await tester.drag(find.byType(ListView), const Offset(0, -150));
+    await tester.pumpAndSettle();
     await tester.tap(repeatSegment);
     await tester.pumpAndSettle();
 

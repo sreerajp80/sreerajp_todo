@@ -156,6 +156,13 @@ class _FakeTimeSegmentRepository implements TimeSegmentRepository {
   Future<void> updateSegmentNotes(String segmentId, String? notes) async {}
 
   @override
+  Future<void> updateSegmentTimes(
+    String segmentId,
+    DateTime newStart,
+    DateTime newEnd,
+  ) async {}
+
+  @override
   Future<void> repairOrphanedSegments(
     String todayDate, {
     DateTime? Function(DateTime segmentStart)? closeAt,

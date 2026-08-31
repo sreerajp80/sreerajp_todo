@@ -217,4 +217,30 @@ void main() {
       expect(results, isEmpty);
     });
   });
+
+  group('updateTimes', () {
+    test('updates start time, end time, and recomputes duration', () async {
+      await insertParentTodo();
+      final originalStart = DateTime(2026, 3, 20, 10, 0, 0);
+      final originalEnd = DateTime(2026, 3, 20, 11, 0, 0);
+      await segmentDao.insert(
+        makeSegment(
+          id: 'seg-edit',
+          startTime: originalStart,
+          endTime: originalEnd,
+          durationSeconds: 3600,
+        ),
+      );
+
+      final newStart = DateTime(2026, 3, 20, 10, 15, 0);
+      final newEnd = DateTime(2026, 3, 20, 11, 30, 0);
+      await segmentDao.updateTimes('seg-edit', newStart, newEnd);
+
+      final updated = await segmentDao.findById('seg-edit');
+      expect(updated, isNotNull);
+      expect(updated!.startTime, newStart.toIso8601String());
+      expect(updated.endTime, newEnd.toIso8601String());
+      expect(updated.durationSeconds, 4500); // 75 minutes = 4500 seconds
+    });
+  });
 }

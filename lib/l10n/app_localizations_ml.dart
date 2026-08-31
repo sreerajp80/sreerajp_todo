@@ -1556,7 +1556,8 @@ class AppLocalizationsMl extends AppLocalizations {
   String get targetTimeLabel => 'ലക്ഷ്യ സമയം';
 
   @override
-  String get targetTimeHint => 'ലക്ഷ്യം വേണ്ടെങ്കിൽ രണ്ടും പൂജ്യമായി വെക്കുക.';
+  String get targetTimeHint =>
+      'ടാസ്ക് പൂർത്തിയാക്കാൻ ഉദ്ദേശിക്കുന്ന ദൈർഘ്യം. ലക്ഷ്യം വേണ്ടെങ്കിൽ രണ്ടും പൂജ്യമായി വെക്കുക.';
 
   @override
   String get targetHoursLabel => 'മണിക്കൂർ';
@@ -3520,4 +3521,23 @@ class AppLocalizationsMl extends AppLocalizations {
   String taskMovedSuccess(String date) {
     return 'ടാസ്ക് $date-ലേക്ക് മാറ്റി';
   }
+
+  @override
+  String get editSegmentTime => 'സമയം എഡിറ്റ് ചെയ്യുക';
+
+  @override
+  String get segmentTimeUpdated => 'സെഗ്മെന്റ് സമയം അപ്ഡേറ്റ് ചെയ്തു';
+
+  @override
+  String get cannotEditRunningSegment =>
+      'സമയം എഡിറ്റ് ചെയ്യുന്നതിന് മുമ്പ് ടൈമർ നിർത്തുക';
+
+  @override
+  String get moveTodo => 'മാറ്റുക';
+
+  @override
+  String get moveTodoTo => 'തീയതിയിലേക്ക് മാറ്റുക';
+
+  @override
+  String get notStartedYet => 'ഇതുവരെ ആരംഭിച്ചിട്ടില്ല';
 }

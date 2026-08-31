@@ -251,6 +251,55 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
   }
 
   @override
+  Future<void> updateSegmentTimes(
+    String segmentId,
+    DateTime newStart,
+    DateTime newEnd,
+  ) async {
+    final segment = await _timeSegmentDao.findById(segmentId);
+    if (segment == null) return;
+
+    final todo = await _todoDao.findById(segment.todoId);
+    if (todo == null) throw const TodoNotFoundException();
+
+    if (isPastDate(todo.date)) {
+      throw const DayLockedException();
+    }
+
+    _checkTerminalStatus(todo.status);
+
+    // Running segments must be stopped before their times can be edited.
+    if (segment.endTime == null) {
+      throw const SegmentAlreadyRunningException();
+    }
+
+    if (!newEnd.isAfter(newStart)) {
+      throw ArgumentError('Start time must be before end time.');
+    }
+
+    // Check overlap with other segments of the same todo, excluding self.
+    final overlaps = await _timeSegmentDao.hasOverlap(
+      todoId: segment.todoId,
+      startTime: newStart.toIso8601String(),
+      endTime: newEnd.toIso8601String(),
+      excludeId: segmentId,
+    );
+    if (overlaps) {
+      throw const SegmentOverlapException();
+    }
+
+    await _timeSegmentDao.updateTimes(segmentId, newStart, newEnd);
+
+    final dur = newEnd.difference(newStart).inSeconds;
+    await _logHistoryEvent(
+      todoId: segment.todoId,
+      eventType: TodoHistoryEventType.edited,
+      description: 'Segment times updated (${dur}s)',
+      metadata: '{"segment_id":"$segmentId","duration_seconds":$dur}',
+    );
+  }
+
+  @override
   Future<void> repairOrphanedSegments(
     String todayDate, {
     DateTime? Function(DateTime segmentStart)? closeAt,

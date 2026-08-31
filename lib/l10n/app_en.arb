@@ -1942,7 +1942,7 @@
   "@targetTimeLabel": {
     "description": "Field label for the target time of a task."
   },
-  "targetTimeHint": "Leave both at zero for no target.",
+  "targetTimeHint": "Estimated duration to complete this task. Leave both at zero for no target.",
   "@targetTimeHint": {
     "description": "Help line under the target time field."
   },
@@ -4263,6 +4263,30 @@
         "type": "String"
       }
     }
+  },
+  "editSegmentTime": "Edit time",
+  "@editSegmentTime": {
+    "description": "Tooltip for tapping a segment time to edit it."
+  },
+  "segmentTimeUpdated": "Segment time updated",
+  "@segmentTimeUpdated": {
+    "description": "SnackBar message after successfully editing a segment time."
+  },
+  "cannotEditRunningSegment": "Stop the timer before editing times",
+  "@cannotEditRunningSegment": {
+    "description": "Error message when user tries to edit times on a running segment."
+  },
+  "moveTodo": "Move",
+  "@moveTodo": {
+    "description": "Action label to move a todo to another date."
+  },
+  "moveTodoTo": "Move to date",
+  "@moveTodoTo": {
+    "description": "Title for the date picker dialog when moving a todo."
+  },
+  "notStartedYet": "Not started yet",
+  "@notStartedYet": {
+    "description": "Message shown when a todo has no time segments."
   }
 }
 

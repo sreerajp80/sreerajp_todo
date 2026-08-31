@@ -361,6 +361,43 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     }
   }
 
+  Future<void> _showMoveDatePicker(String todoId) async {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: today,
+      firstDate: today,
+      lastDate: today.add(const Duration(days: 365)),
+      helpText: context.l10n.moveTodoTo,
+    );
+    if (picked != null && mounted) {
+      final targetDate = dateTimeToIso(picked);
+      try {
+        await ref
+            .read(dailyTodoProvider(widget.date).notifier)
+            .moveTodo(todoId, targetDate);
+        if (mounted) {
+          ref.invalidate(dailyTodoProvider(targetDate));
+          showUndoSnackBar(
+            context,
+            message: context.l10n.taskMovedSuccess(targetDate),
+            onUndo: () {
+              ref
+                  .read(dailyTodoProvider(widget.date).notifier)
+                  .undoLastStatusChange();
+              ref.invalidate(dailyTodoProvider(targetDate));
+            },
+          );
+        }
+      } on Exception catch (error) {
+        if (mounted) {
+          _showError(error);
+        }
+      }
+    }
+  }
+
   Future<void> _openCopyWizard({List<String>? preSelectedIds}) async {
     final result = await context.push<CopyTodosResult>(
       AppRoutes.copyTodosPath(widget.date),
@@ -703,6 +740,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         },
         onCopy: () => _openCopyWizard(preSelectedIds: [todo.id]),
         onEdit: () => context.push(AppRoutes.editTodoPath(todo.id)),
+        onMove: () async => _showMoveDatePicker(todo.id),
         onViewSegments: () {
           context.push(AppRoutes.timeSegmentsPath(todo.id));
         },

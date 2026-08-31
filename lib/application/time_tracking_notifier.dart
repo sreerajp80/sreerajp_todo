@@ -197,4 +197,18 @@ class TimeTrackingNotifier extends StateNotifier<TimeTrackingState> {
       state = state.copyWith(error: e.toString());
     }
   }
+
+  Future<void> updateSegmentTimes(
+    String segmentId,
+    DateTime newStart,
+    DateTime newEnd,
+  ) async {
+    try {
+      await _repository.updateSegmentTimes(segmentId, newStart, newEnd);
+      await loadSegments();
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+      rethrow;
+    }
+  }
 }

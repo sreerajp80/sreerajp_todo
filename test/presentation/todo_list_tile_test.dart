@@ -150,6 +150,13 @@ class _FakeTimeSegmentRepository implements TimeSegmentRepository {
   Future<void> updateSegmentNotes(String segmentId, String? notes) async {}
 
   @override
+  Future<void> updateSegmentTimes(
+    String segmentId,
+    DateTime newStart,
+    DateTime newEnd,
+  ) async {}
+
+  @override
   Future<void> repairOrphanedSegments(
     String todayDate, {
     DateTime? Function(DateTime segmentStart)? closeAt,
@@ -197,7 +204,8 @@ void main() {
   Future<void> pumpTile(
     WidgetTester tester, {
     required bool isPast,
-    required VoidCallback onEdit,
+    VoidCallback? onEdit,
+    VoidCallback? onViewSegments,
     required VoidCallback onLongPress,
     VoidCallback? onComplete,
     VoidCallback? onDrop,
@@ -229,9 +237,10 @@ void main() {
               onDrop: onDrop ?? () {},
               onPort: () {},
               onCopy: () {},
-              onEdit: onEdit,
+              onEdit: onEdit ?? () {},
               onDelete: () {},
-              onViewSegments: () {},
+              onMove: () {},
+              onViewSegments: onViewSegments ?? () {},
               animationIndex: 0,
             ),
           ),
@@ -241,20 +250,20 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('current-day todo opens edit on tap', (tester) async {
-    var editCalls = 0;
+  testWidgets('current-day todo opens time segments on tap', (tester) async {
+    var segmentCalls = 0;
 
     await pumpTile(
       tester,
       isPast: false,
-      onEdit: () => editCalls++,
+      onViewSegments: () => segmentCalls++,
       onLongPress: () {},
     );
 
     await tester.tap(find.text(todo.title));
     await tester.pumpAndSettle();
 
-    expect(editCalls, 1);
+    expect(segmentCalls, 1);
   });
 
   testWidgets('current-day todo shows quick task strip actions', (
@@ -266,7 +275,6 @@ void main() {
     await pumpTile(
       tester,
       isPast: false,
-      onEdit: () {},
       onLongPress: () {},
       onComplete: () => completeCalls++,
       onDrop: () => dropCalls++,
@@ -290,15 +298,15 @@ void main() {
   });
 
   testWidgets(
-    'past-day todo opens read-only details on tap and disables long press',
+    'past-day todo opens time segments on tap and disables long press',
     (tester) async {
-      var editCalls = 0;
+      var segmentCalls = 0;
       var longPressCalls = 0;
 
       await pumpTile(
         tester,
         isPast: true,
-        onEdit: () => editCalls++,
+        onViewSegments: () => segmentCalls++,
         onLongPress: () => longPressCalls++,
       );
 
@@ -313,7 +321,7 @@ void main() {
         (iw) => iw.onTap != null && iw.onLongPress == null,
       );
       expect(mainInkWell.onLongPress, isNull);
-      expect(editCalls, 1);
+      expect(segmentCalls, 1);
       expect(longPressCalls, 0);
       // No compact action buttons for past days
       expect(find.byIcon(Icons.check_circle_outline), findsNothing);

@@ -1,7 +1,7 @@
 name: sreerajp_todo
 description: "SreerajP ToDo — Personal offline-first daily ToDo and time-tracker."
 publish_to: 'none'
-version: 1.12.9+30
+version: 1.13.0+31
 
 environment:
   sdk: ^3.12.2

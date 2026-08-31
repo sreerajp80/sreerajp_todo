@@ -45,6 +45,42 @@ class TimeSegmentDao {
     await reindexTodoInIndex(db, maps.first['todo_id'] as String);
   }
 
+  /// Replaces the start and end time of a closed segment and recomputes its
+  /// duration. The parent todo is reindexed afterwards.
+  ///
+  /// Only call this on segments that already have an end_time. Running
+  /// segments (end_time IS NULL) must be stopped first.
+  Future<void> updateTimes(
+    String segId,
+    DateTime newStart,
+    DateTime newEnd,
+  ) async {
+    final db = await _databaseService.database;
+
+    final maps = await db.query(
+      'time_segments',
+      columns: ['todo_id'],
+      where: 'id = ?',
+      whereArgs: [segId],
+      limit: 1,
+    );
+    if (maps.isEmpty) return;
+
+    final durationSeconds = newEnd.difference(newStart).inSeconds;
+
+    await db.update(
+      'time_segments',
+      {
+        'start_time': newStart.toIso8601String(),
+        'end_time': newEnd.toIso8601String(),
+        'duration_seconds': durationSeconds,
+      },
+      where: 'id = ?',
+      whereArgs: [segId],
+    );
+    await reindexTodoInIndex(db, maps.first['todo_id'] as String);
+  }
+
   Future<void> closeSegment(
     String segId,
     DateTime endTime, {

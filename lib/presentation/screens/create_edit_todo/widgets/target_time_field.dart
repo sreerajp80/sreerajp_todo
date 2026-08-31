@@ -84,12 +84,26 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
       children: [
         Row(
           children: [
-            Expanded(child: _buildBox(_hours, l10n.targetHoursLabel)),
+            Expanded(
+              child: _buildBox(
+                context: context,
+                controller: _hours,
+                label: l10n.targetHoursLabel,
+                suffix: 'h',
+              ),
+            ),
             const SizedBox(width: 12),
-            Expanded(child: _buildBox(_minutes, l10n.targetMinutesLabel)),
+            Expanded(
+              child: _buildBox(
+                context: context,
+                controller: _minutes,
+                label: l10n.targetMinutesLabel,
+                suffix: 'm',
+              ),
+            ),
           ],
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         Text(
           l10n.targetTimeHint,
           style: theme.textTheme.bodySmall?.copyWith(
@@ -100,21 +114,42 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
     );
   }
 
-  Widget _buildBox(TextEditingController controller, String label) {
-    return TextField(
-      controller: controller,
-      enabled: widget.enabled,
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-        LengthLimitingTextInputFormatter(4),
+  Widget _buildBox({
+    required BuildContext context,
+    required TextEditingController controller,
+    required String label,
+    required String suffix,
+  }) {
+    final theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.labelMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 6),
+        TextField(
+          controller: controller,
+          enabled: widget.enabled,
+          keyboardType: TextInputType.number,
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(4),
+          ],
+          decoration: InputDecoration(
+            suffixText: suffix,
+            border: const OutlineInputBorder(),
+            isDense: true,
+          ),
+          onChanged: (_) => _emit(),
+        ),
       ],
-      decoration: InputDecoration(
-        labelText: label,
-        border: const OutlineInputBorder(),
-        isDense: true,
-      ),
-      onChanged: (_) => _emit(),
     );
   }
 }

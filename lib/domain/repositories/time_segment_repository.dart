@@ -43,6 +43,15 @@ abstract class TimeSegmentRepository {
   Future<void> insertManualSegment(TimeSegmentEntity segment);
   Future<void> updateSegmentNotes(String segmentId, String? notes);
 
+  /// Replaces the start and end time of a closed segment.
+  ///
+  /// Enforces day-lock, terminal-status, running-segment, and overlap checks.
+  Future<void> updateSegmentTimes(
+    String segmentId,
+    DateTime newStart,
+    DateTime newEnd,
+  );
+
   /// Closes open segments left on days before [todayDate].
   ///
   /// When [closeAt] returns a time for a segment, it is closed then with its

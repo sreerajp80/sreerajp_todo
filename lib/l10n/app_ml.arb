@@ -471,7 +471,7 @@
   "priorityUrgent": "അടിയന്തിരം",
   "priorityLabel": "മുൻഗണന",
   "targetTimeLabel": "ലക്ഷ്യ സമയം",
-  "targetTimeHint": "ലക്ഷ്യം വേണ്ടെങ്കിൽ രണ്ടും പൂജ്യമായി വെക്കുക.",
+  "targetTimeHint": "ടാസ്ക് പൂർത്തിയാക്കാൻ ഉദ്ദേശിക്കുന്ന ദൈർഘ്യം. ലക്ഷ്യം വേണ്ടെങ്കിൽ രണ്ടും പൂജ്യമായി വെക്കുക.",
   "targetHoursLabel": "മണിക്കൂർ",
   "targetMinutesLabel": "മിനിറ്റ്",
   "targetProgressLabel": "{target} ൽ {tracked}",
@@ -1029,6 +1029,12 @@
   "markdownImportTitle": "മാർക്ക്ഡൗൺ ചെക്ക്‌ലിസ്റ്റ് ടെക്സ്റ്റ് പേസ്റ്റ് ചെയ്യുക",
   "parseMarkdownPreview": "കണ്ടെത്തിയ ടാസ്കുകളുടെ പ്രിവ്യൂ",
   "importSuccessMsg": "ടാസ്കുകൾ വിജയകരമായി ഇമ്പോർട്ട് ചെയ്തു.",
-  "exportSuccessMsg": "എക്സ്പോർട്ട് ഫയൽ വിജയകരമായി സേവ് ചെയ്തു."
+  "exportSuccessMsg": "എക്സ്പോർട്ട് ഫയൽ വിജയകരമായി സേവ് ചെയ്തു.",
+  "editSegmentTime": "സമയം എഡിറ്റ് ചെയ്യുക",
+  "segmentTimeUpdated": "സെഗ്മെന്റ് സമയം അപ്ഡേറ്റ് ചെയ്തു",
+  "cannotEditRunningSegment": "സമയം എഡിറ്റ് ചെയ്യുന്നതിന് മുമ്പ് ടൈമർ നിർത്തുക",
+  "moveTodo": "മാറ്റുക",
+  "moveTodoTo": "തീയതിയിലേക്ക് മാറ്റുക",
+  "notStartedYet": "ഇതുവരെ ആരംഭിച്ചിട്ടില്ല"
 }
 

@@ -1540,7 +1540,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get targetTimeLabel => 'Target time';
 
   @override
-  String get targetTimeHint => 'Leave both at zero for no target.';
+  String get targetTimeHint =>
+      'Estimated duration to complete this task. Leave both at zero for no target.';
 
   @override
   String get targetHoursLabel => 'Hours';
@@ -3499,4 +3500,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String taskMovedSuccess(String date) {
     return 'Task moved to $date';
   }
+
+  @override
+  String get editSegmentTime => 'Edit time';
+
+  @override
+  String get segmentTimeUpdated => 'Segment time updated';
+
+  @override
+  String get cannotEditRunningSegment => 'Stop the timer before editing times';
+
+  @override
+  String get moveTodo => 'Move';
+
+  @override
+  String get moveTodoTo => 'Move to date';
+
+  @override
+  String get notStartedYet => 'Not started yet';
 }
