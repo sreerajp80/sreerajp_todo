@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v10.dart';
 
 import '../helpers/test_database.dart';
@@ -68,7 +69,7 @@ void main() {
     });
 
     test(
-      'fresh database is at version 10 and has todo_history table',
+      'fresh database is at the current version and has todo_history table',
       () async {
         final service = await createTestDatabaseService();
         final db = await service.database;
@@ -78,7 +79,7 @@ void main() {
         expect(columns, contains('todo_id'));
 
         final version = await db.rawQuery('PRAGMA user_version');
-        expect(version.single['user_version'], 10);
+        expect(version.single['user_version'], kDatabaseVersion);
         await service.close();
       },
     );

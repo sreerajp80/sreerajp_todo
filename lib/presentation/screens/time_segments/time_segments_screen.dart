@@ -241,7 +241,6 @@ class _SegmentsBody extends ConsumerWidget {
                   isRunning: isRunning,
                   todoId: todoId,
                   isPast: isPast,
-                  isTerminal: isTerminal,
                 );
               },
             ),
@@ -307,7 +306,6 @@ class _SegmentTile extends ConsumerWidget {
     required this.isRunning,
     required this.todoId,
     required this.isPast,
-    required this.isTerminal,
   });
 
   final int index;
@@ -315,7 +313,6 @@ class _SegmentTile extends ConsumerWidget {
   final bool isRunning;
   final String todoId;
   final bool isPast;
-  final bool isTerminal;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -360,13 +357,16 @@ class _SegmentTile extends ConsumerWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Semantics(
-          label: context.l10n.segmentSemantics(
-            index,
-            startStr,
-            endStr,
-            durationStr,
-            typeLabel,
-          ),
+          label: segment.editedAfterCompletion
+              ? '${context.l10n.segmentSemantics(index, startStr, endStr, durationStr, typeLabel)}. '
+                    '${context.l10n.segmentEditedAfterCompletionTooltip}'
+              : context.l10n.segmentSemantics(
+                  index,
+                  startStr,
+                  endStr,
+                  durationStr,
+                  typeLabel,
+                ),
           child: ExcludeSemantics(
             child: Row(
               children: [
@@ -442,6 +442,10 @@ class _SegmentTile extends ConsumerWidget {
                             label: typeLabel,
                             isManual: segment.manual,
                           ),
+                          if (segment.editedAfterCompletion) ...[
+                            const SizedBox(width: 6),
+                            _EditedBadge(editedAtIso: segment.timesEditedAt),
+                          ],
                         ],
                       ),
                       if (hasNote) ...[
@@ -481,10 +485,13 @@ class _SegmentTile extends ConsumerWidget {
     );
   }
 
-  /// Whether the segment times can be edited: not running, not past, not
-  /// terminal, and the segment has an end time (closed).
-  bool get _canEditTimes =>
-      !isRunning && !isPast && !isTerminal && segment.endTime != null;
+  /// Whether the segment times can be edited: not running, not past, and the
+  /// segment has an end time (closed).
+  ///
+  /// A completed or dropped task is still editable on purpose. Fixing a wrong
+  /// start or end time is a correction, not new tracked time, and the segment
+  /// is marked as edited so the change stays visible.
+  bool get _canEditTimes => !isRunning && !isPast && segment.endTime != null;
 
   Widget _buildTappableTime(
     BuildContext context,
@@ -624,6 +631,61 @@ class _SegmentTile extends ConsumerWidget {
     await ref
         .read(timeTrackingProvider(todoId).notifier)
         .updateSegmentNotes(segment.id, saved);
+  }
+}
+
+/// Small marker on a segment whose start or end time was changed after the
+/// task was already completed or dropped, so the user can tell corrected
+/// slots apart from the ones the timer recorded.
+class _EditedBadge extends StatelessWidget {
+  const _EditedBadge({required this.editedAtIso});
+
+  final String? editedAtIso;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final lines = <String>[context.l10n.segmentEditedAfterCompletionTooltip];
+    final iso = editedAtIso;
+    if (iso != null && iso.isNotEmpty) {
+      try {
+        final local = DateTime.parse(iso).toLocal();
+        lines.add(context.l10n.segmentEditedOn(formatDateTime(local)));
+      } on FormatException {
+        // A stamp we cannot read is simply not shown.
+      }
+    }
+
+    return Tooltip(
+      message: lines.join('\n'),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+        decoration: BoxDecoration(
+          color: colorScheme.errorContainer,
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.edit_calendar_rounded,
+              size: 12,
+              color: colorScheme.onErrorContainer,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              context.l10n.segmentEditedBadge,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: colorScheme.onErrorContainer,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

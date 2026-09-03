@@ -1,6 +1,7 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
@@ -266,7 +267,10 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
       throw const DayLockedException();
     }
 
-    _checkTerminalStatus(todo.status);
+    // The terminal-status lock is deliberately NOT applied here. Correcting a
+    // wrong start or end time on a finished task does not add new tracked
+    // time, it fixes what is already recorded. The edit is marked on the
+    // segment and written to the task history instead, so it stays visible.
 
     // Running segments must be stopped before their times can be edited.
     if (segment.endTime == null) {
@@ -288,15 +292,51 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
       throw const SegmentOverlapException();
     }
 
-    await _timeSegmentDao.updateTimes(segmentId, newStart, newEnd);
+    final afterCompletion =
+        todo.status == TodoStatus.completed ||
+        todo.status == TodoStatus.dropped;
+    final editedAt = DateTime.now();
 
+    await _timeSegmentDao.updateTimes(
+      segmentId,
+      newStart,
+      newEnd,
+      markEditedAfterCompletion: afterCompletion,
+      editedAt: editedAt,
+    );
+
+    final oldStart = DateTime.parse(segment.startTime);
+    final oldEnd = DateTime.parse(segment.endTime!);
     final dur = newEnd.difference(newStart).inSeconds;
+    final prefix = afterCompletion
+        ? 'Segment time edited after completion'
+        : 'Segment time edited';
+    final description =
+        '$prefix: ${_clock(oldStart)} -> ${_clock(oldEnd)} changed to '
+        '${_clock(newStart)} -> ${_clock(newEnd)} (${formatDuration(dur)})';
+
     await _logHistoryEvent(
       todoId: segment.todoId,
       eventType: TodoHistoryEventType.edited,
-      description: 'Segment times updated (${dur}s)',
-      metadata: '{"segment_id":"$segmentId","duration_seconds":$dur}',
+      description: description,
+      metadata:
+          '{"segment_id":"$segmentId"'
+          ',"old_start":"${segment.startTime}"'
+          ',"old_end":"${segment.endTime}"'
+          ',"new_start":"${newStart.toIso8601String()}"'
+          ',"new_end":"${newEnd.toIso8601String()}"'
+          ',"duration_seconds":$dur'
+          ',"after_completion":$afterCompletion}',
+      eventTime: editedAt.toUtc().toIso8601String(),
     );
+  }
+
+  /// Local wall-clock `HH:MM` used in history descriptions. The data layer has
+  /// no access to the app locale, so this stays a plain 24-hour label.
+  static String _clock(DateTime value) {
+    final hour = value.hour.toString().padLeft(2, '0');
+    final minute = value.minute.toString().padLeft(2, '0');
+    return '$hour:$minute';
   }
 
   @override

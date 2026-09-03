@@ -4272,6 +4272,23 @@
   "@segmentTimeUpdated": {
     "description": "SnackBar message after successfully editing a segment time."
   },
+  "segmentEditedBadge": "Edited",
+  "@segmentEditedBadge": {
+    "description": "Badge on a time segment whose start or end time was changed after the task was finished."
+  },
+  "segmentEditedAfterCompletionTooltip": "Edited after the task was completed",
+  "@segmentEditedAfterCompletionTooltip": {
+    "description": "Tooltip explaining the Edited badge on a time segment."
+  },
+  "segmentEditedOn": "Edited on {when}",
+  "@segmentEditedOn": {
+    "description": "Second tooltip line giving the date and time of the last segment time edit.",
+    "placeholders": {
+      "when": {
+        "type": "String"
+      }
+    }
+  },
   "cannotEditRunningSegment": "Stop the timer before editing times",
   "@cannotEditRunningSegment": {
     "description": "Error message when user tries to edit times on a running segment."

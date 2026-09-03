@@ -215,7 +215,7 @@ class AppLocalizationsMl extends AppLocalizations {
   String get delete => 'ഇല്ലാതാക്കുക';
 
   @override
-  String get undo => 'പഴയപടിയാക്കുക';
+  String get undo => 'പഴയപടി';
 
   @override
   String get edit => 'എഡിറ്റ് ചെയ്യുക';
@@ -3527,6 +3527,18 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get segmentTimeUpdated => 'സെഗ്മെന്റ് സമയം അപ്ഡേറ്റ് ചെയ്തു';
+
+  @override
+  String get segmentEditedBadge => 'എഡിറ്റ് ചെയ്തത്';
+
+  @override
+  String get segmentEditedAfterCompletionTooltip =>
+      'ടാസ്ക് പൂർത്തിയായ ശേഷം എഡിറ്റ് ചെയ്തത്';
+
+  @override
+  String segmentEditedOn(String when) {
+    return '$when എഡിറ്റ് ചെയ്തു';
+  }
 
   @override
   String get cannotEditRunningSegment =>

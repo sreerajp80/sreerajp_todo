@@ -25,6 +25,13 @@ mixin _$TimeSegmentEntity {
   bool get interrupted => throw _privateConstructorUsedError;
   bool get manual => throw _privateConstructorUsedError;
   String? get notes => throw _privateConstructorUsedError;
+
+  /// Set once the start/end times were changed while the parent todo was
+  /// already completed or dropped. Sticky: it is never cleared again.
+  bool get editedAfterCompletion => throw _privateConstructorUsedError;
+
+  /// ISO 8601 UTC timestamp of the last start/end time edit, if any.
+  String? get timesEditedAt => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
 
   /// Create a copy of TimeSegmentEntity
@@ -50,6 +57,8 @@ abstract class $TimeSegmentEntityCopyWith<$Res> {
     bool interrupted,
     bool manual,
     String? notes,
+    bool editedAfterCompletion,
+    String? timesEditedAt,
     String createdAt,
   });
 }
@@ -77,6 +86,8 @@ class _$TimeSegmentEntityCopyWithImpl<$Res, $Val extends TimeSegmentEntity>
     Object? interrupted = null,
     Object? manual = null,
     Object? notes = freezed,
+    Object? editedAfterCompletion = null,
+    Object? timesEditedAt = freezed,
     Object? createdAt = null,
   }) {
     return _then(
@@ -113,6 +124,14 @@ class _$TimeSegmentEntityCopyWithImpl<$Res, $Val extends TimeSegmentEntity>
                 ? _value.notes
                 : notes // ignore: cast_nullable_to_non_nullable
                       as String?,
+            editedAfterCompletion: null == editedAfterCompletion
+                ? _value.editedAfterCompletion
+                : editedAfterCompletion // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            timesEditedAt: freezed == timesEditedAt
+                ? _value.timesEditedAt
+                : timesEditedAt // ignore: cast_nullable_to_non_nullable
+                      as String?,
             createdAt: null == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
@@ -141,6 +160,8 @@ abstract class _$$TimeSegmentEntityImplCopyWith<$Res>
     bool interrupted,
     bool manual,
     String? notes,
+    bool editedAfterCompletion,
+    String? timesEditedAt,
     String createdAt,
   });
 }
@@ -167,6 +188,8 @@ class __$$TimeSegmentEntityImplCopyWithImpl<$Res>
     Object? interrupted = null,
     Object? manual = null,
     Object? notes = freezed,
+    Object? editedAfterCompletion = null,
+    Object? timesEditedAt = freezed,
     Object? createdAt = null,
   }) {
     return _then(
@@ -203,6 +226,14 @@ class __$$TimeSegmentEntityImplCopyWithImpl<$Res>
             ? _value.notes
             : notes // ignore: cast_nullable_to_non_nullable
                   as String?,
+        editedAfterCompletion: null == editedAfterCompletion
+            ? _value.editedAfterCompletion
+            : editedAfterCompletion // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        timesEditedAt: freezed == timesEditedAt
+            ? _value.timesEditedAt
+            : timesEditedAt // ignore: cast_nullable_to_non_nullable
+                  as String?,
         createdAt: null == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
@@ -224,6 +255,8 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
     this.interrupted = false,
     this.manual = false,
     this.notes,
+    this.editedAfterCompletion = false,
+    this.timesEditedAt,
     required this.createdAt,
   }) : super._();
 
@@ -245,12 +278,22 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
   final bool manual;
   @override
   final String? notes;
+
+  /// Set once the start/end times were changed while the parent todo was
+  /// already completed or dropped. Sticky: it is never cleared again.
+  @override
+  @JsonKey()
+  final bool editedAfterCompletion;
+
+  /// ISO 8601 UTC timestamp of the last start/end time edit, if any.
+  @override
+  final String? timesEditedAt;
   @override
   final String createdAt;
 
   @override
   String toString() {
-    return 'TimeSegmentEntity(id: $id, todoId: $todoId, startTime: $startTime, endTime: $endTime, durationSeconds: $durationSeconds, interrupted: $interrupted, manual: $manual, notes: $notes, createdAt: $createdAt)';
+    return 'TimeSegmentEntity(id: $id, todoId: $todoId, startTime: $startTime, endTime: $endTime, durationSeconds: $durationSeconds, interrupted: $interrupted, manual: $manual, notes: $notes, editedAfterCompletion: $editedAfterCompletion, timesEditedAt: $timesEditedAt, createdAt: $createdAt)';
   }
 
   @override
@@ -269,6 +312,10 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
                 other.interrupted == interrupted) &&
             (identical(other.manual, manual) || other.manual == manual) &&
             (identical(other.notes, notes) || other.notes == notes) &&
+            (identical(other.editedAfterCompletion, editedAfterCompletion) ||
+                other.editedAfterCompletion == editedAfterCompletion) &&
+            (identical(other.timesEditedAt, timesEditedAt) ||
+                other.timesEditedAt == timesEditedAt) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
@@ -284,6 +331,8 @@ class _$TimeSegmentEntityImpl extends _TimeSegmentEntity {
     interrupted,
     manual,
     notes,
+    editedAfterCompletion,
+    timesEditedAt,
     createdAt,
   );
 
@@ -309,6 +358,8 @@ abstract class _TimeSegmentEntity extends TimeSegmentEntity {
     final bool interrupted,
     final bool manual,
     final String? notes,
+    final bool editedAfterCompletion,
+    final String? timesEditedAt,
     required final String createdAt,
   }) = _$TimeSegmentEntityImpl;
   const _TimeSegmentEntity._() : super._();
@@ -329,6 +380,15 @@ abstract class _TimeSegmentEntity extends TimeSegmentEntity {
   bool get manual;
   @override
   String? get notes;
+
+  /// Set once the start/end times were changed while the parent todo was
+  /// already completed or dropped. Sticky: it is never cleared again.
+  @override
+  bool get editedAfterCompletion;
+
+  /// ISO 8601 UTC timestamp of the last start/end time edit, if any.
+  @override
+  String? get timesEditedAt;
   @override
   String get createdAt;
 

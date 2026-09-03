@@ -335,14 +335,15 @@ class MainActivity : FlutterActivity() {
     // Reports whether the voice sheet can listen, and why not when it cannot.
     private fun checkSpeechReadiness(): String {
         if (!SpeechRecognizer.isRecognitionAvailable(this)) return "no_recogniser"
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            // EXTRA_PREFER_OFFLINE does not exist here, so staying offline
-            // cannot be promised. Better to say so than to risk it.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            // Below Android 13 there is no way to pin an on-device recogniser.
+            // EXTRA_PREFER_OFFLINE is only a hint, so a system speech service
+            // with no offline model but a working connection can still send the
+            // audio to a server and return a normal result. Refuse instead of
+            // risking that: the app promises to stay offline.
             return "no_offline"
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-            !SpeechRecognizer.isOnDeviceRecognitionAvailable(this)
-        ) {
+        if (!SpeechRecognizer.isOnDeviceRecognitionAvailable(this)) {
             return "no_offline"
         }
         if (!hasMicrophonePermission()) return "no_permission"

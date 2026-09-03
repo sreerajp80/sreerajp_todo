@@ -3508,6 +3508,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get segmentTimeUpdated => 'Segment time updated';
 
   @override
+  String get segmentEditedBadge => 'Edited';
+
+  @override
+  String get segmentEditedAfterCompletionTooltip =>
+      'Edited after the task was completed';
+
+  @override
+  String segmentEditedOn(String when) {
+    return 'Edited on $when';
+  }
+
+  @override
   String get cannotEditRunningSegment => 'Stop the timer before editing times';
 
   @override

@@ -22,8 +22,9 @@ void main() {
     );
   }
 
-  testWidgets('renders visible Hours and Minutes labels in English',
-      (tester) async {
+  testWidgets('renders visible Hours and Minutes labels in English', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         targetSeconds: 3600 + 1800, // 1 hour 30 min
@@ -44,8 +45,9 @@ void main() {
     );
   });
 
-  testWidgets('renders visible Malayalam labels and duration hint',
-      (tester) async {
+  testWidgets('renders visible Malayalam labels and duration hint', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       buildTestWidget(
         targetSeconds: null,

@@ -242,5 +242,79 @@ void main() {
       expect(updated.endTime, newEnd.toIso8601String());
       expect(updated.durationSeconds, 4500); // 75 minutes = 4500 seconds
     });
+
+    test('stamps times_edited_at on every edit', () async {
+      await insertParentTodo();
+      await segmentDao.insert(
+        makeSegment(
+          id: 'seg-stamp',
+          startTime: DateTime(2026, 3, 21, 10, 0),
+          endTime: DateTime(2026, 3, 21, 11, 0),
+          durationSeconds: 3600,
+        ),
+      );
+
+      final editedAt = DateTime.utc(2026, 3, 21, 12, 30);
+      await segmentDao.updateTimes(
+        'seg-stamp',
+        DateTime(2026, 3, 21, 10, 5),
+        DateTime(2026, 3, 21, 11, 0),
+        editedAt: editedAt,
+      );
+
+      final updated = await segmentDao.findById('seg-stamp');
+      expect(updated!.timesEditedAt, editedAt.toIso8601String());
+      expect(updated.editedAfterCompletion, isFalse);
+    });
+
+    test('marks edited_after_completion only when asked', () async {
+      await insertParentTodo();
+      await segmentDao.insert(
+        makeSegment(
+          id: 'seg-mark',
+          startTime: DateTime(2026, 3, 21, 10, 0),
+          endTime: DateTime(2026, 3, 21, 11, 0),
+          durationSeconds: 3600,
+        ),
+      );
+
+      await segmentDao.updateTimes(
+        'seg-mark',
+        DateTime(2026, 3, 21, 10, 5),
+        DateTime(2026, 3, 21, 11, 0),
+        markEditedAfterCompletion: true,
+      );
+
+      final updated = await segmentDao.findById('seg-mark');
+      expect(updated!.editedAfterCompletion, isTrue);
+    });
+
+    test('the edited_after_completion mark is never cleared', () async {
+      await insertParentTodo();
+      await segmentDao.insert(
+        makeSegment(
+          id: 'seg-sticky',
+          startTime: DateTime(2026, 3, 21, 10, 0),
+          endTime: DateTime(2026, 3, 21, 11, 0),
+          durationSeconds: 3600,
+        ),
+      );
+
+      await segmentDao.updateTimes(
+        'seg-sticky',
+        DateTime(2026, 3, 21, 10, 5),
+        DateTime(2026, 3, 21, 11, 0),
+        markEditedAfterCompletion: true,
+      );
+      // A later edit made while the task is open must not erase the mark.
+      await segmentDao.updateTimes(
+        'seg-sticky',
+        DateTime(2026, 3, 21, 10, 10),
+        DateTime(2026, 3, 21, 11, 0),
+      );
+
+      final updated = await segmentDao.findById('seg-sticky');
+      expect(updated!.editedAfterCompletion, isTrue);
+    });
   });
 }

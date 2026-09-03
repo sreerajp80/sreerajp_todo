@@ -6164,6 +6164,24 @@ abstract class AppLocalizations {
   /// **'Segment time updated'**
   String get segmentTimeUpdated;
 
+  /// Badge on a time segment whose start or end time was changed after the task was finished.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited'**
+  String get segmentEditedBadge;
+
+  /// Tooltip explaining the Edited badge on a time segment.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited after the task was completed'**
+  String get segmentEditedAfterCompletionTooltip;
+
+  /// Second tooltip line giving the date and time of the last segment time edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited on {when}'**
+  String segmentEditedOn(String when);
+
   /// Error message when user tries to edit times on a running segment.
   ///
   /// In en, this message translates to:

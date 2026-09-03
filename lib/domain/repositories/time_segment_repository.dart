@@ -45,7 +45,12 @@ abstract class TimeSegmentRepository {
 
   /// Replaces the start and end time of a closed segment.
   ///
-  /// Enforces day-lock, terminal-status, running-segment, and overlap checks.
+  /// Enforces day-lock, running-segment, and overlap checks. The
+  /// terminal-status lock does NOT apply: correcting a wrong start or end time
+  /// on a completed or dropped task fixes what is already recorded rather than
+  /// adding new tracked time. Such an edit stamps the segment with
+  /// `editedAfterCompletion` and writes a task-history entry, so it stays
+  /// visible to the user.
   Future<void> updateSegmentTimes(
     String segmentId,
     DateTime newStart,

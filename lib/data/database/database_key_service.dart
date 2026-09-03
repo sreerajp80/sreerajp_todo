@@ -15,6 +15,13 @@ class DatabaseKeyService {
   final Win32Dpapi? _win32dpapi;
   String? _cachedKeyHex;
 
+  /// The key handed out under test, made once per process.
+  ///
+  /// It is random rather than a fixed literal so no key-shaped constant ends up
+  /// compiled into the shipped binary. Every instance in a run shares it, so a
+  /// test that reopens a database with a fresh service still gets the same key.
+  static final String _testKeyHex = _randomKeyHex();
+
   bool get _isTestEnvironment => Platform.environment['FLUTTER_TEST'] == 'true';
 
   Future<String> getOrCreateDatabaseKey() async {
@@ -23,8 +30,7 @@ class DatabaseKeyService {
     }
 
     if (_isTestEnvironment) {
-      _cachedKeyHex =
-          '0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef';
+      _cachedKeyHex = _testKeyHex;
       return _cachedKeyHex!;
     }
 
@@ -92,13 +98,16 @@ class DatabaseKeyService {
   /// Only generates the value. Nothing is stored until [storeDatabaseKey] is
   /// called, so a caller can rekey the database first and keep the old key
   /// usable until that has actually worked.
-  String generateKeyHex() {
+  String generateKeyHex() => _randomKeyHex();
+
+  /// A fresh random 256-bit key as 64 hex characters.
+  static String _randomKeyHex() {
     final rawKeyBytes = Uint8List(32);
     final random = Random.secure();
     for (var i = 0; i < 32; i++) {
       rawKeyBytes[i] = random.nextInt(256);
     }
-    return _bytesToHex(rawKeyBytes);
+    return rawKeyBytes.map((b) => b.toRadixString(16).padLeft(2, '0')).join();
   }
 
   /// Replaces the stored database key with [keyHex].

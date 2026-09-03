@@ -50,11 +50,18 @@ class TimeSegmentDao {
   ///
   /// Only call this on segments that already have an end_time. Running
   /// segments (end_time IS NULL) must be stopped first.
+  ///
+  /// [editedAt] is stamped on the row for every edit. Pass
+  /// [markEditedAfterCompletion] when the parent todo was already completed or
+  /// dropped, so the segment carries a permanent mark. The mark is sticky: a
+  /// later edit made while the task is open never clears it.
   Future<void> updateTimes(
     String segId,
     DateTime newStart,
-    DateTime newEnd,
-  ) async {
+    DateTime newEnd, {
+    bool markEditedAfterCompletion = false,
+    DateTime? editedAt,
+  }) async {
     final db = await _databaseService.database;
 
     final maps = await db.query(
@@ -67,14 +74,21 @@ class TimeSegmentDao {
     if (maps.isEmpty) return;
 
     final durationSeconds = newEnd.difference(newStart).inSeconds;
+    final stamp = (editedAt ?? DateTime.now()).toUtc().toIso8601String();
+
+    final values = <String, dynamic>{
+      'start_time': newStart.toIso8601String(),
+      'end_time': newEnd.toIso8601String(),
+      'duration_seconds': durationSeconds,
+      'times_edited_at': stamp,
+    };
+    if (markEditedAfterCompletion) {
+      values['edited_after_completion'] = 1;
+    }
 
     await db.update(
       'time_segments',
-      {
-        'start_time': newStart.toIso8601String(),
-        'end_time': newEnd.toIso8601String(),
-        'duration_seconds': durationSeconds,
-      },
+      values,
       where: 'id = ?',
       whereArgs: [segId],
     );

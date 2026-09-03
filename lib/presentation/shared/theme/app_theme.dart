@@ -188,6 +188,7 @@ abstract final class AppTheme {
       ),
       snackBarTheme: const SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
+        actionOverflowThreshold: 1.0,
         showCloseIcon: true,
         backgroundColor: Color(0xFF1D2939),
         contentTextStyle: TextStyle(color: Colors.white),
