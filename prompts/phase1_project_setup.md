@@ -6,7 +6,7 @@ Create a runnable Flutter skeleton with navigation, theming, folder structure, a
 ## Context
 - **App name:** SreerajP ToDo
 - **Organisation:** `in.sreerajp`
-- **Project root:** `L:\Android\sreerajp_todo`
+- **Project root:** `sreerajp_todo`
 - **Flutter SDK:** 3.41.4 stable
 - **Platforms (MVP):** Android, Windows desktop
 - **This is a fully offline app** — no internet access, ever. No networking packages, no cloud services, no analytics, no telemetry.
@@ -21,7 +21,6 @@ Create a runnable Flutter skeleton with navigation, theming, folder structure, a
 
 ### 1. Scaffold the Flutter Project
 ```powershell
-cd L:\Android\sreerajp_todo
 flutter create --org in.sreerajp --platforms android,windows .
 ```
 

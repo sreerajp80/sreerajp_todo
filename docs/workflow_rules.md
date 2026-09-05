@@ -16,7 +16,7 @@ These workflow rules apply to all development, feature additions, refactoring, a
 
 - For non-trivial features, architectural modifications, database schema migrations, or security changes, create an implementation plan first in `plans/`.
 - Ensure all plans are stored as snake_case Markdown files with date-timestamp prefixes (`YYYYMMDD_HHMMSS_description.md`).
-- Ensure plans use relative repository paths only and omit sensitive system paths or private credentials.
+- **Relative paths & privacy only:** All `plans/` and `change_log/` files MUST use relative repository paths only (never absolute system paths like `C:\...` or `l:\...`). They MUST NOT contain any **local system details** — OS user name, computer/host name, home or drive-letter paths, network share names, LAN/internal IP addresses, local server URLs with ports, device serial numbers, personal email addresses — or any secret (API keys, tokens, passwords, keystore passphrases, credentials, PII). Write them as if a stranger will read them; nothing should reveal the machine they came from.
 
 ---
 
@@ -29,7 +29,8 @@ These workflow rules apply to all development, feature additions, refactoring, a
 
 ## 4. Log After Changing
 
-- Record completed implementation milestones and key decisions in `change_log/` or feature-specific documentation.
+- Record completed implementation milestones and key decisions in `change_log/` named `YYYYMMDD_HHMMSS_description.md` referencing its plan.
+- Ensure change logs follow the same relative-paths-only and zero-local-system-details policy.
 - Maintain `docs/features.md` as the authoritative, up-to-date reference for implemented features.
 
 ---

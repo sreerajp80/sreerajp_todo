@@ -368,6 +368,12 @@ abstract class AppLocalizations {
   /// **'Complete'**
   String get completeAction;
 
+  /// Button/action label to reopen or revert a completed or dropped task.
+  ///
+  /// In en, this message translates to:
+  /// **'Reopen'**
+  String get reopenAction;
+
   /// Button/action label to mark a task dropped.
   ///
   /// In en, this message translates to:
@@ -451,6 +457,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This and future occurrences deleted'**
   String get futureOccurrencesDeleted;
+
+  /// Confirmation dialog title for editing a recurring task occurrence.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit recurring task?'**
+  String get confirmEditRecurring;
+
+  /// Confirmation dialog body text when editing a recurring task occurrence.
+  ///
+  /// In en, this message translates to:
+  /// **'This task was created by a recurrence rule. How would you like to apply your changes?'**
+  String get confirmEditRecurringBody;
+
+  /// Option label to edit only this occurrence of recurring task.
+  ///
+  /// In en, this message translates to:
+  /// **'This instance only'**
+  String get editOnlyThis;
+
+  /// Option label to edit current and future occurrences of recurring task.
+  ///
+  /// In en, this message translates to:
+  /// **'All future instances'**
+  String get editThisAndFuture;
+
+  /// Option label to edit all occurrences of recurring task.
+  ///
+  /// In en, this message translates to:
+  /// **'All instances'**
+  String get editAllOccurrences;
+
+  /// Tooltip and button label to delete a time segment.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete time segment'**
+  String get deleteTimeSegment;
+
+  /// Confirmation dialog title for deleting a time segment.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete time segment?'**
+  String get confirmDeleteSegment;
+
+  /// Confirmation dialog body text when deleting a time segment.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this time segment?'**
+  String get confirmDeleteSegmentBody;
+
+  /// SnackBar message when a time segment is deleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Time segment deleted'**
+  String get timeSegmentDeleted;
 
   /// Confirmation dialog title for bulk dropping tasks.
   ///

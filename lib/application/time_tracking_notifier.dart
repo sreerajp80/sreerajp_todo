@@ -180,6 +180,31 @@ class TimeTrackingNotifier extends StateNotifier<TimeTrackingState> {
     }
   }
 
+  /// Deletes a time segment and refreshes state.
+  Future<void> deleteSegment(TimeSegmentEntity segment) async {
+    try {
+      await _repository.deleteSegment(segment.id);
+      if (segment.endTime == null) {
+        await _pausedTodos?.clearPaused(_todoId);
+      }
+      await loadSegments();
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+      rethrow;
+    }
+  }
+
+  /// Restores a previously deleted time segment (e.g. for undo).
+  Future<void> restoreSegment(TimeSegmentEntity segment) async {
+    try {
+      await _repository.restoreSegment(segment);
+      await loadSegments();
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+      rethrow;
+    }
+  }
+
   Future<void> addManualSegment(TimeSegmentEntity segment) async {
     try {
       await _repository.insertManualSegment(segment);

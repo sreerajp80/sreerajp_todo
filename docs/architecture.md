@@ -49,8 +49,10 @@ lib/
 |-- main.dart
 |-- app.dart                        # MaterialApp, ThemeData, go_router
 |-- core/
-|   |-- constants/                  # app_constants, app_strings, app_routes
+|   |-- config/                     # app_config, config_service (About screen)
+|   |-- constants/                  # app_constants, app_routes
 |   |-- errors/                     # exceptions, failures
+|   |-- extensions/                 # localization and build context extensions
 |   |-- platform/                   # thin Dart sides of the app's own method channels
 |   |-- voice/                      # voice_command_parser + the en and ml lexicons
 |   `-- utils/                      # date_utils, duration_utils, unicode_utils
@@ -64,6 +66,7 @@ lib/
 |   |-- entities/                   # domain models (immutable)
 |   |-- repositories/               # abstract interfaces
 |   `-- usecases/                   # multi-step business orchestrations
+|-- l10n/                           # ARB string files + generated AppLocalizations
 |-- application/                    # providers.dart, notifiers
 `-- presentation/
     |-- screens/                    # one folder per screen with widgets/ subdirectory
@@ -74,7 +77,8 @@ lib/
 
 | Path | Responsibility |
 |------|----------------|
-| `lib/core/` | Pure Dart utilities, constants, exceptions — zero Flutter imports |
+| `lib/core/` | Pure Dart utilities, config loader, constants, exceptions |
+| `lib/l10n/` | ARB translations and generated localization classes |
 | `lib/data/` | Repository implementations, DAOs, database service, backup, migrations |
 | `lib/domain/` | Abstract repository interfaces, use-case classes, domain entities — zero data-layer imports |
 | `lib/application/` | Riverpod providers and StateNotifiers |

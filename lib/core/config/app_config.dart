@@ -20,8 +20,8 @@ class AppConfig {
   static const AppConfig fallback = AppConfig(
     appName: 'SreerajP ToDo',
     description: 'Personal offline-first daily ToDo and time-tracker.',
-    version: '1.5.6',
-    build: '1',
+    version: '1.13.1',
+    build: '32',
     details: {'License': 'All libraries used are open source.'},
   );
 

@@ -8,7 +8,7 @@ void showUndoSnackBar(
   required VoidCallback onUndo,
 }) {
   ScaffoldMessenger.of(context)
-    ..hideCurrentSnackBar()
+    ..clearSnackBars()
     ..showSnackBar(
       SnackBar(
         content: Text(message),
@@ -19,6 +19,29 @@ void showUndoSnackBar(
         showCloseIcon: false,
         padding: const EdgeInsets.only(left: 16, right: 8),
         action: SnackBarAction(label: context.l10n.undo, onPressed: onUndo),
+      ),
+    );
+}
+
+/// Shows an immediate informational feedback SnackBar.
+///
+/// Clears any previously queued SnackBars so old messages are never shown
+/// after the user has moved on to another task or action.
+void showAppSnackBar(
+  BuildContext context, {
+  required String message,
+  Duration duration = const Duration(seconds: 2),
+  SnackBarAction? action,
+  Color? backgroundColor,
+}) {
+  ScaffoldMessenger.of(context)
+    ..clearSnackBars()
+    ..showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: duration,
+        action: action,
+        backgroundColor: backgroundColor,
       ),
     );
 }

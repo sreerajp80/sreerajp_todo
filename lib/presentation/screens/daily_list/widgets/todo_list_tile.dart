@@ -11,6 +11,7 @@ import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/status_badge.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/timer_controls.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
 
 class TodoListTile extends ConsumerWidget {
   const TodoListTile({
@@ -23,6 +24,7 @@ class TodoListTile extends ConsumerWidget {
     required this.onLongPress,
     required this.onComplete,
     required this.onDrop,
+    this.onReopen,
     required this.onPort,
     required this.onCopy,
     required this.onEdit,
@@ -40,6 +42,7 @@ class TodoListTile extends ConsumerWidget {
   final VoidCallback onLongPress;
   final VoidCallback onComplete;
   final VoidCallback onDrop;
+  final VoidCallback? onReopen;
   final VoidCallback onPort;
   final VoidCallback onCopy;
   final VoidCallback onEdit;
@@ -123,6 +126,10 @@ class TodoListTile extends ConsumerWidget {
 
   bool _canShowQuickActions(TodoStatus status) {
     return status == TodoStatus.pending || status == TodoStatus.working;
+  }
+
+  bool _canReopen(TodoStatus status) {
+    return status == TodoStatus.completed || status == TodoStatus.dropped;
   }
 
   bool _canPort(TodoStatus status) {
@@ -289,6 +296,17 @@ class TodoListTile extends ConsumerWidget {
       constraints: const BoxConstraints(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       itemBuilder: (context) => [
+        if (!isPast && _canReopen(displayStatus) && onReopen != null)
+          PopupMenuItem(
+            value: 'reopen',
+            child: Row(
+              children: [
+                const Icon(Icons.replay_rounded, size: 20),
+                const SizedBox(width: 8),
+                Text(context.l10n.reopenAction),
+              ],
+            ),
+          ),
         if (_canPort(displayStatus))
           PopupMenuItem(
             value: 'port',
@@ -364,6 +382,8 @@ class TodoListTile extends ConsumerWidget {
       ],
       onSelected: (value) {
         switch (value) {
+          case 'reopen':
+            onReopen?.call();
           case 'port':
             onPort();
           case 'history':
@@ -410,6 +430,11 @@ class TodoListTile extends ConsumerWidget {
     final tileLongPress = isPast ? null : onLongPress;
     final showQuickActions =
         !isMultiSelectMode && !isPast && _canShowQuickActions(displayStatus);
+    final showReopenAction =
+        !isMultiSelectMode &&
+        !isPast &&
+        _canReopen(displayStatus) &&
+        onReopen != null;
 
     final isDark = theme.brightness == Brightness.dark;
 
@@ -536,6 +561,23 @@ class TodoListTile extends ConsumerWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
+                              if (showReopenAction) ...[
+                                const SizedBox(width: 8),
+                                _buildCompactActionButton(
+                                  context,
+                                  icon: Icons.replay_rounded,
+                                  tooltip: context.l10n.reopenAction,
+                                  onPressed: onReopen!,
+                                  backgroundColor: AppTheme.statusColor(
+                                    theme,
+                                    displayStatus,
+                                  ).withValues(alpha: 0.14),
+                                  foregroundColor: AppTheme.statusColor(
+                                    theme,
+                                    displayStatus,
+                                  ),
+                                ),
+                              ],
                               if (showQuickActions) ...[
                                 const SizedBox(width: 8),
                                 _buildCompactActionButton(
@@ -606,15 +648,10 @@ class TodoListTile extends ConsumerWidget {
                                       return;
                                     }
                                     if (isBlocked) {
-                                      ScaffoldMessenger.of(
+                                      showAppSnackBar(
                                         context,
-                                      ).showSnackBar(
-                                        SnackBar(
-                                          content: Text(
-                                            context.l10n.blockedWarning,
-                                          ),
-                                          backgroundColor: colorScheme.error,
-                                        ),
+                                        message: context.l10n.blockedWarning,
+                                        backgroundColor: colorScheme.error,
                                       );
                                     }
                                     TimerActions.start(context, ref, todo.id);

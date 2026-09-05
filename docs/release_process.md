@@ -51,32 +51,33 @@ Two Android build flavors are defined: `dev` and `prod`.
 |---------------|---------|-------------|
 | `dev` + `debug` | `flutter run --flavor dev` | Daily development and device testing |
 | `dev` + `release` | `flutter build apk --flavor dev --release` | Release-like QA build |
-| `prod` + `release` | `flutter build apk --flavor prod --release --split-per-abi` | Shareable release APKs |
-| `prod` + `release` | `flutter build appbundle --flavor prod --release` | Play Store submission |
+| `prod` + `release` | `flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi` | Shareable release APKs |
+| `prod` + `release` | `flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/` | Play Store submission |
 
 Windows builds do not use flavors. For detailed flavor usage, see `docs/flutter_build_flavors_guide.md`.
 
 ## 6. Signing And Secret Handling
 
-- Signing config location: `L:\Android\key.properties` (one level above the project root).
-- Keystore file: `L:\Android\key.properties.jks`
+- Signing config location: `android/key.properties` (inside `android/`, never committed).
+- Keystore file: `android/release-keystore.jks` (or custom name referenced by `key.properties`).
 - Keystore ownership: SreerajP (single developer).
 - Rules:
   - Signing material must not live in source control (`key.properties` and `.jks` files are in `.gitignore`).
-  - The `key.properties` path is referenced from `android/app/build.gradle.kts` via a relative path (`../../key.properties`).
-  - CI logs must not print signing secrets.
+  - The `key.properties` path is referenced from `android/app/build.gradle.kts` via `rootProject.file("key.properties")`.
+  - CI and local logs must not print signing secrets.
+  - Always archive `build/symbols/` immediately after production builds for crash stack trace de-obfuscation.
 
 ### Keystore Generation
 
 ```powershell
-keytool -genkey -v -keystore L:\Android\key.properties.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sreerajp
+keytool -genkey -v -keystore android/release-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sreerajp
 ```
 
 ### Gradle Signing Configuration
 
 ```kotlin
 val keystoreProperties = Properties()
-val keystorePropertiesFile = rootProject.file("../../key.properties")
+val keystorePropertiesFile = rootProject.file("key.properties")
 
 if (keystorePropertiesFile.exists()) {
     FileInputStream(keystorePropertiesFile).use(keystoreProperties::load)
@@ -164,10 +165,14 @@ Complete these items before every release.
    ```
 5. Build the release artifacts:
    ```powershell
-   flutter build apk --flavor prod --release --split-per-abi
-   flutter build appbundle --flavor prod --release
+   flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi
+   flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/
    ```
-6. Verify INTERNET permission is absent from the merged manifest:
+6. Archive debug symbols immediately to secure storage:
+   ```powershell
+   # Archive build/symbols/android-prod/ alongside release notes
+   ```
+7. Verify INTERNET permission is absent from the merged manifest:
    ```powershell
    Select-String -Path "build\app\intermediates\merged_manifests\prodRelease\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
    # Expected: ZERO matches. If any found: HALT and investigate.

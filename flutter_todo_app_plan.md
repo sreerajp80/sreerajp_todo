@@ -3,7 +3,7 @@
 **Flutter SDK:** 3.44.8 (stable) • rev `058e0af2c2`
 **Dart SDK:** 3.12.2 • DevTools 2.57.0
 **IDE:** Visual Studio Code
-**Project Root:** `L:\Android\sreerajp_todo`
+**Project Root:** `sreerajp_todo`
 **Date:** 2026-03-15
 **Version:** 1.3 (updated 2026-03-20)
 
@@ -400,9 +400,8 @@ workflow tooling in place.
 
 1. **Scaffold the project**
    ```powershell
-   # Run from L:\Android\sreerajp_todo
+   # Run from project root
    # If starting fresh:
-   cd L:\Android\sreerajp_todo
    flutter create --org in.sreerajp --platforms android,windows .
    code .
    ```
@@ -1185,9 +1184,8 @@ Review and fill any gaps in unit test coverage. The following should already exi
 
 1. **Android**
    - Configure `android/app/build.gradle` with correct `applicationId`, version.
-   - Generate a release keystore and configure signing in `key.properties` (stored at
-     `L:\Android\key.properties` — one level above the project root, never
-     committed to Git).
+   - Generate a release keystore and configure signing in `android/key.properties` (stored
+     locally, never committed to Git).
    - **Verify `INTERNET` permission is absent from the merged release manifest:**
      ```powershell
      flutter build apk --release

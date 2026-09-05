@@ -12,16 +12,17 @@ Read [AGENTS.md](../AGENTS.md) and [architecture.md](architecture.md) first to u
 sreerajp_todo/
 ├── .githooks/               # Git automation hooks
 ├── android/                 # Android native app host configuration & resources
-├── assets/                  # Bundled static assets (fonts, splash images)
+├── assets/                  # Bundled static assets (config/, fonts/, splash images)
 ├── change_log/              # Timestamped feature change logs
 ├── docs/                    # Living & point-in-time project documentation suite
 │   └── guidelines/          # Shared Flutter Guidelines Git Submodule
 ├── integration_test/        # End-to-end Flutter integration tests
-├── lib/                     # Application source code (5-layer architecture)
+├── lib/                     # Application source code (5-layer architecture + l10n)
 │   ├── application/         # StateNotifiers, Riverpod providers, UI state management
-│   ├── core/                # Utility functions, constants, theme, exceptions (Pure Dart)
+│   ├── core/                # Utility functions, config (About), constants, theme, exceptions
 │   ├── data/                # Repository impls, DAOs, SQLite models, migrations, backups
 │   ├── domain/              # Domain entities, use-cases, repository interfaces
+│   ├── l10n/                # ARB localization sources and generated AppLocalizations
 │   └── presentation/        # Screens, widgets, dialogs, router configuration
 ├── plans/                   # Dated workflow implementation plans
 ├── test/                    # Unit, DAO, use-case, and widget tests
@@ -37,11 +38,12 @@ sreerajp_todo/
 
 ## 2. Layer Responsibilities (`lib/`)
 
-- **`lib/core/`**: Pure Dart layer containing utilities (`unicode_utils.dart`, `date_utils.dart`, `duration_utils.dart`), constants (`app_strings.dart`, `app_routes.dart`), app theme definitions, and custom exception classes. Contains zero Flutter framework imports.
+- **`lib/core/`**: Utilities (`unicode_utils.dart`, `date_utils.dart`, `duration_utils.dart`), config (`app_config.dart`, `config_service.dart`), constants (`app_constants.dart`, `app_routes.dart`), app theme definitions, and custom exception classes. Pure Dart utilities and domain types; `config/` implements the standard About-screen config loader.
+- **`lib/l10n/`**: Bilingual ARB localization files (`app_en.arb`, `app_ml.arb`) and generated `AppLocalizations` classes. Every user-visible text string in the app originates from this layer.
 - **`lib/domain/`**: Pure business logic containing entity definitions (`TodoEntity`, `TimeSegmentEntity`, `RecurringPatternEntity`), repository interface declarations, and orchestration use-cases (`PortTodo`, `RepairOrphanedSegments`, `DeleteRecurringTodos`).
 - **`lib/data/`**: Data access and persistence layer implementing domain interfaces. Includes DAOs (`TodoDao`, `TimeSegmentDao`, `RecurringPatternDao`), SQLite migration runners (`migration_v1.dart`, `migration_v2.dart`), and encrypted database backup helpers (`backup_service.dart`).
 - **`lib/application/`**: State management layer holding Riverpod providers (`providers.dart`) and StateNotifiers managing daily lists, search, statistics, backup, and settings state.
-- **`lib/presentation/`**: Flutter UI layer structured by screens (`daily_list`, `create_edit_todo`, `statistics`, `backup`, `search_results`, `copy_todos`, `recurring_todos`) with supporting `widgets/` subdirectories.
+- **`lib/presentation/`**: Flutter UI layer structured by screens (`daily_list`, `create_edit_todo`, `statistics`, `backup`, `search_results`, `copy_todos`, `recurring_todos`, `about`) with supporting `widgets/` subdirectories. Consumes `AppLocalizations` via `context.l10n`.
 
 ---
 

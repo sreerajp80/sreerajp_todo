@@ -109,6 +109,89 @@ class TodoDao {
     );
   }
 
+  Future<List<TodoEntity>> findByRecurrenceRuleId(
+    String recurrenceRuleId, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final maps = await db.query(
+      'todos',
+      where: 'recurrence_rule_id = ?',
+      whereArgs: [recurrenceRuleId],
+      orderBy: 'date ASC, sort_order ASC, created_at ASC',
+    );
+    final todos = <TodoEntity>[];
+    for (final map in maps) {
+      final id = map['id'] as String;
+      final subTasks = await _subTaskDao.findByTodoId(id, executor: db);
+      final prereqIds = await _taskDependencyDao.getPrerequisiteIdsForTodo(
+        id,
+        executor: db,
+      );
+      todos.add(
+        TodoEntity.fromMap(
+          map,
+          subTasks: subTasks,
+          prerequisiteTodoIds: prereqIds,
+        ),
+      );
+    }
+    return todos;
+  }
+
+  Future<List<TodoEntity>> findByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final maps = await db.query(
+      'todos',
+      where: 'recurrence_rule_id = ? AND date >= ?',
+      whereArgs: [recurrenceRuleId, fromDate],
+      orderBy: 'date ASC, sort_order ASC, created_at ASC',
+    );
+    final todos = <TodoEntity>[];
+    for (final map in maps) {
+      final id = map['id'] as String;
+      final subTasks = await _subTaskDao.findByTodoId(id, executor: db);
+      final prereqIds = await _taskDependencyDao.getPrerequisiteIdsForTodo(
+        id,
+        executor: db,
+      );
+      todos.add(
+        TodoEntity.fromMap(
+          map,
+          subTasks: subTasks,
+          prerequisiteTodoIds: prereqIds,
+        ),
+      );
+    }
+    return todos;
+  }
+
+  Future<bool> existsByRecurrenceRuleIdOnDate(
+    String recurrenceRuleId,
+    String date, {
+    String? excludeId,
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final where = excludeId != null
+        ? 'recurrence_rule_id = ? AND date = ? AND id != ?'
+        : 'recurrence_rule_id = ? AND date = ?';
+    final whereArgs = excludeId != null
+        ? [recurrenceRuleId, date, excludeId]
+        : [recurrenceRuleId, date];
+    final result = await db.query(
+      'todos',
+      where: where,
+      whereArgs: whereArgs,
+      limit: 1,
+    );
+    return result.isNotEmpty;
+  }
+
   Future<List<TodoEntity>> findByDate(String date) async {
     final db = await _databaseService.database;
     final maps = await db.query(

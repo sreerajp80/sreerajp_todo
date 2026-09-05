@@ -99,15 +99,15 @@ public-facing distribution:
 
 - Flutter `3.44.8` stable
 - Dart `3.12.2`
-- Android release signing files at `L:\Android\key.properties` and `L:\Android\key.properties.jks`
+- Android release signing files at `android/key.properties` and referenced keystore
 
 ### Android
 
 ```powershell
 flutter pub get
-flutter build apk --debug
-flutter build apk --release
-flutter build appbundle --release
+flutter run --flavor dev
+flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi
+flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/
 ```
 
 Android builds automatically regenerate the About screen version and build date from `pubspec.yaml` and the current local date before compilation.
@@ -134,7 +134,7 @@ Select-String -Path "lib\**\*.dart" -Pattern "Image\.network|NetworkImage" -Recu
 Test-Path "build\windows\x64\runner\Release\sqlite3.dll"
 ```
 
-More detail is in [docs/release_process.md](/l:/Android/sreerajp_todo/docs/release_process.md).
+More detail is in [docs/release_process.md](docs/release_process.md).
 
 ---
 

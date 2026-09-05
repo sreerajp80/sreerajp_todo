@@ -174,12 +174,67 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
 
   @override
   Future<void> deleteSegment(String segmentId) async {
+    final segment = await _timeSegmentDao.findById(segmentId);
+    if (segment == null) return;
+
+    final todo = await _todoDao.findById(segment.todoId);
+    if (todo != null && isPastDate(todo.date)) {
+      throw const DayLockedException();
+    }
+
     await _timeSegmentDao.delete(segmentId);
+
+    if (todo != null) {
+      final startDt = DateTime.parse(segment.startTime);
+      final endDt = segment.endTime != null
+          ? DateTime.parse(segment.endTime!)
+          : null;
+      final dur =
+          segment.durationSeconds ??
+          (endDt != null ? endDt.difference(startDt).inSeconds : 0);
+      final timeRange = endDt != null
+          ? '${_clock(startDt)} -> ${_clock(endDt)}'
+          : _clock(startDt);
+      await _logHistoryEvent(
+        todoId: segment.todoId,
+        eventType: TodoHistoryEventType.edited,
+        description:
+            'Time segment deleted: $timeRange (${formatDuration(dur)})',
+        metadata: '{"segment_id":"$segmentId","action":"deleted"}',
+        eventTime: DateTime.now().toUtc().toIso8601String(),
+      );
+    }
   }
 
   @override
   Future<void> restoreSegment(TimeSegmentEntity segment) async {
+    final todo = await _todoDao.findById(segment.todoId);
+    if (todo != null && isPastDate(todo.date)) {
+      throw const DayLockedException();
+    }
+
     await _timeSegmentDao.insert(segment);
+
+    if (todo != null) {
+      final startDt = DateTime.parse(segment.startTime);
+      final endDt = segment.endTime != null
+          ? DateTime.parse(segment.endTime!)
+          : null;
+      final dur =
+          segment.durationSeconds ??
+          (endDt != null ? endDt.difference(startDt).inSeconds : 0);
+      final timeRange = endDt != null
+          ? '${_clock(startDt)} -> ${_clock(endDt)}'
+          : _clock(startDt);
+      await _logHistoryEvent(
+        todoId: segment.todoId,
+        eventType: TodoHistoryEventType.edited,
+        description:
+            'Time segment restored: $timeRange (${formatDuration(dur)})',
+        metadata: '{"segment_id":"${segment.id}","action":"restored"}',
+        eventTime: DateTime.now().toUtc().toIso8601String(),
+      );
+    }
   }
 
   @override

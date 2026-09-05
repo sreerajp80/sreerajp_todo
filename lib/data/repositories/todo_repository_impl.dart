@@ -114,6 +114,24 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleId(String recurrenceRuleId) {
+    return _todoDao.findByRecurrenceRuleId(recurrenceRuleId);
+  }
+
+  @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) {
+    return _todoDao.findByRecurrenceRuleIdFromDate(recurrenceRuleId, fromDate);
+  }
+
+  @override
+  Future<bool> existsRuleInstanceOnDate(String recurrenceRuleId, String date) {
+    return _todoDao.existsByRecurrenceRuleIdOnDate(recurrenceRuleId, date);
+  }
+
+  @override
   Future<void> updateStatus(
     String id,
     TodoStatus status, {

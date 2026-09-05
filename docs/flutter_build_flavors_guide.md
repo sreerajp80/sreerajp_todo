@@ -48,13 +48,13 @@ flutter build apk --flavor dev --debug
 Build production split APKs for mixed-device sharing:
 
 ```bash
-flutter build apk --flavor prod --release --split-per-abi
+flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi
 ```
 
 Build a Play Store bundle:
 
 ```bash
-flutter build appbundle --flavor prod --release
+flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/
 ```
 
 ## Which Artifact To Use

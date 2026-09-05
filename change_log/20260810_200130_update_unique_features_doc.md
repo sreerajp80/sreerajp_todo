@@ -1,10 +1,10 @@
 # Change Log: 18-App Audit & Unique Features Specification Update
 
 **Date:** 2026-08-10  
-**Plan Reference:** [plans/20260810_195009_update_unique_features_doc.md](file:///l:/Android/sreerajp_todo/plans/20260810_195009_update_unique_features_doc.md)
+**Plan Reference:** [plans/20260810_195009_update_unique_features_doc.md](plans/20260810_195009_update_unique_features_doc.md)
 
 ## Summary of Changes
-Updated `docs/unique_features_and_improvements.md` following an exhaustive audit of all 18 applications listed in `L:\Android\MyFlutterApps\myapps.md`.
+Updated `docs/unique_features_and_improvements.md` following an exhaustive audit of all 18 applications listed in `myapps.md`.
 
 ### Detailed Changes in `docs/unique_features_and_improvements.md`
 1. **Executive Summary & Ecosystem Context:**

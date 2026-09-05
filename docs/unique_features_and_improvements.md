@@ -21,7 +21,7 @@ All proposed features and enhancements strictly observe the core architectural i
 
 ## 2. Comprehensive 18-App Code & Asset Reuse Matrix
 
-By auditing all 18 applications in `L:\Android\MyFlutterApps\myapps.md`, we identify existing, production-tested algorithms, engines, crypto pipelines, and layout techniques that can be adapted for `SreerajP ToDo` without reinventing complex logic from scratch:
+By auditing all 18 applications in `myapps.md`, we identify existing, production-tested algorithms, engines, crypto pipelines, and layout techniques that can be adapted for `SreerajP ToDo` without reinventing complex logic from scratch:
 
 | # | Source Application | audited `features.md` Asset / Engine | Reusable Component / Algorithm for `SreerajP ToDo` |
 |---|--------------------|--------------------------------------|----------------------------------------------------|

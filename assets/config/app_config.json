@@ -1,8 +1,8 @@
 {
   "appName": "SreerajP ToDo",
   "description": "Personal offline-first daily ToDo and time-tracker.",
-  "version": "1.13.1",
-  "build": "32",
+  "version": "1.13.3",
+  "build": "34",
   "details": {
     "Author": "Sreeraj P",
     "Email": "sreerajp@zohomail.in",

@@ -477,6 +477,16 @@ class _SegmentTile extends ConsumerWidget {
                   tooltip: context.l10n.editSegmentNote,
                   onPressed: () => _editNote(context, ref),
                 ),
+                if (!isPast)
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete_outline_rounded,
+                      size: 20,
+                      color: colorScheme.error,
+                    ),
+                    tooltip: context.l10n.deleteTimeSegment,
+                    onPressed: () => _confirmDelete(context, ref),
+                  ),
               ],
             ),
           ),
@@ -631,6 +641,62 @@ class _SegmentTile extends ConsumerWidget {
     await ref
         .read(timeTrackingProvider(todoId).notifier)
         .updateSegmentNotes(segment.id, saved);
+  }
+
+  Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogCtx) => AlertDialog(
+        title: Text(dialogCtx.l10n.confirmDeleteSegment),
+        content: Text(dialogCtx.l10n.confirmDeleteSegmentBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogCtx).pop(false),
+            child: Text(dialogCtx.l10n.cancel),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(dialogCtx).colorScheme.error,
+              foregroundColor: Theme.of(dialogCtx).colorScheme.onError,
+            ),
+            onPressed: () => Navigator.of(dialogCtx).pop(true),
+            child: Text(dialogCtx.l10n.delete),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true || !context.mounted) return;
+
+    final notifier = ref.read(timeTrackingProvider(todoId).notifier);
+
+    try {
+      await notifier.deleteSegment(segment);
+
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(context.l10n.timeSegmentDeleted),
+            duration: const Duration(seconds: 5),
+            action: SnackBarAction(
+              label: context.l10n.undo,
+              onPressed: () {
+                notifier.restoreSegment(segment);
+              },
+            ),
+          ),
+        );
+      }
+    } on Exception catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
   }
 }
 

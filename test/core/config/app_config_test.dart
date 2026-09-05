@@ -5,8 +5,8 @@ void main() {
   group('AppConfig', () {
     test('fallback returns expected default values', () {
       expect(AppConfig.fallback.appName, equals('SreerajP ToDo'));
-      expect(AppConfig.fallback.version, equals('1.5.6'));
-      expect(AppConfig.fallback.build, equals('1'));
+      expect(AppConfig.fallback.version, equals('1.13.1'));
+      expect(AppConfig.fallback.build, equals('32'));
       expect(AppConfig.fallback.details, isNotEmpty);
     });
 

@@ -115,6 +115,32 @@ class _InMemoryRepo implements TodoRepository {
   ) async => 0;
 
   @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleId(
+    String recurrenceRuleId,
+  ) async =>
+      todos.where((t) => t.recurrenceRuleId == recurrenceRuleId).toList();
+
+  @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async => todos
+      .where(
+        (t) =>
+            t.recurrenceRuleId == recurrenceRuleId &&
+            t.date.compareTo(fromDate) >= 0,
+      )
+      .toList();
+
+  @override
+  Future<bool> existsRuleInstanceOnDate(
+    String recurrenceRuleId,
+    String date,
+  ) async => todos.any(
+    (t) => t.recurrenceRuleId == recurrenceRuleId && t.date == date,
+  );
+
+  @override
   Future<List<TodoEntity>> getPendingPrerequisites(String todoId) async => [];
 
   @override

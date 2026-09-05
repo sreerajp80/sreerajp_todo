@@ -150,6 +150,9 @@ class AppLocalizationsMl extends AppLocalizations {
   String get completeAction => 'പൂർത്തിയാക്കുക';
 
   @override
+  String get reopenAction => 'വീണ്ടും തുറക്കുക';
+
+  @override
   String get dropAction => 'ഉപേക്ഷിക്കുക';
 
   @override
@@ -194,6 +197,35 @@ class AppLocalizationsMl extends AppLocalizations {
   @override
   String get futureOccurrencesDeleted =>
       'ഇതും ഭാവിയിലുള്ള ആവർത്തനങ്ങളും ഇല്ലാതാക്കി';
+
+  @override
+  String get confirmEditRecurring => 'ആവർത്തന ടാസ്ക് എഡിറ്റ് ചെയ്യണോ?';
+
+  @override
+  String get confirmEditRecurringBody =>
+      'ഈ ടാസ്ക് ഒരു ആവർത്തന പരമ്പരയുടെ ഭാഗമാണ്. മാറ്റങ്ങൾ എങ്ങനെ പ്രയോഗിക്കണം?';
+
+  @override
+  String get editOnlyThis => 'ഈ തവണ മാത്രം';
+
+  @override
+  String get editThisAndFuture => 'ഇതും ഭാവിയിലുള്ളവയും';
+
+  @override
+  String get editAllOccurrences => 'എല്ലാ തവണയും';
+
+  @override
+  String get deleteTimeSegment => 'സമയ ഭാഗം ഇല്ലാതാക്കുക';
+
+  @override
+  String get confirmDeleteSegment => 'സമയ ഭാഗം ഇല്ലാതാക്കണോ?';
+
+  @override
+  String get confirmDeleteSegmentBody =>
+      'ഈ സമയ ഭാഗം ഇല്ലാതാക്കണമെന്ന് ഉറപ്പാണോ?';
+
+  @override
+  String get timeSegmentDeleted => 'സമയ ഭാഗം ഇല്ലാതാക്കി';
 
   @override
   String get confirmBulkDrop => 'തിരഞ്ഞെടുത്ത ടാസ്കുകൾ ഉപേക്ഷിക്കണോ?';

@@ -121,6 +121,23 @@ class _FakeTodoRepository implements TodoRepository {
   ) async => 0;
 
   @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleId(
+    String recurrenceRuleId,
+  ) async => [];
+
+  @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async => [];
+
+  @override
+  Future<bool> existsRuleInstanceOnDate(
+    String recurrenceRuleId,
+    String date,
+  ) async => false;
+
+  @override
   Future<void> moveTodo(String todoId, String targetDate) async {}
 
   @override

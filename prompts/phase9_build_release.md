@@ -27,14 +27,14 @@ Semantic versioning. Build number can be auto-incremented in CI later.
 #### Configure signing:
 - Generate a release keystore (if not already done):
   ```powershell
-  keytool -genkey -v -keystore L:\Android\key.properties.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sreerajp
+  keytool -genkey -v -keystore android/release-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias sreerajp
   ```
-- Create `key.properties` at `L:\Android\key.properties` (**one level above project root, never committed to Git**):
+- Create `key.properties` at `android/key.properties` (**stored locally, never committed to Git**):
   ```properties
   storePassword=<password>
   keyPassword=<password>
   keyAlias=sreerajp
-  storeFile=L:\\Android\\key.properties.jks
+  storeFile=release-keystore.jks
   ```
 - Configure `android/app/build.gradle` to read from `key.properties`:
   ```groovy

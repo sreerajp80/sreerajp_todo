@@ -188,7 +188,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
 
   void _showSnackBar(String message, {Future<void> Function()? retry}) {
     final messenger = ScaffoldMessenger.of(context);
-    messenger.hideCurrentSnackBar();
+    messenger.clearSnackBars();
     messenger.showSnackBar(
       SnackBar(
         content: Text(message),

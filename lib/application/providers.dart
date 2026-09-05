@@ -48,11 +48,13 @@ import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/delete_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/generate_recurring_tasks.dart';
+import 'package:sreerajp_todo/domain/usecases/update_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
 import 'package:sreerajp_todo/domain/usecases/get_todo_history.dart';
 import 'package:sreerajp_todo/domain/usecases/move_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
+import 'package:sreerajp_todo/domain/usecases/reopen_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/repair_orphaned_segments.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 import 'package:sreerajp_todo/data/dao/spaced_repetition_dao.dart';
@@ -169,6 +171,13 @@ final portTodoProvider = Provider<PortTodo>((ref) {
   );
 });
 
+final reopenTodoProvider = Provider<ReopenTodo>((ref) {
+  return ReopenTodo(
+    ref.read(todoRepositoryProvider),
+    ref.read(timeSegmentRepositoryProvider),
+  );
+});
+
 final moveTodoProvider = Provider<MoveTodo>((ref) {
   return MoveTodo(
     ref.read(todoRepositoryProvider),
@@ -219,6 +228,14 @@ final deleteRecurringTodosProvider = Provider<DeleteRecurringTodos>((ref) {
   return DeleteRecurringTodos(
     ref.read(todoRepositoryProvider),
     ref.read(recurrenceRuleRepositoryProvider),
+  );
+});
+
+final updateRecurringTodosProvider = Provider<UpdateRecurringTodos>((ref) {
+  return UpdateRecurringTodos(
+    ref.read(todoRepositoryProvider),
+    ref.read(recurrenceRuleRepositoryProvider),
+    ref.read(generateRecurringTasksProvider),
   );
 });
 
@@ -273,6 +290,7 @@ final dailyTodoProvider =
         copyTodosUseCase: ref.read(copyTodosProvider),
         deleteRecurringTodos: ref.read(deleteRecurringTodosProvider),
         moveTodoUseCase: ref.read(moveTodoProvider),
+        reopenTodoUseCase: ref.read(reopenTodoProvider),
         onDataChanged: () {
           ref.invalidate(statisticsProvider);
           ref.invalidate(pendingAlertPayloadProvider);

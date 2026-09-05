@@ -72,6 +72,10 @@ class GenerateRecurringTasks {
           );
           if (exists) continue;
 
+          final existsRuleInstance = await _todoRepository
+              .existsRuleInstanceOnDate(rule.id, dateStr);
+          if (existsRuleInstance) continue;
+
           final maxOrder = await _todoRepository.maxSortOrder(dateStr);
           final now = DateTime.now().toUtc().toIso8601String();
           todosToInsert.add(

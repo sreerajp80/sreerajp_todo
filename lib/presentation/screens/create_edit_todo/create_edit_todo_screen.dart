@@ -22,12 +22,14 @@ import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/targ
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/title_autocomplete_field.dart';
 import 'package:sreerajp_todo/presentation/screens/recurring_tasks/widgets/rrule_frequency_picker.dart';
 import 'package:sreerajp_todo/presentation/screens/recurring_tasks/widgets/rrule_preview.dart';
+import 'package:sreerajp_todo/domain/usecases/update_recurring_todos.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/core/utils/rrule_display_utils.dart';
 
 import 'package:sreerajp_todo/data/models/sub_task_item.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
 
 class CreateEditTodoScreen extends ConsumerStatefulWidget {
   const CreateEditTodoScreen({
@@ -237,6 +239,47 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       return;
     }
 
+    RecurringEditTarget? recurringScope;
+    if (widget.isEditing &&
+        _existingTodo != null &&
+        _existingTodo!.recurrenceRuleId != null) {
+      final choice = await showDialog<String>(
+        context: context,
+        builder: (dialogCtx) => AlertDialog(
+          title: Text(dialogCtx.l10n.confirmEditRecurring),
+          content: Text(dialogCtx.l10n.confirmEditRecurringBody),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogCtx).pop(),
+              child: Text(dialogCtx.l10n.cancel),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogCtx).pop('this'),
+              child: Text(dialogCtx.l10n.editOnlyThis),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(dialogCtx).pop('future'),
+              child: Text(dialogCtx.l10n.editThisAndFuture),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(dialogCtx).pop('all'),
+              child: Text(dialogCtx.l10n.editAllOccurrences),
+            ),
+          ],
+        ),
+      );
+      if (choice == null || !mounted) {
+        return;
+      }
+      recurringScope = switch (choice) {
+        'this' => RecurringEditTarget.thisInstanceOnly,
+        'future' => RecurringEditTarget.allFutureInstances,
+        'all' => RecurringEditTarget.allInstances,
+        _ => null,
+      };
+      if (recurringScope == null) return;
+    }
+
     setState(() => _isSaving = true);
 
     try {
@@ -249,60 +292,117 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           : unicode_utils.nfcNormalize(_descriptionController.text.trim());
 
       if (widget.isEditing && _existingTodo != null) {
-        // Handle recurrence rule changes in edit mode
-        String? recurrenceRuleId = _existingTodo!.recurrenceRuleId;
-        final rulesNotifier = ref.read(recurrenceRulesProvider.notifier);
-
-        if (_repeatOption == SimpleRepeatOption.repeat) {
-          final rruleStr = _buildRruleFromRepeatOption();
-          if (_existingRule != null) {
-            // Update existing rule
-            final updatedRule = _existingRule!.copyWith(
-              title: normalizedTitle,
-              description: description,
-              rrule: rruleStr,
-              endDate: _hasCustomEndDate ? _customEndDate : null,
-              updatedAt: now,
-            );
-            await rulesNotifier.updateRule(updatedRule);
-            recurrenceRuleId = _existingRule!.id;
-          } else {
-            // Create new rule
-            final ruleId = _uuid.v4();
-            recurrenceRuleId = ruleId;
-            final rule = RecurrenceRuleEntity(
-              id: ruleId,
-              title: normalizedTitle,
-              description: description,
-              rrule: rruleStr,
-              startDate: _effectiveDate,
-              endDate: _hasCustomEndDate ? _customEndDate : null,
-              createdAt: now,
-              updatedAt: now,
-            );
-            await rulesNotifier.createRule(rule);
+        if (recurringScope != null) {
+          RecurrenceRuleEntity? updatedRule;
+          if (_repeatOption == SimpleRepeatOption.repeat) {
+            final rruleStr = _buildRruleFromRepeatOption();
+            if (_existingRule != null) {
+              updatedRule = _existingRule!.copyWith(
+                title: normalizedTitle,
+                description: description,
+                rrule: rruleStr,
+                endDate: _hasCustomEndDate ? _customEndDate : null,
+                updatedAt: now,
+              );
+            } else {
+              final ruleId = _existingTodo!.recurrenceRuleId ?? _uuid.v4();
+              updatedRule = RecurrenceRuleEntity(
+                id: ruleId,
+                title: normalizedTitle,
+                description: description,
+                rrule: rruleStr,
+                startDate: _effectiveDate,
+                endDate: _hasCustomEndDate ? _customEndDate : null,
+                createdAt: now,
+                updatedAt: now,
+              );
+            }
           }
-        } else if (_repeatOption == SimpleRepeatOption.none &&
-            _existingRule != null) {
-          // User removed the repeat — delete the rule
-          await rulesNotifier.deleteRule(_existingRule!.id);
-          recurrenceRuleId = null;
-        }
 
-        final updated = _existingTodo!.copyWith(
-          title: normalizedTitle,
-          description: description,
-          status: _status,
-          priority: _priority,
-          targetSeconds: _targetSeconds,
-          portedTo: _status == TodoStatus.ported ? _portedTo : null,
-          recurrenceRuleId: recurrenceRuleId,
-          subTasks: _subTasks,
-          prerequisiteTodoIds: _prerequisiteTodoIds,
-          updatedAt: now,
-        );
-        final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
-        await notifier.updateTodo(updated);
+          final updated = _existingTodo!.copyWith(
+            title: normalizedTitle,
+            description: description,
+            status: _status,
+            priority: _priority,
+            targetSeconds: _targetSeconds,
+            portedTo: _status == TodoStatus.ported ? _portedTo : null,
+            recurrenceRuleId: _repeatOption == SimpleRepeatOption.none
+                ? null
+                : _existingTodo!.recurrenceRuleId,
+            subTasks: _subTasks,
+            prerequisiteTodoIds: _prerequisiteTodoIds,
+            updatedAt: now,
+          );
+
+          await ref
+              .read(updateRecurringTodosProvider)
+              .execute(
+                baseTodo: _existingTodo!,
+                updatedTodo: updated,
+                updatedRule: updatedRule,
+                target: recurringScope,
+              );
+
+          ref.invalidate(recurrenceRulesProvider);
+          await ref
+              .read(dailyTodoProvider(_effectiveDate).notifier)
+              .loadTodos();
+        } else {
+          // Handle recurrence rule changes in edit mode for non-recurring or newly recurring
+          String? recurrenceRuleId = _existingTodo!.recurrenceRuleId;
+          final rulesNotifier = ref.read(recurrenceRulesProvider.notifier);
+
+          if (_repeatOption == SimpleRepeatOption.repeat) {
+            final rruleStr = _buildRruleFromRepeatOption();
+            if (_existingRule != null) {
+              // Update existing rule
+              final updatedRule = _existingRule!.copyWith(
+                title: normalizedTitle,
+                description: description,
+                rrule: rruleStr,
+                endDate: _hasCustomEndDate ? _customEndDate : null,
+                updatedAt: now,
+              );
+              await rulesNotifier.updateRule(updatedRule);
+              recurrenceRuleId = _existingRule!.id;
+            } else {
+              // Create new rule
+              final ruleId = _uuid.v4();
+              recurrenceRuleId = ruleId;
+              final rule = RecurrenceRuleEntity(
+                id: ruleId,
+                title: normalizedTitle,
+                description: description,
+                rrule: rruleStr,
+                startDate: _effectiveDate,
+                endDate: _hasCustomEndDate ? _customEndDate : null,
+                createdAt: now,
+                updatedAt: now,
+              );
+              await rulesNotifier.createRule(rule);
+            }
+          } else if (_repeatOption == SimpleRepeatOption.none &&
+              _existingRule != null) {
+            // User removed the repeat — delete the rule
+            await rulesNotifier.deleteRule(_existingRule!.id);
+            recurrenceRuleId = null;
+          }
+
+          final updated = _existingTodo!.copyWith(
+            title: normalizedTitle,
+            description: description,
+            status: _status,
+            priority: _priority,
+            targetSeconds: _targetSeconds,
+            portedTo: _status == TodoStatus.ported ? _portedTo : null,
+            recurrenceRuleId: recurrenceRuleId,
+            subTasks: _subTasks,
+            prerequisiteTodoIds: _prerequisiteTodoIds,
+            updatedAt: now,
+          );
+          final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
+          await notifier.updateTodo(updated);
+        }
       } else {
         // Create recurrence rule if repeat is set
         String? recurrenceRuleId;
@@ -344,28 +444,27 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       }
 
       // Generate recurring tasks for the look-ahead window
-      if (_repeatOption == SimpleRepeatOption.repeat) {
+      if (_repeatOption == SimpleRepeatOption.repeat &&
+          recurringScope == null) {
         await ref.read(generateRecurringTasksProvider).call();
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              widget.isEditing
-                  ? context.l10n.todoUpdated
-                  : _repeatOption != SimpleRepeatOption.none
-                  ? context.l10n.recurrenceCreated
-                  : context.l10n.todoCreated,
-            ),
-          ),
+        showAppSnackBar(
+          context,
+          message: widget.isEditing
+              ? context.l10n.todoUpdated
+              : _repeatOption != SimpleRepeatOption.none
+              ? context.l10n.recurrenceCreated
+              : context.l10n.todoCreated,
         );
         context.pop();
       }
     } on Exception catch (error) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(mapErrorToMessage(context.l10n, error))),
+        showAppSnackBar(
+          context,
+          message: mapErrorToMessage(context.l10n, error),
         );
       }
     } finally {
@@ -437,15 +536,14 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         await notifier.portTodo(_existingTodo!.id, targetDate);
         ref.invalidate(dailyTodoProvider(targetDate));
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(context.l10n.todoPorted)));
+          showAppSnackBar(context, message: context.l10n.todoPorted);
           context.pop();
         }
       } on Exception catch (error) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(mapErrorToMessage(context.l10n, error))),
+          showAppSnackBar(
+            context,
+            message: mapErrorToMessage(context.l10n, error),
           );
         }
       }

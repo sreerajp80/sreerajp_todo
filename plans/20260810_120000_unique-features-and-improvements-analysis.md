@@ -3,13 +3,13 @@
 **Status:** Completed
 
 ## Goal
-Perform an in-depth analysis of the `SreerajP ToDo` project and cross-reference all 18 Flutter/Android apps listed in `myapps.md` (`L:\Android\MyFlutterApps\myapps.md`). Synthesize findings into a comprehensive design document in `docs/unique_features_and_improvements.md` detailing new unique features, improvements to existing features, reusable code/components from other apps, and a recommended implementation roadmap.
+Perform an in-depth analysis of the `SreerajP ToDo` project and cross-reference all 18 Flutter/Android apps listed in `myapps.md`. Synthesize findings into a comprehensive design document in `docs/unique_features_and_improvements.md` detailing new unique features, improvements to existing features, reusable code/components from other apps, and a recommended implementation roadmap.
 
 ## Proposed Changes
 
 ### Documentation
 
-#### [NEW] [docs/unique_features_and_improvements.md](file:///l:/Android/sreerajp_todo/docs/unique_features_and_improvements.md)
+#### [NEW] [docs/unique_features_and_improvements.md](docs/unique_features_and_improvements.md)
 Create a comprehensive feature exploration and enhancement document covering:
 1. **Executive Summary & Ecosystem Context:** Overview of `SreerajP ToDo` and cross-app synergy with the user's 18 offline apps.
 2. **Cross-App Asset & Code Reuse Matrix:** Code, algorithms, patterns, and UI modules directly re-usable from existing apps (`SreerajP_Journal_Vault`, `daily_rule_cards`, `chronotune-smart-clock`, `SreerajPContactSphere`, etc.).

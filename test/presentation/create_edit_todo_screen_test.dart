@@ -9,6 +9,8 @@ import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_search_result.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/create_edit_todo_screen.dart';
@@ -109,6 +111,23 @@ class _FakeTodoRepository implements TodoRepository {
   ) async => 0;
 
   @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleId(
+    String recurrenceRuleId,
+  ) async => [];
+
+  @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async => [];
+
+  @override
+  Future<bool> existsRuleInstanceOnDate(
+    String recurrenceRuleId,
+    String date,
+  ) async => false;
+
+  @override
   Future<void> moveTodo(String todoId, String targetDate) async {}
 
   @override
@@ -122,6 +141,32 @@ class _FakeTodoRepository implements TodoRepository {
     String? metadata,
     String? eventTime,
   }) async {}
+}
+
+class _FakeRecurrenceRuleRepo implements RecurrenceRuleRepository {
+  _FakeRecurrenceRuleRepo([this._rule]);
+  final RecurrenceRuleEntity? _rule;
+
+  @override
+  Future<List<RecurrenceRuleEntity>> findAll() async =>
+      _rule != null ? [_rule] : [];
+
+  @override
+  Future<List<RecurrenceRuleEntity>> findActive() async =>
+      _rule != null ? [_rule] : [];
+
+  @override
+  Future<RecurrenceRuleEntity?> findById(String id) async =>
+      _rule?.id == id ? _rule : null;
+
+  @override
+  Future<void> insert(RecurrenceRuleEntity rule) async {}
+
+  @override
+  Future<void> update(RecurrenceRuleEntity rule) async {}
+
+  @override
+  Future<void> delete(String id) async {}
 }
 
 void main() {
@@ -256,5 +301,64 @@ void main() {
     // Default day count is 7, so the inclusive end date is start + 6 days.
     final expectedEnd = formatDateFromIso(dateOffsetIso(6));
     expect(find.text('${testL10n.endDate}: $expectedEnd'), findsOneWidget);
+  });
+
+  testWidgets('saving an edited recurring task prompts with scope dialog', (
+    tester,
+  ) async {
+    final recurringTodo = buildTodo(
+      id: 'recurring-todo',
+      date: dateOffsetIso(0),
+      title: 'Workout',
+      description: 'Daily morning exercise',
+    ).copyWith(recurrenceRuleId: 'rule-123');
+
+    final rule = RecurrenceRuleEntity(
+      id: 'rule-123',
+      title: 'Workout',
+      rrule: 'FREQ=DAILY',
+      startDate: dateOffsetIso(0),
+      createdAt: DateTime.now().toUtc().toIso8601String(),
+      updatedAt: DateTime.now().toUtc().toIso8601String(),
+    );
+
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          todoRepositoryProvider.overrideWithValue(
+            _FakeTodoRepository(recurringTodo),
+          ),
+          recurrenceRuleRepositoryProvider.overrideWithValue(
+            _FakeRecurrenceRuleRepo(rule),
+          ),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: CreateEditTodoScreen(todoId: 'recurring-todo'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    // Tap Save button
+    final saveButton = find.widgetWithText(FilledButton, testL10n.save);
+    await tester.dragUntilVisible(
+      saveButton,
+      find.byType(ListView),
+      const Offset(0, -100),
+    );
+    await tester.tap(saveButton);
+    await tester.pumpAndSettle();
+
+    // Scope dialog should appear
+    expect(find.text(testL10n.confirmEditRecurring), findsOneWidget);
+    expect(find.text(testL10n.editOnlyThis), findsOneWidget);
+    expect(find.text(testL10n.editThisAndFuture), findsOneWidget);
+    expect(find.text(testL10n.editAllOccurrences), findsOneWidget);
   });
 }

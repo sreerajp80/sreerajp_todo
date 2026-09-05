@@ -29,13 +29,16 @@ class TimerActions {
     ref.read(timerActivityTickProvider.notifier).state++;
 
     if (result.tookOver) {
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(
-            l10n.trackingStoppedOtherCount(result.stoppedTodoIds.length),
+      messenger
+        ..clearSnackBars()
+        ..showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n.trackingStoppedOtherCount(result.stoppedTodoIds.length),
+            ),
+            duration: const Duration(seconds: 2),
           ),
-        ),
-      );
+        );
     }
 
     // A Pomodoro work block only begins once the timer really started.
@@ -90,15 +93,17 @@ class TimerActions {
     if (discarded == null) return;
 
     final l10n = context.l10n;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.trackingSegmentDiscarded),
-        duration: const Duration(seconds: 5),
-        action: SnackBarAction(
-          label: l10n.undo,
-          onPressed: () => notifier.undoDiscardedSegment(discarded),
+    ScaffoldMessenger.of(context)
+      ..clearSnackBars()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(l10n.trackingSegmentDiscarded),
+          duration: const Duration(seconds: 5),
+          action: SnackBarAction(
+            label: l10n.undo,
+            onPressed: () => notifier.undoDiscardedSegment(discarded),
+          ),
         ),
-      ),
-    );
+      );
   }
 }

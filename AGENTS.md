@@ -51,7 +51,7 @@ Read it before making any change. See the docs table below for full detail.
 7. **No Direct DB Access From Widgets:** Widgets consume Riverpod providers from `lib/application/providers.dart` only. Never call DAOs directly.
 8. **Immutable Models:** All domain entities and data models use `@freezed`. Never mutate in place; use `copyWith()`. Never edit generated `*.freezed.dart` or `*.g.dart` files manually.
 9. **Measurements & Metric Formatting:** Display durations as `HH:MM:SS` via `lib/core/utils/duration_utils.dart`. Use logical pixels (dp) only. Use metric terminology in comments and documentation.
-10. **Centralized User Strings:** All user-visible strings and error messages live in `lib/core/constants/app_strings.dart`. SQL strings belong in DAO classes only.
+10. **Localization First:** All user-visible text comes from `lib/l10n/*.arb` via `AppLocalizations` (or `context.l10n`), never raw string literals in widgets. Every ARB key must have an `@key` description. SQL strings belong in DAO classes only.
 
 ---
 
@@ -95,10 +95,10 @@ dart format lib/ test/ integration_test/
 dart run build_runner build --delete-conflicting-outputs
 
 # Production release APK (prod flavor, split per ABI)
-flutter build apk --flavor prod --release --split-per-abi
+flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi
 
 # Production Play Store app bundle
-flutter build appbundle --flavor prod --release
+flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/
 
 # Windows desktop release build
 flutter build windows --release
@@ -114,14 +114,24 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 | Flavor | App ID | Display name | Signing |
 |--------|--------|--------------|---------|
 | dev | `in.sreerajp.dev` | SreerajP ToDo Dev | Debug keystore (automatic) |
-| prod | `in.sreerajp` | SreerajP ToDo | Release keystore (`L:\Android\key.properties`) |
+| prod | `in.sreerajp` | SreerajP ToDo | Release keystore (`android/key.properties`) |
 
 ---
 
 ## Signing / keystore
 
-- Keystore configuration file: `L:\Android\key.properties` (stored outside project root, never committed).
+- Keystore configuration file: `android/key.properties` (pointing to `android/<name>.jks`, stored locally and never committed).
 - `.gitignore` MUST include: `key.properties`, `*.jks`, `*.keystore`, `build/symbols/`.
+- Always archive `build/symbols/` immediately after production builds for crash stack trace de-obfuscation.
+
+---
+
+## Localization rules
+
+- All user-visible text comes from `lib/l10n/*.arb` via `AppLocalizations` (or `context.l10n`) — never a raw string literal in a widget. This applies to all supported languages (English & Malayalam).
+- `l10n.yaml` (project root) and `lib/l10n/app_<base>.arb` must exist. Run `flutter gen-l10n` after editing any `.arb` file.
+- Every ARB key needs an `@key` description entry.
+- Literals are allowed only for logs, non-UI exception messages, asset paths, route names, and map/JSON keys.
 
 ---
 
@@ -187,7 +197,7 @@ Every change follows plan-before-changing and log-after-changing:
 
 1. **Plan before changing.** Write a full plan to `plans/` named `yyyymmdd_hhMMss_<short-slug>.md` with a `**Status:**` line, the files to change, the issue, and the fix. Then **STOP and get explicit approval** before editing/creating/deleting any project file (other than the plan). A question or ambiguous reply is not approval.
 2. **Log after changing.** After implementing, write a change log to `change_log/` named `yyyymmdd_hhMMss_<short-slug>.md` describing what changed and referencing its plan.
-3. **Relative paths & privacy only.** All `plans/` and `change_log/` files MUST use relative repository paths only (never absolute system paths like `C:\...`, `l:\...`, or `file:///...`). They MUST NOT contain any sensitive or private information that cannot be shared publicly on the internet (secrets, API keys, tokens, passwords, keystore passphrases, local absolute paths, internal IPs, credentials, or PII).
+3. **Relative paths & privacy only.** `plans/` and `change_log/` files are committed and may become public on the internet. They MUST use relative repository paths only (never absolute system paths like `C:\...`, `l:\...`, or `file:///...`). They MUST NOT contain any **local system details** — OS user name, computer/host name, home or drive-letter paths, network share names, LAN/internal IP addresses, local server URLs with ports, device serial numbers, personal email addresses — or any secret (API keys, tokens, passwords, keystore passphrases, credentials, PII). Write them as if a stranger will read them; nothing should reveal the machine they came from.
 
 Create `plans/` and `change_log/` if they do not exist.
 
@@ -207,7 +217,7 @@ Create `plans/` and `change_log/` if they do not exist.
 3. Enforce NFC normalization on every DB text write path (`unicodeUtils.nfcNormalize`).
 4. Enforce day-lock checks in every repository mutation.
 5. Add unit tests with every new DAO method.
-6. Keep user-visible strings in `lib/core/constants/app_strings.dart`.
+6. Keep user-visible text localized via `lib/l10n/*.arb` and `AppLocalizations`.
 7. Route multi-step operations through domain use-cases (`lib/domain/usecases/`).
 8. Use bundled assets only (`AssetImage`, `Image.asset()`, `Image.file()`).
 9. Use PowerShell syntax in docs and command examples on Windows.

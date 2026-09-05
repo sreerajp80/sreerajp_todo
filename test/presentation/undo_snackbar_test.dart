@@ -159,6 +159,32 @@ class InMemoryTodoRepository implements TodoRepository {
   ) async => 0;
 
   @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleId(
+    String recurrenceRuleId,
+  ) async =>
+      _todos.where((t) => t.recurrenceRuleId == recurrenceRuleId).toList();
+
+  @override
+  Future<List<TodoEntity>> getTodosByRecurrenceRuleIdFromDate(
+    String recurrenceRuleId,
+    String fromDate,
+  ) async => _todos
+      .where(
+        (t) =>
+            t.recurrenceRuleId == recurrenceRuleId &&
+            t.date.compareTo(fromDate) >= 0,
+      )
+      .toList();
+
+  @override
+  Future<bool> existsRuleInstanceOnDate(
+    String recurrenceRuleId,
+    String date,
+  ) async => _todos.any(
+    (t) => t.recurrenceRuleId == recurrenceRuleId && t.date == date,
+  );
+
+  @override
   Future<void> moveTodo(String todoId, String targetDate) async {
     final index = _todos.indexWhere((item) => item.id == todoId);
     if (index >= 0) {
@@ -379,4 +405,83 @@ void main() {
     expect(find.byTooltip(testL10n.copyToAnotherDay), findsOneWidget);
     expect(find.byTooltip(testL10n.createTodo), findsNothing);
   });
+
+  testWidgets(
+    'showUndoSnackBar clears previously queued snackbars and displays immediately',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => Column(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Delete message')),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Create message')),
+                      );
+                      showUndoSnackBar(
+                        context,
+                        message: 'Completed message',
+                        onUndo: () {},
+                      );
+                    },
+                    child: const Text('Queue and Show Undo'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Queue and Show Undo'));
+      await tester.pump();
+
+      // Older queued messages should be cleared and the Undo message displayed immediately
+      expect(find.text('Delete message'), findsNothing);
+      expect(find.text('Create message'), findsNothing);
+      expect(find.text('Completed message'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'showAppSnackBar clears previously queued snackbars and displays immediately',
+    (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => Column(
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Old message 1')),
+                      );
+                      showAppSnackBar(context, message: 'Fresh message');
+                    },
+                    child: const Text('Queue and Show App'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      );
+
+      await tester.tap(find.text('Queue and Show App'));
+      await tester.pump();
+
+      expect(find.text('Old message 1'), findsNothing);
+      expect(find.text('Fresh message'), findsOneWidget);
+    },
+  );
 }

@@ -180,6 +180,10 @@
   "@completeAction": {
     "description": "Button/action label to mark a task completed."
   },
+  "reopenAction": "Reopen",
+  "@reopenAction": {
+    "description": "Button/action label to reopen or revert a completed or dropped task."
+  },
   "dropAction": "Drop",
   "@dropAction": {
     "description": "Button/action label to mark a task dropped."
@@ -235,6 +239,42 @@
   "futureOccurrencesDeleted": "This and future occurrences deleted",
   "@futureOccurrencesDeleted": {
     "description": "SnackBar message when future occurrences of recurring task are deleted."
+  },
+  "confirmEditRecurring": "Edit recurring task?",
+  "@confirmEditRecurring": {
+    "description": "Confirmation dialog title for editing a recurring task occurrence."
+  },
+  "confirmEditRecurringBody": "This task was created by a recurrence rule. How would you like to apply your changes?",
+  "@confirmEditRecurringBody": {
+    "description": "Confirmation dialog body text when editing a recurring task occurrence."
+  },
+  "editOnlyThis": "This instance only",
+  "@editOnlyThis": {
+    "description": "Option label to edit only this occurrence of recurring task."
+  },
+  "editThisAndFuture": "All future instances",
+  "@editThisAndFuture": {
+    "description": "Option label to edit current and future occurrences of recurring task."
+  },
+  "editAllOccurrences": "All instances",
+  "@editAllOccurrences": {
+    "description": "Option label to edit all occurrences of recurring task."
+  },
+  "deleteTimeSegment": "Delete time segment",
+  "@deleteTimeSegment": {
+    "description": "Tooltip and button label to delete a time segment."
+  },
+  "confirmDeleteSegment": "Delete time segment?",
+  "@confirmDeleteSegment": {
+    "description": "Confirmation dialog title for deleting a time segment."
+  },
+  "confirmDeleteSegmentBody": "Are you sure you want to delete this time segment?",
+  "@confirmDeleteSegmentBody": {
+    "description": "Confirmation dialog body text when deleting a time segment."
+  },
+  "timeSegmentDeleted": "Time segment deleted",
+  "@timeSegmentDeleted": {
+    "description": "SnackBar message when a time segment is deleted."
   },
   "confirmBulkDrop": "Drop selected tasks?",
   "@confirmBulkDrop": {

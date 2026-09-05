@@ -148,6 +148,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get completeAction => 'Complete';
 
   @override
+  String get reopenAction => 'Reopen';
+
+  @override
   String get dropAction => 'Drop';
 
   @override
@@ -191,6 +194,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get futureOccurrencesDeleted => 'This and future occurrences deleted';
+
+  @override
+  String get confirmEditRecurring => 'Edit recurring task?';
+
+  @override
+  String get confirmEditRecurringBody =>
+      'This task was created by a recurrence rule. How would you like to apply your changes?';
+
+  @override
+  String get editOnlyThis => 'This instance only';
+
+  @override
+  String get editThisAndFuture => 'All future instances';
+
+  @override
+  String get editAllOccurrences => 'All instances';
+
+  @override
+  String get deleteTimeSegment => 'Delete time segment';
+
+  @override
+  String get confirmDeleteSegment => 'Delete time segment?';
+
+  @override
+  String get confirmDeleteSegmentBody =>
+      'Are you sure you want to delete this time segment?';
+
+  @override
+  String get timeSegmentDeleted => 'Time segment deleted';
 
   @override
   String get confirmBulkDrop => 'Drop selected tasks?';

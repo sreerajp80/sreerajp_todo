@@ -166,9 +166,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
             final message = context.l10n.autoCarryOverDone(
               result.copied.length,
             );
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(message)));
+            showAppSnackBar(context, message: message);
           }
         }
       } catch (error) {
@@ -225,9 +223,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       context.l10n.carryOverDone(outcome.copied),
       if (outcome.skipped > 0) context.l10n.carryOverSkipped(outcome.skipped),
     ];
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(parts.join(' · '))));
+    showAppSnackBar(context, message: parts.join(' · '));
   }
 
   void _navigateToDate(String date) {
@@ -251,9 +247,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   }
 
   void _showError(Object error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(mapErrorToMessage(context.l10n, error))),
-    );
+    showAppSnackBar(context, message: mapErrorToMessage(context.l10n, error));
   }
 
   Future<void> _handleRecurringDelete(
@@ -293,10 +287,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           todo.recurrenceRuleId!,
         );
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('$count ${context.l10n.allOccurrencesDeleted}'),
-            ),
+          showAppSnackBar(
+            context,
+            message: '$count ${context.l10n.allOccurrencesDeleted}',
           );
         }
       } else if (choice == 'future') {
@@ -304,18 +297,15 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           todo.recurrenceRuleId!,
         );
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('$count ${context.l10n.futureOccurrencesDeleted}'),
-            ),
+          showAppSnackBar(
+            context,
+            message: '$count ${context.l10n.futureOccurrencesDeleted}',
           );
         }
       } else {
         await notifier.deleteTodo(todo.id);
         if (context.mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(context.l10n.todoDeleted)));
+          showAppSnackBar(context, message: context.l10n.todoDeleted);
         }
       }
     } on Exception catch (error) {
@@ -415,9 +405,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           ', ${result.skipped.length} ${context.l10n.todosSkipped}',
         );
       }
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message.toString())));
+      showAppSnackBar(context, message: message.toString());
     }
   }
 
@@ -444,12 +432,9 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
         }
         if (mounted && importedCount > 0) {
           ref.invalidate(dailyTodoProvider(widget.date));
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'AirQR sync complete: Imported $importedCount tasks.',
-              ),
-            ),
+          showAppSnackBar(
+            context,
+            message: 'AirQR sync complete: Imported $importedCount tasks.',
           );
         }
       }
@@ -728,6 +713,23 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
             }
           }
         },
+        onReopen: () async {
+          try {
+            await notifier.reopenTodo(todo.id);
+            if (context.mounted) {
+              showUndoSnackBar(
+                context,
+                message:
+                    '${context.l10n.statusChangedTo} ${context.l10n.statusPending}',
+                onUndo: () => notifier.undoLastStatusChange(),
+              );
+            }
+          } on Exception catch (error) {
+            if (context.mounted) {
+              _showError(error);
+            }
+          }
+        },
         onPort: () async {
           final confirmed = await showConfirmDialog(
             context,
@@ -757,9 +759,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               try {
                 await notifier.deleteTodo(todo.id);
                 if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(context.l10n.todoDeleted)),
-                  );
+                  showAppSnackBar(context, message: context.l10n.todoDeleted);
                 }
               } on Exception catch (error) {
                 if (context.mounted) {
@@ -958,9 +958,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               ref
                   .read(dailyTodoProvider(widget.date).notifier)
                   .undoLastStatusChange();
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(context.l10n.undoStatusChange)),
-              );
+              showAppSnackBar(context, message: context.l10n.undoStatusChange);
             },
             tooltip: context.l10n.undo,
           ),
@@ -1134,6 +1132,18 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       }
     });
 
+    final canReopen =
+        !_isPast &&
+        selectedIds.any((id) {
+          try {
+            final todo = dailyState.todos.firstWhere((item) => item.id == id);
+            return todo.status == TodoStatus.completed ||
+                todo.status == TodoStatus.dropped;
+          } on StateError {
+            return false;
+          }
+        });
+
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.close),
@@ -1141,6 +1151,30 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       ),
       title: Text(context.l10n.selectedCount(selectedCount)),
       actions: [
+        if (canReopen)
+          TextButton.icon(
+            icon: const Icon(Icons.replay_rounded, size: 18),
+            label: Text(
+              context.l10n.reopenAction,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            onPressed: () async {
+              final ids = Set<String>.from(selectedIds);
+              await notifier.bulkReopen(ids);
+              if (mounted) {
+                showUndoSnackBar(
+                  context,
+                  message: '$selectedCount ${context.l10n.bulkStatusChanged}',
+                  onUndo: () {
+                    for (var i = 0; i < ids.length; i++) {
+                      notifier.undoLastStatusChange();
+                    }
+                  },
+                );
+              }
+            },
+          ),
         if (canComplete)
           TextButton.icon(
             icon: const Icon(Icons.check_circle_outline, size: 18),

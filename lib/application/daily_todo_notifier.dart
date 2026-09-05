@@ -15,6 +15,7 @@ import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
 import 'package:sreerajp_todo/domain/usecases/move_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
+import 'package:sreerajp_todo/domain/usecases/reopen_todo.dart';
 
 class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   DailyTodoNotifier({
@@ -26,6 +27,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     required this.copyTodosUseCase,
     required this.deleteRecurringTodos,
     MoveTodo? moveTodoUseCase,
+    ReopenTodo? reopenTodoUseCase,
     this.onDataChanged,
     this.onTimerStopped,
   }) : moveTodoUseCase =
@@ -35,6 +37,9 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
              // fallback if not directly passed in test
              portTodoUseCase.timeSegmentRepository,
            ),
+       reopenTodoUseCase =
+           reopenTodoUseCase ??
+           ReopenTodo(todoRepository, portTodoUseCase.timeSegmentRepository),
        super(const DailyTodoState()) {
     loadTodos();
   }
@@ -47,6 +52,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   final CopyTodos copyTodosUseCase;
   final DeleteRecurringTodos deleteRecurringTodos;
   final MoveTodo moveTodoUseCase;
+  final ReopenTodo reopenTodoUseCase;
   final void Function()? onDataChanged;
   final void Function(String todoId)? onTimerStopped;
 
@@ -222,6 +228,28 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     }
   }
 
+  Future<void> reopenTodo(String todoId) async {
+    try {
+      final oldStatus = await reopenTodoUseCase(todoId);
+      final todo = await todoRepository.getTodoById(todoId);
+      final newStatus = todo?.status ?? TodoStatus.pending;
+      _pushUndo(
+        UndoEntry(
+          todoId: todoId,
+          oldStatus: oldStatus,
+          newStatus: newStatus,
+          timestamp: DateTime.now(),
+        ),
+      );
+      await loadTodos();
+    } on DayLockedException {
+      rethrow;
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+      rethrow;
+    }
+  }
+
   Future<void> portTodo(String todoId, String targetDate) async {
     await moveTodo(todoId, targetDate);
   }
@@ -299,6 +327,31 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
       await loadTodos();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
+    }
+  }
+
+  Future<void> bulkReopen(Set<String> ids) async {
+    try {
+      for (final id in ids) {
+        final oldStatus = await reopenTodoUseCase(id);
+        final todo = await todoRepository.getTodoById(id);
+        final newStatus = todo?.status ?? TodoStatus.pending;
+        _pushUndo(
+          UndoEntry(
+            todoId: id,
+            oldStatus: oldStatus,
+            newStatus: newStatus,
+            timestamp: DateTime.now(),
+          ),
+        );
+      }
+      clearSelection();
+      await loadTodos();
+    } on DayLockedException {
+      rethrow;
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+      rethrow;
     }
   }
 

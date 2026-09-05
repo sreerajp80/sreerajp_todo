@@ -6,14 +6,14 @@
 - `docs/unique_features_and_improvements.md`
 
 ## Issue / User Request
-The user noted that generic features such as backup, restore, export, import, QR sync, and serverless sync were included in `docs/unique_features_and_improvements.md` without thoroughly analyzing all 18 Android applications listed in `L:\Android\MyFlutterApps\myapps.md`. 
+The user noted that generic features such as backup, restore, export, import, QR sync, and serverless sync were included in `docs/unique_features_and_improvements.md` without thoroughly analyzing all 18 Android applications listed in `myapps.md`. 
 Backup, restore, export, import, and sync are already implemented across the user's suite of applications (`sms-sentry`, `SreerajP_Authenticator`, `SreerajPContactSphere`, `SreerajP_TextApp`, `vault-files`, etc.) and are standard features across Android ToDo apps. 
-The user requested an exhaustive audit of all 18 `features.md` files in `L:\Android\MyFlutterApps\myapps.md` and an update to `docs/unique_features_and_improvements.md` focusing strictly on **truly unique features that are NOT implemented in any Android ToDo application**.
+The user requested an exhaustive audit of all 18 `features.md` files in `myapps.md` and an update to `docs/unique_features_and_improvements.md` focusing strictly on **truly unique features that are NOT implemented in any Android ToDo application**.
 
 ## Proposed Changes & Audit Summary
 
 ### 1. Exhaustive 18-App Audit Matrix
-We audited all 18 `features.md` documents from `L:\Android\MyFlutterApps\myapps.md`:
+We audited all 18 `features.md` documents from `myapps.md`:
 1. `chronotune-smart-clock`: Kotlin, 100% offline natural language voice parser (`en-IN`/`ml-IN`), anti-oversleeping cognitive wake-up challenges (Math, Memory, Phrase Typing), 16-bit PCM procedural audio synth (ADSR envelope), Canvas analog/digital widgets, holiday awareness (`SKIP_HOLIDAYS`, `WORKDAYS_ONLY`).
 2. `daily_rule_cards`: Flutter, 18 reflection cards, parchment theme, 18-iteration binary search text layout engine (`_RuleCardMetrics.resolve`), dynamic control bar reflowing.
 3. `MantraJapaCounter`: Flutter, 108-bead mala counting, sankalpa tracking, daily vs lifetime goals, native DTMF audio beep & pulse vibration, 2-tier persistence (SharedPreferences + sqflite).
