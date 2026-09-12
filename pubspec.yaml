@@ -1,7 +1,7 @@
 name: sreerajp_todo
 description: "SreerajP ToDo — Personal offline-first daily ToDo and time-tracker."
 publish_to: 'none'
-version: 1.14.6+41
+version: 1.14.7+42
 
 environment:
   sdk: ^3.12.2
@@ -34,6 +34,8 @@ dependencies:
   mobile_scanner: ^7.2.0
   camera: ^0.12.1
   google_mlkit_text_recognition: ^0.17.1
+  image_cropper: ^12.2.1
+  image: ^4.5.4
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +57,7 @@ flutter:
     - assets/config/
     - assets/fonts/
     - assets/splash/
+    - assets/tessdata/
 
   fonts:
     - family: Manjari

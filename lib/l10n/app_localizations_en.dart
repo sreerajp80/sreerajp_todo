@@ -3614,6 +3614,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ocrProcessing => 'Extracting text...';
 
   @override
+  String get ocrPreparingImage => 'Preparing photo...';
+
+  @override
+  String get ocrFocusLocked => 'Focus locked';
+
+  @override
   String get ocrNoTextFound => 'No text detected in image. Please try again.';
 
   @override
@@ -3772,4 +3778,43 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteDeckConfirmation =>
       'Are you sure you want to delete this mastery deck? The tasks will remain but won\'t be linked to this deck.';
+
+  @override
+  String get ocrEnhanceTitle => 'Enhance & Scan';
+
+  @override
+  String get ocrEnhanceUseText => 'Use Text';
+
+  @override
+  String get ocrEnhanceCrop => 'Crop';
+
+  @override
+  String get ocrEnhanceInvert => 'Invert';
+
+  @override
+  String get ocrEnhanceLiveText => 'Recognised text';
+
+  @override
+  String get ocrEnhanceLiveTextNone =>
+      'Nothing read yet. Try crop, a filter, or another language.';
+
+  @override
+  String ocrEnhanceWordCount(int count) {
+    return '$count words';
+  }
+
+  @override
+  String get ocrEnhanceScanning => 'Reading...';
+
+  @override
+  String get ocrLanguageTooltip => 'Recognition language';
+
+  @override
+  String get ocrLanguageAll => 'English + Malayalam';
+
+  @override
+  String get ocrLanguageMalayalam => 'Malayalam';
+
+  @override
+  String get ocrLanguageEnglish => 'English';
 }

@@ -6362,6 +6362,18 @@ abstract class AppLocalizations {
   /// **'Extracting text...'**
   String get ocrProcessing;
 
+  /// Overlay text shown while the full-resolution capture is being shrunk to a workable size, before any filter or recognition runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing photo...'**
+  String get ocrPreparingImage;
+
+  /// Chip on the camera viewfinder showing autofocus is held on the spot the user tapped. Tapping the chip returns to automatic focus.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus locked'**
+  String get ocrFocusLocked;
+
   /// Snackbar message when OCR detects zero text.
   ///
   /// In en, this message translates to:
@@ -6667,6 +6679,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Are you sure you want to delete this mastery deck? The tasks will remain but won\'t be linked to this deck.'**
   String get deleteDeckConfirmation;
+
+  /// Title of the screen where a captured photo is enhanced and read.
+  ///
+  /// In en, this message translates to:
+  /// **'Enhance & Scan'**
+  String get ocrEnhanceTitle;
+
+  /// Button that accepts the recognised text and moves on to the task review.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Text'**
+  String get ocrEnhanceUseText;
+
+  /// Tool button that opens the crop and rotate editor.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop'**
+  String get ocrEnhanceCrop;
+
+  /// Tool button that flips light and dark, for light text on a dark background.
+  ///
+  /// In en, this message translates to:
+  /// **'Invert'**
+  String get ocrEnhanceInvert;
+
+  /// Header of the panel showing the text found in the photo so far.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognised text'**
+  String get ocrEnhanceLiveText;
+
+  /// Shown inside the recognised text panel when no text was found.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing read yet. Try crop, a filter, or another language.'**
+  String get ocrEnhanceLiveTextNone;
+
+  /// Number of words found in the photo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} words'**
+  String ocrEnhanceWordCount(int count);
+
+  /// Badge shown while recognition is still running.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading...'**
+  String get ocrEnhanceScanning;
+
+  /// Tooltip for the OCR language picker.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognition language'**
+  String get ocrLanguageTooltip;
+
+  /// OCR language option reading both languages at once.
+  ///
+  /// In en, this message translates to:
+  /// **'English + Malayalam'**
+  String get ocrLanguageAll;
+
+  /// OCR language option for Malayalam only.
+  ///
+  /// In en, this message translates to:
+  /// **'Malayalam'**
+  String get ocrLanguageMalayalam;
+
+  /// OCR language option for English only.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get ocrLanguageEnglish;
 }
 
 class _AppLocalizationsDelegate

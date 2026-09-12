@@ -4409,6 +4409,14 @@
   "@ocrProcessing": {
     "description": "Overlay text shown while OCR recognition runs."
   },
+  "ocrPreparingImage": "Preparing photo...",
+  "@ocrPreparingImage": {
+    "description": "Overlay text shown while the full-resolution capture is being shrunk to a workable size, before any filter or recognition runs."
+  },
+  "ocrFocusLocked": "Focus locked",
+  "@ocrFocusLocked": {
+    "description": "Chip on the camera viewfinder showing autofocus is held on the spot the user tapped. Tapping the chip returns to automatic focus."
+  },
   "ocrNoTextFound": "No text detected in image. Please try again.",
   "@ocrNoTextFound": {
     "description": "Snackbar message when OCR detects zero text."
@@ -4620,6 +4628,58 @@
   "deleteDeckConfirmation": "Are you sure you want to delete this mastery deck? The tasks will remain but won't be linked to this deck.",
   "@deleteDeckConfirmation": {
     "description": "Confirmation message when deleting a mastery deck."
+  },
+  "ocrEnhanceTitle": "Enhance & Scan",
+  "@ocrEnhanceTitle": {
+    "description": "Title of the screen where a captured photo is enhanced and read."
+  },
+  "ocrEnhanceUseText": "Use Text",
+  "@ocrEnhanceUseText": {
+    "description": "Button that accepts the recognised text and moves on to the task review."
+  },
+  "ocrEnhanceCrop": "Crop",
+  "@ocrEnhanceCrop": {
+    "description": "Tool button that opens the crop and rotate editor."
+  },
+  "ocrEnhanceInvert": "Invert",
+  "@ocrEnhanceInvert": {
+    "description": "Tool button that flips light and dark, for light text on a dark background."
+  },
+  "ocrEnhanceLiveText": "Recognised text",
+  "@ocrEnhanceLiveText": {
+    "description": "Header of the panel showing the text found in the photo so far."
+  },
+  "ocrEnhanceLiveTextNone": "Nothing read yet. Try crop, a filter, or another language.",
+  "@ocrEnhanceLiveTextNone": {
+    "description": "Shown inside the recognised text panel when no text was found."
+  },
+  "ocrEnhanceWordCount": "{count} words",
+  "@ocrEnhanceWordCount": {
+    "description": "Number of words found in the photo.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ocrEnhanceScanning": "Reading...",
+  "@ocrEnhanceScanning": {
+    "description": "Badge shown while recognition is still running."
+  },
+  "ocrLanguageTooltip": "Recognition language",
+  "@ocrLanguageTooltip": {
+    "description": "Tooltip for the OCR language picker."
+  },
+  "ocrLanguageAll": "English + Malayalam",
+  "@ocrLanguageAll": {
+    "description": "OCR language option reading both languages at once."
+  },
+  "ocrLanguageMalayalam": "Malayalam",
+  "@ocrLanguageMalayalam": {
+    "description": "OCR language option for Malayalam only."
+  },
+  "ocrLanguageEnglish": "English",
+  "@ocrLanguageEnglish": {
+    "description": "OCR language option for English only."
   }
 }
-

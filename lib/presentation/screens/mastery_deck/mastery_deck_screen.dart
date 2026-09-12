@@ -234,7 +234,8 @@ class _MasteryDeckCard extends ConsumerWidget {
       orElse: () => MasteryDeckProgress.empty,
     );
 
-    final isCompleted = progress.totalTasks > 0 &&
+    final isCompleted =
+        progress.totalTasks > 0 &&
         progress.completedTasks == progress.totalTasks;
     final percent = (progress.completionRatio * 100).toInt();
 
@@ -245,9 +246,10 @@ class _MasteryDeckCard extends ConsumerWidget {
         borderRadius: BorderRadius.circular(16),
         side: BorderSide(
           color: isCompleted
-              ? AppTheme.statusColor(theme, TodoStatus.completed).withValues(
-                  alpha: 0.4,
-                )
+              ? AppTheme.statusColor(
+                  theme,
+                  TodoStatus.completed,
+                ).withValues(alpha: 0.4)
               : colorScheme.outlineVariant.withValues(alpha: 0.6),
           width: isCompleted ? 1.5 : 1,
         ),
@@ -268,8 +270,10 @@ class _MasteryDeckCard extends ConsumerWidget {
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       color: isCompleted
-                          ? AppTheme.statusColor(theme, TodoStatus.completed)
-                              .withValues(alpha: 0.15)
+                          ? AppTheme.statusColor(
+                              theme,
+                              TodoStatus.completed,
+                            ).withValues(alpha: 0.15)
                           : colorScheme.primaryContainer,
                       shape: BoxShape.circle,
                     ),
@@ -379,10 +383,7 @@ class _MasteryDeckCard extends ConsumerWidget {
                     ),
                   ),
                   if (progress.totalTrackedSeconds > 0) ...[
-                    Text(
-                      '•',
-                      style: TextStyle(color: colorScheme.outline),
-                    ),
+                    Text('•', style: TextStyle(color: colorScheme.outline)),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

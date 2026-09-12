@@ -19,16 +19,19 @@ This directory holds release screenshots and preview images used in the project'
 
 ## 2. Standard Screenshot Showcase Files
 
-The main `README.md` references the following key showcase files:
+The main `README.md` references the following 9 key showcase screens:
 
 | File Name | Screen / Feature Shown | Description |
 |-----------|------------------------|-------------|
-| `daily_list.png` | **Daily Task List** | Main screen showing task list with status badges, ongoing live timer, progress header, and floating action button. |
-| `focus_ritual.png` | **Focus Mode & Rituals** | Single-task distraction-free Focus Mode card and the Morning Intention / Evening Reflection journal. |
-| `mastery_deck.png` | **Task Mastery Deck** | Spaced repetition flashcard deck showing review intervals, retention ratings, and practice schedule. |
-| `ocr_voice.png` | **OCR Scanner & Voice Parser** | Camera text recognition scanner with crop/contrast adjustment, and the offline voice input sheet. |
-| `statistics.png` | **Statistics Dashboard** | Daily overview bar charts, completion metrics, and per-item time trend charts. |
-| `backup_sync.png` | **Backup & Air-QR Transfer** | Backup health dashboard and device-to-device optical QR transfer screen. |
+| `daily_list.png` | **Daily Task List** | Main screen showing task list with status badges, ongoing live multi-timer, progress header, and floating action button. |
+| `focus_mode.png` | **Distraction-Free Focus Mode** | Single-task focused workspace with radial progress countdown, play/pause controls, and sleek dark aesthetic. |
+| `mastery_deck.png` | **Spaced Repetition Mastery Deck** | SM-2 mastery decks showing study progress indicators, deck cards, and practice management. |
+| `daily_ritual.png` | **Guided Daily Ritual** | Guided multi-step daily planning and task carryover wizard with progress stepper. |
+| `ocr_scanner.png` | **Offline OCR Scanner** | Camera viewfinder with document targeting bounds, zoom slider (1x, 2x, 3x), and offline shutter capture. |
+| `ocr_crop_editor.png` | **OCR Crop & Document Editor** | Image enhancement studio with B&W / grayscale filters, perspective rotation, and live bilingual text recognition. |
+| `statistics.png` | **Productivity Statistics Dashboard** | Daily overview bar charts, completion metrics, period filters, and KPI summary cards. |
+| `backup_sync.png` | **Encrypted Backup & Air-QR Transfer** | Backup management dashboard and air-gapped animated optical QR code data transfer stream. |
+| `settings_hub.png` | **Settings & Preferences Hub** | Central customization hub for appearance, themes, language, task defaults, and security policies. |
 
 ---
 

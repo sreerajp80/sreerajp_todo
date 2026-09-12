@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/ocr_task_parser.dart';
-import 'package:sreerajp_todo/presentation/screens/ocr/ocr_crop_screen.dart';
-import 'package:sreerajp_todo/presentation/screens/ocr/utils/ocr_text_sorter.dart';
+import 'package:sreerajp_todo/presentation/screens/ocr/ocr_enhance_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/ocr/widgets/ocr_camera_overlay.dart';
 import 'package:sreerajp_todo/presentation/screens/ocr/widgets/ocr_result_bottom_sheet.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
@@ -22,7 +20,7 @@ import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 /// - Lens switching (rear / front)
 /// - Pinch-to-zoom & 1x/2x quick zoom buttons
 /// - Tap to focus and exposure metering
-/// - High-resolution still capture with local ML Kit OCR
+/// - High-resolution still capture read by on-device Tesseract OCR
 /// - Gallery photo import via FilePicker
 /// - Interactive task review sheet
 class OcrScanScreen extends ConsumerStatefulWidget {
@@ -69,8 +67,12 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
 
   Offset? _focusPoint;
   Timer? _focusTimer;
+  bool _isFocusLocked = false;
 
-  late final TextRecognizer _textRecognizer;
+  /// Wraps the preview so a tap can be normalised against the preview box
+  /// rather than the whole screen. The preview is letterboxed inside a
+  /// [Center], so the two differ by the size of the bars.
+  final GlobalKey _previewKey = GlobalKey();
 
   String get _effectiveDate => widget.date ?? todayAsIso();
 
@@ -78,7 +80,6 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
     _initializeCamera();
   }
 
@@ -87,18 +88,34 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     WidgetsBinding.instance.removeObserver(this);
     _focusTimer?.cancel();
     _controller?.dispose();
-    _textRecognizer.close();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final controller = _controller;
-    if (controller == null || !controller.value.isInitialized) return;
-
     if (state == AppLifecycleState.inactive) {
+      final controller = _controller;
+      if (controller == null) return;
+
+      // Clear the field first. This runs every time the gallery picker or the
+      // crop screen opens, and build() must never paint a disposed controller.
+      setState(() {
+        _controller = null;
+        _isCameraInitialized = false;
+        _focusPoint = null;
+        _isFocusLocked = false;
+      });
       controller.dispose();
     } else if (state == AppLifecycleState.resumed) {
+      if (_controller != null) return;
+
+      // The camera list is empty when permission was refused, so start over
+      // rather than indexing into nothing.
+      if (_cameras.isEmpty) {
+        _initializeCamera();
+        return;
+      }
+      _selectedCameraIndex = _selectedCameraIndex.clamp(0, _cameras.length - 1);
       _initializeCameraController(_cameras[_selectedCameraIndex]);
     }
   }
@@ -146,14 +163,31 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     final previousController = _controller;
     final newController = CameraController(
       cameraDescription,
-      ResolutionPreset.high,
+      // Full sensor resolution. On Android this maps to CameraX's
+      // "highest available" strategy, so a 50 MP sensor captures 50 MP.
+      // Detail thrown away at capture can never be enlarged back in later,
+      // and thin marks like `.` `,` `:` are the first thing a small capture
+      // loses. OcrCaptureDownscaler shrinks the photo once, natively, before
+      // any Dart pixel work touches it.
+      ResolutionPreset.max,
       enableAudio: false,
       imageFormatGroup: ImageFormatGroup.jpeg,
     );
 
+    // Stop painting the old controller *before* disposing it. Rendering a
+    // disposed CameraController throws.
+    if (mounted) {
+      setState(() {
+        _controller = null;
+        _isCameraInitialized = false;
+      });
+    }
     await previousController?.dispose();
 
-    if (!mounted) return;
+    if (!mounted) {
+      await newController.dispose();
+      return;
+    }
     setState(() {
       _controller = newController;
       _isCameraInitialized = false;
@@ -217,6 +251,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     if (_cameras.length < 2) return;
     final nextIndex = (_selectedCameraIndex + 1) % _cameras.length;
     _selectedCameraIndex = nextIndex;
+    // A focus point belongs to the lens that was aimed, so drop it.
+    _isFocusLocked = false;
+    _focusPoint = null;
     await _initializeCameraController(_cameras[_selectedCameraIndex]);
   }
 
@@ -259,15 +296,29 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     final controller = _controller;
     if (controller == null || !controller.value.isInitialized) return;
 
-    final renderBox = context.findRenderObject() as RenderBox?;
-    if (renderBox == null) return;
+    // Normalise against the preview box, not the screen. The preview is
+    // letterboxed inside a Center, so dividing by the screen size shifts the
+    // point by the height of the black bars and the focus lands off the page.
+    final previewBox =
+        _previewKey.currentContext?.findRenderObject() as RenderBox?;
+    if (previewBox == null) return;
 
-    final localOffset = details.localPosition;
-    final size = renderBox.size;
+    final localOffset = previewBox.globalToLocal(details.globalPosition);
+    final size = previewBox.size;
+    if (size.isEmpty) return;
+
+    // A tap on the letterbox bars falls outside the sensor's field of view.
+    if (localOffset.dx < 0 ||
+        localOffset.dy < 0 ||
+        localOffset.dx > size.width ||
+        localOffset.dy > size.height) {
+      return;
+    }
+
     final x = (localOffset.dx / size.width).clamp(0.0, 1.0);
     final y = (localOffset.dy / size.height).clamp(0.0, 1.0);
 
-    setState(() => _focusPoint = localOffset);
+    setState(() => _focusPoint = details.localPosition);
     _focusTimer?.cancel();
     _focusTimer = Timer(const Duration(milliseconds: 1400), () {
       if (mounted) setState(() => _focusPoint = null);
@@ -276,7 +327,26 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     try {
       await controller.setFocusPoint(Offset(x, y));
       await controller.setExposurePoint(Offset(x, y));
-    } catch (_) {}
+      // Hold the focus where the user put it. Continuous autofocus otherwise
+      // hunts away from a flat page within a second or two.
+      await controller.setFocusMode(FocusMode.locked);
+      if (mounted) setState(() => _isFocusLocked = true);
+    } catch (_) {
+      // Not every lens supports focus points or focus locking.
+    }
+  }
+
+  /// Hands focus back to the camera's continuous autofocus.
+  Future<void> _unlockFocus() async {
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) return;
+
+    try {
+      await controller.setFocusMode(FocusMode.auto);
+    } catch (_) {
+      // Nothing to undo when the lens never accepted the lock.
+    }
+    if (mounted) setState(() => _isFocusLocked = false);
   }
 
   Future<void> _capturePhotoAndRecognize() async {
@@ -294,13 +364,14 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       final file = await controller.takePicture();
       if (!mounted) return;
 
-      final croppedPath = await Navigator.of(context).push<String>(
-        MaterialPageRoute(builder: (_) => OcrCropScreen(imagePath: file.path)),
+      final recognizedText = await Navigator.of(context).push<String>(
+        MaterialPageRoute(
+          builder: (_) => OcrEnhanceScreen(imagePath: file.path),
+        ),
       );
-      if (croppedPath == null || !mounted) return;
+      if (recognizedText == null || !mounted) return;
 
-      final inputImage = InputImage.fromFilePath(croppedPath);
-      await _processInputImage(inputImage);
+      await _handleRecognizedText(recognizedText);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -329,14 +400,13 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       final path = result?.files.single.path;
       if (path == null || !mounted) return;
 
-      final croppedPath = await Navigator.of(context).push<String>(
-        MaterialPageRoute(builder: (_) => OcrCropScreen(imagePath: path)),
+      final recognizedText = await Navigator.of(context).push<String>(
+        MaterialPageRoute(builder: (_) => OcrEnhanceScreen(imagePath: path)),
       );
-      if (croppedPath == null || !mounted) return;
+      if (recognizedText == null || !mounted) return;
 
       setState(() => _isProcessing = true);
-      final inputImage = InputImage.fromFilePath(croppedPath);
-      await _processInputImage(inputImage);
+      await _handleRecognizedText(recognizedText);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -353,9 +423,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     }
   }
 
-  Future<void> _processInputImage(InputImage inputImage) async {
-    final recognizedText = await _textRecognizer.processImage(inputImage);
-    final text = OcrTextSorter.sort(recognizedText);
+  /// Turns the text the enhance screen read into a task for review.
+  Future<void> _handleRecognizedText(String recognizedText) async {
+    final text = recognizedText.trim();
 
     if (!mounted) return;
 
@@ -423,7 +493,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
               onScaleStart: _onScaleStart,
               onScaleUpdate: _onScaleUpdate,
               onTapUp: _onTapToFocus,
-              child: Center(child: CameraPreview(_controller!)),
+              child: Center(
+                child: CameraPreview(_controller!, key: _previewKey),
+              ),
             )
           else
             _buildErrorOrLoadingView(),
@@ -484,10 +556,59 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
             ),
           ),
 
+          // Autofocus lock indicator. Tapping it returns to continuous
+          // autofocus.
+          if (_isCameraInitialized && _isFocusLocked)
+            Positioned(
+              top: MediaQuery.paddingOf(context).top + 64,
+              left: 0,
+              right: 0,
+              child: Center(
+                child: GestureDetector(
+                  key: const Key('ocr-af-lock-chip'),
+                  onTap: _unlockFocus,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.72),
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(
+                        color: AppTheme.defaultLightAccent,
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.lock_outline,
+                          color: Colors.white,
+                          size: 14,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          l10n.ocrFocusLocked,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
           // Bottom Controls: Zoom presets & Capture Shutter
           if (_isCameraInitialized)
             Positioned(
-              bottom: MediaQuery.paddingOf(context).bottom +
+              bottom:
+                  MediaQuery.paddingOf(context).bottom +
                   (MediaQuery.orientationOf(context) == Orientation.landscape
                       ? 6
                       : 24),
@@ -499,7 +620,8 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
                   // Interactive Adjustment Bar (Zoom & Brightness Sliders)
                   _buildAdjustmentControls(Theme.of(context)),
                   SizedBox(
-                    height: MediaQuery.orientationOf(context) ==
+                    height:
+                        MediaQuery.orientationOf(context) ==
                             Orientation.landscape
                         ? 6
                         : 14,
@@ -516,11 +638,13 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
                       GestureDetector(
                         onTap: _isProcessing ? null : _capturePhotoAndRecognize,
                         child: Container(
-                          width: MediaQuery.orientationOf(context) ==
+                          width:
+                              MediaQuery.orientationOf(context) ==
                                   Orientation.landscape
                               ? 60
                               : 78,
-                          height: MediaQuery.orientationOf(context) ==
+                          height:
+                              MediaQuery.orientationOf(context) ==
                                   Orientation.landscape
                               ? 60
                               : 78,
@@ -531,11 +655,13 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
                           child: Center(
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 150),
-                              width: MediaQuery.orientationOf(context) ==
+                              width:
+                                  MediaQuery.orientationOf(context) ==
                                       Orientation.landscape
                                   ? (_isProcessing ? 28 : 48)
                                   : (_isProcessing ? 36 : 64),
-                              height: MediaQuery.orientationOf(context) ==
+                              height:
+                                  MediaQuery.orientationOf(context) ==
                                       Orientation.landscape
                                   ? (_isProcessing ? 28 : 48)
                                   : (_isProcessing ? 36 : 64),

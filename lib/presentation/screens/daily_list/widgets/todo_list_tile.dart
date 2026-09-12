@@ -699,8 +699,9 @@ class TodoListTile extends ConsumerWidget {
                                           .withValues(alpha: 0.7),
                                       borderRadius: BorderRadius.circular(12),
                                       border: Border.all(
-                                        color: colorScheme.secondary
-                                            .withValues(alpha: 0.3),
+                                        color: colorScheme.secondary.withValues(
+                                          alpha: 0.3,
+                                        ),
                                       ),
                                     ),
                                     child: Row(
@@ -709,8 +710,8 @@ class TodoListTile extends ConsumerWidget {
                                         Icon(
                                           Icons.psychology_outlined,
                                           size: 13,
-                                          color: colorScheme
-                                              .onSecondaryContainer,
+                                          color:
+                                              colorScheme.onSecondaryContainer,
                                         ),
                                         const SizedBox(width: 4),
                                         Text(

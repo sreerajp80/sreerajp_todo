@@ -27,7 +27,9 @@ class _FakeTodoRepo implements TodoRepository {
   @override
   Future<List<TodoEntity>> getTodosByDate(String date) async => [todo];
   @override
-  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async => [todo];
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async => [
+    todo,
+  ];
   @override
   Future<void> createTodo(TodoEntity todo) async {}
   @override

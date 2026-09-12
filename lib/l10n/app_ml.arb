@@ -1064,6 +1064,8 @@
   "ocrSwitchCamera": "ക്യാമറ മാറ്റുക",
   "ocrPickGallery": "ചിത്രം തിരഞ്ഞെടുക്കുക",
   "ocrProcessing": "ടെക്സ്റ്റ് കണ്ടെത്തുന്നു...",
+  "ocrPreparingImage": "ചിത്രം തയ്യാറാക്കുന്നു...",
+  "ocrFocusLocked": "ഫോക്കസ് ലോക്ക് ചെയ്തു",
   "ocrNoTextFound": "ചിത്രത്തിൽ ടെക്സ്റ്റ് കണ്ടെത്താനായില്ല. വീണ്ടും ശ്രമിക്കുക.",
   "ocrReviewTitle": "സ്കാൻ ചെയ്ത ടാസ്ക് അവലോകനം",
   "ocrTaskNameLabel": "ടാസ്ക് പേര്",
@@ -1114,5 +1116,17 @@
   "masteryDeckTag": "മാസ്റ്ററി ഡെക്ക്",
   "allMasteryFilter": "എല്ലാം",
   "deleteDeck": "ഡെക്ക് ഇല്ലാതാക്കുക",
-  "deleteDeckConfirmation": "ഈ മാസ്റ്ററി ഡെക്ക് ഇല്ലാതാക്കണമെന്ന് ഉറപ്പാണോ? ടാസ്കുകൾ നിലനിൽക്കും എന്നാൽ ഈ ഡെക്കുമായുള്ള ബന്ധം നഷ്ടപ്പെടും."
+  "deleteDeckConfirmation": "ഈ മാസ്റ്ററി ഡെക്ക് ഇല്ലാതാക്കണമെന്ന് ഉറപ്പാണോ? ടാസ്കുകൾ നിലനിൽക്കും എന്നാൽ ഈ ഡെക്കുമായുള്ള ബന്ധം നഷ്ടപ്പെടും.",
+  "ocrEnhanceTitle": "മെച്ചപ്പെടുത്തി സ്കാൻ ചെയ്യുക",
+  "ocrEnhanceUseText": "ടെക്സ്റ്റ് ഉപയോഗിക്കുക",
+  "ocrEnhanceCrop": "ക്രോപ്പ്",
+  "ocrEnhanceInvert": "ഇൻവേർട്ട്",
+  "ocrEnhanceLiveText": "കണ്ടെത്തിയ ടെക്സ്റ്റ്",
+  "ocrEnhanceLiveTextNone": "ഇതുവരെ ഒന്നും വായിച്ചില്ല. ക്രോപ്പ്, ഫിൽട്ടർ, അല്ലെങ്കിൽ മറ്റൊരു ഭാഷ പരീക്ഷിക്കുക.",
+  "ocrEnhanceWordCount": "{count} വാക്കുകൾ",
+  "ocrEnhanceScanning": "വായിക്കുന്നു...",
+  "ocrLanguageTooltip": "തിരിച്ചറിയൽ ഭാഷ",
+  "ocrLanguageAll": "ഇംഗ്ലീഷ് + മലയാളം",
+  "ocrLanguageMalayalam": "മലയാളം",
+  "ocrLanguageEnglish": "ഇംഗ്ലീഷ്"
 }

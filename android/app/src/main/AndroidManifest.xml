@@ -48,6 +48,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- Required by image_cropper for the crop & rotate UI (uCrop).
+             No screenOrientation is set, so the editor follows the device
+             the way the rest of this app does. -->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />

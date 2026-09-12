@@ -154,6 +154,17 @@ flutter {
     source = "../.."
 }
 
+dependencies {
+    // On-device Tesseract 5 OCR. Bundles its own native library and reads the
+    // language models from app-internal storage, so recognition never leaves
+    // the device and no network permission is involved.
+    implementation("cz.adaptech.tesseract4android:tesseract4android:4.9.0")
+
+    // Test only — never shipped in the APK. Covers the pure-arithmetic OCR
+    // reading-order algorithm in OcrReadingOrder.kt.
+    testImplementation("junit:junit:4.13.2")
+}
+
 if (isReleasePackagingBuild && !hasReleaseKeystore) {
     throw GradleException(
         "Missing Android release signing config. Create android/key.properties " +

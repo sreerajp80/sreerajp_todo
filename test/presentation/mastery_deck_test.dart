@@ -74,8 +74,9 @@ void main() {
     mockTimeRepo = MockTimeSegmentRepository();
 
     when(() => mockTimeRepo.getSegments(any())).thenAnswer((_) async => []);
-    when(() => mockTimeRepo.getRunningSegment(any()))
-        .thenAnswer((_) async => null);
+    when(
+      () => mockTimeRepo.getRunningSegment(any()),
+    ).thenAnswer((_) async => null);
   });
 
   testWidgets('MasteryDeckScreen shows empty state when no decks exist', (

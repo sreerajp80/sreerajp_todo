@@ -3636,6 +3636,12 @@ class AppLocalizationsMl extends AppLocalizations {
   String get ocrProcessing => 'ടെക്സ്റ്റ് കണ്ടെത്തുന്നു...';
 
   @override
+  String get ocrPreparingImage => 'ചിത്രം തയ്യാറാക്കുന്നു...';
+
+  @override
+  String get ocrFocusLocked => 'ഫോക്കസ് ലോക്ക് ചെയ്തു';
+
+  @override
   String get ocrNoTextFound =>
       'ചിത്രത്തിൽ ടെക്സ്റ്റ് കണ്ടെത്താനായില്ല. വീണ്ടും ശ്രമിക്കുക.';
 
@@ -3796,4 +3802,43 @@ class AppLocalizationsMl extends AppLocalizations {
   @override
   String get deleteDeckConfirmation =>
       'ഈ മാസ്റ്ററി ഡെക്ക് ഇല്ലാതാക്കണമെന്ന് ഉറപ്പാണോ? ടാസ്കുകൾ നിലനിൽക്കും എന്നാൽ ഈ ഡെക്കുമായുള്ള ബന്ധം നഷ്ടപ്പെടും.';
+
+  @override
+  String get ocrEnhanceTitle => 'മെച്ചപ്പെടുത്തി സ്കാൻ ചെയ്യുക';
+
+  @override
+  String get ocrEnhanceUseText => 'ടെക്സ്റ്റ് ഉപയോഗിക്കുക';
+
+  @override
+  String get ocrEnhanceCrop => 'ക്രോപ്പ്';
+
+  @override
+  String get ocrEnhanceInvert => 'ഇൻവേർട്ട്';
+
+  @override
+  String get ocrEnhanceLiveText => 'കണ്ടെത്തിയ ടെക്സ്റ്റ്';
+
+  @override
+  String get ocrEnhanceLiveTextNone =>
+      'ഇതുവരെ ഒന്നും വായിച്ചില്ല. ക്രോപ്പ്, ഫിൽട്ടർ, അല്ലെങ്കിൽ മറ്റൊരു ഭാഷ പരീക്ഷിക്കുക.';
+
+  @override
+  String ocrEnhanceWordCount(int count) {
+    return '$count വാക്കുകൾ';
+  }
+
+  @override
+  String get ocrEnhanceScanning => 'വായിക്കുന്നു...';
+
+  @override
+  String get ocrLanguageTooltip => 'തിരിച്ചറിയൽ ഭാഷ';
+
+  @override
+  String get ocrLanguageAll => 'ഇംഗ്ലീഷ് + മലയാളം';
+
+  @override
+  String get ocrLanguageMalayalam => 'മലയാളം';
+
+  @override
+  String get ocrLanguageEnglish => 'ഇംഗ്ലീഷ്';
 }

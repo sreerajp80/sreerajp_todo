@@ -151,246 +151,250 @@ class _OcrResultBottomSheetState extends ConsumerState<OcrResultBottomSheet> {
         ),
         padding: EdgeInsets.fromLTRB(20, 12, 20, effectiveBottom),
         child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Drag handle
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  margin: const EdgeInsets.only(bottom: 16),
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.onSurfaceVariant.withValues(
-                      alpha: 0.4,
-                    ),
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-
-              // Title and header
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Drag handle
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    margin: const EdgeInsets.only(bottom: 16),
                     decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Icon(
-                      Icons.document_scanner,
-                      color: theme.colorScheme.primary,
-                      size: 24,
+                      color: theme.colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.4,
+                      ),
+                      borderRadius: BorderRadius.circular(2),
                     ),
                   ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.ocrReviewTitle,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          l10n.ocrScanSubtitle,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-
-              // Task Name field
-              TextFormField(
-                controller: _titleController,
-                autofocus: false,
-                decoration: InputDecoration(
-                  labelText: l10n.ocrTaskNameLabel,
-                  prefixIcon: const Icon(Icons.title),
-                  errorText: _uniquenessError,
-                  suffixIcon: _titleController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear, size: 18),
-                          onPressed: () {
-                            _titleController.clear();
-                            _checkTitleUniqueness('');
-                          },
-                        )
-                      : null,
                 ),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return l10n.ocrTaskNameEmpty;
-                  }
-                  return null;
-                },
-                onChanged: _checkTitleUniqueness,
-              ),
-              const SizedBox(height: 8),
 
-              // Interchange / Swap fields button
-              Center(
-                child: OutlinedButton.icon(
-                  onPressed: () {
-                    HapticFeedback.selectionClick();
-                    _swapFields();
+                // Title and header
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.primary.withValues(
+                          alpha: 0.12,
+                        ),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        Icons.document_scanner,
+                        color: theme.colorScheme.primary,
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.ocrReviewTitle,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            l10n.ocrScanSubtitle,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                // Task Name field
+                TextFormField(
+                  controller: _titleController,
+                  autofocus: false,
+                  decoration: InputDecoration(
+                    labelText: l10n.ocrTaskNameLabel,
+                    prefixIcon: const Icon(Icons.title),
+                    errorText: _uniquenessError,
+                    suffixIcon: _titleController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, size: 18),
+                            onPressed: () {
+                              _titleController.clear();
+                              _checkTitleUniqueness('');
+                            },
+                          )
+                        : null,
+                  ),
+                  validator: (value) {
+                    if (value == null || value.trim().isEmpty) {
+                      return l10n.ocrTaskNameEmpty;
+                    }
+                    return null;
                   },
-                  icon: const Icon(Icons.swap_vert, size: 20),
-                  label: Text(
-                    l10n.ocrSwapFields,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: theme.colorScheme.primary,
-                    side: BorderSide(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.35),
-                    ),
-                    backgroundColor:
-                        theme.colorScheme.primary.withValues(alpha: 0.08),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 10,
-                    ),
-                  ),
+                  onChanged: _checkTitleUniqueness,
                 ),
-              ),
-              const SizedBox(height: 8),
+                const SizedBox(height: 8),
 
-              // Description field
-              TextFormField(
-                controller: _descriptionController,
-                minLines: 3,
-                maxLines: 6,
-                decoration: InputDecoration(
-                  labelText: l10n.ocrDescriptionLabel,
-                  alignLabelWithHint: true,
-                  prefixIcon: const Padding(
-                    padding: EdgeInsets.only(bottom: 48),
-                    child: Icon(Icons.notes),
-                  ),
-                  suffixIcon: _descriptionController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(Icons.clear, size: 18),
-                          onPressed: () => _descriptionController.clear(),
-                        )
-                      : null,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              // Expandable Raw OCR Text card
-              if (widget.result.rawText.isNotEmpty)
-                Container(
-                  decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceContainerHighest.withValues(
-                      alpha: 0.5,
+                // Interchange / Swap fields button
+                Center(
+                  child: OutlinedButton.icon(
+                    onPressed: () {
+                      HapticFeedback.selectionClick();
+                      _swapFields();
+                    },
+                    icon: const Icon(Icons.swap_vert, size: 20),
+                    label: Text(
+                      l10n.ocrSwapFields,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: theme.colorScheme.outlineVariant.withValues(
-                        alpha: 0.5,
-                      ),
-                    ),
-                  ),
-                  child: ExpansionTile(
-                    shape: const RoundedRectangleBorder(),
-                    collapsedShape: const RoundedRectangleBorder(),
-                    leading: const Icon(Icons.text_fields, size: 20),
-                    title: Text(
-                      l10n.ocrRawTextTitle,
-                      style: theme.textTheme.labelMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.copy, size: 18),
-                          tooltip: l10n.ocrRawTextCopied,
-                          onPressed: _copyRawText,
-                        ),
-                        const Icon(Icons.expand_more),
-                      ],
-                    ),
-                    childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surface,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: SelectableText(
-                          widget.result.rawText,
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            fontFamily: 'monospace',
-                            height: 1.4,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              const SizedBox(height: 20),
-
-              // Action buttons
-              Row(
-                children: [
-                  OutlinedButton.icon(
-                    onPressed: widget.onRetake,
-                    icon: const Icon(Icons.refresh, size: 18),
-                    label: Text(l10n.ocrRetake),
                     style: OutlinedButton.styleFrom(
+                      foregroundColor: theme.colorScheme.primary,
+                      side: BorderSide(
+                        color: theme.colorScheme.primary.withValues(
+                          alpha: 0.35,
+                        ),
+                      ),
+                      backgroundColor: theme.colorScheme.primary.withValues(
+                        alpha: 0.08,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
-                        vertical: 14,
+                        vertical: 10,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: FilledButton.icon(
-                      onPressed: _handleOpenEditor,
-                      icon: Icon(
-                        widget.returnResultDirectly
-                            ? Icons.check
-                            : Icons.arrow_forward,
-                        size: 18,
-                      ),
-                      label: Text(
-                        widget.returnResultDirectly
-                            ? l10n.ocrApplyToForm
-                            : l10n.ocrContinueToCreate,
-                      ),
-                      style: FilledButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 14),
+                ),
+                const SizedBox(height: 8),
+
+                // Description field
+                TextFormField(
+                  controller: _descriptionController,
+                  minLines: 3,
+                  maxLines: 6,
+                  decoration: InputDecoration(
+                    labelText: l10n.ocrDescriptionLabel,
+                    alignLabelWithHint: true,
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.only(bottom: 48),
+                      child: Icon(Icons.notes),
+                    ),
+                    suffixIcon: _descriptionController.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(Icons.clear, size: 18),
+                            onPressed: () => _descriptionController.clear(),
+                          )
+                        : null,
+                  ),
+                ),
+                const SizedBox(height: 12),
+
+                // Expandable Raw OCR Text card
+                if (widget.result.rawText.isNotEmpty)
+                  Container(
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.surfaceContainerHighest
+                          .withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: theme.colorScheme.outlineVariant.withValues(
+                          alpha: 0.5,
+                        ),
                       ),
                     ),
+                    child: ExpansionTile(
+                      shape: const RoundedRectangleBorder(),
+                      collapsedShape: const RoundedRectangleBorder(),
+                      leading: const Icon(Icons.text_fields, size: 20),
+                      title: Text(
+                        l10n.ocrRawTextTitle,
+                        style: theme.textTheme.labelMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.copy, size: 18),
+                            tooltip: l10n.ocrRawTextCopied,
+                            onPressed: _copyRawText,
+                          ),
+                          const Icon(Icons.expand_more),
+                        ],
+                      ),
+                      childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.surface,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: SelectableText(
+                            widget.result.rawText,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontFamily: 'monospace',
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ],
-          ),
+                const SizedBox(height: 20),
+
+                // Action buttons
+                Row(
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: widget.onRetake,
+                      icon: const Icon(Icons.refresh, size: 18),
+                      label: Text(l10n.ocrRetake),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: FilledButton.icon(
+                        onPressed: _handleOpenEditor,
+                        icon: Icon(
+                          widget.returnResultDirectly
+                              ? Icons.check
+                              : Icons.arrow_forward,
+                          size: 18,
+                        ),
+                        label: Text(
+                          widget.returnResultDirectly
+                              ? l10n.ocrApplyToForm
+                              : l10n.ocrContinueToCreate,
+                        ),
+                        style: FilledButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

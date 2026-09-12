@@ -78,10 +78,53 @@ import 'package:sreerajp_todo/core/config/config_service.dart';
 import 'package:sreerajp_todo/data/database/database_key_service.dart';
 
 import 'package:sreerajp_todo/data/dao/backup_logs_dao.dart';
+import 'package:sreerajp_todo/data/services/cropper_image_edit_service.dart';
+import 'package:sreerajp_todo/data/services/isolate_ocr_enhancer.dart';
+import 'package:sreerajp_todo/data/services/ocr_capture_downscaler.dart';
+import 'package:sreerajp_todo/data/services/mlkit_ocr_service.dart';
+import 'package:sreerajp_todo/data/services/native_ocr_service.dart';
+import 'package:sreerajp_todo/data/services/ocr_image_preprocessor.dart';
+import 'package:sreerajp_todo/domain/services/image_edit_service.dart';
+import 'package:sreerajp_todo/domain/services/ocr_capture_downscaler.dart';
+import 'package:sreerajp_todo/domain/services/ocr_enhancer.dart';
+import 'package:sreerajp_todo/domain/services/ocr_service.dart';
 import 'package:sreerajp_todo/data/models/backup_log_entity.dart';
 
 final databaseKeyServiceProvider = Provider<DatabaseKeyService>((ref) {
   return DatabaseKeyService();
+});
+
+/// Prepares a photo for recognition — enlarge, grayscale, contrast — so thin
+/// marks such as `.` and `=` are big enough for the recognizer to see.
+final ocrImagePreprocessorProvider = Provider<OcrImagePreprocessor>((ref) {
+  return const ImagePackageOcrPreprocessor();
+});
+
+/// On-device text recognition. Native Tesseract reads English and Malayalam;
+/// ML Kit stands in only where the platform channel is missing.
+final ocrServiceProvider = Provider<OcrService>((ref) {
+  return NativeOcrService(
+    fallbackService: MlKitOcrService(
+      preprocessor: ref.watch(ocrImagePreprocessorProvider),
+    ),
+  );
+});
+
+/// Shrinks a full-resolution capture to a size the Dart image pipeline can
+/// afford, before any filter or recognition work touches it.
+final ocrCaptureDownscalerProvider = Provider<OcrCaptureDownscaler>((ref) {
+  return const NativeOcrCaptureDownscaler();
+});
+
+/// Background isolate image enhancer for rotation, filters, brightness, and
+/// contrast.
+final ocrEnhancerProvider = Provider<OcrEnhancer>((ref) {
+  return const IsolateOcrEnhancer();
+});
+
+/// Native crop-and-rotate editor used before recognition.
+final imageEditServiceProvider = Provider<ImageEditService>((ref) {
+  return const CropperImageEditService();
 });
 
 final databaseServiceProvider = Provider<DatabaseService>((ref) {

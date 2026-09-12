@@ -39,10 +39,7 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
 
   void _onAddTodo(BuildContext context) {
     context.push(
-      AppRoutes.createTodoPath(
-        date: todayAsIso(),
-        masteryDeckId: deckId,
-      ),
+      AppRoutes.createTodoPath(date: todayAsIso(), masteryDeckId: deckId),
     );
   }
 
@@ -331,9 +328,8 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
                   padding: EdgeInsets.all(32),
                   child: Center(child: CircularProgressIndicator()),
                 ),
-                error: (err, _) => Center(
-                  child: Text('Error loading tasks: $err'),
-                ),
+                error: (err, _) =>
+                    Center(child: Text('Error loading tasks: $err')),
                 data: (todos) {
                   if (todos.isEmpty) {
                     return Card(
@@ -473,10 +469,9 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
                   final newStatus = isCompleted
                       ? TodoStatus.pending
                       : TodoStatus.completed;
-                  await ref.read(todoRepositoryProvider).updateStatus(
-                    todo.id,
-                    newStatus,
-                  );
+                  await ref
+                      .read(todoRepositoryProvider)
+                      .updateStatus(todo.id, newStatus);
                   ref.invalidate(masteryDeckTodosProvider(deckId));
                   ref.invalidate(masteryDeckProgressProvider(deckId));
                   ref.invalidate(dailyTodoProvider(todo.date));

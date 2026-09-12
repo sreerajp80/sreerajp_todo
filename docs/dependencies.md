@@ -42,7 +42,9 @@ Before adding any package:
 | `qr_flutter` | Animated QR code stream rendering for AirQR optical sync | AirQR Sync / UI |
 | `mobile_scanner` | Local camera barcode scanner for AirQR stream reception | AirQR Sync / Camera |
 | `camera` | Live camera viewfinder, flash/torch control, zoom, and still capture | Camera / Viewfinder |
-| `google_mlkit_text_recognition` | On-device ML Kit text recognition for offline OCR task parsing | Machine Learning / OCR |
+| `google_mlkit_text_recognition` | On-device ML Kit text recognition, the fallback OCR engine where the native channel is absent | Machine Learning / OCR |
+| `image` | Pure-Dart pixel work for OCR image enhancement, run in a background isolate | Imaging / OCR |
+| `image_cropper` | Native crop-and-rotate editor (uCrop) used before recognition | Imaging / OCR |
 
 ---
 

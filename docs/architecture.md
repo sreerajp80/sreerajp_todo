@@ -61,10 +61,12 @@ lib/
 |   |-- dao/                        # todo_dao, time_segment_dao, recurrence_rule_dao, statistics_query_service
 |   |-- repositories/               # todo_repository_impl, time_segment_repository_impl
 |   |-- backup/                     # backup_service
+|   |-- services/                   # air_qr, ritual, OCR engines and image enhancement
 |   `-- models/                     # freezed entities + todo_status enum
 |-- domain/
 |   |-- entities/                   # domain models (immutable)
 |   |-- repositories/               # abstract interfaces
+|   |-- services/                   # abstract service contracts (OCR, enhancer, image edit)
 |   `-- usecases/                   # multi-step business orchestrations
 |-- l10n/                           # ARB string files + generated AppLocalizations
 |-- application/                    # providers.dart, notifiers
@@ -80,7 +82,7 @@ lib/
 | `lib/core/` | Pure Dart utilities, config loader, constants, exceptions |
 | `lib/l10n/` | ARB translations and generated localization classes |
 | `lib/data/` | Repository implementations, DAOs, database service, backup, migrations |
-| `lib/domain/` | Abstract repository interfaces, use-case classes, domain entities — zero data-layer imports |
+| `lib/domain/` | Abstract repository and service interfaces, use-case classes, domain entities — zero data-layer imports |
 | `lib/application/` | Riverpod providers and StateNotifiers |
 | `lib/presentation/` | Flutter widgets and screens — consumes only providers, never DAOs |
 
@@ -268,6 +270,8 @@ Use-cases exist only for multi-step business orchestrations:
 - `in.sreerajp.todo/database_key`: Own channel to the Android Keystore for the database key
 - `in.sreerajp.todo/screen_wake`: Own channel setting and clearing `FLAG_KEEP_SCREEN_ON` while a timer runs (Android only). Written as a channel rather than a package so the audited dependency list stays unchanged
 - `in.sreerajp.todo/app_lock`: Own channel for `FLAG_SECURE` and the device unlock screen (Android only)
+- `in.sreerajp.todo/ocr`: Own channel to native Tesseract 5 (Tesseract4Android) for English and Malayalam text recognition (Android only). The language models ship in `assets/tessdata/` and are copied to app-internal storage on first use, so recognition is entirely on-device. Where the channel is absent — host tests, and Windows — `NativeOcrService` falls back to ML Kit
+- `image_cropper`: Platform channel to the native uCrop crop-and-rotate editor, used before recognition
 - `in.sreerajp.todo/speech` and `in.sreerajp.todo/speech_events`: Own method and event channel pair over Android `SpeechRecognizer`, for the voice task sheet (Android only). The host always asks for the on-device engine and refuses to listen when it cannot, so the offline guarantee holds; see `docs/security.md` section 10. Written as a channel rather than a package for the same reason as the two above
 
 ## 11. Environment And Build Model
