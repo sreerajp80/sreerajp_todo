@@ -269,6 +269,10 @@ When you open the app, you are presented with today's task list:
 
 ### Creating and Editing Tasks
 
+<p align="center">
+  <img src="docs/screenshots/create_task.png" width="260" alt="Creating and Editing Tasks" />
+</p>
+
 Tap the **Floating Action Button (+)** or use voice and OCR shortcuts to create tasks:
 - **Title Field:** Required. Offers autocomplete suggestions based on historical task titles and warns if a duplicate title exists on the same day.
 - **Description:** Optional notes or context for the task.
@@ -322,6 +326,10 @@ Capture physical task notes from paper, notebooks, whiteboards, or printed sheet
 
 ### Bilingual Voice Task Parser
 
+<p align="center">
+  <img src="docs/screenshots/voice_parser.png" width="260" alt="Bilingual Voice Task Parser" />
+</p>
+
 Create tasks hands-free using natural spoken commands:
 - Processes speech recognition entirely on-device in **English** and **Malayalam** (`മലയാളം`).
 - Parses natural spoken language to extract task titles, optional descriptions, scheduled dates ("tomorrow", "next Monday"), and target durations ("for 45 minutes", "2 hours").
@@ -333,6 +341,10 @@ Create tasks hands-free using natural spoken commands:
 - **Time Segments Screen:** View individual time intervals, exact start/stop timestamps, and calculated segment durations.
 
 ### Manual Time Entry & Overlap Validation
+
+<p align="center">
+  <img src="docs/screenshots/time_segments.png" width="260" alt="Time Segments and Manual Time Entry" />
+</p>
 
 Forgot to start a timer? Add time segments manually:
 1. Open the **Time Segments** view for any task.
@@ -379,6 +391,10 @@ Long-press any task to enter multi-select mode:
 
 ### FTS5 Search and Indic Phonetic Search
 
+<p align="center">
+  <img src="docs/screenshots/search_phonetic.png" width="260" alt="FTS5 and Indic Phonetic Search" />
+</p>
+
 - **SQLite FTS5 Index:** High-speed full-text search across all tasks, descriptions, and historical records.
 - **Indic Phonetic & Sandhi Matching:** Accommodates Malayalam orthographic variations and phonetic equivalents to ensure accurate search results.
 
@@ -394,11 +410,19 @@ Autocomplete suggests past task titles as you type, maintaining consistent namin
 
 ### Air-QR Optical Transfer & Local Wi-Fi Sync
 
+<p align="center">
+  <img src="docs/screenshots/wifi_sync.png" width="260" alt="Local Wi-Fi P2P Sync" />
+</p>
+
 Transfer your data between devices without internet access:
 - **Air-QR Optical Transfer:** Encodes encrypted backup archives into a sequence of animated, high-density QR codes displayed on screen and scanned using the receiving device's camera.
 - **Local Wi-Fi Sync:** Establishes a direct peer-to-peer TCP socket between two devices on the same local Wi-Fi network.
 
 ### Multi-Format Data Handoff (Markdown & JSON)
+
+<p align="center">
+  <img src="docs/screenshots/data_handoff.png" width="260" alt="Multi-Format Data Handoff" />
+</p>
 
 Export your daily records in standard open formats:
 - **Markdown Export:** Generates clean daily log notes with checklists and timestamps, ready for note-taking systems like Obsidian or Logseq.

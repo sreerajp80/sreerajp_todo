@@ -19,7 +19,9 @@ This directory holds release screenshots and preview images used in the project'
 
 ## 2. Standard Screenshot Showcase Files
 
-The main `README.md` references the following 9 key showcase screens:
+The repository maintains 15 screenshots used across `README.md` and feature documentation:
+
+### Main App Showcase (9 Screens)
 
 | File Name | Screen / Feature Shown | Description |
 |-----------|------------------------|-------------|
@@ -32,6 +34,17 @@ The main `README.md` references the following 9 key showcase screens:
 | `statistics.png` | **Productivity Statistics Dashboard** | Daily overview bar charts, completion metrics, period filters, and KPI summary cards. |
 | `backup_sync.png` | **Encrypted Backup & Air-QR Transfer** | Backup management dashboard and air-gapped animated optical QR code data transfer stream. |
 | `settings_hub.png` | **Settings & Preferences Hub** | Central customization hub for appearance, themes, language, task defaults, and security policies. |
+
+### Feature Tour & Deep-Dive Screens (6 Screens)
+
+| File Name | Screen / Feature Shown | Description |
+|-----------|------------------------|-------------|
+| `create_task.png` | **Creating and Editing Tasks** | Task creation form with title autocomplete, description, priority selector, target duration, and sub-task input. |
+| `voice_parser.png` | **Bilingual Voice Task Parser** | Hands-free voice parser bottom sheet with English and Malayalam language toggle and live speech capture. |
+| `time_segments.png` | **Time Segments & Manual Entry** | Per-task time tracking log with active timer controls, segment list, and manual time entry button. |
+| `search_phonetic.png` | **FTS5 & Phonetic Search** | SQLite FTS5 search interface with search results, status chips, and Indic phonetic matching. |
+| `wifi_sync.png` | **Local P2P Wi-Fi Sync** | Peer-to-peer Wi-Fi synchronization screen with sync scope selection and host/peer connection controls. |
+| `data_handoff.png` | **Multi-Format Data Handoff** | Markdown and JSON export interface with copy, share, and preview options. |
 
 ---
 
