@@ -101,6 +101,12 @@ bool shouldAskCarryOver({
   return lastAskedIso != todayIso;
 }
 
+/// The maximum hours allowed in the target duration field (single day 24-hour limit: 0-23).
+const int kMaxTargetHours = 23;
+
+/// The maximum minutes allowed in the target duration field (0-59).
+const int kMaxTargetMinutes = 59;
+
 /// Splits [totalSeconds] into whole hours and the leftover whole minutes.
 ///
 /// Used by the target time picker, which shows two number fields rather than a

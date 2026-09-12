@@ -1582,6 +1582,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get targetMinutesLabel => 'Minutes';
 
   @override
+  String get targetHoursRangeError => '0–23';
+
+  @override
+  String get targetMinutesRangeError => '0–59';
+
+  @override
   String targetProgressLabel(String target, String tracked) {
     return '$tracked of $target';
   }
@@ -2223,6 +2229,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get voiceCreateTask => 'Create task';
+
+  @override
+  String get voiceDescriptionHeading => 'Description';
+
+  @override
+  String get voiceEditDetails => 'Edit in form';
+
+  @override
+  String get voiceDuplicateTitle =>
+      'A task with this title already exists on this day.';
+
+  @override
+  String get voiceDictateTooltip => 'Dictate with voice';
 
   @override
   String get voiceDateMovedToToday =>
@@ -3562,4 +3581,195 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notStartedYet => 'Not started yet';
+
+  @override
+  String get ocrScanTitle => 'OCR Task Scanner';
+
+  @override
+  String get ocrScanSubtitle => 'Scan task name and description';
+
+  @override
+  String get ocrScanHint =>
+      'First line: Task Name. Separate with space, #, or --- for Description.';
+
+  @override
+  String get ocrCaptureTooltip => 'Capture photo';
+
+  @override
+  String get ocrTorchAuto => 'Auto flash';
+
+  @override
+  String get ocrTorchOn => 'Torch on';
+
+  @override
+  String get ocrTorchOff => 'Flash off';
+
+  @override
+  String get ocrSwitchCamera => 'Switch camera';
+
+  @override
+  String get ocrPickGallery => 'Choose image';
+
+  @override
+  String get ocrProcessing => 'Extracting text...';
+
+  @override
+  String get ocrNoTextFound => 'No text detected in image. Please try again.';
+
+  @override
+  String get ocrReviewTitle => 'Scanned Task Review';
+
+  @override
+  String get ocrTaskNameLabel => 'Task Name';
+
+  @override
+  String get ocrTaskNameEmpty => 'Task name cannot be empty';
+
+  @override
+  String get ocrDescriptionLabel => 'Description';
+
+  @override
+  String get ocrRawTextTitle => 'Raw Scanned Text';
+
+  @override
+  String get ocrRawTextCopied => 'Raw text copied to clipboard';
+
+  @override
+  String get ocrCreateTask => 'Create Task';
+
+  @override
+  String get ocrOpenInEditor => 'Open in Full Editor';
+
+  @override
+  String get ocrRetake => 'Retake';
+
+  @override
+  String get ocrCameraPermissionRequired =>
+      'Camera access is needed to scan task text. Please grant camera permission in system settings.';
+
+  @override
+  String get ocrApplyToForm => 'Apply to Task';
+
+  @override
+  String get ocrScanButtonTooltip => 'Scan task with OCR camera';
+
+  @override
+  String get ocrCropTitle => 'Crop Text Area';
+
+  @override
+  String get ocrCropHint =>
+      'Drag handles to frame only task name and description';
+
+  @override
+  String get ocrCropConfirm => 'Scan Selected Area';
+
+  @override
+  String get ocrCropFullImage => 'Use Full Image';
+
+  @override
+  String get ocrBrightnessLabel => 'Brightness';
+
+  @override
+  String get ocrZoomLabel => 'Zoom';
+
+  @override
+  String get ocrResetExposure => 'Reset';
+
+  @override
+  String get ocrRotateImage => 'Rotate 90°';
+
+  @override
+  String get ocrSwapFields => 'Swap Title and Description';
+
+  @override
+  String get ocrContinueToCreate => 'Continue to Task Details';
+
+  @override
+  String get ocrFilterOriginal => 'Original';
+
+  @override
+  String get ocrFilterBw => 'B&W Document';
+
+  @override
+  String get ocrFilterBrighten => 'Brighten';
+
+  @override
+  String get ocrEnhanceLabel => 'Enhance';
+
+  @override
+  String get ocrRotateCw => 'Rotate';
+
+  @override
+  String get ocrRotateCcw => 'Rotate Left';
+
+  @override
+  String get ocrFilterGrayscale => 'Grayscale';
+
+  @override
+  String get ocrTabCrop => 'Crop & Rotate';
+
+  @override
+  String get ocrTabFilters => 'Filters';
+
+  @override
+  String get ocrTabTune => 'Fine Tune';
+
+  @override
+  String get ocrContrastLabel => 'Contrast';
+
+  @override
+  String get ocrResetFilter => 'Reset';
+
+  @override
+  String get masteryDecksTitle => 'Mastery Decks';
+
+  @override
+  String get newMasteryDeck => 'New Mastery Deck';
+
+  @override
+  String get masteryDeckName => 'Deck Name';
+
+  @override
+  String get masteryDeckNameHint => 'e.g. Learn Flutter, Sanskrit Chants';
+
+  @override
+  String get masteryDeckDescription => 'Description (optional)';
+
+  @override
+  String get noMasteryDecks => 'No Mastery Decks yet';
+
+  @override
+  String get noMasteryDecksSubtitle =>
+      'Create a mastery deck to organize and master topics with dedicated tasks.';
+
+  @override
+  String get noMasteryTodos => 'No tasks in this deck yet';
+
+  @override
+  String get noMasteryTodosSubtitle =>
+      'Add tasks to this deck to start tracking your progress.';
+
+  @override
+  String get addTodoToDeck => 'Add Task to Deck';
+
+  @override
+  String get masteryOverallProgress => 'Overall Progress';
+
+  @override
+  String masteryTasksCount(int completed, int total) {
+    return '$completed of $total tasks completed';
+  }
+
+  @override
+  String get masteryDeckTag => 'Mastery Deck';
+
+  @override
+  String get allMasteryFilter => 'All';
+
+  @override
+  String get deleteDeck => 'Delete Deck';
+
+  @override
+  String get deleteDeckConfirmation =>
+      'Are you sure you want to delete this mastery deck? The tasks will remain but won\'t be linked to this deck.';
 }

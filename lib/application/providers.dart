@@ -61,6 +61,7 @@ import 'package:sreerajp_todo/data/dao/spaced_repetition_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
 import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/repositories/spaced_repetition_repository_impl.dart';
+import 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/spaced_repetition_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/complete_srs_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/generate_spaced_repetition_tasks.dart';
@@ -275,6 +276,104 @@ final completeSrsTodoProvider = Provider<CompleteSrsTodo>((ref) {
     ref.read(spacedRepetitionRepositoryProvider),
   );
 });
+
+class MasteryDeckProgress {
+  const MasteryDeckProgress({
+    required this.totalTasks,
+    required this.completedTasks,
+    required this.workingTasks,
+    required this.pendingTasks,
+    required this.droppedTasks,
+    required this.completionRatio,
+    required this.totalTrackedSeconds,
+  });
+
+  final int totalTasks;
+  final int completedTasks;
+  final int workingTasks;
+  final int pendingTasks;
+  final int droppedTasks;
+  final double completionRatio;
+  final int totalTrackedSeconds;
+
+  static const empty = MasteryDeckProgress(
+    totalTasks: 0,
+    completedTasks: 0,
+    workingTasks: 0,
+    pendingTasks: 0,
+    droppedTasks: 0,
+    completionRatio: 0.0,
+    totalTrackedSeconds: 0,
+  );
+}
+
+final allMasteryDecksProvider =
+    FutureProvider<List<SpacedRepetitionItemEntity>>((ref) async {
+      try {
+        final repo = ref.watch(spacedRepetitionRepositoryProvider);
+        return await repo.getAllItems();
+      } catch (_) {
+        return const [];
+      }
+    });
+
+final allMasteryDecksMapProvider = Provider<Map<String, String>>((ref) {
+  final decksAsync = ref.watch(allMasteryDecksProvider);
+  return decksAsync.maybeWhen(
+    data: (decks) => {for (final d in decks) d.id: d.title},
+    orElse: () => const {},
+  );
+});
+
+final masteryDeckTodosProvider =
+    FutureProvider.family<List<TodoEntity>, String>((ref, deckId) async {
+      final repo = ref.watch(todoRepositoryProvider);
+      return repo.getTodosByMasteryDeckId(deckId);
+    });
+
+final masteryDeckProgressProvider =
+    FutureProvider.family<MasteryDeckProgress, String>((ref, deckId) async {
+      final todos = await ref.watch(masteryDeckTodosProvider(deckId).future);
+      if (todos.isEmpty) {
+        return MasteryDeckProgress.empty;
+      }
+      final timeRepo = ref.read(timeSegmentRepositoryProvider);
+      var completed = 0;
+      var working = 0;
+      var pending = 0;
+      var dropped = 0;
+      var totalTrackedSeconds = 0;
+
+      for (final todo in todos) {
+        switch (todo.status) {
+          case TodoStatus.completed:
+            completed++;
+          case TodoStatus.working:
+            working++;
+          case TodoStatus.pending:
+            pending++;
+          case TodoStatus.dropped:
+            dropped++;
+          case TodoStatus.ported:
+            break;
+        }
+        final segments = await timeRepo.getSegments(todo.id);
+        for (final s in segments) {
+          totalTrackedSeconds += s.durationSeconds ?? 0;
+        }
+      }
+
+      final ratio = todos.isEmpty ? 0.0 : (completed / todos.length);
+      return MasteryDeckProgress(
+        totalTasks: todos.length,
+        completedTasks: completed,
+        workingTasks: working,
+        pendingTasks: pending,
+        droppedTasks: dropped,
+        completionRatio: ratio,
+        totalTrackedSeconds: totalTrackedSeconds,
+      );
+    });
 
 final dailyTodoProvider =
     StateNotifierProvider.family<DailyTodoNotifier, DailyTodoState, String>((

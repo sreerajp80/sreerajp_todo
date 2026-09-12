@@ -53,6 +53,10 @@ class _FakeTodoRepository implements TodoRepository {
       _todos.where((todo) => todo.date == date).toList();
 
   @override
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async =>
+      _todos.where((todo) => todo.spacedRepetitionItemId == deckId).toList();
+
+  @override
   Future<void> reorderTodos(
     List<TodoEntity> todos, {
     bool bypassLock = false,

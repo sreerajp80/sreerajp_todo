@@ -22,6 +22,7 @@ import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/evening_re
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/morning_intention_card.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_command_sheet.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/recall_confidence_dialog.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/daily_progress_header.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
 import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
@@ -44,6 +45,7 @@ class DailyListScreen extends ConsumerStatefulWidget {
 
 class _DailyListScreenState extends ConsumerState<DailyListScreen> {
   bool _showCalendar = false;
+  String? _selectedMasteryTagFilter;
 
   /// The sort picked from the app bar menu on this screen. Null means "use the
   /// saved default", so a screen the user has not touched always follows
@@ -459,9 +461,15 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     List<TodoEntity> todos,
     TaskDefaults defaults,
   ) {
-    if (_revealHidden) return todos;
+    var result = todos;
+    if (_selectedMasteryTagFilter != null) {
+      result = result
+          .where((t) => t.spacedRepetitionItemId == _selectedMasteryTagFilter)
+          .toList();
+    }
+    if (_revealHidden) return result;
     return filterVisibleTodos(
-      todos,
+      result,
       showCompleted: defaults.showCompleted,
       showDropped: defaults.showDropped,
     );
@@ -781,6 +789,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       body: Column(
         children: [
           if (_showCalendar) _buildCalendar(),
+          DailyProgressHeader(todos: state.todos, date: widget.date),
           MorningIntentionCard(
             date: widget.date,
             isPast: _isPast,
@@ -791,6 +800,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               todos: state.todos,
             ),
           ),
+          _buildMasteryTagFilterBar(state.todos),
           Expanded(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 220),
@@ -894,14 +904,17 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           Flexible(
             child: InkWell(
               onTap: () => setState(() => _showCalendar = !_showCalendar),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                 child: Text(
                   _buildAppBarDateLabel(),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.2,
+                  ),
                 ),
               ),
             ),
@@ -1263,6 +1276,15 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           ),
           const SizedBox(height: 12),
         ],
+        FloatingActionButton.small(
+          heroTag: 'day-list-ocr',
+          onPressed: () {
+            context.push(AppRoutes.ocrScanPath(date: widget.date));
+          },
+          tooltip: strings.ocrScanButtonTooltip,
+          child: const Icon(Icons.document_scanner_outlined),
+        ),
+        const SizedBox(height: 12),
         FloatingActionButton(
           heroTag: 'day-list-add',
           onPressed: () {
@@ -1272,6 +1294,59 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           child: const Icon(Icons.add),
         ),
       ],
+    );
+  }
+
+  Widget _buildMasteryTagFilterBar(List<TodoEntity> todos) {
+    final masteryDecksMap = ref.watch(allMasteryDecksMapProvider);
+    final deckIdsOnDay = todos
+        .map((t) => t.spacedRepetitionItemId)
+        .where((id) => id != null && id.isNotEmpty)
+        .cast<String>()
+        .toSet()
+        .toList();
+
+    if (deckIdsOnDay.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Container(
+      height: 42,
+      margin: const EdgeInsets.symmetric(vertical: 4),
+      child: ListView(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8),
+            child: FilterChip(
+              label: Text(context.l10n.allMasteryFilter),
+              selected: _selectedMasteryTagFilter == null,
+              onSelected: (selected) {
+                if (selected) {
+                  setState(() => _selectedMasteryTagFilter = null);
+                }
+              },
+            ),
+          ),
+          for (final deckId in deckIdsOnDay)
+            Padding(
+              padding: const EdgeInsets.only(right: 8),
+              child: FilterChip(
+                avatar: const Icon(Icons.psychology_outlined, size: 14),
+                label: Text(
+                  '#${masteryDecksMap[deckId] ?? 'Deck'} (${todos.where((t) => t.spacedRepetitionItemId == deckId).length})',
+                ),
+                selected: _selectedMasteryTagFilter == deckId,
+                onSelected: (selected) {
+                  setState(() {
+                    _selectedMasteryTagFilter = selected ? deckId : null;
+                  });
+                },
+              ),
+            ),
+        ],
+      ),
     );
   }
 

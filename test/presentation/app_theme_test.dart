@@ -16,8 +16,8 @@ double _lightness(Color color) => HSLColor.fromColor(color).lightness;
 void main() {
   group('AppTheme', () {
     test('uses the built-in page background in both modes', () {
-      expect(AppTheme.light().scaffoldBackgroundColor, const Color(0xFFF0F4FB));
-      expect(AppTheme.dark().scaffoldBackgroundColor, const Color(0xFF0E1724));
+      expect(AppTheme.light().scaffoldBackgroundColor, const Color(0xFFF8FAFC));
+      expect(AppTheme.dark().scaffoldBackgroundColor, const Color(0xFF0B0F17));
     });
 
     test('cards stay visibly apart from the page background', () {

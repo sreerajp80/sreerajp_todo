@@ -3,17 +3,22 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/platform/speech_channel.dart';
+import 'package:sreerajp_todo/core/voice/voice_parse_result.dart';
+import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_command_sheet.dart';
 
 import '../helpers/test_l10n.dart';
 
-/// A recogniser that is present and ready, but never actually hears anything.
-///
-/// The sheet has to work the same whether the words arrive by microphone or by
-/// keyboard, so the typed path is what these tests drive.
+class MockTodoRepository extends Mock implements TodoRepository {}
+
+class FakeTodoEntity extends Fake implements TodoEntity {}
+
 class _FakeSpeechChannel extends SpeechChannel {
   _FakeSpeechChannel({this.reason}) : super(isSupported: true);
 
@@ -36,12 +41,33 @@ class _FakeSpeechChannel extends SpeechChannel {
   Stream<SpeechEvent> get events => _controller.stream;
 }
 
-Widget _wrap(Widget child, {SpeechUnavailableReason? reason}) {
+late SharedPreferences testPrefs;
+
+Widget _wrap(
+  Widget child, {
+  SpeechUnavailableReason? reason,
+  TodoRepository? repo,
+}) {
+  final mockRepo = repo ?? MockTodoRepository();
+  if (repo == null) {
+    when(
+      () => mockRepo.titleExistsOnDate(
+        any(),
+        any(),
+        excludeId: any(named: 'excludeId'),
+      ),
+    ).thenAnswer((_) async => false);
+    when(() => mockRepo.createTodo(any())).thenAnswer((_) async {});
+    when(() => mockRepo.getTodosByDate(any())).thenAnswer((_) async => []);
+  }
+
   return ProviderScope(
     overrides: [
       speechChannelProvider.overrideWithValue(
         _FakeSpeechChannel(reason: reason),
       ),
+      todoRepositoryProvider.overrideWithValue(mockRepo),
+      sharedPreferencesProvider.overrideWithValue(testPrefs),
     ],
     child: MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -52,6 +78,15 @@ Widget _wrap(Widget child, {SpeechUnavailableReason? reason}) {
 }
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(FakeTodoEntity());
+  });
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues(const {});
+    testPrefs = await SharedPreferences.getInstance();
+  });
+
   final todayIso = DateTime.now().toIso8601String().substring(0, 10);
 
   testWidgets('the sheet opens with nothing to create yet', (tester) async {
@@ -136,5 +171,117 @@ void main() {
 
     expect(find.text(testL10n.voiceUnavailableNoOffline), findsOneWidget);
     expect(find.text(testL10n.voiceTapToSpeak), findsNothing);
+  });
+
+  testWidgets(
+    'sentence with description shows both title and description chips',
+    (tester) async {
+      await tester.pumpWidget(_wrap(VoiceCommandSheet(fallbackDate: todayIso)));
+      await tester.pumpAndSettle();
+
+      await tester.enterText(
+        find.byType(TextField),
+        'Buy groceries description milk, eggs and bread',
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text(testL10n.voiceUnderstoodHeading), findsOneWidget);
+      expect(find.text('Buy groceries'), findsOneWidget);
+      expect(
+        find.text('${testL10n.voiceDescriptionHeading}: milk, eggs and bread'),
+        findsOneWidget,
+      );
+    },
+  );
+
+  testWidgets('tapping create task saves the todo directly into repository', (
+    tester,
+  ) async {
+    final mockRepo = MockTodoRepository();
+    registerFallbackValue(FakeTodoEntity());
+    when(
+      () => mockRepo.titleExistsOnDate(
+        any(),
+        any(),
+        excludeId: any(named: 'excludeId'),
+      ),
+    ).thenAnswer((_) async => false);
+    when(() => mockRepo.createTodo(any())).thenAnswer((_) async {});
+    when(() => mockRepo.getTodosByDate(any())).thenAnswer((_) async => []);
+
+    await tester.pumpWidget(
+      _wrap(VoiceCommandSheet(fallbackDate: todayIso), repo: mockRepo),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byType(TextField),
+      'Buy groceries description milk and eggs',
+    );
+    await tester.pumpAndSettle();
+
+    final createButton = find.widgetWithText(
+      FilledButton,
+      testL10n.voiceCreateTask,
+    );
+    expect(createButton, findsOneWidget);
+    await tester.ensureVisible(createButton);
+    await tester.tap(createButton);
+    await tester.pumpAndSettle();
+
+    verify(
+      () => mockRepo.createTodo(
+        any(
+          that: isA<TodoEntity>()
+              .having((t) => t.title, 'title', 'Buy groceries')
+              .having((t) => t.description, 'description', 'milk and eggs'),
+        ),
+      ),
+    ).called(1);
+  });
+
+  testWidgets('returnResult: true pops the VoiceParseResult back to caller', (
+    tester,
+  ) async {
+    VoiceParseResult? returnedResult;
+
+    await tester.pumpWidget(
+      _wrap(
+        Builder(
+          builder: (context) => ElevatedButton(
+            onPressed: () async {
+              returnedResult = await VoiceCommandSheet.show(
+                context,
+                date: todayIso,
+                returnResult: true,
+              );
+            },
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byType(TextField),
+      'Meeting note discuss roadmap',
+    );
+    await tester.pumpAndSettle();
+
+    final createButton = find.widgetWithText(
+      FilledButton,
+      testL10n.voiceCreateTask,
+    );
+    await tester.ensureVisible(createButton);
+    await tester.tap(createButton);
+    await tester.pumpAndSettle();
+
+    expect(returnedResult, isNotNull);
+    expect(returnedResult!.title, 'Meeting');
+    expect(returnedResult!.description, 'discuss roadmap');
   });
 }

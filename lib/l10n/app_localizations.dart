@@ -2978,6 +2978,18 @@ abstract class AppLocalizations {
   /// **'Minutes'**
   String get targetMinutesLabel;
 
+  /// Validation error shown when hours entered in target time exceeds 23.
+  ///
+  /// In en, this message translates to:
+  /// **'0–23'**
+  String get targetHoursRangeError;
+
+  /// Validation error shown when minutes entered in target time exceeds 59.
+  ///
+  /// In en, this message translates to:
+  /// **'0–59'**
+  String get targetMinutesRangeError;
+
   /// Tracked time against the target on a task tile.
   ///
   /// In en, this message translates to:
@@ -4057,6 +4069,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create task'**
   String get voiceCreateTask;
+
+  /// Label for the description field or chip in voice capture.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get voiceDescriptionHeading;
+
+  /// Button to open the create task screen with voice reading prefilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit in form'**
+  String get voiceEditDetails;
+
+  /// Error shown in voice sheet when attempting to create a task with a duplicate title.
+  ///
+  /// In en, this message translates to:
+  /// **'A task with this title already exists on this day.'**
+  String get voiceDuplicateTitle;
+
+  /// Tooltip for the microphone button on text input fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Dictate with voice'**
+  String get voiceDictateTooltip;
 
   /// Shown when a spoken day was in the past and was moved to today.
   ///
@@ -6265,6 +6301,372 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not started yet'**
   String get notStartedYet;
+
+  /// Title for the OCR task scanner screen.
+  ///
+  /// In en, this message translates to:
+  /// **'OCR Task Scanner'**
+  String get ocrScanTitle;
+
+  /// Subtitle describing the OCR task scanner capability.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan task name and description'**
+  String get ocrScanSubtitle;
+
+  /// Instruction banner shown on the OCR camera viewfinder.
+  ///
+  /// In en, this message translates to:
+  /// **'First line: Task Name. Separate with space, #, or --- for Description.'**
+  String get ocrScanHint;
+
+  /// Tooltip for camera shutter capture button.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture photo'**
+  String get ocrCaptureTooltip;
+
+  /// Tooltip for auto flash camera mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto flash'**
+  String get ocrTorchAuto;
+
+  /// Tooltip for torch on camera mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Torch on'**
+  String get ocrTorchOn;
+
+  /// Tooltip for flash off camera mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Flash off'**
+  String get ocrTorchOff;
+
+  /// Tooltip to switch between front and rear cameras.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch camera'**
+  String get ocrSwitchCamera;
+
+  /// Tooltip to pick an image from the device gallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose image'**
+  String get ocrPickGallery;
+
+  /// Overlay text shown while OCR recognition runs.
+  ///
+  /// In en, this message translates to:
+  /// **'Extracting text...'**
+  String get ocrProcessing;
+
+  /// Snackbar message when OCR detects zero text.
+  ///
+  /// In en, this message translates to:
+  /// **'No text detected in image. Please try again.'**
+  String get ocrNoTextFound;
+
+  /// Title for the OCR task review sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanned Task Review'**
+  String get ocrReviewTitle;
+
+  /// Label for parsed task title field in review sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Task Name'**
+  String get ocrTaskNameLabel;
+
+  /// Validation error when task title field is empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Task name cannot be empty'**
+  String get ocrTaskNameEmpty;
+
+  /// Label for parsed task description field in review sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get ocrDescriptionLabel;
+
+  /// Header for expandable raw OCR text block.
+  ///
+  /// In en, this message translates to:
+  /// **'Raw Scanned Text'**
+  String get ocrRawTextTitle;
+
+  /// Snackbar when user copies raw scanned text.
+  ///
+  /// In en, this message translates to:
+  /// **'Raw text copied to clipboard'**
+  String get ocrRawTextCopied;
+
+  /// Button to immediately save the parsed task.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Task'**
+  String get ocrCreateTask;
+
+  /// Button to open the full task editor with parsed text.
+  ///
+  /// In en, this message translates to:
+  /// **'Open in Full Editor'**
+  String get ocrOpenInEditor;
+
+  /// Button to dismiss the review sheet and scan again.
+  ///
+  /// In en, this message translates to:
+  /// **'Retake'**
+  String get ocrRetake;
+
+  /// Message shown when camera permission is denied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access is needed to scan task text. Please grant camera permission in system settings.'**
+  String get ocrCameraPermissionRequired;
+
+  /// Button to populate the active task form from OCR.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply to Task'**
+  String get ocrApplyToForm;
+
+  /// Tooltip for the OCR camera button on task creation screens.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan task with OCR camera'**
+  String get ocrScanButtonTooltip;
+
+  /// Title for image cropping screen before OCR.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop Text Area'**
+  String get ocrCropTitle;
+
+  /// Instruction banner on image cropper screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag handles to frame only task name and description'**
+  String get ocrCropHint;
+
+  /// Button to confirm cropped area and start OCR.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan Selected Area'**
+  String get ocrCropConfirm;
+
+  /// Button to skip cropping and scan full image.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Full Image'**
+  String get ocrCropFullImage;
+
+  /// Tab and slider label for camera brightness/exposure control.
+  ///
+  /// In en, this message translates to:
+  /// **'Brightness'**
+  String get ocrBrightnessLabel;
+
+  /// Tab and slider label for camera zoom control.
+  ///
+  /// In en, this message translates to:
+  /// **'Zoom'**
+  String get ocrZoomLabel;
+
+  /// Button to reset camera brightness exposure to neutral 0 EV.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get ocrResetExposure;
+
+  /// Button tooltip to rotate image 90 degrees clockwise.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate 90°'**
+  String get ocrRotateImage;
+
+  /// Tooltip for button to swap task name and description fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap Title and Description'**
+  String get ocrSwapFields;
+
+  /// Button to navigate to full task creation screen with scanned fields.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Task Details'**
+  String get ocrContinueToCreate;
+
+  /// Image enhancement mode for original unmodified colors.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get ocrFilterOriginal;
+
+  /// Image enhancement mode for high-contrast black and white document filter.
+  ///
+  /// In en, this message translates to:
+  /// **'B&W Document'**
+  String get ocrFilterBw;
+
+  /// Image enhancement mode to brighten dark shadows.
+  ///
+  /// In en, this message translates to:
+  /// **'Brighten'**
+  String get ocrFilterBrighten;
+
+  /// Label for image filter enhancement controls.
+  ///
+  /// In en, this message translates to:
+  /// **'Enhance'**
+  String get ocrEnhanceLabel;
+
+  /// Button label to rotate image clockwise.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate'**
+  String get ocrRotateCw;
+
+  /// Button label to rotate image counter-clockwise.
+  ///
+  /// In en, this message translates to:
+  /// **'Rotate Left'**
+  String get ocrRotateCcw;
+
+  /// Image enhancement mode for grayscale document filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Grayscale'**
+  String get ocrFilterGrayscale;
+
+  /// Tab label for cropping and rotating image.
+  ///
+  /// In en, this message translates to:
+  /// **'Crop & Rotate'**
+  String get ocrTabCrop;
+
+  /// Tab label for document enhancement filters.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get ocrTabFilters;
+
+  /// Tab label for manual brightness and contrast adjustment.
+  ///
+  /// In en, this message translates to:
+  /// **'Fine Tune'**
+  String get ocrTabTune;
+
+  /// Label for contrast adjustment slider.
+  ///
+  /// In en, this message translates to:
+  /// **'Contrast'**
+  String get ocrContrastLabel;
+
+  /// Button to reset filters and sliders to default.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get ocrResetFilter;
+
+  /// Title for the mastery decks screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Decks'**
+  String get masteryDecksTitle;
+
+  /// Label for button or dialog to create a new mastery deck.
+  ///
+  /// In en, this message translates to:
+  /// **'New Mastery Deck'**
+  String get newMasteryDeck;
+
+  /// Label for mastery deck name field.
+  ///
+  /// In en, this message translates to:
+  /// **'Deck Name'**
+  String get masteryDeckName;
+
+  /// Hint for mastery deck name field.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Learn Flutter, Sanskrit Chants'**
+  String get masteryDeckNameHint;
+
+  /// Label for mastery deck description field.
+  ///
+  /// In en, this message translates to:
+  /// **'Description (optional)'**
+  String get masteryDeckDescription;
+
+  /// Empty state title when no mastery decks exist.
+  ///
+  /// In en, this message translates to:
+  /// **'No Mastery Decks yet'**
+  String get noMasteryDecks;
+
+  /// Empty state subtitle for mastery decks.
+  ///
+  /// In en, this message translates to:
+  /// **'Create a mastery deck to organize and master topics with dedicated tasks.'**
+  String get noMasteryDecksSubtitle;
+
+  /// Empty state title when a mastery deck has no todos.
+  ///
+  /// In en, this message translates to:
+  /// **'No tasks in this deck yet'**
+  String get noMasteryTodos;
+
+  /// Empty state subtitle when a mastery deck has no todos.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tasks to this deck to start tracking your progress.'**
+  String get noMasteryTodosSubtitle;
+
+  /// Button to add a task directly under a mastery deck.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Task to Deck'**
+  String get addTodoToDeck;
+
+  /// Label for overall progress in a mastery deck.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall Progress'**
+  String get masteryOverallProgress;
+
+  /// Progress count description for a mastery deck.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} tasks completed'**
+  String masteryTasksCount(int completed, int total);
+
+  /// Label for mastery deck selector or tag.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Deck'**
+  String get masteryDeckTag;
+
+  /// Filter chip to show all tasks regardless of mastery deck.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get allMasteryFilter;
+
+  /// Button to delete a mastery deck.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Deck'**
+  String get deleteDeck;
+
+  /// Confirmation message when deleting a mastery deck.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this mastery deck? The tasks will remain but won\'t be linked to this deck.'**
+  String get deleteDeckConfirmation;
 }
 
 class _AppLocalizationsDelegate

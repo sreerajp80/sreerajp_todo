@@ -71,13 +71,45 @@ class VoiceCommandParser {
       clamped = true;
     }
 
-    var title = _buildTitle(tokens);
-    if (title.isEmpty) title = rawText;
+    String? description;
+    String title;
+
+    final split = _findDescriptionSplit(tokens, body);
+    if (split != null) {
+      for (
+        var i = split.markerStart;
+        i < split.markerStart + split.markerLength;
+        i++
+      ) {
+        tokens[i].used = true;
+      }
+      final titleTokens = tokens.sublist(0, split.markerStart);
+      final descTokens = tokens.sublist(split.markerStart + split.markerLength);
+
+      final parsedTitle = _buildTitle(titleTokens);
+      final parsedDesc = _buildDescription(descTokens);
+
+      if (parsedTitle.isNotEmpty) {
+        title = parsedTitle;
+        if (parsedDesc.isNotEmpty) {
+          description = parsedDesc;
+          matched.add(VoiceField.description);
+        }
+      } else if (parsedDesc.isNotEmpty) {
+        title = parsedDesc;
+      } else {
+        title = rawText;
+      }
+    } else {
+      title = _buildTitle(tokens);
+      if (title.isEmpty) title = rawText;
+    }
 
     return VoiceParseResult(
       rawText: rawText,
       title: title,
       date: _isoDate(resolved),
+      description: description,
       hour: timeOfDay?.hour,
       minute: timeOfDay?.minute ?? 0,
       targetSeconds: targetSeconds,
@@ -544,6 +576,76 @@ class VoiceCommandParser {
     return mlTitleEdgeFillers.any((filler) => norm == filler);
   }
 
+  /// Builds the description from tokens following a description marker or newline.
+  String _buildDescription(List<_Token> tokens) {
+    final words = tokens.where((t) => !t.used).map((t) => t.raw).toList();
+
+    while (words.isNotEmpty && _isDescriptionEdgeFiller(words.first)) {
+      words.removeAt(0);
+    }
+    while (words.isNotEmpty && _isDescriptionEdgeFiller(words.last)) {
+      words.removeLast();
+    }
+    if (words.isEmpty) return '';
+
+    final joined = words.join(' ').trim();
+    final cleaned = joined.replaceAll(RegExp(r'^[\s,.;:!?-]+|[\s,;:-]+$'), '');
+    return unicode_utils.nfcNormalize(cleaned.trim());
+  }
+
+  bool _isDescriptionEdgeFiller(String word) {
+    final norm = _Token(word).norm;
+    if (norm.isEmpty) return true;
+    if (norm == 'is' || norm == 'that' || norm == 'about') return true;
+    return false;
+  }
+
+  /// Finds where the description begins in the tokens, if a marker or newline is present.
+  _DescriptionSplit? _findDescriptionSplit(List<_Token> tokens, String body) {
+    // 1. Check multi-token phrases first (e.g. 'with description', 'with note')
+    for (var i = 0; i < tokens.length - 1; i++) {
+      if (tokens[i].used || tokens[i + 1].used) continue;
+      final two = '${tokens[i].norm} ${tokens[i + 1].norm}';
+      if (enDescriptionPhrases.contains(two)) {
+        if (i > 0 && i + 2 < tokens.length) {
+          return _DescriptionSplit(i, 2);
+        }
+      }
+    }
+
+    // 2. Check single-word markers
+    for (var i = 0; i < tokens.length; i++) {
+      if (tokens[i].used) continue;
+      final norm = tokens[i].norm;
+
+      if (i > 0 &&
+          (tokens[i - 1].norm == 'take' || tokens[i - 1].norm == 'make')) {
+        continue;
+      }
+
+      final isEnMarker = enDescriptionMarkers.contains(norm);
+      final isMlMarker = mlDescriptionStems.any((stem) => _hasStem(norm, stem));
+
+      if (isEnMarker || isMlMarker) {
+        if (i > 0 && i + 1 < tokens.length) {
+          return _DescriptionSplit(i, 1);
+        }
+      }
+    }
+
+    // 3. Check for newline separation in body
+    final lines = body.split(RegExp(r'\r?\n'));
+    if (lines.length > 1 && lines[0].trim().isNotEmpty) {
+      final firstLineTokens = _tokenize(lines[0]);
+      if (firstLineTokens.isNotEmpty &&
+          firstLineTokens.length < tokens.length) {
+        return _DescriptionSplit(firstLineTokens.length, 0);
+      }
+    }
+
+    return null;
+  }
+
   // ---------------------------------------------------------------------
   // Shared helpers
   // ---------------------------------------------------------------------
@@ -724,4 +826,11 @@ class _PhraseMatch {
   final int start;
   final int end;
   final int value;
+}
+
+class _DescriptionSplit {
+  const _DescriptionSplit(this.markerStart, this.markerLength);
+
+  final int markerStart;
+  final int markerLength;
 }

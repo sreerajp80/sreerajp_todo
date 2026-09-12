@@ -428,4 +428,38 @@ void main() {
       expect(await todoDao.searchByTitle('Updated'), isEmpty);
     });
   });
+
+  group('findBySpacedRepetitionItemId', () {
+    test('retrieves todos associated with a mastery deck ID', () async {
+      final todo1 = makeTodo(
+        id: 'todo-1',
+        title: 'Task 1',
+      ).copyWith(spacedRepetitionItemId: 'deck-1');
+      final todo2 = makeTodo(
+        id: 'todo-2',
+        title: 'Task 2',
+      ).copyWith(spacedRepetitionItemId: 'deck-1');
+      final todo3 = makeTodo(
+        id: 'todo-3',
+        title: 'Task 3',
+      ).copyWith(spacedRepetitionItemId: 'deck-2');
+      final todo4 = makeTodo(id: 'todo-4', title: 'Task 4');
+
+      await todoDao.insert(todo1);
+      await todoDao.insert(todo2);
+      await todoDao.insert(todo3);
+      await todoDao.insert(todo4);
+
+      final deck1Todos = await todoDao.findBySpacedRepetitionItemId('deck-1');
+      expect(deck1Todos, hasLength(2));
+      expect(deck1Todos.map((t) => t.id), containsAll(['todo-1', 'todo-2']));
+
+      final deck2Todos = await todoDao.findBySpacedRepetitionItemId('deck-2');
+      expect(deck2Todos, hasLength(1));
+      expect(deck2Todos.first.id, 'todo-3');
+
+      final emptyTodos = await todoDao.findBySpacedRepetitionItemId('deck-999');
+      expect(emptyTodos, isEmpty);
+    });
+  });
 }

@@ -27,6 +27,8 @@ class _FakeTodoRepo implements TodoRepository {
   @override
   Future<List<TodoEntity>> getTodosByDate(String date) async => [todo];
   @override
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async => [todo];
+  @override
   Future<void> createTodo(TodoEntity todo) async {}
   @override
   Future<void> updateTodo(TodoEntity todo, {bool bypassLock = false}) async {}
@@ -302,5 +304,82 @@ void main() {
 
     // Verify delete button is NOT present on past days
     expect(find.byIcon(Icons.delete_outline_rounded), findsNothing);
+  });
+
+  testWidgets('displays task description when present', (tester) async {
+    final now = DateTime.now();
+    const today = '2026-09-11';
+    const descriptionText = 'Important meeting notes and action items';
+    final todo = TodoEntity(
+      id: 'todo-desc',
+      date: today,
+      title: 'Task With Description',
+      description: descriptionText,
+      status: TodoStatus.pending,
+      priority: TodoPriority.normal,
+      createdAt: now.toUtc().toIso8601String(),
+      updatedAt: now.toUtc().toIso8601String(),
+    );
+
+    final fakeTimeRepo = _FakeTimeSegmentRepo([]);
+    final prefs = await SharedPreferences.getInstance();
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          todoRepositoryProvider.overrideWithValue(_FakeTodoRepo(todo)),
+          timeSegmentRepositoryProvider.overrideWithValue(fakeTimeRepo),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: TimeSegmentsScreen(todoId: 'todo-desc'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Task With Description'), findsOneWidget);
+    expect(find.text(descriptionText), findsOneWidget);
+  });
+
+  testWidgets('omits description section when description is null or empty', (
+    tester,
+  ) async {
+    final now = DateTime.now();
+    const today = '2026-09-11';
+    final todo = TodoEntity(
+      id: 'todo-no-desc',
+      date: today,
+      title: 'Task Without Description',
+      description: '   ',
+      status: TodoStatus.pending,
+      priority: TodoPriority.normal,
+      createdAt: now.toUtc().toIso8601String(),
+      updatedAt: now.toUtc().toIso8601String(),
+    );
+
+    final fakeTimeRepo = _FakeTimeSegmentRepo([]);
+    final prefs = await SharedPreferences.getInstance();
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          todoRepositoryProvider.overrideWithValue(_FakeTodoRepo(todo)),
+          timeSegmentRepositoryProvider.overrideWithValue(fakeTimeRepo),
+          sharedPreferencesProvider.overrideWithValue(prefs),
+        ],
+        child: const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: TimeSegmentsScreen(todoId: 'todo-no-desc'),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Task Without Description'), findsOneWidget);
+    expect(find.text('   '), findsNothing);
   });
 }

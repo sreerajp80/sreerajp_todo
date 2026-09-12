@@ -62,6 +62,13 @@ class InMemoryTodoRepository implements TodoRepository {
   }
 
   @override
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async {
+    return _todos
+        .where((todo) => todo.spacedRepetitionItemId == deckId)
+        .toList();
+  }
+
+  @override
   Future<void> reorderTodos(
     List<TodoEntity> todos, {
     bool bypassLock = false,

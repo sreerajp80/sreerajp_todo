@@ -50,11 +50,13 @@ import 'package:sreerajp_todo/presentation/screens/help/task_management_help_scr
 import 'package:sreerajp_todo/presentation/screens/help/time_tracking_help_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/help/wifi_sync_help_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/mastery_deck/mastery_deck_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/mastery_deck/mastery_deck_detail_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/ritual/ritual_deck_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/ritual/ritual_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/ritual/ritual_settings_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/pending_alerts_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/air_qr_scan_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/ocr/ocr_scan_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/p2p_wifi_sync/p2p_wifi_sync_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/data_handoff/data_handoff_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/statistics_screen.dart';
@@ -128,6 +130,7 @@ GoRouter _createRouter(String initialLocation) => GoRouter(
             initialDescription: query['description'],
             initialTargetSeconds: int.tryParse(query['target'] ?? ''),
             initialPriority: query['priority'],
+            initialMasteryDeckId: query['deck'],
           ),
         );
       },
@@ -319,6 +322,13 @@ GoRouter _createRouter(String initialLocation) => GoRouter(
           _buildPage(state, const MasteryDeckScreen()),
     ),
     GoRoute(
+      path: AppRoutes.masteryDeckDetail,
+      pageBuilder: (context, state) {
+        final id = state.pathParameters['id'] ?? '';
+        return _buildPage(state, MasteryDeckDetailScreen(deckId: id));
+      },
+    ),
+    GoRoute(
       path: AppRoutes.ritual,
       pageBuilder: (context, state) => _buildPage(state, const RitualScreen()),
     ),
@@ -341,6 +351,13 @@ GoRouter _createRouter(String initialLocation) => GoRouter(
       path: AppRoutes.airQrScan,
       pageBuilder: (context, state) =>
           _buildPage(state, const AirQrScanScreen()),
+    ),
+    GoRoute(
+      path: AppRoutes.ocrScan,
+      pageBuilder: (context, state) {
+        final date = state.uri.queryParameters['date'];
+        return _buildPage(state, OcrScanScreen(date: date));
+      },
     ),
     GoRoute(
       path: AppRoutes.wifiSync,

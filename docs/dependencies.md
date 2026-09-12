@@ -41,6 +41,8 @@ Before adding any package:
 | `shared_preferences` | Persistent key-value storage for app settings & language preferences | Storage / Preferences |
 | `qr_flutter` | Animated QR code stream rendering for AirQR optical sync | AirQR Sync / UI |
 | `mobile_scanner` | Local camera barcode scanner for AirQR stream reception | AirQR Sync / Camera |
+| `camera` | Live camera viewfinder, flash/torch control, zoom, and still capture | Camera / Viewfinder |
+| `google_mlkit_text_recognition` | On-device ML Kit text recognition for offline OCR task parsing | Machine Learning / OCR |
 
 ---
 

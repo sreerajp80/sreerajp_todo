@@ -283,7 +283,7 @@ class MainActivity : FlutterActivity() {
             }
         }
 
-        // Pending todo reminders status-bar notification.
+        // Pending todo reminders status-bar notification and background alarm scheduling.
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, PENDING_NOTIFICATION_CHANNEL).setMethodCallHandler { call, result ->
             when (call.method) {
                 "show" -> {
@@ -299,6 +299,28 @@ class MainActivity : FlutterActivity() {
                     runOnUiThread {
                         cancelPendingNotification()
                     }
+                    result.success(true)
+                }
+                "scheduleAlerts" -> {
+                    val enabled = call.argument<Boolean>("enabled") ?: false
+                    val dayStartEnabled = call.argument<Boolean>("dayStartEnabled") ?: true
+                    val dayStartHour = call.argument<Int>("dayStartHour") ?: 9
+                    val dayStartMinute = call.argument<Int>("dayStartMinute") ?: 0
+                    val intervalMinutes = call.argument<Int>("intervalMinutes") ?: 120
+                    val count = call.argument<Int>("count") ?: 1
+                    AlarmReceiver.saveAndSchedule(
+                        this,
+                        enabled,
+                        dayStartEnabled,
+                        dayStartHour,
+                        dayStartMinute,
+                        intervalMinutes,
+                        count
+                    )
+                    result.success(true)
+                }
+                "cancelScheduledAlerts" -> {
+                    AlarmReceiver.cancelAlarm(this)
                     result.success(true)
                 }
                 "hasPermission" -> {

@@ -46,6 +46,7 @@ abstract final class AppRoutes {
   static const String permissions = '/permissions';
   static const String statistics = '/statistics';
   static const String masteryDeck = '/mastery-deck';
+  static const String masteryDeckDetail = '/mastery-deck/:id';
 
   /// The guided day open. Always runs for today, so it takes no date.
   static const String ritual = '/ritual';
@@ -58,6 +59,7 @@ abstract final class AppRoutes {
   static const String ritualSettings = '/settings/ritual';
   static const String pendingAlerts = '/settings/pending-alerts';
   static const String airQrScan = '/air-qr-scan';
+  static const String ocrScan = '/ocr-scan';
   static const String wifiSync = '/wifi-sync';
   static const String dataHandoff = '/data-handoff';
   static const String features = '/features';
@@ -84,6 +86,7 @@ abstract final class AppRoutes {
     String? description,
     int? targetSeconds,
     String? priority,
+    String? masteryDeckId,
   }) {
     final params = <String, String>{
       if (date != null && date.isNotEmpty) 'date': date,
@@ -92,6 +95,8 @@ abstract final class AppRoutes {
         'description': description,
       if (targetSeconds != null) 'target': '$targetSeconds',
       if (priority != null && priority.isNotEmpty) 'priority': priority,
+      if (masteryDeckId != null && masteryDeckId.isNotEmpty)
+        'deck': masteryDeckId,
     };
     if (params.isEmpty) return createTodo;
     final query = params.entries
@@ -110,4 +115,7 @@ abstract final class AppRoutes {
   static String todoHistoryPath(String id) => '/todo/$id/history';
   static String focusPath(String id) => '/focus/$id';
   static String copyTodosPath(String fromDate) => '/copy?from=$fromDate';
+  static String ocrScanPath({String? date}) =>
+      date != null ? '/ocr-scan?date=$date' : ocrScan;
+  static String masteryDeckDetailPath(String id) => '/mastery-deck/$id';
 }

@@ -1994,6 +1994,14 @@
   "@targetMinutesLabel": {
     "description": "Label of the minutes box in the target time field."
   },
+  "targetHoursRangeError": "0–23",
+  "@targetHoursRangeError": {
+    "description": "Validation error shown when hours entered in target time exceeds 23."
+  },
+  "targetMinutesRangeError": "0–59",
+  "@targetMinutesRangeError": {
+    "description": "Validation error shown when minutes entered in target time exceeds 59."
+  },
   "targetProgressLabel": "{tracked} of {target}",
   "@targetProgressLabel": {
     "description": "Tracked time against the target on a task tile.",
@@ -2772,6 +2780,22 @@
   "voiceCreateTask": "Create task",
   "@voiceCreateTask": {
     "description": "Button that opens the create form with the voice reading filled in."
+  },
+  "voiceDescriptionHeading": "Description",
+  "@voiceDescriptionHeading": {
+    "description": "Label for the description field or chip in voice capture."
+  },
+  "voiceEditDetails": "Edit in form",
+  "@voiceEditDetails": {
+    "description": "Button to open the create task screen with voice reading prefilled."
+  },
+  "voiceDuplicateTitle": "A task with this title already exists on this day.",
+  "@voiceDuplicateTitle": {
+    "description": "Error shown in voice sheet when attempting to create a task with a duplicate title."
+  },
+  "voiceDictateTooltip": "Dictate with voice",
+  "@voiceDictateTooltip": {
+    "description": "Tooltip for the microphone button on text input fields."
   },
   "voiceDateMovedToToday": "That day has already passed, so today is used instead.",
   "@voiceDateMovedToToday": {
@@ -4344,6 +4368,258 @@
   "notStartedYet": "Not started yet",
   "@notStartedYet": {
     "description": "Message shown when a todo has no time segments."
+  },
+  "ocrScanTitle": "OCR Task Scanner",
+  "@ocrScanTitle": {
+    "description": "Title for the OCR task scanner screen."
+  },
+  "ocrScanSubtitle": "Scan task name and description",
+  "@ocrScanSubtitle": {
+    "description": "Subtitle describing the OCR task scanner capability."
+  },
+  "ocrScanHint": "First line: Task Name. Separate with space, #, or --- for Description.",
+  "@ocrScanHint": {
+    "description": "Instruction banner shown on the OCR camera viewfinder."
+  },
+  "ocrCaptureTooltip": "Capture photo",
+  "@ocrCaptureTooltip": {
+    "description": "Tooltip for camera shutter capture button."
+  },
+  "ocrTorchAuto": "Auto flash",
+  "@ocrTorchAuto": {
+    "description": "Tooltip for auto flash camera mode."
+  },
+  "ocrTorchOn": "Torch on",
+  "@ocrTorchOn": {
+    "description": "Tooltip for torch on camera mode."
+  },
+  "ocrTorchOff": "Flash off",
+  "@ocrTorchOff": {
+    "description": "Tooltip for flash off camera mode."
+  },
+  "ocrSwitchCamera": "Switch camera",
+  "@ocrSwitchCamera": {
+    "description": "Tooltip to switch between front and rear cameras."
+  },
+  "ocrPickGallery": "Choose image",
+  "@ocrPickGallery": {
+    "description": "Tooltip to pick an image from the device gallery."
+  },
+  "ocrProcessing": "Extracting text...",
+  "@ocrProcessing": {
+    "description": "Overlay text shown while OCR recognition runs."
+  },
+  "ocrNoTextFound": "No text detected in image. Please try again.",
+  "@ocrNoTextFound": {
+    "description": "Snackbar message when OCR detects zero text."
+  },
+  "ocrReviewTitle": "Scanned Task Review",
+  "@ocrReviewTitle": {
+    "description": "Title for the OCR task review sheet."
+  },
+  "ocrTaskNameLabel": "Task Name",
+  "@ocrTaskNameLabel": {
+    "description": "Label for parsed task title field in review sheet."
+  },
+  "ocrTaskNameEmpty": "Task name cannot be empty",
+  "@ocrTaskNameEmpty": {
+    "description": "Validation error when task title field is empty."
+  },
+  "ocrDescriptionLabel": "Description",
+  "@ocrDescriptionLabel": {
+    "description": "Label for parsed task description field in review sheet."
+  },
+  "ocrRawTextTitle": "Raw Scanned Text",
+  "@ocrRawTextTitle": {
+    "description": "Header for expandable raw OCR text block."
+  },
+  "ocrRawTextCopied": "Raw text copied to clipboard",
+  "@ocrRawTextCopied": {
+    "description": "Snackbar when user copies raw scanned text."
+  },
+  "ocrCreateTask": "Create Task",
+  "@ocrCreateTask": {
+    "description": "Button to immediately save the parsed task."
+  },
+  "ocrOpenInEditor": "Open in Full Editor",
+  "@ocrOpenInEditor": {
+    "description": "Button to open the full task editor with parsed text."
+  },
+  "ocrRetake": "Retake",
+  "@ocrRetake": {
+    "description": "Button to dismiss the review sheet and scan again."
+  },
+  "ocrCameraPermissionRequired": "Camera access is needed to scan task text. Please grant camera permission in system settings.",
+  "@ocrCameraPermissionRequired": {
+    "description": "Message shown when camera permission is denied."
+  },
+  "ocrApplyToForm": "Apply to Task",
+  "@ocrApplyToForm": {
+    "description": "Button to populate the active task form from OCR."
+  },
+  "ocrScanButtonTooltip": "Scan task with OCR camera",
+  "@ocrScanButtonTooltip": {
+    "description": "Tooltip for the OCR camera button on task creation screens."
+  },
+  "ocrCropTitle": "Crop Text Area",
+  "@ocrCropTitle": {
+    "description": "Title for image cropping screen before OCR."
+  },
+  "ocrCropHint": "Drag handles to frame only task name and description",
+  "@ocrCropHint": {
+    "description": "Instruction banner on image cropper screen."
+  },
+  "ocrCropConfirm": "Scan Selected Area",
+  "@ocrCropConfirm": {
+    "description": "Button to confirm cropped area and start OCR."
+  },
+  "ocrCropFullImage": "Use Full Image",
+  "@ocrCropFullImage": {
+    "description": "Button to skip cropping and scan full image."
+  },
+  "ocrBrightnessLabel": "Brightness",
+  "@ocrBrightnessLabel": {
+    "description": "Tab and slider label for camera brightness/exposure control."
+  },
+  "ocrZoomLabel": "Zoom",
+  "@ocrZoomLabel": {
+    "description": "Tab and slider label for camera zoom control."
+  },
+  "ocrResetExposure": "Reset",
+  "@ocrResetExposure": {
+    "description": "Button to reset camera brightness exposure to neutral 0 EV."
+  },
+  "ocrRotateImage": "Rotate 90°",
+  "@ocrRotateImage": {
+    "description": "Button tooltip to rotate image 90 degrees clockwise."
+  },
+  "ocrSwapFields": "Swap Title and Description",
+  "@ocrSwapFields": {
+    "description": "Tooltip for button to swap task name and description fields."
+  },
+  "ocrContinueToCreate": "Continue to Task Details",
+  "@ocrContinueToCreate": {
+    "description": "Button to navigate to full task creation screen with scanned fields."
+  },
+  "ocrFilterOriginal": "Original",
+  "@ocrFilterOriginal": {
+    "description": "Image enhancement mode for original unmodified colors."
+  },
+  "ocrFilterBw": "B&W Document",
+  "@ocrFilterBw": {
+    "description": "Image enhancement mode for high-contrast black and white document filter."
+  },
+  "ocrFilterBrighten": "Brighten",
+  "@ocrFilterBrighten": {
+    "description": "Image enhancement mode to brighten dark shadows."
+  },
+  "ocrEnhanceLabel": "Enhance",
+  "@ocrEnhanceLabel": {
+    "description": "Label for image filter enhancement controls."
+  },
+  "ocrRotateCw": "Rotate",
+  "@ocrRotateCw": {
+    "description": "Button label to rotate image clockwise."
+  },
+  "ocrRotateCcw": "Rotate Left",
+  "@ocrRotateCcw": {
+    "description": "Button label to rotate image counter-clockwise."
+  },
+  "ocrFilterGrayscale": "Grayscale",
+  "@ocrFilterGrayscale": {
+    "description": "Image enhancement mode for grayscale document filter."
+  },
+  "ocrTabCrop": "Crop & Rotate",
+  "@ocrTabCrop": {
+    "description": "Tab label for cropping and rotating image."
+  },
+  "ocrTabFilters": "Filters",
+  "@ocrTabFilters": {
+    "description": "Tab label for document enhancement filters."
+  },
+  "ocrTabTune": "Fine Tune",
+  "@ocrTabTune": {
+    "description": "Tab label for manual brightness and contrast adjustment."
+  },
+  "ocrContrastLabel": "Contrast",
+  "@ocrContrastLabel": {
+    "description": "Label for contrast adjustment slider."
+  },
+  "ocrResetFilter": "Reset",
+  "@ocrResetFilter": {
+    "description": "Button to reset filters and sliders to default."
+  },
+  "masteryDecksTitle": "Mastery Decks",
+  "@masteryDecksTitle": {
+    "description": "Title for the mastery decks screen."
+  },
+  "newMasteryDeck": "New Mastery Deck",
+  "@newMasteryDeck": {
+    "description": "Label for button or dialog to create a new mastery deck."
+  },
+  "masteryDeckName": "Deck Name",
+  "@masteryDeckName": {
+    "description": "Label for mastery deck name field."
+  },
+  "masteryDeckNameHint": "e.g. Learn Flutter, Sanskrit Chants",
+  "@masteryDeckNameHint": {
+    "description": "Hint for mastery deck name field."
+  },
+  "masteryDeckDescription": "Description (optional)",
+  "@masteryDeckDescription": {
+    "description": "Label for mastery deck description field."
+  },
+  "noMasteryDecks": "No Mastery Decks yet",
+  "@noMasteryDecks": {
+    "description": "Empty state title when no mastery decks exist."
+  },
+  "noMasteryDecksSubtitle": "Create a mastery deck to organize and master topics with dedicated tasks.",
+  "@noMasteryDecksSubtitle": {
+    "description": "Empty state subtitle for mastery decks."
+  },
+  "noMasteryTodos": "No tasks in this deck yet",
+  "@noMasteryTodos": {
+    "description": "Empty state title when a mastery deck has no todos."
+  },
+  "noMasteryTodosSubtitle": "Add tasks to this deck to start tracking your progress.",
+  "@noMasteryTodosSubtitle": {
+    "description": "Empty state subtitle when a mastery deck has no todos."
+  },
+  "addTodoToDeck": "Add Task to Deck",
+  "@addTodoToDeck": {
+    "description": "Button to add a task directly under a mastery deck."
+  },
+  "masteryOverallProgress": "Overall Progress",
+  "@masteryOverallProgress": {
+    "description": "Label for overall progress in a mastery deck."
+  },
+  "masteryTasksCount": "{completed} of {total} tasks completed",
+  "@masteryTasksCount": {
+    "description": "Progress count description for a mastery deck.",
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "masteryDeckTag": "Mastery Deck",
+  "@masteryDeckTag": {
+    "description": "Label for mastery deck selector or tag."
+  },
+  "allMasteryFilter": "All",
+  "@allMasteryFilter": {
+    "description": "Filter chip to show all tasks regardless of mastery deck."
+  },
+  "deleteDeck": "Delete Deck",
+  "@deleteDeck": {
+    "description": "Button to delete a mastery deck."
+  },
+  "deleteDeckConfirmation": "Are you sure you want to delete this mastery deck? The tasks will remain but won't be linked to this deck.",
+  "@deleteDeckConfirmation": {
+    "description": "Confirmation message when deleting a mastery deck."
   }
 }
 

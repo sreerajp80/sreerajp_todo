@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:uuid/uuid.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/voice_capture_state.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
+import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/platform/speech_channel.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
 import 'package:sreerajp_todo/core/voice/voice_parse_result.dart';
+import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_priority.dart';
+import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
 
 /// Which language the recogniser is asked to listen in.
 enum _VoiceLanguage {
@@ -24,16 +30,19 @@ enum _VoiceLanguage {
 
 /// The floating sheet behind the microphone button on the day list.
 ///
-/// One sentence in, one ready-made task out. The sheet never saves anything
-/// itself: it opens the ordinary create screen with the fields filled in, so
-/// Day-Lock, title uniqueness and NFC normalisation are all still enforced in
-/// the one place they have always been enforced.
+/// One sentence in, one ready-made task out. Can create the task directly
+/// with title uniqueness, Day-Lock, and NFC normalisation, or hand it over to
+/// the create screen for full customization.
 ///
 /// Where there is no microphone — Windows, an older phone, a phone with no
 /// offline language pack — the sheet simply shows its text box, and the
 /// parser works exactly the same on typed words.
 class VoiceCommandSheet extends ConsumerStatefulWidget {
-  const VoiceCommandSheet({super.key, required this.fallbackDate});
+  const VoiceCommandSheet({
+    super.key,
+    required this.fallbackDate,
+    this.returnResult = false,
+  });
 
   /// The day the user was looking at.
   ///
@@ -41,14 +50,22 @@ class VoiceCommandSheet extends ConsumerStatefulWidget {
   /// tomorrow's list and saying "buy milk" puts the task on tomorrow.
   final String fallbackDate;
 
-  /// Opens the sheet over the day list.
-  static Future<void> show(BuildContext context, {required String date}) {
-    return showModalBottomSheet<void>(
+  /// Whether to return the [VoiceParseResult] directly to the caller on completion.
+  final bool returnResult;
+
+  /// Opens the sheet over the day list or an edit screen.
+  static Future<VoiceParseResult?> show(
+    BuildContext context, {
+    required String date,
+    bool returnResult = false,
+  }) {
+    return showModalBottomSheet<VoiceParseResult?>(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) => VoiceCommandSheet(fallbackDate: date),
+      builder: (_) =>
+          VoiceCommandSheet(fallbackDate: date, returnResult: returnResult),
     );
   }
 
@@ -113,21 +130,111 @@ class _VoiceCommandSheetState extends ConsumerState<VoiceCommandSheet> {
       ? result.date
       : widget.fallbackDate;
 
-  /// Hands the reading over to the normal create screen.
-  void _create(VoiceParseResult result) {
-    final strings = context.l10n;
+  bool _isSaving = false;
+  String? _duplicateError;
 
-    // A task has no time-of-day column, so a spoken time is kept as a short
-    // note at the top of the description rather than being thrown away.
+  void _onTextChanged(String text) {
+    if (_duplicateError != null) {
+      setState(() => _duplicateError = null);
+    }
+    ref.read(voiceCaptureProvider.notifier).setText(text);
+  }
+
+  /// Builds the final task description combining spoken description and time note.
+  String? _buildFinalDescription(VoiceParseResult result) {
+    final strings = context.l10n;
     final timeLabel = result.timeOfDayLabel;
-    final description = timeLabel == null
+    final timeNote = timeLabel == null
         ? null
         : unicode_utils.nfcNormalize(strings.voiceTimeNote(timeLabel));
+
+    if (result.description != null && result.description!.isNotEmpty) {
+      final normalizedDesc = unicode_utils.nfcNormalize(result.description!);
+      if (timeNote != null) {
+        return '$normalizedDesc\n\n$timeNote';
+      }
+      return normalizedDesc;
+    }
+    return timeNote;
+  }
+
+  /// Saves the task directly into the database, obeying Day-Lock, title uniqueness, and NFC normalization.
+  Future<void> _saveTaskDirectly(VoiceParseResult result) async {
+    if (widget.returnResult) {
+      Navigator.of(context).pop(result);
+      return;
+    }
+
+    final title = result.title.trim();
+    if (title.isEmpty) return;
+
+    final date = _effectiveDate(result);
+    final normalizedTitle = unicode_utils.nfcNormalize(title);
+
+    setState(() {
+      _isSaving = true;
+      _duplicateError = null;
+    });
+
+    try {
+      final repo = ref.read(todoRepositoryProvider);
+      final exists = await repo.titleExistsOnDate(normalizedTitle, date);
+      if (exists) {
+        if (!mounted) return;
+        setState(() {
+          _isSaving = false;
+          _duplicateError = context.l10n.voiceDuplicateTitle;
+        });
+        return;
+      }
+
+      final finalDescription = _buildFinalDescription(result);
+      final defaults = ref.read(taskDefaultsProvider);
+      final priority = result.priority != null
+          ? TodoPriority.values.byName(result.priority!.name)
+          : defaults.priority;
+      final targetSeconds = result.targetSeconds ?? defaults.targetTime.seconds;
+
+      final now = DateTime.now().toUtc().toIso8601String();
+      final todo = TodoEntity(
+        id: const Uuid().v4(),
+        date: date,
+        title: normalizedTitle,
+        description: finalDescription,
+        status: TodoStatus.pending,
+        priority: priority,
+        targetSeconds: targetSeconds,
+        sortOrder: 0,
+        createdAt: now,
+        updatedAt: now,
+      );
+
+      await repo.createTodo(todo);
+      ref.invalidate(dailyTodoProvider(date));
+
+      if (!mounted) return;
+      Navigator.of(context).pop(result);
+      showAppSnackBar(context, message: context.l10n.todoCreated);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isSaving = false;
+        _duplicateError = mapErrorToMessage(context.l10n, e);
+      });
+    }
+  }
+
+  /// Hands the reading over to the normal create screen.
+  void _editInForm(VoiceParseResult result) {
+    if (widget.returnResult) {
+      Navigator.of(context).pop(result);
+      return;
+    }
 
     final path = AppRoutes.createTodoPath(
       date: _effectiveDate(result),
       title: result.title.trim(),
-      description: description,
+      description: _buildFinalDescription(result),
       targetSeconds: result.targetSeconds,
       priority: result.priority?.name,
     );
@@ -208,11 +315,23 @@ class _VoiceCommandSheetState extends ConsumerState<VoiceCommandSheet> {
                           onPressed: () {
                             _controller.clear();
                             notifier.reset();
+                            if (_duplicateError != null) {
+                              setState(() => _duplicateError = null);
+                            }
                           },
                         ),
                 ),
-                onChanged: notifier.setText,
+                onChanged: _onTextChanged,
               ),
+              if (_duplicateError != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  _duplicateError!,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.error,
+                  ),
+                ),
+              ],
               const SizedBox(height: 12),
               _StatusLine(state: state),
               if (state.result != null) ...[
@@ -225,19 +344,31 @@ class _VoiceCommandSheetState extends ConsumerState<VoiceCommandSheet> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: Text(strings.cancel),
-                    ),
+                  OutlinedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text(strings.cancel),
                   ),
-                  const SizedBox(width: 12),
+                  if (!widget.returnResult && state.canCreate) ...[
+                    const SizedBox(width: 8),
+                    IconButton(
+                      tooltip: strings.voiceEditDetails,
+                      icon: const Icon(Icons.edit_note_rounded),
+                      onPressed: () => _editInForm(state.result!),
+                    ),
+                  ],
+                  const SizedBox(width: 8),
                   Expanded(
                     child: FilledButton.icon(
-                      onPressed: state.canCreate
-                          ? () => _create(state.result!)
+                      onPressed: state.canCreate && !_isSaving
+                          ? () => _saveTaskDirectly(state.result!)
                           : null,
-                      icon: const Icon(Icons.arrow_forward),
+                      icon: _isSaving
+                          ? const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.check_rounded),
                       label: Text(strings.voiceCreateTask),
                     ),
                   ),
@@ -421,6 +552,12 @@ class _UnderstoodChips extends StatelessWidget {
         Icons.title,
         result.title.trim().isEmpty ? strings.voiceNoTitle : result.title,
       ),
+      if (result.description != null && result.description!.isNotEmpty)
+        _chip(
+          context,
+          Icons.notes_rounded,
+          '${strings.voiceDescriptionHeading}: ${result.description!}',
+        ),
       _chip(context, Icons.event, formatShortDateFromIso(effectiveDate)),
       if (result.hasTimeOfDay)
         _chip(context, Icons.schedule, result.timeOfDayLabel!),

@@ -197,3 +197,23 @@ const List<String> enCommandPrefixes = <String>[
   'i need to',
   'i have to',
 ];
+
+/// Words that introduce a task description.
+const Set<String> enDescriptionMarkers = <String>{
+  'description',
+  'desc',
+  'note',
+  'notes',
+  'details',
+};
+
+/// Multi-word phrases that introduce a task description, matched before single words.
+const List<String> enDescriptionPhrases = <String>[
+  'with description',
+  'with desc',
+  'with note',
+  'with notes',
+  'with details',
+  'description is',
+  'note is',
+];

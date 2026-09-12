@@ -226,4 +226,64 @@ void main() {
       }
     });
   });
+
+  group('English — description', () {
+    test('single word description separator', () {
+      final result = run('Buy groceries description get milk, eggs and bread');
+
+      expect(result.title, 'Buy groceries');
+      expect(result.description, 'get milk, eggs and bread');
+      expect(result.matched, contains(VoiceField.description));
+    });
+
+    test('with description phrase separator', () {
+      final result = run(
+        'Team sync with description review roadmap and quarterly goals',
+      );
+
+      expect(result.title, 'Team sync');
+      expect(result.description, 'review roadmap and quarterly goals');
+      expect(result.matched, contains(VoiceField.description));
+    });
+
+    test('note separator with date and time', () {
+      final result = run(
+        'Doctor visit note bring previous medical records tomorrow at 10 am',
+      );
+
+      expect(result.title, 'Doctor visit');
+      expect(result.description, 'bring previous medical records');
+      expect(result.date, '2026-08-20');
+      expect(result.hour, 10);
+      expect(
+        result.matched,
+        containsAll(<VoiceField>[
+          VoiceField.description,
+          VoiceField.date,
+          VoiceField.timeOfDay,
+        ]),
+      );
+    });
+
+    test('details with colon separator', () {
+      final result = run(
+        'Project kickoff details: invite stakeholders and share slides',
+      );
+
+      expect(result.title, 'Project kickoff');
+      expect(result.description, 'invite stakeholders and share slides');
+      expect(result.matched, contains(VoiceField.description));
+    });
+
+    test(
+      'multi-line input treats first line as title and rest as description',
+      () {
+        final result = run('Submit taxes\nEnsure Form 16 and PAN are attached');
+
+        expect(result.title, 'Submit taxes');
+        expect(result.description, 'Ensure Form 16 and PAN are attached');
+        expect(result.matched, contains(VoiceField.description));
+      },
+    );
+  });
 }

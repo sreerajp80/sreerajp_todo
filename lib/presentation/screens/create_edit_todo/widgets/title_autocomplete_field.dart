@@ -14,6 +14,7 @@ class TitleAutocompleteField extends ConsumerStatefulWidget {
     required this.focusNode,
     this.validator,
     this.onChanged,
+    this.onVoicePressed,
     this.enabled = true,
   });
 
@@ -21,6 +22,7 @@ class TitleAutocompleteField extends ConsumerStatefulWidget {
   final FocusNode focusNode;
   final String? Function(String?)? validator;
   final ValueChanged<String>? onChanged;
+  final VoidCallback? onVoicePressed;
   final bool enabled;
 
   @override
@@ -100,6 +102,13 @@ class _TitleAutocompleteFieldState
                 decoration: InputDecoration(
                   labelText: context.l10n.titleHint,
                   prefixIcon: const Icon(Icons.title),
+                  suffixIcon: widget.enabled && widget.onVoicePressed != null
+                      ? IconButton(
+                          icon: const Icon(Icons.mic_none_rounded),
+                          tooltip: context.l10n.voiceDictateTooltip,
+                          onPressed: widget.onVoicePressed,
+                        )
+                      : null,
                 ),
                 validator: widget.validator,
                 onChanged: (value) {

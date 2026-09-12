@@ -139,6 +139,36 @@ class TodoDao {
     return todos;
   }
 
+  Future<List<TodoEntity>> findBySpacedRepetitionItemId(
+    String spacedRepetitionItemId, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final maps = await db.query(
+      'todos',
+      where: 'spaced_repetition_item_id = ?',
+      whereArgs: [spacedRepetitionItemId],
+      orderBy: 'date DESC, sort_order ASC, created_at DESC',
+    );
+    final todos = <TodoEntity>[];
+    for (final map in maps) {
+      final id = map['id'] as String;
+      final subTasks = await _subTaskDao.findByTodoId(id, executor: db);
+      final prereqIds = await _taskDependencyDao.getPrerequisiteIdsForTodo(
+        id,
+        executor: db,
+      );
+      todos.add(
+        TodoEntity.fromMap(
+          map,
+          subTasks: subTasks,
+          prerequisiteTodoIds: prereqIds,
+        ),
+      );
+    }
+    return todos;
+  }
+
   Future<List<TodoEntity>> findByRecurrenceRuleIdFromDate(
     String recurrenceRuleId,
     String fromDate, {

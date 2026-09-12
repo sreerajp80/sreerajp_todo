@@ -156,3 +156,6 @@ const Map<String, VoicePriority> mlPriorityStems = <String, VoicePriority>{
 
 /// Small words trimmed from the two ends of the finished title only.
 const Set<String> mlTitleEdgeFillers = <String>{'ഒരു', 'എന്ന', 'ഈ'};
+
+/// Stems that introduce a task description.
+const List<String> mlDescriptionStems = <String>['വിവരണ', 'വിശദാംശ', 'കുറിപ്പ'];

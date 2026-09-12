@@ -34,6 +34,10 @@ class _InMemoryRepo implements TodoRepository {
   }
 
   @override
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async =>
+      todos.where((t) => t.spacedRepetitionItemId == deckId).toList();
+
+  @override
   Future<void> createTodo(TodoEntity todo) async {
     todos.add(todo);
   }

@@ -5,7 +5,7 @@ import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
 
 /// Two small number boxes for the target time of a task.
 ///
-/// Hours and minutes rather than a clock picker, because a target is a length
+/// Hours (0–23) and minutes (0–59) rather than a clock picker, because a target is a length
 /// and not a time of day. Both at zero means "no target", which is how null is
 /// entered and cleared.
 class TargetTimeField extends StatefulWidget {
@@ -13,6 +13,7 @@ class TargetTimeField extends StatefulWidget {
     super.key,
     required this.targetSeconds,
     required this.onChanged,
+    this.onValidChanged,
     this.enabled = true,
   });
 
@@ -21,6 +22,9 @@ class TargetTimeField extends StatefulWidget {
 
   /// Called with the new target, or null when both boxes reach zero.
   final ValueChanged<int?> onChanged;
+
+  /// Called when validation state changes (true if both boxes are valid, false if error).
+  final ValueChanged<bool>? onValidChanged;
 
   /// False on a day-locked task, where the boxes are shown but read-only.
   final bool enabled;
@@ -32,6 +36,8 @@ class TargetTimeField extends StatefulWidget {
 class _TargetTimeFieldState extends State<TargetTimeField> {
   late final TextEditingController _hours;
   late final TextEditingController _minutes;
+  bool _hasHoursError = false;
+  bool _hasMinutesError = false;
 
   @override
   void initState() {
@@ -54,6 +60,13 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
     if (_read(_minutes) != split.minutes) {
       _minutes.text = split.minutes.toString();
     }
+    if (_hasHoursError || _hasMinutesError) {
+      setState(() {
+        _hasHoursError = false;
+        _hasMinutesError = false;
+      });
+      widget.onValidChanged?.call(true);
+    }
   }
 
   @override
@@ -66,12 +79,32 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
   static int _read(TextEditingController controller) =>
       int.tryParse(controller.text.trim()) ?? 0;
 
-  void _emit() {
-    // Minutes are allowed past 59 so "90" can simply be typed; it is folded
-    // into hours the next time the field is rebuilt from its value.
-    widget.onChanged(
-      joinTargetSeconds(hours: _read(_hours), minutes: _read(_minutes)),
-    );
+  void _validateAndEmit() {
+    final hoursText = _hours.text.trim();
+    final minutesText = _minutes.text.trim();
+
+    final hoursVal = hoursText.isEmpty ? 0 : int.tryParse(hoursText);
+    final minutesVal = minutesText.isEmpty ? 0 : int.tryParse(minutesText);
+
+    final hasHoursError =
+        hoursVal == null || hoursVal < 0 || hoursVal > kMaxTargetHours;
+    final hasMinutesError =
+        minutesVal == null || minutesVal < 0 || minutesVal > kMaxTargetMinutes;
+
+    final isValid = !hasHoursError && !hasMinutesError;
+
+    if (_hasHoursError != hasHoursError ||
+        _hasMinutesError != hasMinutesError) {
+      setState(() {
+        _hasHoursError = hasHoursError;
+        _hasMinutesError = hasMinutesError;
+      });
+      widget.onValidChanged?.call(isValid);
+    }
+
+    if (isValid) {
+      widget.onChanged(joinTargetSeconds(hours: hoursVal, minutes: minutesVal));
+    }
   }
 
   @override
@@ -79,10 +112,14 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
     final l10n = context.l10n;
     final theme = Theme.of(context);
 
+    final hoursError = _hasHoursError ? l10n.targetHoursRangeError : null;
+    final minutesError = _hasMinutesError ? l10n.targetMinutesRangeError : null;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: _buildBox(
@@ -90,6 +127,7 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
                 controller: _hours,
                 label: l10n.targetHoursLabel,
                 suffix: 'h',
+                errorText: hoursError,
               ),
             ),
             const SizedBox(width: 12),
@@ -99,6 +137,7 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
                 controller: _minutes,
                 label: l10n.targetMinutesLabel,
                 suffix: 'm',
+                errorText: minutesError,
               ),
             ),
           ],
@@ -119,6 +158,7 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
     required TextEditingController controller,
     required String label,
     required String suffix,
+    String? errorText,
   }) {
     final theme = Theme.of(context);
 
@@ -140,14 +180,15 @@ class _TargetTimeFieldState extends State<TargetTimeField> {
           keyboardType: TextInputType.number,
           inputFormatters: [
             FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(4),
+            LengthLimitingTextInputFormatter(2),
           ],
           decoration: InputDecoration(
             suffixText: suffix,
             border: const OutlineInputBorder(),
             isDense: true,
+            errorText: errorText,
           ),
-          onChanged: (_) => _emit(),
+          onChanged: (_) => _validateAndEmit(),
         ),
       ],
     );

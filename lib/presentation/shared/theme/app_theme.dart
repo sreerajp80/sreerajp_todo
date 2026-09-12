@@ -2,30 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 
 abstract final class AppTheme {
-  static const _seedColor = Color(0xFF3B66B0);
-  static const _lightBackground = Color(0xFFF0F4FB);
-  static const _lightSurface = Color(0xFFFBFCFF);
-  static const _darkBackground = Color(0xFF0E1724);
-  static const _darkSurface = Color(0xFF152233);
-  static const _lightOutline = Color(0xFFB6C3D6);
-  static const _darkOutline = Color(0xFF465A74);
+  static const _seedColor = Color(0xFF4F46E5);
+  static const _lightBackground = Color(0xFFF8FAFC);
+  static const _lightSurface = Color(0xFFFFFFFF);
+  static const _darkBackground = Color(0xFF0B0F17);
+  static const _darkSurface = Color(0xFF131923);
+  static const _lightOutline = Color(0xFFE2E8F0);
+  static const _darkOutline = Color(0xFF283446);
 
   /// The default accent colour of the light theme.
-  static const Color defaultLightAccent = Color(0xFF355FA8);
+  static const Color defaultLightAccent = Color(0xFF4F46E5);
 
   /// The default accent colour of the dark theme.
-  static const Color defaultDarkAccent = Color(0xFF9BBAFF);
+  static const Color defaultDarkAccent = Color(0xFF818CF8);
 
   /// Quick-pick accent colours offered on the Accent Color screen.
   static const List<Color> presetAccents = <Color>[
-    Color(0xFF355FA8), // app blue
-    Color(0xFF0D9488), // teal
-    Color(0xFF3B82F6), // bright blue
-    Color(0xFF7C8AFF), // indigo
-    Color(0xFF8B5CF6), // violet
-    Color(0xFFEC4899), // pink
-    Color(0xFFF97316), // orange
-    Color(0xFF10B981), // green
+    Color(0xFF4F46E5), // Indigo
+    Color(0xFF0EA5E9), // Sky
+    Color(0xFF10B981), // Emerald
+    Color(0xFF8B5CF6), // Violet
+    Color(0xFFF43F5E), // Rose
+    Color(0xFFF59E0B), // Amber
+    Color(0xFF0D9488), // Teal
+    Color(0xFF3B82F6), // Blue
   ];
 
   /// Black or white, whichever reads better on top of [background].
@@ -60,9 +60,7 @@ abstract final class AppTheme {
     final isDark = brightness == Brightness.dark;
     final background = isDark ? _darkBackground : _lightBackground;
     final surfaceColor = isDark ? _darkSurface : _lightSurface;
-    final cardColor = isDark
-        ? const Color(0xFF1F3355)
-        : Colors.white.withValues(alpha: 0.94);
+    final cardColor = isDark ? const Color(0xFF161E2C) : Colors.white;
     final outlineColor = isDark ? _darkOutline : _lightOutline;
     final baseScheme = ColorScheme.fromSeed(
       seedColor: accent ?? _seedColor,
@@ -74,24 +72,24 @@ abstract final class AppTheme {
       primary: primary,
       onPrimary: contrastOn(primary),
       primaryContainer: usesCustomAccent
-          ? _withLightness(primary, isDark ? 0.22 : 0.88)
-          : (isDark ? const Color(0xFF243A5B) : const Color(0xFFD9E5FF)),
+          ? _withLightness(primary, isDark ? 0.22 : 0.90)
+          : (isDark ? const Color(0xFF202B3C) : const Color(0xFFEEF2FF)),
       onPrimaryContainer: usesCustomAccent
-          ? _withLightness(primary, isDark ? 0.92 : 0.20)
-          : (isDark ? const Color(0xFFE1E9FF) : const Color(0xFF18315C)),
+          ? _withLightness(primary, isDark ? 0.92 : 0.18)
+          : (isDark ? const Color(0xFFE0E7FF) : const Color(0xFF312E81)),
       secondary: usesCustomAccent
           ? _withLightness(primary, isDark ? 0.78 : 0.44)
-          : (isDark ? const Color(0xFFB9C9E9) : const Color(0xFF516B95)),
+          : (isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B)),
       secondaryContainer: usesCustomAccent
-          ? _withLightness(primary, isDark ? 0.18 : 0.92)
-          : (isDark ? const Color(0xFF203047) : const Color(0xFFE3EBF9)),
+          ? _withLightness(primary, isDark ? 0.18 : 0.94)
+          : (isDark ? const Color(0xFF1E2837) : const Color(0xFFF1F5F9)),
       onSecondaryContainer: usesCustomAccent
           ? _withLightness(primary, isDark ? 0.90 : 0.24)
-          : (isDark ? const Color(0xFFE0EBFF) : const Color(0xFF25344C)),
+          : (isDark ? const Color(0xFFF1F5F9) : const Color(0xFF1E293B)),
       surface: surfaceColor,
       outline: outlineColor,
-      outlineVariant: outlineColor.withValues(alpha: isDark ? 0.56 : 0.42),
-      shadow: Colors.black.withValues(alpha: isDark ? 0.42 : 0.12),
+      outlineVariant: outlineColor.withValues(alpha: isDark ? 0.60 : 0.70),
+      shadow: Colors.black.withValues(alpha: isDark ? 0.50 : 0.06),
     );
     final baseTheme = ThemeData(
       useMaterial3: true,
@@ -168,10 +166,11 @@ abstract final class AppTheme {
         color: cardColor,
         shadowColor: scheme.shadow,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-          side: isDark
-              ? const BorderSide(color: Color(0xFF3A5472), width: 1)
-              : BorderSide.none,
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: isDark ? const Color(0xFF232D3F) : const Color(0xFFE2E8F0),
+            width: 1,
+          ),
         ),
         margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       ),
@@ -261,12 +260,12 @@ abstract final class AppTheme {
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: cardColor,
-        height: 78,
-        elevation: 12,
+        height: 72,
+        elevation: 0,
         indicatorColor: scheme.primaryContainer,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final color = states.contains(WidgetState.selected)
-              ? scheme.onSurface
+              ? scheme.primary
               : scheme.onSurfaceVariant;
           return TextStyle(
             fontSize: 11,
@@ -353,15 +352,15 @@ abstract final class AppTheme {
     final isDark = brightness == Brightness.dark;
     return switch (status) {
       TodoStatus.pending =>
-        isDark ? const Color(0xFFD4D8E0) : const Color(0xFF687181),
+        isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
       TodoStatus.working =>
-        isDark ? const Color(0xFF7CC7FF) : const Color(0xFF2478C8),
+        isDark ? const Color(0xFF38BDF8) : const Color(0xFF0284C7),
       TodoStatus.completed =>
-        isDark ? const Color(0xFF73D18A) : const Color(0xFF2E7D46),
+        isDark ? const Color(0xFF34D399) : const Color(0xFF059669),
       TodoStatus.dropped =>
-        isDark ? const Color(0xFFFF8A84) : const Color(0xFFD64545),
+        isDark ? const Color(0xFFF87171) : const Color(0xFFDC2626),
       TodoStatus.ported =>
-        isDark ? const Color(0xFFFFC66C) : const Color(0xFFE88B1E),
+        isDark ? const Color(0xFFFBBF24) : const Color(0xFFD97706),
     };
   }
 }

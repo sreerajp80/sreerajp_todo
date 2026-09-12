@@ -127,6 +127,11 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) {
+    return _todoDao.findBySpacedRepetitionItemId(deckId);
+  }
+
+  @override
   Future<bool> existsRuleInstanceOnDate(String recurrenceRuleId, String date) {
     return _todoDao.existsByRecurrenceRuleIdOnDate(recurrenceRuleId, date);
   }

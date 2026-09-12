@@ -274,6 +274,19 @@ class _SegmentsBody extends ConsumerWidget {
               color: colorScheme.onSurfaceVariant,
             ),
           ),
+          if (todo.description != null &&
+              todo.description!.trim().isNotEmpty) ...[
+            const SizedBox(height: 8),
+            AdaptiveDirectionality(
+              text: todo.description!,
+              child: Text(
+                todo.description!,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ),
+          ],
           const SizedBox(height: 12),
           Semantics(
             label: context.l10n.totalTimeForTask(todo.title, totalText),

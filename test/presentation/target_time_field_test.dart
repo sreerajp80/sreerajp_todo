@@ -7,6 +7,7 @@ void main() {
   Widget buildTestWidget({
     required int? targetSeconds,
     required ValueChanged<int?> onChanged,
+    ValueChanged<bool>? onValidChanged,
     Locale locale = const Locale('en'),
   }) {
     return MaterialApp(
@@ -17,6 +18,7 @@ void main() {
         body: TargetTimeField(
           targetSeconds: targetSeconds,
           onChanged: onChanged,
+          onValidChanged: onValidChanged,
         ),
       ),
     );
@@ -84,5 +86,104 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(changedValue, 7200); // 2 hours
+  });
+
+  testWidgets('enforces maximum two digits on hours and minutes', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      buildTestWidget(targetSeconds: null, onChanged: (_) {}),
+    );
+    await tester.pumpAndSettle();
+
+    final textFields = find.byType(TextField);
+    final hoursField = textFields.first;
+    final minutesField = textFields.last;
+
+    // Attempt to enter 3 or more digits into hours
+    await tester.enterText(hoursField, '123');
+    await tester.pumpAndSettle();
+    // Only the first 2 digits are accepted
+    final hoursController = tester.widget<TextField>(hoursField).controller!;
+    expect(hoursController.text.length, lessThanOrEqualTo(2));
+
+    // Attempt to enter 3 or more digits into minutes
+    await tester.enterText(minutesField, '456');
+    await tester.pumpAndSettle();
+    final minutesController = tester
+        .widget<TextField>(minutesField)
+        .controller!;
+    expect(minutesController.text.length, lessThanOrEqualTo(2));
+  });
+
+  testWidgets(
+    'validates while typing and shows error on out-of-range minutes',
+    (tester) async {
+      int? changedValue;
+      bool? isValid;
+
+      await tester.pumpWidget(
+        buildTestWidget(
+          targetSeconds: null,
+          onChanged: (val) => changedValue = val,
+          onValidChanged: (val) => isValid = val,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final textFields = find.byType(TextField);
+      final minutesField = textFields.last;
+
+      // Type 60 into minutes -> exceeds 59
+      await tester.enterText(minutesField, '60');
+      await tester.pumpAndSettle();
+
+      expect(find.text('0–59'), findsOneWidget);
+      expect(isValid, isFalse);
+      expect(changedValue, isNull);
+
+      // Correct back to 45 -> valid
+      await tester.enterText(minutesField, '45');
+      await tester.pumpAndSettle();
+
+      expect(find.text('0–59'), findsNothing);
+      expect(isValid, isTrue);
+      expect(changedValue, 45 * 60);
+    },
+  );
+
+  testWidgets('validates while typing and shows error on out-of-range hours', (
+    tester,
+  ) async {
+    int? changedValue;
+    bool? isValid;
+
+    await tester.pumpWidget(
+      buildTestWidget(
+        targetSeconds: null,
+        onChanged: (val) => changedValue = val,
+        onValidChanged: (val) => isValid = val,
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final textFields = find.byType(TextField);
+    final hoursField = textFields.first;
+
+    // Type 24 into hours -> exceeds 23
+    await tester.enterText(hoursField, '24');
+    await tester.pumpAndSettle();
+
+    expect(find.text('0–23'), findsOneWidget);
+    expect(isValid, isFalse);
+    expect(changedValue, isNull);
+
+    // Correct to 23 -> valid
+    await tester.enterText(hoursField, '23');
+    await tester.pumpAndSettle();
+
+    expect(find.text('0–23'), findsNothing);
+    expect(isValid, isTrue);
+    expect(changedValue, 23 * 3600);
   });
 }

@@ -38,6 +38,7 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
       _initializeIntervalClock();
       _evaluateAlertConditions();
       _startPeriodicTimer();
+      _syncBackgroundAlarmSchedule();
     });
   }
 
@@ -53,6 +54,31 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       _evaluateAlertConditions();
+    } else if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden) {
+      _syncBackgroundAlarmSchedule();
+    }
+  }
+
+  Future<void> _syncBackgroundAlarmSchedule() async {
+    final settings = ref.read(pendingAlertSettingsProvider);
+    final notificationChannel = ref.read(pendingNotificationChannelProvider);
+    if (!settings.enabled) {
+      await notificationChannel.cancelScheduledAlerts();
+      return;
+    }
+    try {
+      final payload = await ref.read(pendingAlertPayloadProvider.future);
+      await notificationChannel.scheduleAlerts(
+        enabled: settings.enabled,
+        dayStartAlertEnabled: settings.dayStartAlertEnabled,
+        dayStartHour: settings.dayStartHour,
+        dayStartMinute: settings.dayStartMinute,
+        intervalMinutes: settings.intervalMinutes,
+        count: payload.totalCount,
+      );
+    } catch (e) {
+      debugPrint('PendingAlertWatcher: sync background schedule failed ($e)');
     }
   }
 
@@ -162,7 +188,7 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
 
   @override
   Widget build(BuildContext context) {
-    // Re-check when settings change
+    // Re-check when settings change and update background alarm schedule
     ref.listen(pendingAlertSettingsProvider, (previous, next) {
       if (previous?.enabled != next.enabled ||
           previous?.intervalMinutes != next.intervalMinutes ||
@@ -170,7 +196,12 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
           previous?.dayStartHour != next.dayStartHour ||
           previous?.dayStartMinute != next.dayStartMinute) {
         _evaluateAlertConditions();
+        _syncBackgroundAlarmSchedule();
       }
+    });
+
+    ref.listen(pendingAlertPayloadProvider, (previous, next) {
+      _syncBackgroundAlarmSchedule();
     });
 
     return widget.child;

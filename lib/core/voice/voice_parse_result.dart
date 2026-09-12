@@ -13,7 +13,7 @@ library;
 enum VoicePriority { low, normal, high, urgent }
 
 /// The pieces a sentence can carry, used to show the user what was picked up.
-enum VoiceField { date, timeOfDay, target, priority }
+enum VoiceField { date, timeOfDay, target, priority, description }
 
 /// The result of running [VoiceCommandParser] over one sentence.
 class VoiceParseResult {
@@ -21,6 +21,7 @@ class VoiceParseResult {
     required this.rawText,
     required this.title,
     required this.date,
+    this.description,
     this.hour,
     this.minute = 0,
     this.targetSeconds,
@@ -45,6 +46,9 @@ class VoiceParseResult {
   /// Always today or later. A sentence that names a past day is moved forward
   /// to today, because Day-Lock makes past days read-only.
   final String date;
+
+  /// The task description, if one was provided in the sentence.
+  final String? description;
 
   /// The hour of day, 0 to 23, or null when no time was said.
   ///

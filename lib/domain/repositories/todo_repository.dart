@@ -20,6 +20,7 @@ abstract class TodoRepository {
     String recurrenceRuleId,
     String fromDate,
   );
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId);
   Future<bool> existsRuleInstanceOnDate(String recurrenceRuleId, String date);
   Future<void> updateStatus(
     String id,

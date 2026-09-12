@@ -58,6 +58,53 @@ class PendingNotificationChannel {
     }
   }
 
+  /// Schedules background alarms via Android AlarmManager so reminders
+  /// trigger even when the application is killed or the device is asleep.
+  Future<void> scheduleAlerts({
+    required bool enabled,
+    required bool dayStartAlertEnabled,
+    required int dayStartHour,
+    required int dayStartMinute,
+    required int intervalMinutes,
+    required int count,
+  }) async {
+    if (!_isSupported) return;
+    try {
+      await _channel.invokeMethod<void>('scheduleAlerts', {
+        'enabled': enabled,
+        'dayStartEnabled': dayStartAlertEnabled,
+        'dayStartHour': dayStartHour,
+        'dayStartMinute': dayStartMinute,
+        'intervalMinutes': intervalMinutes,
+        'count': count,
+      });
+    } on PlatformException catch (e) {
+      debugPrint(
+        'PendingNotificationChannel: scheduleAlerts failed (${e.code})',
+      );
+    } on MissingPluginException {
+      debugPrint(
+        'PendingNotificationChannel: host does not handle scheduleAlerts',
+      );
+    }
+  }
+
+  /// Cancels any pending background alarms.
+  Future<void> cancelScheduledAlerts() async {
+    if (!_isSupported) return;
+    try {
+      await _channel.invokeMethod<void>('cancelScheduledAlerts');
+    } on PlatformException catch (e) {
+      debugPrint(
+        'PendingNotificationChannel: cancelScheduledAlerts failed (${e.code})',
+      );
+    } on MissingPluginException {
+      debugPrint(
+        'PendingNotificationChannel: host does not handle cancelScheduledAlerts',
+      );
+    }
+  }
+
   /// Checks if POST_NOTIFICATIONS permission is granted (Android 13+).
   Future<bool> hasPermission() async {
     if (!_isSupported) return true;

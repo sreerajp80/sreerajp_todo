@@ -44,6 +44,10 @@ class _FakeTodoRepository implements TodoRepository {
       date == todo.date ? [todo] : const [];
 
   @override
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async =>
+      todo.spacedRepetitionItemId == deckId ? [todo] : const [];
+
+  @override
   Future<void> reorderTodos(
     List<TodoEntity> todos, {
     bool bypassLock = false,
@@ -170,6 +174,13 @@ class _FakeRecurrenceRuleRepo implements RecurrenceRuleRepository {
 }
 
 void main() {
+  late SharedPreferences prefs;
+
+  setUp(() async {
+    SharedPreferences.setMockInitialValues(const {});
+    prefs = await SharedPreferences.getInstance();
+  });
+
   testWidgets('status options stay visible on narrow edit screens', (
     tester,
   ) async {
@@ -188,6 +199,7 @@ void main() {
       ProviderScope(
         overrides: [
           todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todo)),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -226,6 +238,7 @@ void main() {
       ProviderScope(
         overrides: [
           todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todo)),
+          sharedPreferencesProvider.overrideWithValue(prefs),
         ],
         child: const MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,

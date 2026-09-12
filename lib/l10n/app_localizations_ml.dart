@@ -1598,6 +1598,12 @@ class AppLocalizationsMl extends AppLocalizations {
   String get targetMinutesLabel => 'മിനിറ്റ്';
 
   @override
+  String get targetHoursRangeError => '0–23';
+
+  @override
+  String get targetMinutesRangeError => '0–59';
+
+  @override
   String targetProgressLabel(String target, String tracked) {
     return '$target ൽ $tracked';
   }
@@ -2245,6 +2251,19 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get voiceCreateTask => 'ടാസ്ക് ഉണ്ടാക്കുക';
+
+  @override
+  String get voiceDescriptionHeading => 'വിവരണം';
+
+  @override
+  String get voiceEditDetails => 'ഫോമിൽ തിരുത്തുക';
+
+  @override
+  String get voiceDuplicateTitle =>
+      'ഈ ദിവസത്തിൽ ഇതേ പേരിൽ ഒരു ടാസ്ക് നിലവിലുണ്ട്.';
+
+  @override
+  String get voiceDictateTooltip => 'ശബ്ദം വഴി നൽകുക';
 
   @override
   String get voiceDateMovedToToday =>
@@ -3584,4 +3603,197 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get notStartedYet => 'ഇതുവരെ ആരംഭിച്ചിട്ടില്ല';
+
+  @override
+  String get ocrScanTitle => 'ഒസിആർ ടാസ്ക് സ്കാനർ';
+
+  @override
+  String get ocrScanSubtitle => 'ടാസ്ക് പേരും വിവരണവും സ്കാൻ ചെയ്യുക';
+
+  @override
+  String get ocrScanHint =>
+      'ആദ്യ വരി: ടാസ്ക് പേര്. വിവരണത്തിനായി space, #, അല്ലെങ്കിൽ --- ഉപയോഗിക്കുക.';
+
+  @override
+  String get ocrCaptureTooltip => 'ഫോട്ടോ എടുക്കുക';
+
+  @override
+  String get ocrTorchAuto => 'ഓട്ടോ ഫ്ലാഷ്';
+
+  @override
+  String get ocrTorchOn => 'ടോർച്ച് ഓൺ';
+
+  @override
+  String get ocrTorchOff => 'ഫ്ലാഷ് ഓഫ്';
+
+  @override
+  String get ocrSwitchCamera => 'ക്യാമറ മാറ്റുക';
+
+  @override
+  String get ocrPickGallery => 'ചിത്രം തിരഞ്ഞെടുക്കുക';
+
+  @override
+  String get ocrProcessing => 'ടെക്സ്റ്റ് കണ്ടെത്തുന്നു...';
+
+  @override
+  String get ocrNoTextFound =>
+      'ചിത്രത്തിൽ ടെക്സ്റ്റ് കണ്ടെത്താനായില്ല. വീണ്ടും ശ്രമിക്കുക.';
+
+  @override
+  String get ocrReviewTitle => 'സ്കാൻ ചെയ്ത ടാസ്ക് അവലോകനം';
+
+  @override
+  String get ocrTaskNameLabel => 'ടാസ്ക് പേര്';
+
+  @override
+  String get ocrTaskNameEmpty => 'ടാസ്ക് പേര് നൽകേണ്ടതാണ്';
+
+  @override
+  String get ocrDescriptionLabel => 'വിവരണം';
+
+  @override
+  String get ocrRawTextTitle => 'സ്കാൻ ചെയ്ത യഥാർത്ഥ ടെക്സ്റ്റ്';
+
+  @override
+  String get ocrRawTextCopied => 'ടെക്സ്റ്റ് ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി';
+
+  @override
+  String get ocrCreateTask => 'ടാസ്ക് സൃഷ്ടിക്കുക';
+
+  @override
+  String get ocrOpenInEditor => 'പൂർണ്ണ എഡിറ്ററിൽ തുറക്കുക';
+
+  @override
+  String get ocrRetake => 'വീണ്ടും എടുക്കുക';
+
+  @override
+  String get ocrCameraPermissionRequired =>
+      'ടാസ്ക് ടെക്സ്റ്റ് സ്കാൻ ചെയ്യാൻ ക്യാമറ അനുമതി ആവശ്യമാണ്. സിസ്റ്റം ക്രമീകരണങ്ങളിൽ ക്യാമറ അനുമതി നൽകുക.';
+
+  @override
+  String get ocrApplyToForm => 'ടാസ്കിലേക്ക് ചേർക്കുക';
+
+  @override
+  String get ocrScanButtonTooltip =>
+      'ഒസിആർ ക്യാമറ ഉപയോഗിച്ച് ടാസ്ക് സ്കാൻ ചെയ്യുക';
+
+  @override
+  String get ocrCropTitle => 'ടെക്സ്റ്റ് ഭാഗം ക്രോപ്പ് ചെയ്യുക';
+
+  @override
+  String get ocrCropHint =>
+      'ടാസ്ക് വിവരങ്ങൾ മാത്രം ഉൾപ്പെടുത്താൻ കോണുകൾ ക്രമീകരിക്കുക';
+
+  @override
+  String get ocrCropConfirm => 'തിരഞ്ഞെടുത്തത് സ്കാൻ ചെയ്യുക';
+
+  @override
+  String get ocrCropFullImage => 'മുഴുവൻ ചിത്രം ഉപയോഗിക്കുക';
+
+  @override
+  String get ocrBrightnessLabel => 'തെളിച്ചം';
+
+  @override
+  String get ocrZoomLabel => 'സൂം';
+
+  @override
+  String get ocrResetExposure => 'റീസെറ്റ്';
+
+  @override
+  String get ocrRotateImage => '90° തിരിക്കുക';
+
+  @override
+  String get ocrSwapFields => 'ശീർഷകവും വിവരണവും പരസ്പരം മാറ്റുക';
+
+  @override
+  String get ocrContinueToCreate => 'ടാസ്ക് വിശദാംശങ്ങളിലേക്ക് തുടരുക';
+
+  @override
+  String get ocrFilterOriginal => 'യഥാർത്ഥം';
+
+  @override
+  String get ocrFilterBw => 'ബി&ഡബ്ല്യു ഡോക്യുമെന്റ്';
+
+  @override
+  String get ocrFilterBrighten => 'തെളിച്ചം';
+
+  @override
+  String get ocrEnhanceLabel => 'മെച്ചപ്പെടുത്തുക';
+
+  @override
+  String get ocrRotateCw => 'വലത്തോട്ട് തിരിക്കുക';
+
+  @override
+  String get ocrRotateCcw => 'ഇടത്തോട്ട് തിരിക്കുക';
+
+  @override
+  String get ocrFilterGrayscale => 'ഗ്രേസ്കെയിൽ';
+
+  @override
+  String get ocrTabCrop => 'ക്രോപ്പ് & തിരിക്കൽ';
+
+  @override
+  String get ocrTabFilters => 'ഫിൽട്ടറുകൾ';
+
+  @override
+  String get ocrTabTune => 'ക്രമീകരിക്കുക';
+
+  @override
+  String get ocrContrastLabel => 'കോൺട്രാസ്റ്റ്';
+
+  @override
+  String get ocrResetFilter => 'റീസെറ്റ്';
+
+  @override
+  String get masteryDecksTitle => 'മാസ്റ്ററി ഡെക്കുകൾ';
+
+  @override
+  String get newMasteryDeck => 'പുതിയ മാസ്റ്ററി ഡെക്ക്';
+
+  @override
+  String get masteryDeckName => 'ഡെക്കിന്റെ പേര്';
+
+  @override
+  String get masteryDeckNameHint => 'ഉദാ: ഫ്ലട്ടർ പഠനം, സംസ്കൃതം പഠനം';
+
+  @override
+  String get masteryDeckDescription => 'വിവരണം (ഐച്ഛികം)';
+
+  @override
+  String get noMasteryDecks => 'മാസ്റ്ററി ഡെക്കുകൾ ഒന്നുമില്ല';
+
+  @override
+  String get noMasteryDecksSubtitle =>
+      'വിഷയങ്ങൾ മാസ്റ്റർ ചെയ്യാൻ ടാസ്കുകൾ ഉൾക്കൊള്ളുന്ന ഒരു ഡെക്ക് ഉണ്ടാക്കുക.';
+
+  @override
+  String get noMasteryTodos => 'ഈ ഡെക്കിൽ ടാസ്കുകൾ ഒന്നുമില്ല';
+
+  @override
+  String get noMasteryTodosSubtitle =>
+      'പുരോഗതി ട്രാക്ക് ചെയ്യാൻ ഈ ഡെക്കിൽ ടാസ്കുകൾ ചേർക്കുക.';
+
+  @override
+  String get addTodoToDeck => 'ഡെക്കിലേക്ക് ടാസ്ക് ചേർക്കുക';
+
+  @override
+  String get masteryOverallProgress => 'മൊത്തം പുരോഗതി';
+
+  @override
+  String masteryTasksCount(int completed, int total) {
+    return '$total ടാസ്കുകളിൽ $completed എണ്ണം പൂർത്തിയായി';
+  }
+
+  @override
+  String get masteryDeckTag => 'മാസ്റ്ററി ഡെക്ക്';
+
+  @override
+  String get allMasteryFilter => 'എല്ലാം';
+
+  @override
+  String get deleteDeck => 'ഡെക്ക് ഇല്ലാതാക്കുക';
+
+  @override
+  String get deleteDeckConfirmation =>
+      'ഈ മാസ്റ്ററി ഡെക്ക് ഇല്ലാതാക്കണമെന്ന് ഉറപ്പാണോ? ടാസ്കുകൾ നിലനിൽക്കും എന്നാൽ ഈ ഡെക്കുമായുള്ള ബന്ധം നഷ്ടപ്പെടും.';
 }

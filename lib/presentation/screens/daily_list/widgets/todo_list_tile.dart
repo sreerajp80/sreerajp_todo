@@ -143,118 +143,71 @@ class TodoListTile extends ConsumerWidget {
     TodoStatus status,
     bool isRunning,
   ) {
-    final List<Color> gradientColors;
+    final Color backgroundColor;
     final Color borderColor;
     final double borderWidth;
+    final List<BoxShadow> shadows;
 
     if (isSelected) {
-      gradientColors = isDark
-          ? [const Color(0xFF2E4F7E), const Color(0xFF1C3459)]
-          : [const Color(0xFFEDF3FF), const Color(0xFFD5E4FF)];
-      borderColor = colorScheme.primary.withValues(alpha: isDark ? 0.55 : 0.30);
-      borderWidth = 1.0;
-    } else if (isRunning) {
-      gradientColors = isDark
-          ? [const Color(0xFF1B3E55), const Color(0xFF102535)]
-          : [const Color(0xFFE6F3FF), const Color(0xFFCBE2FF)];
-      borderColor = isDark ? const Color(0xFF4A90C4) : const Color(0xFF4A8FD4);
+      backgroundColor = isDark
+          ? const Color(0xFF1E2838)
+          : const Color(0xFFEFF4FF);
+      borderColor = colorScheme.primary.withValues(alpha: isDark ? 0.8 : 0.6);
       borderWidth = 1.5;
+      shadows = [
+        BoxShadow(
+          color: colorScheme.primary.withValues(alpha: isDark ? 0.20 : 0.10),
+          blurRadius: 12,
+          offset: const Offset(0, 4),
+        ),
+      ];
+    } else if (isRunning) {
+      backgroundColor = isDark
+          ? const Color(0xFF132032)
+          : const Color(0xFFF0F7FF);
+      borderColor = colorScheme.primary;
+      borderWidth = 1.5;
+      shadows = [
+        BoxShadow(
+          color: colorScheme.primary.withValues(alpha: isDark ? 0.35 : 0.20),
+          blurRadius: 14,
+          offset: const Offset(0, 4),
+        ),
+      ];
+    } else if (status == TodoStatus.completed) {
+      backgroundColor = isDark
+          ? const Color(0xFF0F141C)
+          : const Color(0xFFF9FAFB);
+      borderColor = isDark ? const Color(0xFF1E2634) : const Color(0xFFE5E7EB);
+      borderWidth = 1.0;
+      shadows = [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: isDark ? 0.20 : 0.02),
+          blurRadius: 4,
+          offset: const Offset(0, 1),
+        ),
+      ];
     } else {
-      switch (status) {
-        case TodoStatus.completed:
-          gradientColors = isDark
-              ? [const Color(0xFF182E1F), const Color(0xFF0F1E13)]
-              : [const Color(0xFFEEF8EF), const Color(0xFFD5EFD8)];
-          borderColor = isDark
-              ? const Color(0xFF2E6840)
-              : const Color(0xFF7DC48A);
-          borderWidth = 1.0;
-        case TodoStatus.dropped:
-          gradientColors = isDark
-              ? [const Color(0xFF2E1818), const Color(0xFF1E1010)]
-              : [const Color(0xFFFFF1F1), const Color(0xFFFFDDDD)];
-          borderColor = isDark
-              ? const Color(0xFF6B3030)
-              : const Color(0xFFDE8888);
-          borderWidth = 1.0;
-        case TodoStatus.ported:
-          gradientColors = isDark
-              ? [const Color(0xFF2E2510), const Color(0xFF1E180A)]
-              : [const Color(0xFFFFF9EE), const Color(0xFFFFEDD0)];
-          borderColor = isDark
-              ? const Color(0xFF6B4E1A)
-              : const Color(0xFFD9A855);
-          borderWidth = 1.0;
-        case TodoStatus.pending:
-          gradientColors = isDark
-              ? [const Color(0xFF1F3457), const Color(0xFF142440)]
-              : [Colors.white, const Color(0xFFECF2FF)];
-          borderColor = isDark
-              ? const Color(0xFF3A5472)
-              : const Color(0xFFCFDDFA);
-          borderWidth = 1.0;
-        case TodoStatus.working:
-          gradientColors = isDark
-              ? [const Color(0xFF163347), const Color(0xFF0F2433)]
-              : [const Color(0xFFEAF6FF), const Color(0xFFD6EBFF)];
-          borderColor = isDark
-              ? const Color(0xFF3B7AA6)
-              : const Color(0xFF86B9E4);
-          borderWidth = 1.0;
-      }
+      backgroundColor = isDark ? const Color(0xFF141B26) : Colors.white;
+      borderColor = isDark ? const Color(0xFF232D3F) : const Color(0xFFE2E8F0);
+      borderWidth = 1.0;
+      shadows = [
+        BoxShadow(
+          color: isDark
+              ? Colors.black.withValues(alpha: 0.30)
+              : const Color(0xFF0F172A).withValues(alpha: 0.04),
+          blurRadius: 8,
+          offset: const Offset(0, 2),
+        ),
+      ];
     }
 
-    if (isDark) {
-      return BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: gradientColors,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: borderColor, width: borderWidth),
-        boxShadow: [
-          BoxShadow(
-            color: isRunning
-                ? borderColor.withValues(alpha: 0.25)
-                : Colors.black.withValues(alpha: 0.44),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-            spreadRadius: -4,
-          ),
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.20),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      );
-    } else {
-      return BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: gradientColors,
-        ),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: borderColor, width: borderWidth),
-        boxShadow: [
-          BoxShadow(
-            color: isRunning
-                ? borderColor.withValues(alpha: 0.25)
-                : const Color(0xFF2B4D8F).withValues(alpha: 0.14),
-            blurRadius: 18,
-            offset: const Offset(0, 7),
-            spreadRadius: -3,
-          ),
-          BoxShadow(
-            color: const Color(0xFF2B4D8F).withValues(alpha: 0.07),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      );
-    }
+    return BoxDecoration(
+      color: backgroundColor,
+      borderRadius: BorderRadius.circular(18),
+      border: Border.all(color: borderColor, width: borderWidth),
+      boxShadow: shadows,
+    );
   }
 
   Widget _buildCompactActionButton(
@@ -419,6 +372,10 @@ class TodoListTile extends ConsumerWidget {
     final displaySeconds = isRunning
         ? totalSeconds + (liveElapsed.valueOrNull ?? 0)
         : totalSeconds;
+    final masteryDecksMap = ref.watch(allMasteryDecksMapProvider);
+    final deckTitle = todo.spacedRepetitionItemId != null
+        ? masteryDecksMap[todo.spacedRepetitionItemId]
+        : null;
     final displayStatus = _effectiveStatus(
       isRunning: isRunning,
       totalDurationSeconds: totalSeconds,
@@ -462,7 +419,7 @@ class TodoListTile extends ConsumerWidget {
         child: Stack(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(18),
               child: Material(
                 color: Colors.transparent,
                 child: Semantics(
@@ -471,7 +428,7 @@ class TodoListTile extends ConsumerWidget {
                   child: InkWell(
                     onTap: tileTap,
                     onLongPress: tileLongPress,
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(18),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 12,
@@ -724,6 +681,51 @@ class TodoListTile extends ConsumerWidget {
                                 label: _statusLabel(context, displayStatus),
                                 status: displayStatus,
                               ),
+                              if (deckTitle != null)
+                                GestureDetector(
+                                  behavior: HitTestBehavior.opaque,
+                                  onTap: () => context.push(
+                                    AppRoutes.masteryDeckDetailPath(
+                                      todo.spacedRepetitionItemId!,
+                                    ),
+                                  ),
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 3,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: colorScheme.secondaryContainer
+                                          .withValues(alpha: 0.7),
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: colorScheme.secondary
+                                            .withValues(alpha: 0.3),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.psychology_outlined,
+                                          size: 13,
+                                          color: colorScheme
+                                              .onSecondaryContainer,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '#$deckTitle',
+                                          style: theme.textTheme.labelSmall
+                                              ?.copyWith(
+                                                fontWeight: FontWeight.w600,
+                                                color: colorScheme
+                                                    .onSecondaryContainer,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               if (totalSubTasks > 0)
                                 Container(
                                   padding: const EdgeInsets.symmetric(
@@ -1098,7 +1100,7 @@ class _SwipeRevealWrapperState extends State<_SwipeRevealWrapper>
                 child: Container(
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHigh,
-                    borderRadius: BorderRadius.circular(24),
+                    borderRadius: BorderRadius.circular(18),
                   ),
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.only(left: 12),

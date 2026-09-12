@@ -206,4 +206,45 @@ void main() {
       }
     });
   });
+
+  group('Malayalam — description', () {
+    test('vivaranam separator splits title and description', () {
+      // പഠനം വിവരണം ശാസ്ത്രം അധ്യായം രണ്ട്
+      final result = run('പഠനം വിവരണം ശാസ്ത്രം അധ്യായം രണ്ട്');
+
+      expect(result.title, 'പഠനം');
+      expect(result.description, 'ശാസ്ത്രം അധ്യായം രണ്ട്');
+      expect(result.matched, contains(VoiceField.description));
+    });
+
+    test('kurippu separator with date and time', () {
+      // ഡോക്ടറെ കാണണം കുറിപ്പ് പരിശോധനാ റിപ്പോർട്ട് നാളെ രാവിലെ 10 മണിക്ക്
+      final result = run(
+        'ഡോക്ടറെ കാണണം കുറിപ്പ് പരിശോധനാ റിപ്പോർട്ട് നാളെ രാവിലെ 10 മണിക്ക്',
+      );
+
+      expect(result.title, 'ഡോക്ടറെ കാണണം');
+      expect(result.description, 'പരിശോധനാ റിപ്പോർട്ട്');
+      expect(result.date, '2026-08-20');
+      expect(result.hour, 10);
+      expect(
+        result.matched,
+        containsAll(<VoiceField>[
+          VoiceField.description,
+          VoiceField.date,
+          VoiceField.timeOfDay,
+        ]),
+      );
+    });
+
+    test('visadamsham separator with colon', () {
+      final result = run(
+        'പ്രോജക്റ്റ് ചർച്ച വിശദാംശങ്ങൾ: ആവശ്യങ്ങൾ വിലയിരുത്തുക',
+      );
+
+      expect(result.title, 'പ്രോജക്റ്റ് ചർച്ച');
+      expect(result.description, 'ആവശ്യങ്ങൾ വിലയിരുത്തുക');
+      expect(result.matched, contains(VoiceField.description));
+    });
+  });
 }

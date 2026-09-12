@@ -25,6 +25,8 @@ import 'package:sreerajp_todo/presentation/screens/recurring_tasks/widgets/rrule
 import 'package:sreerajp_todo/domain/usecases/update_recurring_todos.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_command_sheet.dart';
+import 'package:sreerajp_todo/presentation/screens/ocr/ocr_scan_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/core/utils/rrule_display_utils.dart';
 
@@ -40,10 +42,12 @@ class CreateEditTodoScreen extends ConsumerStatefulWidget {
     this.initialDescription,
     this.initialTargetSeconds,
     this.initialPriority,
+    this.initialMasteryDeckId,
   });
 
   final String? todoId;
   final String? date;
+  final String? initialMasteryDeckId;
 
   /// A title to open the form with, sent by the voice task sheet.
   ///
@@ -81,9 +85,11 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   TodoStatus _status = TodoStatus.pending;
   TodoPriority _priority = TodoPriority.normal;
   int? _targetSeconds;
+  bool _isTargetTimeValid = true;
   String? _portedTo;
   String _effectiveDate = '';
   TodoEntity? _existingTodo;
+  String? _selectedMasteryDeckId;
   bool _isLoading = true;
   bool _isSaving = false;
   String? _uniquenessError;
@@ -144,6 +150,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       if (widget.initialPriority != null) {
         _priority = TodoPriority.fromDbString(widget.initialPriority);
       }
+      if (widget.initialMasteryDeckId != null) {
+        _selectedMasteryDeckId = widget.initialMasteryDeckId;
+      }
     }
     _loadData();
   }
@@ -185,6 +194,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           _effectiveDate = todo.date;
           _subTasks = List.from(todo.subTasks);
           _prerequisiteTodoIds = List.from(todo.prerequisiteTodoIds);
+          _selectedMasteryDeckId = todo.spacedRepetitionItemId;
           if (rule != null) {
             _existingRule = rule;
             _repeatOption = SimpleRepeatOption.repeat;
@@ -236,6 +246,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
       return;
     }
     if (_uniquenessError != null) {
+      return;
+    }
+    if (!_isTargetTimeValid) {
       return;
     }
 
@@ -396,6 +409,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
             targetSeconds: _targetSeconds,
             portedTo: _status == TodoStatus.ported ? _portedTo : null,
             recurrenceRuleId: recurrenceRuleId,
+            spacedRepetitionItemId: _selectedMasteryDeckId,
             subTasks: _subTasks,
             prerequisiteTodoIds: _prerequisiteTodoIds,
             updatedAt: now,
@@ -433,6 +447,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           targetSeconds: _targetSeconds,
           portedTo: _status == TodoStatus.ported ? _portedTo : null,
           recurrenceRuleId: recurrenceRuleId,
+          spacedRepetitionItemId: _selectedMasteryDeckId,
           sortOrder: 0,
           subTasks: _subTasks,
           prerequisiteTodoIds: _prerequisiteTodoIds,
@@ -441,6 +456,11 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         );
         final notifier = ref.read(dailyTodoProvider(_effectiveDate).notifier);
         await notifier.createTodo(todo);
+      }
+
+      if (_selectedMasteryDeckId != null) {
+        ref.invalidate(masteryDeckTodosProvider(_selectedMasteryDeckId!));
+        ref.invalidate(masteryDeckProgressProvider(_selectedMasteryDeckId!));
       }
 
       // Generate recurring tasks for the look-ahead window
@@ -557,6 +577,67 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     setState(() => _status = newStatus);
   }
 
+  Future<void> _captureVoiceForDetails() async {
+    final result = await VoiceCommandSheet.show(
+      context,
+      date: _effectiveDate,
+      returnResult: true,
+    );
+    if (result != null && mounted) {
+      if (result.title.isNotEmpty) {
+        _titleController.text = result.title;
+        _checkTitleUniqueness(result.title);
+      }
+      if (result.description != null && result.description!.isNotEmpty) {
+        _descriptionController.text = result.description!;
+      }
+      if (result.targetSeconds != null) {
+        setState(() => _targetSeconds = result.targetSeconds);
+      }
+      if (result.priority != null) {
+        setState(
+          () => _priority = TodoPriority.values.byName(result.priority!.name),
+        );
+      }
+    }
+  }
+
+  Future<void> _captureVoiceForTitle() async {
+    final result = await VoiceCommandSheet.show(
+      context,
+      date: _effectiveDate,
+      returnResult: true,
+    );
+    if (result != null && mounted && result.title.isNotEmpty) {
+      _titleController.text = result.title;
+      _checkTitleUniqueness(result.title);
+    }
+  }
+
+  Future<void> _captureVoiceForDescription() async {
+    final result = await VoiceCommandSheet.show(
+      context,
+      date: _effectiveDate,
+      returnResult: true,
+    );
+    if (result != null && mounted) {
+      final text =
+          (result.description != null && result.description!.isNotEmpty)
+          ? result.description!
+          : result.title;
+      if (text.isNotEmpty) {
+        setState(() {
+          if (_descriptionController.text.trim().isEmpty) {
+            _descriptionController.text = text;
+          } else {
+            _descriptionController.text =
+                '${_descriptionController.text.trim()}\n$text';
+          }
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final title = _isReadOnly && widget.isEditing
@@ -615,6 +696,47 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
               AppSectionCard(
                 title: context.l10n.details,
                 subtitle: formatDateFromIso(_effectiveDate),
+                trailing: !_isReadOnly
+                    ? Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (ref.watch(taskDefaultsProvider).voiceInputEnabled)
+                            IconButton(
+                              icon: const Icon(Icons.mic_outlined),
+                              tooltip: context.l10n.voiceOpenTooltip,
+                              onPressed: _captureVoiceForDetails,
+                            ),
+                          IconButton(
+                            icon: const Icon(Icons.document_scanner_outlined),
+                            tooltip: context.l10n.ocrScanButtonTooltip,
+                            onPressed: () async {
+                              final result = await Navigator.of(context)
+                                  .push<Map<String, dynamic>>(
+                                    MaterialPageRoute(
+                                      builder: (_) => OcrScanScreen(
+                                        date: _effectiveDate,
+                                        returnResultDirectly: true,
+                                      ),
+                                    ),
+                                  );
+                              if (result != null && mounted) {
+                                final scannedTitle =
+                                    result['title'] as String? ?? '';
+                                final scannedDesc =
+                                    result['description'] as String? ?? '';
+                                if (scannedTitle.isNotEmpty) {
+                                  _titleController.text = scannedTitle;
+                                  _checkTitleUniqueness(scannedTitle);
+                                }
+                                if (scannedDesc.isNotEmpty) {
+                                  _descriptionController.text = scannedDesc;
+                                }
+                              }
+                            },
+                          ),
+                        ],
+                      )
+                    : null,
                 child: Column(
                   children: [
                     TitleAutocompleteField(
@@ -622,6 +744,10 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                       focusNode: _titleFocusNode,
                       enabled: !_isReadOnly,
                       onChanged: _checkTitleUniqueness,
+                      onVoicePressed:
+                          ref.watch(taskDefaultsProvider).voiceInputEnabled
+                          ? _captureVoiceForTitle
+                          : null,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return context.l10n.titleRequired;
@@ -679,6 +805,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                   targetSeconds: _targetSeconds,
                   enabled: !_isReadOnly,
                   onChanged: (seconds) => _targetSeconds = seconds,
+                  onValidChanged: (isValid) => _isTargetTimeValid = isValid,
                 ),
               ),
               const SizedBox(height: 16),
@@ -709,6 +836,11 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                   ),
                 ],
               ],
+              const SizedBox(height: 16),
+              AppSectionCard(
+                title: context.l10n.masteryDeckTag,
+                child: _buildMasteryDeckSelector(),
+              ),
               const SizedBox(height: 16),
               AppSectionCard(
                 title: context.l10n.taskStatus,
@@ -749,6 +881,55 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildMasteryDeckSelector() {
+    final decksAsync = ref.watch(allMasteryDecksProvider);
+
+    return decksAsync.when(
+      loading: () => const SizedBox.shrink(),
+      error: (_, _) => const SizedBox.shrink(),
+      data: (decks) {
+        if (decks.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Text(
+              context.l10n.noMasteryDecks,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
+          );
+        }
+
+        return Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            ChoiceChip(
+              label: Text(context.l10n.allMasteryFilter),
+              selected: _selectedMasteryDeckId == null,
+              onSelected: (selected) {
+                if (selected) {
+                  setState(() => _selectedMasteryDeckId = null);
+                }
+              },
+            ),
+            for (final deck in decks)
+              ChoiceChip(
+                avatar: const Icon(Icons.psychology_outlined, size: 16),
+                label: Text(deck.title),
+                selected: _selectedMasteryDeckId == deck.id,
+                onSelected: (selected) {
+                  setState(() {
+                    _selectedMasteryDeckId = selected ? deck.id : null;
+                  });
+                },
+              ),
+          ],
+        );
+      },
     );
   }
 
@@ -1099,6 +1280,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   }
 
   Widget _buildDescriptionField() {
+    final voiceEnabled = ref.watch(taskDefaultsProvider).voiceInputEnabled;
     return AdaptiveDirectionality(
       text: _descriptionController.text,
       child: TextFormField(
@@ -1108,6 +1290,13 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         decoration: InputDecoration(
           labelText: context.l10n.descriptionHint,
           prefixIcon: const Icon(Icons.notes_rounded),
+          suffixIcon: !_isReadOnly && voiceEnabled
+              ? IconButton(
+                  icon: const Icon(Icons.mic_none_rounded),
+                  tooltip: context.l10n.voiceDictateTooltip,
+                  onPressed: _captureVoiceForDescription,
+                )
+              : null,
           alignLabelWithHint: true,
         ),
         onChanged: (_) => setState(() {}),
