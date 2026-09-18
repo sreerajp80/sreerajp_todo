@@ -1507,6 +1507,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                     if (!_isReadOnly)
                       IconButton(
                         icon: const Icon(Icons.close_rounded, size: 18),
+                        tooltip: context.l10n.tooltipRemoveSubTask,
                         onPressed: () {
                           setState(() {
                             _subTasks.removeAt(index);

@@ -1,13 +1,37 @@
 {
-  "appName": "SreerajP ToDo",
-  "description": "Personal offline-first daily ToDo and time-tracker.",
-  "version": "1.14.7",
-  "build": "42",
+  "appName": {
+    "en": "Sreeraj P ToDo",
+    "ml": "ശ്രീരാജ് പി ടുഡു",
+    "sa": "श्रीराज् पी कार्यसूची"
+  },
+  "description": {
+    "en": "Personal offline-first daily ToDo and time-tracker.",
+    "ml": "വ്യക്തിഗത ഓഫ്‌ലൈൻ-ആദ്യ പ്രതിദിന ചെയ്യേണ്ട കാര്യങ്ങളും സമയ ട്രാക്കറും.",
+    "sa": "व्यक्तिगतम् असंयुक्तप्रथमं प्रतिदिनकार्यसूची समयगणकञ्च।"
+  },
+  "version": "2.1.0",
+  "build": "45",
   "details": {
-    "Author": "Sreeraj P",
-    "Email": "sreerajp@zohomail.in",
-    "License": "All libraries used are open source.",
-    "AI used": "Anthropic Claude, Google Gemini",
-    "IDE used": "VS Code / Antigravity"
+    "author": {
+      "en": "Sreeraj P",
+      "ml": "ശ്രീരാജ് പി",
+      "sa": "श्रीराज् पी"
+    },
+    "email": "sreerajp@zohomail.in",
+    "license": {
+      "en": "All libraries used are open source.",
+      "ml": "ഉപയോഗിച്ച എല്ലാ ലൈബ്രറികളും ഓപ്പൺ സോഴ്സ് ആണ്.",
+      "sa": "सर्वाणि प्रयुक्तानि पुस्तकालयानि मुक्तस्रोतानि सन्ति।"
+    },
+    "aiUsed": {
+      "en": "Anthropic Claude, Google Gemini",
+      "ml": "ആന്ത്രോപിക് ക്ലോഡ്, ഗൂഗിൾ ജെമിനി",
+      "sa": "एन्थ्रोपिक्-क्लौड्, गूगल्-जेमिनि"
+    },
+    "ideUsed": {
+      "en": "VS Code / Antigravity",
+      "ml": "വിഎസ് കോഡ് / ആന്റിഗ്രാവിറ്റി",
+      "sa": "वीएस् कोड् / ऐन्टिग्रेविटी"
+    }
   }
 }

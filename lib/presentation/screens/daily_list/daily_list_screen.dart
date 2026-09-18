@@ -11,6 +11,7 @@ import 'package:sreerajp_todo/application/task_defaults_notifier.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/constants/todo_sort_option.dart';
 import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
@@ -156,18 +157,24 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
 
       if (candidates.isEmpty || !mounted) return;
 
-      final ordered = candidates.map((todo) => todo.id).toList();
+      final moveTodo = ref.read(moveTodoProvider);
+      var movedCount = 0;
       try {
-        final result = await ref.read(copyTodosProvider)(ordered, today);
-        if (result.copied.isNotEmpty) {
+        for (final todo in candidates) {
+          try {
+            await moveTodo(todo.id, today);
+            movedCount++;
+          } on DuplicateTitleException {
+            // Already exists on today; skip
+          }
+        }
+        if (movedCount > 0) {
           ref.invalidate(dailyTodoProvider(today));
           ref.invalidate(pendingAlertPayloadProvider);
           ref.invalidate(statisticsProvider);
 
           if (mounted) {
-            final message = context.l10n.autoCarryOverDone(
-              result.copied.length,
-            );
+            final message = context.l10n.autoCarryOverDone(movedCount);
             showAppSnackBar(context, message: message);
           }
         }
@@ -436,7 +443,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           ref.invalidate(dailyTodoProvider(widget.date));
           showAppSnackBar(
             context,
-            message: 'AirQR sync complete: Imported $importedCount tasks.',
+            message: context.l10n.airQrSyncComplete(importedCount),
           );
         }
       }
@@ -1160,6 +1167,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
     return AppBar(
       leading: IconButton(
         icon: const Icon(Icons.close),
+        tooltip: context.l10n.tooltipClose,
         onPressed: () => notifier.clearSelection(),
       ),
       title: Text(context.l10n.selectedCount(selectedCount)),

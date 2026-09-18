@@ -1,4 +1,10 @@
-# Security
+# Security — SreerajP ToDo
+
+This document defines the security architecture, threat model, cryptographic design, sensitive data inventory, and offline boundary rules for SreerajP ToDo. Read this before modifying any security, crypto, database storage, backup, or permission logic.
+
+Read [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), and [architecture.md](architecture.md) first. For shared reference standards, see [guidelines/security.md](guidelines/security.md).
+
+---
 
 ## 1. Security Scope
 
@@ -12,12 +18,16 @@
   - `Android`
   - `Windows`
 
+---
+
 ## 2. Security Objectives
 
 - Protect locally stored task data and time-tracking records from casual extraction on a lost or stolen device.
 - Prevent accidental disclosure of user data through logs, unencrypted backups, screenshots, or exports.
 - Preserve recoverability and cross-device migration through portable encrypted backups with user-set passphrases.
 - Ensure zero data leaves the device involuntarily — no network access, no telemetry, no cloud sync.
+
+---
 
 ## 3. Threat Model Summary
 
@@ -35,6 +45,8 @@
 - Attacks requiring OS-level compromise (kernel exploits, custom ROMs with backdoors).
 - Side-channel attacks on the SQLCipher encryption.
 
+---
+
 ## 4. Sensitive Data Inventory
 
 | Data Type | Example | Where It Exists | Protection Required |
@@ -44,6 +56,8 @@
 | Time segments | Start/end timestamps | SQLite DB (encrypted), backup files (encrypted) | AES-256 encryption at rest |
 | Device encryption key | Android Keystore / DPAPI key reference | Platform secure key store | Never exposed to Dart code as plaintext; accessed via platform API |
 | Backup passphrase | User-entered string | Memory only (during export/import) | Never stored on disk; cleared after operation |
+
+---
 
 ## 5. Storage Model
 
@@ -62,6 +76,8 @@
 
 - Network use: None. The app has zero networking code, zero networking permissions, and zero networking dependencies.
 - Transport protections: Not applicable.
+
+---
 
 ## 6. Cryptography Design
 
@@ -87,6 +103,8 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 - The device-derived key is generated using the platform's cryptographically secure key generation facility.
 - The backup passphrase is never stored on disk — if forgotten, the backup is unrecoverable.
 
+---
+
 ## 7. Authentication And Access Control
 
 - App-lock strategy: None in v1.0 (the device's own screen lock is the primary access barrier).
@@ -94,6 +112,8 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 - Session-expiry rule: Not applicable.
 - Background lock rule: Not applicable.
 - Protected-route strategy: Day lock (past dates are read-only) enforced at the repository layer.
+
+---
 
 ## 8. Logging And Telemetry Policy
 
@@ -118,6 +138,8 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 - Redaction strategy: Never pass user content to any logging function. Log operation names and error categories only.
 - `print()` is banned via `avoid_print` lint rule.
 
+---
+
 ## 9. Platform Security Controls
 
 ### Android
@@ -137,6 +159,8 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 - No outbound network connections.
 - No WinRT network capabilities (`internetClient`, `internetClientServer`, `privateNetworkClientServer`) declared.
 - Database encryption key stored via Windows DPAPI, tied to the Windows user account.
+
+---
 
 ## 10. Permissions
 
@@ -178,6 +202,8 @@ No audio is recorded, buffered to disk, or kept. The recogniser hands back text,
 the text is parsed on the device, and the recogniser is destroyed as soon as the
 sentence ends or the sheet closes.
 
+---
+
 ## 11. Backup, Import, Export, And Recovery
 
 - Backup supported: Yes
@@ -198,6 +224,8 @@ sentence ends or the sheet closes.
 - Export verifies the re-keyed backup with `PRAGMA integrity_check` before finalising.
 - Round-trip backup/restore is tested as a critical integration test.
 
+---
+
 ## 12. Security Testing Strategy
 
 | Area | Test Type | Notes |
@@ -217,6 +245,8 @@ sentence ends or the sheet closes.
 - Import of a file with a future schema version (must reject).
 - Merged manifest audit for network permissions (must be zero matches).
 
+---
+
 ## 13. Incident Response Notes
 
 - Triage owner: Single developer (SreerajP).
@@ -225,7 +255,9 @@ sentence ends or the sheet closes.
   - If a transitive dependency introduces networking: remove the dependency, run dep audit, rebuild.
   - If encryption is found to be bypassable: patch the key derivation or SQLCipher configuration, release update.
 - User communication trigger: Not applicable (personal-use app, single user).
-- Patch release process reference: `docs/release_process.md`
+- Patch release process reference: [release_process.md](release_process.md)
+
+---
 
 ## 14. Open Risks And Future Hardening
 
@@ -237,6 +269,8 @@ sentence ends or the sheet closes.
   Hardening option: Add biometric/PIN app lock in a future version (v2.0).
 - Risk: SQLCipher library vulnerability.
   Hardening option: Monitor SQLCipher releases and update promptly. The `sqflite_sqlcipher` package tracks upstream SQLCipher versions.
+
+---
 
 ## 15. Security Review Checklist
 

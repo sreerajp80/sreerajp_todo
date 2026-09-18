@@ -436,6 +436,7 @@ class _MicrophoneButton extends StatelessWidget {
           height: 72,
           child: FloatingActionButton(
             heroTag: 'voice-sheet-mic',
+            tooltip: strings.tooltipVoiceRecord,
             onPressed: onPressed,
             backgroundColor: isListening
                 ? theme.colorScheme.error

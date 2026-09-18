@@ -1,7 +1,13 @@
-# SreerajP ToDo — Features & App Specification
+# Features & App Specification — SreerajP ToDo
+
+This document provides the complete, authoritative specification of all implemented features, user flows, and UX requirements in SreerajP ToDo. Read this before modifying or extending user-facing functionality.
+
+Read [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), and [architecture.md](architecture.md) first to understand project rules and architectural design.
 
 > Every item in this document is implemented in the current code base. Planned or
 > proposed ideas are kept out of this file on purpose.
+
+---
 
 ## 1. App Overview & Identity
 

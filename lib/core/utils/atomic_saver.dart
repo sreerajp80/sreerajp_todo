@@ -84,7 +84,9 @@ class AtomicSaver {
     if (await file.exists()) {
       try {
         await file.delete();
-      } catch (_) {}
+      } catch (_) {
+        // Safe to ignore: best-effort temporary file cleanup.
+      }
     }
   }
 }

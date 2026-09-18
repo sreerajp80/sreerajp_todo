@@ -137,7 +137,7 @@ class MasteryDeckScreen extends ConsumerWidget {
               ref.invalidate(allMasteryDecksProvider);
               ref.invalidate(masteryDeckItemsProvider);
             },
-            tooltip: 'Refresh',
+            tooltip: context.l10n.tooltipRefresh,
           ),
         ],
       ),
@@ -148,7 +148,9 @@ class MasteryDeckScreen extends ConsumerWidget {
       ),
       body: itemsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(child: Text('Error loading decks: $err')),
+        error: (err, _) => Center(
+          child: Text(context.l10n.decksLoadError(err.toString())),
+        ),
         data: (items) {
           if (items.isEmpty) {
             return Center(

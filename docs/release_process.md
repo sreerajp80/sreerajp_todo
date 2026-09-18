@@ -1,4 +1,10 @@
-# Release Process
+# Release Process — SreerajP ToDo
+
+This document defines the release runbook, signing configuration, build commands, versioning policy, and release checklist for SreerajP ToDo. Read this before building, signing, or distributing a release.
+
+Read [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) first. For shared reference standards, see [guidelines/release_process.md](guidelines/release_process.md) and [guidelines/flutter_build_flavors_guide.md](guidelines/flutter_build_flavors_guide.md).
+
+---
 
 ## 1. Release Scope
 
@@ -12,6 +18,8 @@
   - `Production App Extension`
   - `Sensitive Data Extension`
 
+---
+
 ## 2. Roles And Responsibilities
 
 | Role | Responsibility | Owner |
@@ -20,6 +28,8 @@
 | Engineering | Code freeze, fixes, validation | SreerajP |
 | QA | Test execution and regression sign-off | SreerajP |
 
+---
+
 ## 3. Versioning Policy
 
 - Version format: `MAJOR.MINOR.PATCH+BUILD`
@@ -27,6 +37,8 @@
 - Build-number increment rule: Manual for v1.0; auto-incremented in CI if set up later.
 - Git tag format: `vX.Y.Z`
 - Initial release: `1.0.0+1`
+
+---
 
 ## 4. Branch And Merge Policy
 
@@ -37,6 +49,8 @@
   - `flutter test` — all pass.
   - Offline dep audit — zero matches.
   - Manifest check — zero network permissions.
+
+---
 
 ## 5. Environment And Flavor Matrix
 
@@ -54,7 +68,9 @@ Two Android build flavors are defined: `dev` and `prod`.
 | `prod` + `release` | `flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi` | Shareable release APKs |
 | `prod` + `release` | `flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/` | Play Store submission |
 
-Windows builds do not use flavors. For detailed flavor usage, see `docs/flutter_build_flavors_guide.md`.
+Windows builds do not use flavors. For detailed flavor usage, see [flutter_build_flavors_guide.md](flutter_build_flavors_guide.md).
+
+---
 
 ## 6. Signing And Secret Handling
 
@@ -100,6 +116,8 @@ android {
     }
 }
 ```
+
+---
 
 ## 7. Release Checklist
 
@@ -152,6 +170,8 @@ Complete these items before every release.
 - [ ] `sqlite3.dll` bundled in Windows release folder.
 - [ ] Version name and build number are correct in built artifacts.
 
+---
+
 ## 8. Android Release Steps
 
 1. Pull the intended release commit on `main`.
@@ -177,11 +197,11 @@ Complete these items before every release.
    Select-String -Path "build\app\intermediates\merged_manifests\prodRelease\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
    # Expected: ZERO matches. If any found: HALT and investigate.
    ```
-7. Install the release APK on a physical device.
-8. **Disable Wi-Fi AND mobile data** (airplane mode).
-9. Launch the app and perform a full smoke test: create todo, start/stop timer, change status, view statistics, export/import backup.
-10. Verify the app functions normally with zero network access.
-11. Tag the release in git: `git tag v1.0.0`.
+8. Install the release APK on a physical device.
+9. **Disable Wi-Fi AND mobile data** (airplane mode).
+10. Launch the app and perform a full smoke test: create todo, start/stop timer, change status, view statistics, export/import backup.
+11. Verify the app functions normally with zero network access.
+12. Tag the release in git: `git tag v1.0.0`.
 
 ### Release Artifacts
 
@@ -189,6 +209,8 @@ Complete these items before every release.
 - `build/app/outputs/flutter-apk/app-arm64-v8a-prod-release.apk`
 - `build/app/outputs/flutter-apk/app-x86_64-prod-release.apk`
 - `build/app/outputs/bundle/prodRelease/app-prod-release.aab`
+
+---
 
 ## 9. Windows Release Steps
 
@@ -215,6 +237,8 @@ Complete these items before every release.
 
 - `build\windows\x64\runner\Release\` (entire folder)
 
+---
+
 ## 10. Distribution Channels
 
 | Channel | Artifact | Audience | Notes |
@@ -224,14 +248,18 @@ Complete these items before every release.
 
 No public store distribution in v1.0.
 
+---
+
 ## 11. Rollback And Hotfix Process
 
 - Rollback trigger: Critical bug discovered after release (data loss, encryption failure, crash on launch).
 - Rollback method: Revert to previous git tag, rebuild, and reinstall.
-- Hotfix branch naming: Not applicable (main-only workflow, single developer).
+- Hotfix strategy: Fix on main, tag, rebuild.
 - Verification after rollback or hotfix:
   - Full smoke test on both platforms with network disabled.
   - Offline dep audit and manifest check.
+
+---
 
 ## 12. Release Evidence
 
@@ -240,6 +268,8 @@ No public store distribution in v1.0.
 - Built artifact: Local build output directories.
 - Release tag: `git tag vX.Y.Z`
 
+---
+
 ## 13. Post-Release Checks
 
 - [ ] App launches and functions on both platforms with network disabled.
@@ -247,6 +277,3 @@ No public store distribution in v1.0.
 - [ ] No network-related errors or warnings observed.
 - [ ] Release tag created in git.
 - [ ] Follow-up tasks recorded for the next version.
-
-
-

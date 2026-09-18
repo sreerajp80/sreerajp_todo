@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/data/services/p2p_wifi_sync_service.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_payload.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_scope.dart';
@@ -87,8 +88,8 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
 
     if (hostIp.isEmpty || hostPortStr.isEmpty || pin.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter Host IP, Port, and Pairing PIN.'),
+        SnackBar(
+          content: Text(context.l10n.p2pEnterHostDetailsPrompt),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -98,8 +99,8 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
     final port = int.tryParse(hostPortStr);
     if (port == null || port <= 0 || port > 65535) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Invalid port number.'),
+        SnackBar(
+          content: Text(context.l10n.p2pInvalidPortPrompt),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -153,7 +154,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('P2P Sync Failed: $e'),
+            content: Text(context.l10n.p2pSyncFailedMessage(e.toString())),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
           ),
@@ -175,7 +176,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
             children: [
               Icon(Icons.sync_outlined, color: theme.colorScheme.primary),
               const SizedBox(width: 10),
-              const Text('Sync Summary'),
+              Text(context.l10n.p2pSyncSummaryTitle),
             ],
           ),
           content: SingleChildScrollView(
@@ -291,7 +292,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Local P2P Wi-Fi Sync'),
+        title: Text(context.l10n.p2pScreenTitle),
         bottom: TabBar(
           controller: _tabController,
           tabs: const [
@@ -429,13 +430,13 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                       const SizedBox(height: 8),
                       IconButton(
                         icon: const Icon(Icons.copy),
-                        tooltip: 'Copy Pairing Details',
+                        tooltip: context.l10n.tooltipCopyPairingDetails,
                         onPressed: () {
                           Clipboard.setData(ClipboardData(text: _qrPayload));
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text(
-                                'Pairing payload copied to clipboard!',
+                                context.l10n.p2pPayloadCopiedMessage,
                               ),
                             ),
                           );
@@ -595,7 +596,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                 ),
                 onPressed: _startPeerSync,
                 icon: const Icon(Icons.sync_outlined),
-                label: const Text('Connect & Sync'),
+                label: Text(context.l10n.p2pConnectAndSync),
               ),
           ],
         ),
@@ -612,31 +613,31 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
       child: Column(
         children: [
           CheckboxListTile(
-            title: const Text('Today\'s Tasks'),
-            subtitle: const Text('Sync today\'s active task list'),
+            title: Text(context.l10n.p2pOptionTodayTasks),
+            subtitle: Text(context.l10n.p2pOptionTodayTasksSubtitle),
             value: scope.todaysTasks,
             onChanged: (v) => onChanged(scope.copyWith(todaysTasks: v ?? true)),
           ),
           const Divider(height: 1),
           CheckboxListTile(
-            title: const Text('Time Segments'),
-            subtitle: const Text('Sync tracked time duration logs'),
+            title: Text(context.l10n.p2pOptionTimeSegments),
+            subtitle: Text(context.l10n.p2pOptionTimeSegmentsSubtitle),
             value: scope.timeSegments,
             onChanged: (v) =>
                 onChanged(scope.copyWith(timeSegments: v ?? true)),
           ),
           const Divider(height: 1),
           CheckboxListTile(
-            title: const Text('Recurrence Rules'),
-            subtitle: const Text('Sync iCalendar RRULE task schedules'),
+            title: Text(context.l10n.p2pOptionRecurrenceRules),
+            subtitle: Text(context.l10n.p2pOptionRecurrenceRulesSubtitle),
             value: scope.recurrenceRules,
             onChanged: (v) =>
                 onChanged(scope.copyWith(recurrenceRules: v ?? true)),
           ),
           const Divider(height: 1),
           CheckboxListTile(
-            title: const Text('Mastery Deck'),
-            subtitle: const Text('Sync Spaced Repetition mastery items'),
+            title: Text(context.l10n.p2pOptionMasteryDeck),
+            subtitle: Text(context.l10n.p2pOptionMasteryDeckSubtitle),
             value: scope.masteryDeck,
             onChanged: (v) => onChanged(scope.copyWith(masteryDeck: v ?? true)),
           ),

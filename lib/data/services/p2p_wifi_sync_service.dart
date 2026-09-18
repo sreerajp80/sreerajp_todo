@@ -69,7 +69,9 @@ class P2pWifiSyncService {
           }
         }
       }
-    } catch (_) {}
+    } catch (_) {
+      // Safe to ignore: network interface lookup failure falls back to localhost.
+    }
 
     if (ips.isEmpty) {
       ips.add('127.0.0.1');

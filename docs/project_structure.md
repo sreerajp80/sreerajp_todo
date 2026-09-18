@@ -23,7 +23,8 @@ sreerajp_todo/
 │   ├── data/                # Repository impls, DAOs, SQLite models, migrations, backups
 │   ├── domain/              # Domain entities, use-cases, repository interfaces
 │   ├── l10n/                # ARB localization sources and generated AppLocalizations
-│   └── presentation/        # Screens, widgets, dialogs, router configuration
+│   ├── presentation/        # Screens, widgets, dialogs, router configuration
+│   └── widgets/             # Reusable core widgets (made_with_love.dart)
 ├── plans/                   # Dated workflow implementation plans
 ├── test/                    # Unit, DAO, use-case, and widget tests
 ├── tool/                    # Database inspection & development scripts
@@ -38,12 +39,12 @@ sreerajp_todo/
 
 ## 2. Layer Responsibilities (`lib/`)
 
-- **`lib/core/`**: Utilities (`unicode_utils.dart`, `date_utils.dart`, `duration_utils.dart`), config (`app_config.dart`, `config_service.dart`), constants (`app_constants.dart`, `app_routes.dart`), app theme definitions, and custom exception classes. Pure Dart utilities and domain types; `config/` implements the standard About-screen config loader.
+- **`lib/core/`**: Utilities (`unicode_utils.dart`, `date_utils.dart`, `duration_utils.dart`), config (`app_config.dart`, `config_service.dart`), constants (`app_constants.dart`, `app_routes.dart`), app theme definitions, and custom exception classes. Pure Dart utilities and domain types; `config/` implements the standard About-screen config loader adhering to `docs/guidelines/guideline.md §1`.
 - **`lib/l10n/`**: Bilingual ARB localization files (`app_en.arb`, `app_ml.arb`) and generated `AppLocalizations` classes. Every user-visible text string in the app originates from this layer.
 - **`lib/domain/`**: Pure business logic containing entity definitions (`TodoEntity`, `TimeSegmentEntity`, `RecurringPatternEntity`), repository and service interface declarations (`OcrService`, `OcrEnhancer`, `ImageEditService` under `services/`), and orchestration use-cases (`PortTodo`, `RepairOrphanedSegments`, `DeleteRecurringTodos`).
 - **`lib/data/`**: Data access and persistence layer implementing domain interfaces. Includes DAOs (`TodoDao`, `TimeSegmentDao`, `RecurringPatternDao`), SQLite migration runners (`migration_v1.dart`, `migration_v2.dart`), encrypted database backup helpers (`backup_service.dart`), and the device-facing services under `services/` — including the OCR engines (`native_ocr_service.dart`, `mlkit_ocr_service.dart`) and the image enhancement isolate (`isolate_ocr_enhancer.dart`).
 - **`lib/application/`**: State management layer holding Riverpod providers (`providers.dart`) and StateNotifiers managing daily lists, search, statistics, backup, and settings state.
-- **`lib/presentation/`**: Flutter UI layer structured by screens (`daily_list`, `create_edit_todo`, `statistics`, `backup`, `search_results`, `copy_todos`, `recurring_todos`, `about`) with supporting `widgets/` subdirectories. Consumes `AppLocalizations` via `context.l10n`.
+- **`lib/presentation/`**: Flutter UI layer structured by screens (`daily_list`, `create_edit_todo`, `statistics`, `backup`, `search_results`, `copy_todos`, `recurring_todos`, `about`) with supporting `widgets/` subdirectories. Consumes `AppLocalizations` via `context.l10n`. Includes shared widgets such as `MadeWithLove` adhering to `docs/guidelines/guideline.md §1.7`.
 
 ---
 
@@ -56,8 +57,10 @@ sreerajp_todo/
 
 ## 4. Test Directory Layout
 
-- **`test/core/`**: Unit tests for date, duration, and Unicode utilities.
-- **`test/data/`**: DAO unit tests executed against in-memory SQLite database instances.
+- **`test/application/`**: Unit tests for Riverpod StateNotifiers (appearance, focus, locale, notifications, ritual, settings).
+- **`test/core/`**: Unit tests for date, duration, Unicode utilities, and About config models.
+- **`test/data/`**: DAO and service unit tests executed against in-memory SQLite database instances.
 - **`test/domain/`**: Use-case unit tests covering domain rules (Day lock, status lock, duplicate titles).
+- **`test/helpers/`**: Test harness utilities, in-memory database factories, and mock providers.
 - **`test/presentation/`**: Widget tests mocking repository interfaces to test UI interactions.
 - **`integration_test/`**: End-to-end integration tests (`app_test.dart`).

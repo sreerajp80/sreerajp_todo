@@ -5,8 +5,10 @@ import 'package:sreerajp_todo/core/config/app_config.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/build_date.g.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/about/widgets/about_info_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/made_with_love.dart';
 
 class AboutScreen extends ConsumerWidget {
   const AboutScreen({super.key});
@@ -14,12 +16,19 @@ class AboutScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final lang = Localizations.localeOf(context).languageCode;
     final configAsync = ref.watch(appConfigProvider);
     final config = configAsync.value ?? AppConfig.fallback;
 
+    final resolvedAppName = config.appName.resolve(lang);
+    final resolvedDescription = config.description.resolve(lang);
+
     final detailEntries = config.details.entries
-        .where((e) => e.key.trim().isNotEmpty && e.value.trim().isNotEmpty)
+        .where(
+          (e) =>
+              e.key.trim().isNotEmpty &&
+              e.value.resolve(lang).trim().isNotEmpty,
+        )
         .toList();
 
     return Scaffold(
@@ -29,11 +38,12 @@ class AboutScreen extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
           children: [
             AppSectionCard(
-              title: config.appName.isNotEmpty ? config.appName : kAppName,
+              title:
+                  resolvedAppName.isNotEmpty ? resolvedAppName : kAppName,
               subtitle: context.l10n.aboutHeadline,
               child: Text(
-                config.description.isNotEmpty
-                    ? config.description
+                resolvedDescription.isNotEmpty
+                    ? resolvedDescription
                     : context.l10n.aboutSummary,
                 style: theme.textTheme.bodyLarge,
               ),
@@ -65,17 +75,10 @@ class AboutScreen extends ConsumerWidget {
                     const SizedBox(height: 12),
                     _AboutDetailRow(
                       icon: _iconForDetailKey(entry.key),
-                      label: entry.key,
-                      value: entry.value,
+                      label: _aboutDetailLabel(context.l10n, entry.key),
+                      value: entry.value.resolve(lang),
                     ),
                   ],
-                  const SizedBox(height: 16),
-                  Text(
-                    context.l10n.aboutMadeWithLoveIn,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -109,6 +112,7 @@ class AboutScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            const MadeWithLove(),
           ],
         ),
       ),
@@ -118,10 +122,28 @@ class AboutScreen extends ConsumerWidget {
   IconData _iconForDetailKey(String key) {
     final k = key.toLowerCase();
     if (k.contains('author')) return Icons.person_outline_rounded;
+    if (k.contains('email')) return Icons.email_outlined;
     if (k.contains('ai')) return Icons.auto_awesome_outlined;
     if (k.contains('ide')) return Icons.code_rounded;
     if (k.contains('license')) return Icons.description_outlined;
     return Icons.label_outline_rounded;
+  }
+
+  String _aboutDetailLabel(AppLocalizations l10n, String key) {
+    switch (key) {
+      case 'author':
+        return l10n.aboutDetailAuthor;
+      case 'email':
+        return l10n.aboutDetailEmail;
+      case 'license':
+        return l10n.aboutDetailLicense;
+      case 'aiUsed':
+        return l10n.aboutDetailAiUsed;
+      case 'ideUsed':
+        return l10n.aboutDetailIdeUsed;
+      default:
+        return key;
+    }
   }
 }
 

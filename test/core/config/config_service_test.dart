@@ -13,18 +13,18 @@ void main() {
         "description": "Mock Description",
         "version": "1.0.0",
         "build": "10",
-        "details": {"Key": "Value"}
+        "details": {"key": "Value"}
       }
       ''';
 
         final service = ConfigService(loadAsset: (_) async => mockJson);
         final config = await service.load();
 
-        expect(config.appName, equals('Mock App'));
-        expect(config.description, equals('Mock Description'));
+        expect(config.appName.resolve('en'), equals('Mock App'));
+        expect(config.description.resolve('en'), equals('Mock Description'));
         expect(config.version, equals('1.0.0'));
         expect(config.build, equals('10'));
-        expect(config.details['Key'], equals('Value'));
+        expect(config.details['key']?.resolve('en'), equals('Value'));
       },
     );
 
@@ -36,7 +36,10 @@ void main() {
         );
         final config = await service.load();
 
-        expect(config.appName, equals(AppConfig.fallback.appName));
+        expect(
+          config.appName.resolve('en'),
+          equals(AppConfig.fallback.appName.resolve('en')),
+        );
         expect(config.version, equals(AppConfig.fallback.version));
       },
     );
@@ -47,8 +50,32 @@ void main() {
       );
       final config = await service.load();
 
-      expect(config.appName, equals(AppConfig.fallback.appName));
+      expect(
+        config.appName.resolve('en'),
+        equals(AppConfig.fallback.appName.resolve('en')),
+      );
       expect(config.version, equals(AppConfig.fallback.version));
+    });
+
+    test('loadAndVerify returns loaded config and handles version check', () async {
+      const mockJson = '''
+      {
+        "appName": "Mock App",
+        "description": "Mock Description",
+        "version": "1.0.0",
+        "build": "10",
+        "details": {}
+      }
+      ''';
+
+      final service = ConfigService(loadAsset: (_) async => mockJson);
+      final config = await service.loadAndVerify(
+        packageVersion: '1.0.0',
+        packageBuild: '10',
+      );
+
+      expect(config.version, equals('1.0.0'));
+      expect(config.build, equals('10'));
     });
   });
 }

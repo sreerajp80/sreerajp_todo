@@ -71,10 +71,10 @@ class ResponsiveScaffold extends StatelessWidget {
                                 selectedIcon: const Icon(Icons.today),
                                 label: Text(context.l10n.dailyList),
                               ),
-                              const NavigationRailDestination(
-                                icon: Icon(Icons.psychology_outlined),
-                                selectedIcon: Icon(Icons.psychology),
-                                label: Text('Mastery'),
+                              NavigationRailDestination(
+                                icon: const Icon(Icons.psychology_outlined),
+                                selectedIcon: const Icon(Icons.psychology),
+                                label: Text(context.l10n.navMastery),
                               ),
                               NavigationRailDestination(
                                 icon: const Icon(Icons.bar_chart_outlined),
@@ -141,10 +141,10 @@ class ResponsiveScaffold extends StatelessWidget {
                               selectedIcon: const Icon(Icons.today),
                               label: context.l10n.dailyList,
                             ),
-                            const NavigationDestination(
-                              icon: Icon(Icons.psychology_outlined),
-                              selectedIcon: Icon(Icons.psychology),
-                              label: 'Mastery',
+                            NavigationDestination(
+                              icon: const Icon(Icons.psychology_outlined),
+                              selectedIcon: const Icon(Icons.psychology),
+                              label: context.l10n.navMastery,
                             ),
                             NavigationDestination(
                               icon: const Icon(Icons.bar_chart_outlined),

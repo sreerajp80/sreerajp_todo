@@ -1,4 +1,10 @@
-# Architecture
+# Architecture — SreerajP ToDo
+
+This document describes the technical architecture, layer boundaries, state management, and data flow for SreerajP ToDo. Read this before adding new features, services, or modifying system structure.
+
+Read [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) first before making architectural changes. For baseline standards, see [guidelines/architecture.md](guidelines/architecture.md) and [guidelines/flutter_project_engineering_standard.md](guidelines/flutter_project_engineering_standard.md).
+
+---
 
 ## 1. Scope
 
@@ -9,6 +15,8 @@
   - `Production App Extension`
   - `Sensitive Data Extension`
 - Platforms: `Android`, `Windows` (v1.0); `iOS`, `Linux`, `macOS` (future — architecture must not block these)
+
+---
 
 ## 2. Goals And Non-Goals
 
@@ -28,9 +36,13 @@
 - Push notifications or reminders (deferred to a future version).
 - User authentication or app lock (no login, no biometric gate in v1.0).
 
+---
+
 ## 3. Architecture Summary
 
 The app uses a custom 5-layer architecture (Presentation / Application / Domain / Data / Core) with Riverpod for state management. Screens delegate to StateNotifiers or FutureProviders, which route through use-case classes for multi-step business operations or directly through repository implementations for simple CRUD. All persistence is isolated behind a DAO layer backed by an encrypted SQLite database via `sqflite_sqlcipher`. Navigation is declarative via `go_router`.
+
+---
 
 ## 4. Repository Structure
 
@@ -86,6 +98,8 @@ lib/
 | `lib/application/` | Riverpod providers and StateNotifiers |
 | `lib/presentation/` | Flutter widgets and screens — consumes only providers, never DAOs |
 
+---
+
 ## 5. State Management
 
 - Primary pattern: `Riverpod` (`flutter_riverpod`)
@@ -133,7 +147,6 @@ The settings are read through callbacks (`bool Function()`, `int Function()`) ra
 captured values, so `StartTimeSegment`, `RepairOrphanedSegments` and `TimeTrackingNotifier`
 pick up a change on their very next call without being rebuilt.
 
-
 ### Task Defaults
 
 The task defaults are owned by `TaskDefaultsNotifier`
@@ -154,6 +167,7 @@ and every default reproduces the behaviour the app had before the setting existe
 suggestions off refreshes the field without a restart. A limit of zero means the query is
 never run at all.
 
+---
 
 ## 6. Data Flow
 
@@ -180,6 +194,8 @@ Use-cases exist only for multi-step business orchestrations:
 - Notifiers must not know: DAO implementation details (they call repositories).
 - Repositories abstract: SQLite queries, day lock enforcement, NFC normalisation.
 
+---
+
 ## 7. Domain Model
 
 ### Core Models Or Entities
@@ -198,6 +214,8 @@ Use-cases exist only for multi-step business orchestrations:
 - Database models: Yes (freezed models in `lib/data/models/` mirror DB tables)
 - Separate domain entities from transport models: Yes — domain entities in `lib/domain/entities/`, DB models in `lib/data/models/`
 
+---
+
 ## 8. Dependency Management And Injection
 
 - DI approach: Riverpod provider tree (root `ProviderScope` in `main.dart`)
@@ -209,6 +227,8 @@ Use-cases exist only for multi-step business orchestrations:
   - `ProviderScope` overrides in tests to inject mock repositories.
   - `mocktail` for creating mock/fake implementations.
   - DAOs tested against in-memory SQLite databases.
+
+---
 
 ## 9. Navigation
 
@@ -247,6 +267,8 @@ Use-cases exist only for multi-step business orchestrations:
 | `/settings/task-defaults/actions` | `DefaultsTaskActionsScreen` | Confirmations and carry-over |
 | `/settings/task-defaults/autocomplete` | `DefaultsAutocompleteScreen` | Suggestions on/off and how many |
 
+---
+
 ## 10. Persistence And External Systems
 
 ### Local Storage
@@ -274,15 +296,20 @@ Use-cases exist only for multi-step business orchestrations:
 - `image_cropper`: Platform channel to the native uCrop crop-and-rotate editor, used before recognition
 - `in.sreerajp.todo/speech` and `in.sreerajp.todo/speech_events`: Own method and event channel pair over Android `SpeechRecognizer`, for the voice task sheet (Android only). The host always asks for the on-device engine and refuses to listen when it cannot, so the offline guarantee holds; see `docs/security.md` section 10. Written as a channel rather than a package for the same reason as the two above
 
+---
+
 ## 11. Environment And Build Model
 
-- Flavors used: None (v1.0 — single configuration)
-- Runtime config mechanism: None required (no environment-specific config)
+- Flavors used: `dev` and `prod` for Android builds (configured in `android/app/build.gradle.kts`); Windows builds do not use flavors.
+- Runtime config mechanism: `assets/config/app_config.json` loaded via `ConfigService`.
 - Build outputs supported:
-  - Debug APK (`flutter build apk --debug`)
-  - Release APK (`flutter build apk --release`)
-  - Release App Bundle (`flutter build appbundle --release`)
+  - Development run (`flutter run --flavor dev`)
+  - Development debug APK (`flutter build apk --flavor dev --debug`)
+  - Production release APK (`flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi`)
+  - Production release App Bundle (`flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/`)
   - Windows portable folder (`flutter build windows --release`)
+
+---
 
 ## 12. UI System
 
@@ -293,6 +320,8 @@ Use-cases exist only for multi-step business orchestrations:
   - All interactive elements have `Semantics` labels.
   - Minimum tap target size 48 x 48 dp.
   - Status colours have contrast ratio >= 4.5:1 in both light and dark themes.
+
+---
 
 ## 13. Testing Strategy
 
@@ -336,6 +365,8 @@ test/
 - Backup export/import round-trip with passphrase re-encryption
 - Unicode NFC normalisation (composed vs decomposed equivalence)
 
+---
+
 ## 14. Operational Constraints
 
 - Minimum supported OS versions: Android 5.0 (API 21), Windows 10
@@ -348,6 +379,8 @@ test/
 - Regulatory or store constraints: None (personal use, not published to app stores in v1.0)
 - Team constraints: Single developer, all phases sequential
 
+---
+
 ## 15. Decisions And Tradeoffs
 
 | Decision | Chosen Option | Why | Tradeoff |
@@ -358,6 +391,8 @@ test/
 | Dual-key encryption | Device key (live DB) + user passphrase (backups) | Transparent daily use + portable backups | Forgotten passphrase = unrecoverable backup |
 | No in-memory autocomplete cache | Direct DB query per keystroke (debounced 300 ms) | Always fresh, no stale cache logic, SQLite index is fast enough | Slightly more DB queries; acceptable given < 1 ms query time with index |
 | Layer-first over feature-first | Single domain, shared entities across screens | Less indirection for a small app | May need refactoring if the app grows to multiple domains |
+
+---
 
 ## 16. Known Risks And Follow-Ups
 
@@ -374,11 +409,17 @@ test/
 - Risk: Future package upgrade silently introduces a transitive networking dependency.
   Mitigation: Pre-commit hook runs offline dep audit; `INTERNET` permission absence provides OS-level backstop.
 
+---
+
 ## 17. Related Documents
 
-- `README.md`
-- `CLAUDE.md`
-- `flutter_todo_app_plan.md`
-- `docs/flutter_project_engineering_standard.md`
-- `docs/release_process.md`
-- `docs/security.md`
+- [README.md](../README.md)
+- [CLAUDE.md](../CLAUDE.md)
+- [AGENTS.md](../AGENTS.md)
+- [flutter_project_engineering_standard.md](flutter_project_engineering_standard.md)
+- [release_process.md](release_process.md)
+- [security.md](security.md)
+- [workflow_rules.md](workflow_rules.md)
+- [dependencies.md](dependencies.md)
+- [project_structure.md](project_structure.md)
+- [features.md](features.md)

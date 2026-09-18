@@ -237,27 +237,29 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
               _showAirQrDialog(todos);
             },
             icon: const Icon(Icons.qr_code_2),
-            tooltip: 'AirQR Share Stream',
+            tooltip: context.l10n.tooltipAirQrShare,
           ),
           IconButton(
             onPressed: () async {
+              final l10n = context.l10n;
               final result = await context.push<Map<String, dynamic>>(
                 AppRoutes.airQrScan,
               );
-              if (result != null && mounted) {
+              if (!mounted) return;
+              if (result != null) {
                 final payload = result['payload'] as AirQrParsedPayload?;
                 final decision = result['decision'] as AirQrMergeDecision?;
                 if (payload != null &&
                     decision != null &&
                     decision != AirQrMergeDecision.cancel) {
                   _showSnackBar(
-                    'AirQR backup payload received (${payload.todos.length} tasks).',
+                    l10n.airQrBackupReceived(payload.todos.length),
                   );
                 }
               }
             },
             icon: const Icon(Icons.qr_code_scanner),
-            tooltip: 'AirQR Scan Camera',
+            tooltip: context.l10n.tooltipAirQrScan,
           ),
           IconButton(
             onPressed: _isBusy
@@ -440,6 +442,7 @@ class _PassphraseDialogState extends State<_PassphraseDialog> {
                 labelText: context.l10n.backupPassphraseLabel,
                 errorText: _errorText,
                 suffixIcon: IconButton(
+                  tooltip: context.l10n.tooltipTogglePassword,
                   onPressed: () {
                     setState(() => _obscureText = !_obscureText);
                   },

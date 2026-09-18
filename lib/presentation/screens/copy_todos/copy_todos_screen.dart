@@ -107,6 +107,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
         title: Text(context.l10n.copyTodos),
         leading: IconButton(
           icon: const Icon(Icons.close),
+          tooltip: context.l10n.tooltipClose,
           onPressed: () => context.pop(),
         ),
       ),
@@ -303,6 +304,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                 title: Text(formatDateFromIso(_targetDate!)),
                 trailing: IconButton(
                   icon: const Icon(Icons.edit),
+                  tooltip: context.l10n.edit,
                   onPressed: _pickDate,
                 ),
               ),
@@ -426,6 +428,7 @@ class _CopyTodosScreenState extends ConsumerState<CopyTodosScreen> {
                     ? null
                     : IconButton(
                         icon: const Icon(Icons.remove_circle_outline),
+                        tooltip: context.l10n.tooltipRemoveTask,
                         onPressed: () {
                           setState(() {
                             _selectedIds.remove(todo.id);

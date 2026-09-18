@@ -1,4 +1,10 @@
-# SreerajP ToDo — Unique Features & Architectural Improvements Specification
+# Unique Features & Architectural Improvements Specification — SreerajP ToDo
+
+This document provides an architectural analysis and feature specification for advanced productivity capabilities and offline data management engines in SreerajP ToDo. Read this before planning or implementing advanced features, offline sync, or data import/export improvements.
+
+Read [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), and [architecture.md](architecture.md) first to review baseline architecture and hard rules.
+
+---
 
 ## 1. Executive Summary & Ecosystem Context
 
@@ -6,7 +12,7 @@
 
 This document presents an exhaustive architectural analysis of **truly unique productivity features** as well as **offline-first data management, sync, backup, restore, and transfer engines** for `SreerajP ToDo`. 
 
-Following a comprehensive audit of all 18 applications in the user's suite documented in [myapps.md](file:///L:/Android/MyFlutterApps/myapps.md), this specification details how proven code assets, algorithms, crypto pipelines, procedural audio engines, and synchronization protocols across the 18 apps are adapted for `SreerajP ToDo` while strictly maintaining a 100% offline operational guarantee.
+Following a comprehensive audit of all 18 applications across the personal Flutter app ecosystem, this specification details how proven code assets, algorithms, crypto pipelines, procedural audio engines, and synchronization protocols across the 18 apps are adapted for `SreerajP ToDo` while strictly maintaining a 100% offline operational guarantee.
 
 All proposed features and enhancements strictly observe the core architectural invariants of `SreerajP ToDo`:
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/carry_over_sheet.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/pending_todos_alert_sheet.dart';
@@ -123,11 +124,21 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
           lookBackDays: defaults.carryOverLookBackDays,
         );
         if (candidates.isNotEmpty) {
-          final ordered = candidates.map((t) => t.id).toList();
-          await ref.read(copyTodosProvider)(ordered, today);
-          ref.invalidate(dailyTodoProvider(today));
-          ref.invalidate(pendingAlertPayloadProvider);
-          ref.invalidate(statisticsProvider);
+          final moveTodo = ref.read(moveTodoProvider);
+          var movedAny = false;
+          for (final t in candidates) {
+            try {
+              await moveTodo(t.id, today);
+              movedAny = true;
+            } on DuplicateTitleException {
+              // Already exists on today; skip
+            }
+          }
+          if (movedAny) {
+            ref.invalidate(dailyTodoProvider(today));
+            ref.invalidate(pendingAlertPayloadProvider);
+            ref.invalidate(statisticsProvider);
+          }
         }
       } catch (e) {
         debugPrint('PendingAlertWatcher: auto carry-over failed ($e)');

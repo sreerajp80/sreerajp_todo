@@ -104,6 +104,12 @@ android {
         versionName = flutter.versionName
     }
 
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
+
     flavorDimensions += "environment"
 
     productFlavors {

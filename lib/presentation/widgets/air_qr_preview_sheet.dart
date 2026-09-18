@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 enum AirQrMergeDecision { importAll, skipDuplicates, cancel }
 
@@ -26,6 +27,7 @@ class AirQrPreviewSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     return Padding(
       padding: EdgeInsets.only(
@@ -83,7 +85,7 @@ class AirQrPreviewSheet extends StatelessWidget {
                       todo.title,
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
-                    subtitle: Text('Date: ${todo.date}'),
+                    subtitle: Text(l10n.airQrDatePrefix(todo.date)),
                   );
                 },
               ),
@@ -109,7 +111,7 @@ class AirQrPreviewSheet extends StatelessWidget {
               ),
             ),
           ] else ...[
-            const Text('Unrecognized AirQR payload format.'),
+            Text(l10n.airQrPayloadFormatError),
           ],
           const SizedBox(height: 24),
           Row(
@@ -118,20 +120,20 @@ class AirQrPreviewSheet extends StatelessWidget {
               TextButton(
                 onPressed: () =>
                     Navigator.of(context).pop(AirQrMergeDecision.cancel),
-                child: const Text('Cancel'),
+                child: Text(l10n.cancel),
               ),
               const SizedBox(width: 8),
               OutlinedButton(
                 onPressed: () => Navigator.of(
                   context,
                 ).pop(AirQrMergeDecision.skipDuplicates),
-                child: const Text('Skip Duplicates'),
+                child: Text(l10n.airQrSkipDuplicates),
               ),
               const SizedBox(width: 8),
               FilledButton(
                 onPressed: () =>
                     Navigator.of(context).pop(AirQrMergeDecision.importAll),
-                child: const Text('Import All'),
+                child: Text(l10n.airQrImportAll),
               ),
             ],
           ),

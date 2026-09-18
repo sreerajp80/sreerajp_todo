@@ -265,7 +265,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     try {
       await controller.setZoomLevel(clamped);
       setState(() => _currentZoom = clamped);
-    } catch (_) {}
+    } catch (_) {
+      // Safe to ignore: camera hardware may not support requested zoom level.
+    }
   }
 
   Future<void> _setExposure(double value) async {
@@ -276,7 +278,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     try {
       await controller.setExposureOffset(clamped);
       setState(() => _currentExposure = clamped);
-    } catch (_) {}
+    } catch (_) {
+      // Safe to ignore: camera hardware may not support exposure compensation.
+    }
   }
 
   Future<void> _resetExposure() async {
@@ -376,7 +380,7 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to capture image: $e'),
+            content: Text(context.l10n.ocrImageCaptureFailed(e.toString())),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -411,7 +415,7 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to pick image: $e'),
+            content: Text(context.l10n.ocrImagePickFailed(e.toString())),
             behavior: SnackBarBehavior.floating,
           ),
         );

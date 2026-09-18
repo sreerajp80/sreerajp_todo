@@ -8,7 +8,7 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 
 ---
 
-## Phase 1: Foundation & Core Utilities
+## 1. Phase 1: Foundation & Core Utilities
 
 - Set up Flutter project with pure offline package dependencies.
 - Implement core utilities: NFC Unicode normalization (`unicodeUtils`), date formatting (`dateUtils`), duration formatting (`durationUtils`), and custom exception classes.
@@ -16,7 +16,7 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 
 ---
 
-## Phase 2: Database Layer & Data Access
+## 2. Phase 2: Database Layer & Data Access
 
 - Implement SQLite database service (`DatabaseService`) with `sqflite_sqlcipher` (mobile) and `sqflite_common_ffi` (desktop).
 - Configure PRAGMAs: `PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;`.
@@ -25,7 +25,7 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 
 ---
 
-## Phase 3: Domain Entities & Use Cases
+## 3. Phase 3: Domain Entities & Use Cases
 
 - Define immutable domain entities (`TodoEntity`, `TimeSegmentEntity`, `RecurringPatternEntity`) using `@freezed`.
 - Implement repository interfaces and concrete data repository implementations (`TodoRepositoryImpl`, `TimeSegmentRepositoryImpl`, `RecurringPatternRepositoryImpl`).
@@ -33,7 +33,7 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 
 ---
 
-## Phase 4: Application State Management & Routing
+## 4. Phase 4: Application State Management & Routing
 
 - Implement declarative routing via `go_router` in `lib/app.dart` with custom page transitions.
 - Configure Riverpod providers and StateNotifiers in `lib/application/providers.dart`.
@@ -41,7 +41,7 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 
 ---
 
-## Phase 5: Presentation & User Interface
+## 5. Phase 5: Presentation & User Interface
 
 - Build custom Light and Dark theme definitions (`AppTheme`).
 - Implement responsive layout scaffold adapting `NavigationBar` (mobile `<600dp`) and `NavigationRail` (desktop/tablet `>=600dp`).
@@ -50,14 +50,14 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 
 ---
 
-## Phase 6: Backup & Encryption Engine
+## 6. Phase 6: Backup & Encryption Engine
 
 - Implement AES-256 ZIP encrypted local backup export and import service (`BackupService`).
 - Provide user passphrase protection, SHA-256 key derivation, and validation checks (`BackupVersionTooNewException`, `BackupCorruptedException`).
 
 ---
 
-## Phase 7: Recurrence Engine & Advanced Features
+## 7. Phase 7: Recurrence Engine & Advanced Features
 
 - Integrate RFC 5545 iCalendar recurrence engine using `rrule` package.
 - Implement automated daily recurring todo generation and series deletion.
@@ -65,7 +65,7 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 
 ---
 
-## Phase 8: Hardening & Testing
+## 8. Phase 8: Hardening & Testing
 
 - Implement comprehensive unit, DAO, use-case, widget, and integration tests (`integration_test/app_test.dart`).
 - Validate complete offline compliance (zero network permissions, zero network dependencies).

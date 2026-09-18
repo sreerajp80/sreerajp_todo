@@ -130,7 +130,9 @@ class _AirQrScanScreenState extends State<AirQrScanScreen> {
     if (!mounted) return;
     try {
       await _controller.start();
-    } catch (_) {}
+    } catch (_) {
+      // Safe to ignore: scanner controller may already be running or disposed.
+    }
     _handling = false;
     setState(() {
       _airProgress = const AirQrProgress(status: AirQrStatus.idle);

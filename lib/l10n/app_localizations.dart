@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
 import 'app_localizations_ml.dart';
+import 'app_localizations_sa.dart';
 
 // ignore_for_file: type=lint
 
@@ -96,6 +97,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('ml'),
+    Locale('sa'),
   ];
 
   /// Application name. Proper noun, not translated.
@@ -1472,6 +1474,12 @@ abstract class AppLocalizations {
   /// **'Malayalam'**
   String get settingsLanguageMalayalam;
 
+  /// Option label for Sanskrit language.
+  ///
+  /// In en, this message translates to:
+  /// **'Sanskrit'**
+  String get settingsLanguageSanskrit;
+
   /// Label for keyboard shortcuts settings.
   ///
   /// In en, this message translates to:
@@ -2323,6 +2331,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Made with ❤ in India'**
   String get aboutMadeWithLoveIn;
+
+  /// About-screen signature badge. {heart} is a red heart glyph.
+  ///
+  /// In en, this message translates to:
+  /// **'Made with {heart} from India'**
+  String madeWithLove(String heart);
+
+  /// Screen-reader text for the About badge
+  ///
+  /// In en, this message translates to:
+  /// **'Made with love from India'**
+  String get madeWithLoveA11y;
+
+  /// Label for author detail row on About screen
+  ///
+  /// In en, this message translates to:
+  /// **'Author'**
+  String get aboutDetailAuthor;
+
+  /// Label for email detail row on About screen
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get aboutDetailEmail;
+
+  /// Label for license detail row on About screen
+  ///
+  /// In en, this message translates to:
+  /// **'License'**
+  String get aboutDetailLicense;
+
+  /// Label for AI used detail row on About screen
+  ///
+  /// In en, this message translates to:
+  /// **'AI used'**
+  String get aboutDetailAiUsed;
+
+  /// Label for IDE used detail row on About screen
+  ///
+  /// In en, this message translates to:
+  /// **'IDE used'**
+  String get aboutDetailIdeUsed;
 
   /// Tab label for daily aggregated overview on statistics screen.
   ///
@@ -6751,6 +6801,324 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'English'**
   String get ocrLanguageEnglish;
+
+  /// Tooltip for close button
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get tooltipClose;
+
+  /// Tooltip for refresh button
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get tooltipRefresh;
+
+  /// Tooltip for clear text field button
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get tooltipClear;
+
+  /// Tooltip for password visibility toggle
+  ///
+  /// In en, this message translates to:
+  /// **'Show or hide password'**
+  String get tooltipTogglePassword;
+
+  /// Tooltip for remove task button
+  ///
+  /// In en, this message translates to:
+  /// **'Remove task'**
+  String get tooltipRemoveTask;
+
+  /// Tooltip for remove sub-task button
+  ///
+  /// In en, this message translates to:
+  /// **'Remove sub-task'**
+  String get tooltipRemoveSubTask;
+
+  /// Tooltip for toggle status button
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle status'**
+  String get tooltipToggleStatus;
+
+  /// Tooltip for popup menu button
+  ///
+  /// In en, this message translates to:
+  /// **'More options'**
+  String get tooltipMoreOptions;
+
+  /// Tooltip for microphone recording button
+  ///
+  /// In en, this message translates to:
+  /// **'Voice record'**
+  String get tooltipVoiceRecord;
+
+  /// Tooltip for AirQR stream share button
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR Share Stream'**
+  String get tooltipAirQrShare;
+
+  /// Tooltip for AirQR camera scan button
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR Scan Camera'**
+  String get tooltipAirQrScan;
+
+  /// Tooltip for copy pairing details button
+  ///
+  /// In en, this message translates to:
+  /// **'Copy pairing details'**
+  String get tooltipCopyPairingDetails;
+
+  /// Snackbar shown when AirQR backup payload is received
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR backup payload received ({count} tasks).'**
+  String airQrBackupReceived(int count);
+
+  /// Snackbar shown when AirQR import is completed
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR sync complete: Imported {count} tasks.'**
+  String airQrSyncComplete(int count);
+
+  /// Bottom navigation label for Mastery Deck
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery'**
+  String get navMastery;
+
+  /// Snackbar shown when export succeeds
+  ///
+  /// In en, this message translates to:
+  /// **'Export saved to {fileName}'**
+  String dataHandoffExportSuccess(String fileName);
+
+  /// Snackbar shown when export fails
+  ///
+  /// In en, this message translates to:
+  /// **'Export failed: {error}'**
+  String dataHandoffExportFailed(String error);
+
+  /// Option to save markdown file
+  ///
+  /// In en, this message translates to:
+  /// **'Save Markdown File (.md)'**
+  String get dataHandoffSaveMarkdown;
+
+  /// Snackbar shown when markdown is saved
+  ///
+  /// In en, this message translates to:
+  /// **'Saved to {fileName}'**
+  String dataHandoffSavedMarkdown(String fileName);
+
+  /// Option to copy markdown to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Copy Markdown to Clipboard'**
+  String get dataHandoffCopyMarkdown;
+
+  /// Snackbar shown when markdown is copied to clipboard
+  ///
+  /// In en, this message translates to:
+  /// **'Markdown copied to clipboard.'**
+  String get dataHandoffCopiedMarkdown;
+
+  /// Error message when attempting to import onto past date
+  ///
+  /// In en, this message translates to:
+  /// **'Target date is past (day-locked). Select today or a future date to import.'**
+  String get dataHandoffDayLockedError;
+
+  /// Snackbar shown when handoff import succeeds
+  ///
+  /// In en, this message translates to:
+  /// **'Successfully imported {count} tasks onto {date}.'**
+  String dataHandoffImportSuccess(int count, String date);
+
+  /// Snackbar shown when handoff import fails
+  ///
+  /// In en, this message translates to:
+  /// **'Import failed: {error}'**
+  String dataHandoffImportFailed(String error);
+
+  /// Snackbar shown when pasted markdown tasks are imported
+  ///
+  /// In en, this message translates to:
+  /// **'Imported {count} tasks onto {date}.'**
+  String dataHandoffImportedTasks(int count, String date);
+
+  /// Snackbar shown when image capture fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to capture image: {error}'**
+  String ocrImageCaptureFailed(String error);
+
+  /// Snackbar shown when image picker fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to pick image: {error}'**
+  String ocrImagePickFailed(String error);
+
+  /// Validation prompt when host details are missing
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter Host IP, Port, and Pairing PIN.'**
+  String get p2pEnterHostDetailsPrompt;
+
+  /// Validation prompt when port is invalid
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid port number.'**
+  String get p2pInvalidPortPrompt;
+
+  /// Snackbar shown when P2P sync fails
+  ///
+  /// In en, this message translates to:
+  /// **'P2P Sync Failed: {error}'**
+  String p2pSyncFailedMessage(String error);
+
+  /// Snackbar shown when pairing payload is copied
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing payload copied to clipboard!'**
+  String get p2pPayloadCopiedMessage;
+
+  /// Error shown when AirQR payload format is unrecognized
+  ///
+  /// In en, this message translates to:
+  /// **'Unrecognized AirQR payload format.'**
+  String get airQrPayloadFormatError;
+
+  /// Button to skip duplicates on AirQR import
+  ///
+  /// In en, this message translates to:
+  /// **'Skip Duplicates'**
+  String get airQrSkipDuplicates;
+
+  /// Button to import all tasks on AirQR import
+  ///
+  /// In en, this message translates to:
+  /// **'Import All'**
+  String get airQrImportAll;
+
+  /// Error shown when AirQR stream payload generation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Could not generate AirQR stream payload.'**
+  String get airQrStreamGenError;
+
+  /// Chip label indicating target day is locked
+  ///
+  /// In en, this message translates to:
+  /// **'Day Locked'**
+  String get dayLockedBadge;
+
+  /// Dialog title for P2P sync summary
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Summary'**
+  String get p2pSyncSummaryTitle;
+
+  /// Screen title for P2P Wi-Fi sync
+  ///
+  /// In en, this message translates to:
+  /// **'Local P2P Wi-Fi Sync'**
+  String get p2pScreenTitle;
+
+  /// Button to connect and synchronize with peer
+  ///
+  /// In en, this message translates to:
+  /// **'Connect & Sync'**
+  String get p2pConnectAndSync;
+
+  /// Option label for today's tasks
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s Tasks'**
+  String get p2pOptionTodayTasks;
+
+  /// Subtitle for today's tasks sync option
+  ///
+  /// In en, this message translates to:
+  /// **'Sync today\'s active task list'**
+  String get p2pOptionTodayTasksSubtitle;
+
+  /// Option label for time segments
+  ///
+  /// In en, this message translates to:
+  /// **'Time Segments'**
+  String get p2pOptionTimeSegments;
+
+  /// Subtitle for time segments sync option
+  ///
+  /// In en, this message translates to:
+  /// **'Sync tracked time duration logs'**
+  String get p2pOptionTimeSegmentsSubtitle;
+
+  /// Option label for recurrence rules
+  ///
+  /// In en, this message translates to:
+  /// **'Recurrence Rules'**
+  String get p2pOptionRecurrenceRules;
+
+  /// Subtitle for recurrence rules sync option
+  ///
+  /// In en, this message translates to:
+  /// **'Sync iCalendar RRULE task schedules'**
+  String get p2pOptionRecurrenceRulesSubtitle;
+
+  /// Option label for mastery deck sync
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Deck'**
+  String get p2pOptionMasteryDeck;
+
+  /// Subtitle for mastery deck sync option
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Spaced Repetition mastery items'**
+  String get p2pOptionMasteryDeckSubtitle;
+
+  /// Prefix for date in AirQR preview
+  ///
+  /// In en, this message translates to:
+  /// **'Date: {date}'**
+  String airQrDatePrefix(String date);
+
+  /// Error shown when frame rendering fails
+  ///
+  /// In en, this message translates to:
+  /// **'Frame rendering error'**
+  String get airQrFrameRenderError;
+
+  /// Error message when deck fails to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading deck: {error}'**
+  String deckLoadError(String error);
+
+  /// Message when requested deck is not found
+  ///
+  /// In en, this message translates to:
+  /// **'Deck not found'**
+  String get deckNotFound;
+
+  /// Error message when deck tasks fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading tasks: {error}'**
+  String deckTasksLoadError(String error);
+
+  /// Error message when decks fail to load
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading decks: {error}'**
+  String decksLoadError(String error);
 }
 
 class _AppLocalizationsDelegate
@@ -6764,7 +7132,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'ml'].contains(locale.languageCode);
+      <String>['en', 'ml', 'sa'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -6777,6 +7145,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'ml':
       return AppLocalizationsMl();
+    case 'sa':
+      return AppLocalizationsSa();
   }
 
   throw FlutterError(

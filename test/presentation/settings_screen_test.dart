@@ -135,5 +135,6 @@ void main() {
     expect(find.text(testL10n.settingsLanguageSystem), findsOneWidget);
     expect(find.text(testL10n.settingsLanguageEnglish), findsOneWidget);
     expect(find.text(testL10n.settingsLanguageMalayalam), findsOneWidget);
+    expect(find.text(testL10n.settingsLanguageSanskrit), findsOneWidget);
   });
 }

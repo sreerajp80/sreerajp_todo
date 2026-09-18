@@ -88,11 +88,12 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
               ref.invalidate(masteryDeckTodosProvider(deckId));
               ref.invalidate(masteryDeckProgressProvider(deckId));
             },
-            tooltip: 'Refresh',
+            tooltip: context.l10n.tooltipRefresh,
           ),
           deckAsync.maybeWhen(
             data: (deck) => deck != null
                 ? PopupMenuButton<String>(
+                    tooltip: context.l10n.tooltipMoreOptions,
                     onSelected: (action) {
                       if (action == 'delete') {
                         _deleteDeck(context, ref, deck);
@@ -130,10 +131,12 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
       ),
       body: deckAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(child: Text('Error loading deck: $err')),
+        error: (err, _) => Center(
+          child: Text(context.l10n.deckLoadError(err.toString())),
+        ),
         data: (deck) {
           if (deck == null) {
-            return const Center(child: Text('Deck not found'));
+            return Center(child: Text(context.l10n.deckNotFound));
           }
 
           final progress = progressAsync.maybeWhen(
@@ -328,8 +331,9 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
                   padding: EdgeInsets.all(32),
                   child: Center(child: CircularProgressIndicator()),
                 ),
-                error: (err, _) =>
-                    Center(child: Text('Error loading tasks: $err')),
+                error: (err, _) => Center(
+                  child: Text(context.l10n.deckTasksLoadError(err.toString())),
+                ),
                 data: (todos) {
                   if (todos.isEmpty) {
                     return Card(

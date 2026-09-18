@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 
 /// What the user chose in the carry-over sheet.
@@ -16,7 +19,7 @@ class CarryOverOutcome {
     required this.neverAskAgain,
   });
 
-  /// How many tasks were copied to today.
+  /// How many tasks were carried over to today.
   final int copied;
 
   /// How many were left out because the same title already exists today.
@@ -26,12 +29,9 @@ class CarryOverOutcome {
   final bool neverAskAgain;
 }
 
-/// The sheet that offers to copy unfinished tasks forward into today.
+/// The sheet that offers to carry unfinished tasks forward into today.
 ///
-/// It is deliberately a plain picker: nothing is copied until the user taps
-/// "Carry over", and the tasks on the earlier day are never changed. Past days
-/// are read-only, so moving a task rather than copying it would need a
-/// day-lock exception.
+/// Moving a task preserves its unique ID, time segments, and history.
 class CarryOverSheet extends ConsumerStatefulWidget {
   const CarryOverSheet({
     super.key,
@@ -42,32 +42,44 @@ class CarryOverSheet extends ConsumerStatefulWidget {
   /// The unfinished tasks found on the earlier day or days.
   final List<TodoEntity> candidates;
 
-  /// The day the ticked tasks are copied to.
+  /// The day the ticked tasks are carried over to.
   final String targetDate;
 
   /// Looks for unfinished tasks to carry into [targetDate].
   ///
   /// Walks back day by day, at most [lookBack] days, and stops at the first day
-  /// that has any unfinished task. Stopping early keeps the sheet short: the
-  /// point is "yesterday's leftovers", not a backlog dump.
+  /// that has any unfinished task. Tasks already completed/dropped on more recent
+  /// days or already present on [targetDate] are excluded.
   static Future<List<TodoEntity>> findCandidates(
-    WidgetRef ref, {
+    dynamic ref, {
     required String targetDate,
     required CarryOverLookBack lookBack,
   }) async {
-    final repository = ref.read(todoRepositoryProvider);
+    final repository = ref is TodoRepository
+        ? ref
+        : (ref as dynamic).read(todoRepositoryProvider) as TodoRepository;
     final target = parseIsoDate(targetDate);
+    final seenTitles = <String>{};
+
+    final todayTodos = await repository.getTodosByDate(targetDate);
+    for (final t in todayTodos) {
+      seenTitles.add(nfcNormalize(t.title).trim().toLowerCase());
+    }
 
     for (var back = 1; back <= lookBack.days; back++) {
       final day = dateTimeToIso(target.subtract(Duration(days: back)));
       final todos = await repository.getTodosByDate(day);
-      final unfinished = todos
-          .where(
-            (todo) =>
-                todo.status == TodoStatus.pending ||
-                todo.status == TodoStatus.working,
-          )
-          .toList();
+      final unfinished = <TodoEntity>[];
+      for (final todo in todos) {
+        final norm = nfcNormalize(todo.title).trim().toLowerCase();
+        if (seenTitles.contains(norm)) continue;
+        seenTitles.add(norm);
+
+        if (todo.status == TodoStatus.pending ||
+            todo.status == TodoStatus.working) {
+          unfinished.add(todo);
+        }
+      }
       if (unfinished.isNotEmpty) return unfinished;
     }
     return const [];
@@ -75,33 +87,36 @@ class CarryOverSheet extends ConsumerStatefulWidget {
 
   /// Looks for ALL unfinished tasks across all [lookBackDays] days before [targetDate].
   ///
-  /// Deduplicates tasks by title against already collected candidates and tasks already existing on [targetDate].
+  /// Deduplicates tasks by title against already collected candidates, tasks
+  /// completed/dropped on more recent days, and tasks already existing on [targetDate].
   static Future<List<TodoEntity>> findAllUnfinishedCandidates(
-    WidgetRef ref, {
+    dynamic ref, {
     required String targetDate,
     int lookBackDays = kDefaultCarryOverLookBackDays,
   }) async {
-    final repository = ref.read(todoRepositoryProvider);
+    final repository = ref is TodoRepository
+        ? ref
+        : (ref as dynamic).read(todoRepositoryProvider) as TodoRepository;
     final target = parseIsoDate(targetDate);
     final allUnfinished = <TodoEntity>[];
     final seenTitles = <String>{};
 
     final todayTodos = await repository.getTodosByDate(targetDate);
     for (final t in todayTodos) {
-      seenTitles.add(t.title.toLowerCase().trim());
+      seenTitles.add(nfcNormalize(t.title).trim().toLowerCase());
     }
 
     for (var back = 1; back <= lookBackDays; back++) {
       final day = dateTimeToIso(target.subtract(Duration(days: back)));
       final todos = await repository.getTodosByDate(day);
       for (final todo in todos) {
+        final norm = nfcNormalize(todo.title).trim().toLowerCase();
+        if (seenTitles.contains(norm)) continue;
+        seenTitles.add(norm);
+
         if (todo.status == TodoStatus.pending ||
             todo.status == TodoStatus.working) {
-          final norm = todo.title.toLowerCase().trim();
-          if (!seenTitles.contains(norm)) {
-            allUnfinished.add(todo);
-            seenTitles.add(norm);
-          }
+          allUnfinished.add(todo);
         }
       }
     }
@@ -136,21 +151,29 @@ class _CarryOverSheetState extends ConsumerState<CarryOverSheet> {
     if (_selected.isEmpty || _busy) return;
     setState(() => _busy = true);
 
-    // CopyTodos already skips duplicate titles and applies NFC normalisation
-    // and the day lock, so the sheet does none of that itself.
-    final copyTodos = ref.read(copyTodosProvider);
+    final moveTodo = ref.read(moveTodoProvider);
     final ordered = widget.candidates
         .where((todo) => _selected.contains(todo.id))
         .map((todo) => todo.id)
         .toList();
 
+    var movedCount = 0;
+    var skippedCount = 0;
+
     try {
-      final result = await copyTodos(ordered, widget.targetDate);
+      for (final id in ordered) {
+        try {
+          await moveTodo(id, widget.targetDate);
+          movedCount++;
+        } on DuplicateTitleException {
+          skippedCount++;
+        }
+      }
       if (!mounted) return;
       Navigator.of(context).pop(
         CarryOverOutcome(
-          copied: result.copied.length,
-          skipped: result.skipped.length,
+          copied: movedCount,
+          skipped: skippedCount,
           neverAskAgain: false,
         ),
       );

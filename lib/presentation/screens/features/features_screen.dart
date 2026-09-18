@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 /// One feature item displayed on the Features screen.
 class _AppFeature {
@@ -374,7 +375,7 @@ class FeaturesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Features')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context).settingsFeatures)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),

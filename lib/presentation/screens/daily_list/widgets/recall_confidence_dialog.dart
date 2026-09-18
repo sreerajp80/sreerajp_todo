@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/data/models/recall_confidence.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 class RecallConfidenceDialog extends StatelessWidget {
   const RecallConfidenceDialog({
@@ -91,7 +92,7 @@ class RecallConfidenceDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(null),
-          child: const Text('Cancel'),
+          child: Text(AppLocalizations.of(context).cancel),
         ),
       ],
     );

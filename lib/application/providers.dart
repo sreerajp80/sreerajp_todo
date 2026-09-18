@@ -20,6 +20,7 @@ import 'package:sreerajp_todo/application/security_settings_notifier.dart';
 import 'package:sreerajp_todo/application/app_lock_notifier.dart';
 import 'package:sreerajp_todo/application/pending_alert_notifier.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/core/platform/pending_notification_channel.dart';
 import 'package:sreerajp_todo/core/platform/running_notification_channel.dart';
@@ -793,15 +794,20 @@ final pendingAlertPayloadProvider = FutureProvider<PendingAlertPayload>((
 
   // Previous days' unfinished tasks (look back up to 7 days)
   final previousUnfinished = <TodoEntity>[];
-  final todayTitles = todayAll.map((t) => t.title.toLowerCase().trim()).toSet();
+  final seenTitles = todayAll
+      .map((t) => nfcNormalize(t.title).trim().toLowerCase())
+      .toSet();
 
   for (var back = 1; back <= 7; back++) {
     final day = dateTimeToIso(target.subtract(Duration(days: back)));
     final dayTodos = await repo.getTodosByDate(day);
     for (final todo in dayTodos) {
-      if ((todo.status == TodoStatus.pending ||
-              todo.status == TodoStatus.working) &&
-          !todayTitles.contains(todo.title.toLowerCase().trim())) {
+      final norm = nfcNormalize(todo.title).trim().toLowerCase();
+      if (seenTitles.contains(norm)) continue;
+      seenTitles.add(norm);
+
+      if (todo.status == TodoStatus.pending ||
+          todo.status == TodoStatus.working) {
         previousUnfinished.add(todo);
       }
     }

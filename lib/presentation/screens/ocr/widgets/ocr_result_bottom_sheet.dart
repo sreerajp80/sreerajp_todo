@@ -210,6 +210,7 @@ class _OcrResultBottomSheetState extends ConsumerState<OcrResultBottomSheet> {
                       ),
                     ),
                     IconButton(
+                      tooltip: l10n.tooltipClose,
                       icon: const Icon(Icons.close),
                       onPressed: () => Navigator.of(context).pop(),
                     ),
@@ -227,6 +228,7 @@ class _OcrResultBottomSheetState extends ConsumerState<OcrResultBottomSheet> {
                     errorText: _uniquenessError,
                     suffixIcon: _titleController.text.isNotEmpty
                         ? IconButton(
+                            tooltip: l10n.tooltipClear,
                             icon: const Icon(Icons.clear, size: 18),
                             onPressed: () {
                               _titleController.clear();
@@ -293,6 +295,7 @@ class _OcrResultBottomSheetState extends ConsumerState<OcrResultBottomSheet> {
                     ),
                     suffixIcon: _descriptionController.text.isNotEmpty
                         ? IconButton(
+                            tooltip: l10n.tooltipClear,
                             icon: const Icon(Icons.clear, size: 18),
                             onPressed: () => _descriptionController.clear(),
                           )

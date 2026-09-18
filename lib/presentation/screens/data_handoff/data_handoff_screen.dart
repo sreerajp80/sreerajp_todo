@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/domain/entities/data_handoff_payload.dart';
@@ -74,7 +75,9 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted && savedPath != null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Export saved to ${p.basename(savedPath)}'),
+            content: Text(
+              context.l10n.dataHandoffExportSuccess(p.basename(savedPath)),
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -83,7 +86,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Export failed: $e'),
+            content: Text(context.l10n.dataHandoffExportFailed(e.toString())),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -123,7 +126,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
             children: [
               ListTile(
                 leading: const Icon(Icons.file_download_outlined),
-                title: const Text('Save Markdown File (.md)'),
+                title: Text(context.l10n.dataHandoffSaveMarkdown),
                 onTap: () async {
                   Navigator.of(ctx).pop();
                   final fileName = 'sreerajp_todo_checklist_$_targetDate.md';
@@ -134,7 +137,11 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
                   if (mounted && savedPath != null) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Saved to ${p.basename(savedPath)}'),
+                        content: Text(
+                          context.l10n.dataHandoffSavedMarkdown(
+                            p.basename(savedPath),
+                          ),
+                        ),
                       ),
                     );
                   }
@@ -142,14 +149,14 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
               ),
               ListTile(
                 leading: const Icon(Icons.copy_rounded),
-                title: const Text('Copy Markdown to Clipboard'),
+                title: Text(context.l10n.dataHandoffCopyMarkdown),
                 onTap: () async {
                   Navigator.of(ctx).pop();
                   await Clipboard.setData(ClipboardData(text: mdString));
                   if (mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Markdown copied to clipboard.'),
+                      SnackBar(
+                        content: Text(context.l10n.dataHandoffCopiedMarkdown),
                       ),
                     );
                   }
@@ -163,7 +170,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Export failed: $e'),
+            content: Text(context.l10n.dataHandoffExportFailed(e.toString())),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -178,9 +185,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
     if (isPast) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text(
-            'Target date is past (day-locked). Select today or a future date to import.',
-          ),
+          content: Text(context.l10n.dataHandoffDayLockedError),
           backgroundColor: Theme.of(context).colorScheme.error,
         ),
       );
@@ -236,7 +241,10 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Successfully imported $importedCount tasks onto $_targetDate.',
+              context.l10n.dataHandoffImportSuccess(
+                importedCount,
+                _targetDate,
+              ),
             ),
             behavior: SnackBarBehavior.floating,
           ),
@@ -246,7 +254,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Import failed: $e'),
+            content: Text(context.l10n.dataHandoffImportFailed(e.toString())),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -265,7 +273,9 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
     if (result != null && result > 0 && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Imported $result tasks onto $_targetDate.'),
+          content: Text(
+            context.l10n.dataHandoffImportedTasks(result, _targetDate),
+          ),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -373,7 +383,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
                           padding: const EdgeInsets.only(right: 8.0),
                           child: Chip(
                             avatar: const Icon(Icons.lock_rounded, size: 14),
-                            label: const Text('Day Locked'),
+                            label: Text(l10n.dayLockedBadge),
                             visualDensity: VisualDensity.compact,
                             backgroundColor: theme.colorScheme.errorContainer,
                             labelStyle: TextStyle(

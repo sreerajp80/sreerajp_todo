@@ -17,13 +17,14 @@ class LocaleNotifier extends StateNotifier<Locale?> {
     final code = prefs.getString(kLocalePreferenceKey);
     if (code == 'en') return const Locale('en');
     if (code == 'ml') return const Locale('ml');
+    if (code == 'sa') return const Locale('sa');
     return null; // System default
   }
 
   /// Updates the active locale and persists the selection to [SharedPreferences].
   ///
-  /// Passing `'en'` sets English, `'ml'` sets Malayalam, and any other value
-  /// (including `'system'`) resets to system default (`null`).
+  /// Passing `'en'` sets English, `'ml'` sets Malayalam, `'sa'` sets Sanskrit,
+  /// and any other value (including `'system'`) resets to system default (`null`).
   Future<void> setLocale(String languageCode) async {
     if (languageCode == 'en') {
       state = const Locale('en');
@@ -31,6 +32,9 @@ class LocaleNotifier extends StateNotifier<Locale?> {
     } else if (languageCode == 'ml') {
       state = const Locale('ml');
       await _prefs.setString(kLocalePreferenceKey, 'ml');
+    } else if (languageCode == 'sa') {
+      state = const Locale('sa');
+      await _prefs.setString(kLocalePreferenceKey, 'sa');
     } else {
       state = null;
       await _prefs.setString(kLocalePreferenceKey, 'system');

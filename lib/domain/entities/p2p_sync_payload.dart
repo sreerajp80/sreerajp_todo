@@ -54,7 +54,9 @@ class P2pSyncPayload {
       if (item is Map<String, dynamic>) {
         try {
           todos.add(TodoEntity.fromMap(_sanitizeFieldLengths(item)));
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed todo item skipped to protect sync payload integrity.
+        }
       }
     }
 
@@ -66,7 +68,9 @@ class P2pSyncPayload {
           timeSegments.add(
             TimeSegmentEntity.fromMap(_sanitizeFieldLengths(item)),
           );
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed segment skipped to protect sync payload integrity.
+        }
       }
     }
 
@@ -78,7 +82,9 @@ class P2pSyncPayload {
           recurrenceRules.add(
             RecurrenceRuleEntity.fromMap(_sanitizeFieldLengths(item)),
           );
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed recurrence rule skipped to protect sync payload integrity.
+        }
       }
     }
 
@@ -90,7 +96,9 @@ class P2pSyncPayload {
           masteryItems.add(
             SpacedRepetitionItemEntity.fromMap(_sanitizeFieldLengths(item)),
           );
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed mastery item skipped to protect sync payload integrity.
+        }
       }
     }
 

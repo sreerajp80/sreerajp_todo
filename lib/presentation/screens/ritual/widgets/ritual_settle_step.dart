@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/ritual_rules.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
@@ -99,15 +100,28 @@ class _RitualSettleStepState extends ConsumerState<RitualSettleStep> {
         .map((todo) => todo.id)
         .toList();
 
-    final result = await ref.read(copyTodosProvider)(ids, widget.date);
+    final moveTodo = ref.read(moveTodoProvider);
+    var movedCount = 0;
+    for (final id in ids) {
+      try {
+        await moveTodo(id, widget.date);
+        movedCount++;
+      } on DuplicateTitleException {
+        // Already exists on target date; skip
+      }
+    }
+
     ref.invalidate(dailyTodoProvider(widget.date));
+    ref.invalidate(pendingAlertPayloadProvider);
+    ref.invalidate(statisticsProvider);
+
     if (!mounted) return;
 
-    widget.onCarried(result.copied.length);
+    widget.onCarried(movedCount);
     final l10n = context.l10n;
     final messenger = ScaffoldMessenger.of(context);
     messenger.showSnackBar(
-      SnackBar(content: Text(l10n.carryOverDone(result.copied.length))),
+      SnackBar(content: Text(l10n.carryOverDone(movedCount))),
     );
 
     // The copies are new tasks on today, so the second list has to be read

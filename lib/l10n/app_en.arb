@@ -964,6 +964,10 @@
   "@settingsLanguageMalayalam": {
     "description": "Option label for Malayalam language."
   },
+  "settingsLanguageSanskrit": "Sanskrit",
+  "@settingsLanguageSanskrit": {
+    "description": "Option label for Sanskrit language."
+  },
   "settingsShortcuts": "Shortcuts",
   "@settingsShortcuts": {
     "description": "Label for keyboard shortcuts settings."
@@ -1546,6 +1550,39 @@
   "aboutMadeWithLoveIn": "Made with ❤ in India",
   "@aboutMadeWithLoveIn": {
     "description": "Footer message celebrating origin."
+  },
+  "madeWithLove": "Made with {heart} from India",
+  "@madeWithLove": {
+    "description": "About-screen signature badge. {heart} is a red heart glyph.",
+    "placeholders": {
+      "heart": {
+        "type": "String"
+      }
+    }
+  },
+  "madeWithLoveA11y": "Made with love from India",
+  "@madeWithLoveA11y": {
+    "description": "Screen-reader text for the About badge"
+  },
+  "aboutDetailAuthor": "Author",
+  "@aboutDetailAuthor": {
+    "description": "Label for author detail row on About screen"
+  },
+  "aboutDetailEmail": "Email",
+  "@aboutDetailEmail": {
+    "description": "Label for email detail row on About screen"
+  },
+  "aboutDetailLicense": "License",
+  "@aboutDetailLicense": {
+    "description": "Label for license detail row on About screen"
+  },
+  "aboutDetailAiUsed": "AI used",
+  "@aboutDetailAiUsed": {
+    "description": "Label for AI used detail row on About screen"
+  },
+  "aboutDetailIdeUsed": "IDE used",
+  "@aboutDetailIdeUsed": {
+    "description": "Label for IDE used detail row on About screen"
   },
   "statsDailyOverview": "Daily Overview",
   "@statsDailyOverview": {
@@ -4681,5 +4718,298 @@
   "ocrLanguageEnglish": "English",
   "@ocrLanguageEnglish": {
     "description": "OCR language option for English only."
+  },
+  "tooltipClose": "Close",
+  "@tooltipClose": {
+    "description": "Tooltip for close button"
+  },
+  "tooltipRefresh": "Refresh",
+  "@tooltipRefresh": {
+    "description": "Tooltip for refresh button"
+  },
+  "tooltipClear": "Clear",
+  "@tooltipClear": {
+    "description": "Tooltip for clear text field button"
+  },
+  "tooltipTogglePassword": "Show or hide password",
+  "@tooltipTogglePassword": {
+    "description": "Tooltip for password visibility toggle"
+  },
+  "tooltipRemoveTask": "Remove task",
+  "@tooltipRemoveTask": {
+    "description": "Tooltip for remove task button"
+  },
+  "tooltipRemoveSubTask": "Remove sub-task",
+  "@tooltipRemoveSubTask": {
+    "description": "Tooltip for remove sub-task button"
+  },
+  "tooltipToggleStatus": "Toggle status",
+  "@tooltipToggleStatus": {
+    "description": "Tooltip for toggle status button"
+  },
+  "tooltipMoreOptions": "More options",
+  "@tooltipMoreOptions": {
+    "description": "Tooltip for popup menu button"
+  },
+  "tooltipVoiceRecord": "Voice record",
+  "@tooltipVoiceRecord": {
+    "description": "Tooltip for microphone recording button"
+  },
+  "tooltipAirQrShare": "AirQR Share Stream",
+  "@tooltipAirQrShare": {
+    "description": "Tooltip for AirQR stream share button"
+  },
+  "tooltipAirQrScan": "AirQR Scan Camera",
+  "@tooltipAirQrScan": {
+    "description": "Tooltip for AirQR camera scan button"
+  },
+  "tooltipCopyPairingDetails": "Copy pairing details",
+  "@tooltipCopyPairingDetails": {
+    "description": "Tooltip for copy pairing details button"
+  },
+  "airQrBackupReceived": "AirQR backup payload received ({count} tasks).",
+  "@airQrBackupReceived": {
+    "description": "Snackbar shown when AirQR backup payload is received",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrSyncComplete": "AirQR sync complete: Imported {count} tasks.",
+  "@airQrSyncComplete": {
+    "description": "Snackbar shown when AirQR import is completed",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navMastery": "Mastery",
+  "@navMastery": {
+    "description": "Bottom navigation label for Mastery Deck"
+  },
+  "dataHandoffExportSuccess": "Export saved to {fileName}",
+  "@dataHandoffExportSuccess": {
+    "description": "Snackbar shown when export succeeds",
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
+  "dataHandoffExportFailed": "Export failed: {error}",
+  "@dataHandoffExportFailed": {
+    "description": "Snackbar shown when export fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "dataHandoffSaveMarkdown": "Save Markdown File (.md)",
+  "@dataHandoffSaveMarkdown": {
+    "description": "Option to save markdown file"
+  },
+  "dataHandoffSavedMarkdown": "Saved to {fileName}",
+  "@dataHandoffSavedMarkdown": {
+    "description": "Snackbar shown when markdown is saved",
+    "placeholders": {
+      "fileName": {
+        "type": "String"
+      }
+    }
+  },
+  "dataHandoffCopyMarkdown": "Copy Markdown to Clipboard",
+  "@dataHandoffCopyMarkdown": {
+    "description": "Option to copy markdown to clipboard"
+  },
+  "dataHandoffCopiedMarkdown": "Markdown copied to clipboard.",
+  "@dataHandoffCopiedMarkdown": {
+    "description": "Snackbar shown when markdown is copied to clipboard"
+  },
+  "dataHandoffDayLockedError": "Target date is past (day-locked). Select today or a future date to import.",
+  "@dataHandoffDayLockedError": {
+    "description": "Error message when attempting to import onto past date"
+  },
+  "dataHandoffImportSuccess": "Successfully imported {count} tasks onto {date}.",
+  "@dataHandoffImportSuccess": {
+    "description": "Snackbar shown when handoff import succeeds",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "dataHandoffImportFailed": "Import failed: {error}",
+  "@dataHandoffImportFailed": {
+    "description": "Snackbar shown when handoff import fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "dataHandoffImportedTasks": "Imported {count} tasks onto {date}.",
+  "@dataHandoffImportedTasks": {
+    "description": "Snackbar shown when pasted markdown tasks are imported",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "ocrImageCaptureFailed": "Failed to capture image: {error}",
+  "@ocrImageCaptureFailed": {
+    "description": "Snackbar shown when image capture fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "ocrImagePickFailed": "Failed to pick image: {error}",
+  "@ocrImagePickFailed": {
+    "description": "Snackbar shown when image picker fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pEnterHostDetailsPrompt": "Please enter Host IP, Port, and Pairing PIN.",
+  "@p2pEnterHostDetailsPrompt": {
+    "description": "Validation prompt when host details are missing"
+  },
+  "p2pInvalidPortPrompt": "Invalid port number.",
+  "@p2pInvalidPortPrompt": {
+    "description": "Validation prompt when port is invalid"
+  },
+  "p2pSyncFailedMessage": "P2P Sync Failed: {error}",
+  "@p2pSyncFailedMessage": {
+    "description": "Snackbar shown when P2P sync fails",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pPayloadCopiedMessage": "Pairing payload copied to clipboard!",
+  "@p2pPayloadCopiedMessage": {
+    "description": "Snackbar shown when pairing payload is copied"
+  },
+  "airQrPayloadFormatError": "Unrecognized AirQR payload format.",
+  "@airQrPayloadFormatError": {
+    "description": "Error shown when AirQR payload format is unrecognized"
+  },
+  "airQrSkipDuplicates": "Skip Duplicates",
+  "@airQrSkipDuplicates": {
+    "description": "Button to skip duplicates on AirQR import"
+  },
+  "airQrImportAll": "Import All",
+  "@airQrImportAll": {
+    "description": "Button to import all tasks on AirQR import"
+  },
+  "airQrStreamGenError": "Could not generate AirQR stream payload.",
+  "@airQrStreamGenError": {
+    "description": "Error shown when AirQR stream payload generation fails"
+  },
+  "dayLockedBadge": "Day Locked",
+  "@dayLockedBadge": {
+    "description": "Chip label indicating target day is locked"
+  },
+  "p2pSyncSummaryTitle": "Sync Summary",
+  "@p2pSyncSummaryTitle": {
+    "description": "Dialog title for P2P sync summary"
+  },
+  "p2pScreenTitle": "Local P2P Wi-Fi Sync",
+  "@p2pScreenTitle": {
+    "description": "Screen title for P2P Wi-Fi sync"
+  },
+  "p2pConnectAndSync": "Connect & Sync",
+  "@p2pConnectAndSync": {
+    "description": "Button to connect and synchronize with peer"
+  },
+  "p2pOptionTodayTasks": "Today's Tasks",
+  "@p2pOptionTodayTasks": {
+    "description": "Option label for today's tasks"
+  },
+  "p2pOptionTodayTasksSubtitle": "Sync today's active task list",
+  "@p2pOptionTodayTasksSubtitle": {
+    "description": "Subtitle for today's tasks sync option"
+  },
+  "p2pOptionTimeSegments": "Time Segments",
+  "@p2pOptionTimeSegments": {
+    "description": "Option label for time segments"
+  },
+  "p2pOptionTimeSegmentsSubtitle": "Sync tracked time duration logs",
+  "@p2pOptionTimeSegmentsSubtitle": {
+    "description": "Subtitle for time segments sync option"
+  },
+  "p2pOptionRecurrenceRules": "Recurrence Rules",
+  "@p2pOptionRecurrenceRules": {
+    "description": "Option label for recurrence rules"
+  },
+  "p2pOptionRecurrenceRulesSubtitle": "Sync iCalendar RRULE task schedules",
+  "@p2pOptionRecurrenceRulesSubtitle": {
+    "description": "Subtitle for recurrence rules sync option"
+  },
+  "p2pOptionMasteryDeck": "Mastery Deck",
+  "@p2pOptionMasteryDeck": {
+    "description": "Option label for mastery deck sync"
+  },
+  "p2pOptionMasteryDeckSubtitle": "Sync Spaced Repetition mastery items",
+  "@p2pOptionMasteryDeckSubtitle": {
+    "description": "Subtitle for mastery deck sync option"
+  },
+  "airQrDatePrefix": "Date: {date}",
+  "@airQrDatePrefix": {
+    "description": "Prefix for date in AirQR preview",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrFrameRenderError": "Frame rendering error",
+  "@airQrFrameRenderError": {
+    "description": "Error shown when frame rendering fails"
+  },
+  "deckLoadError": "Error loading deck: {error}",
+  "@deckLoadError": {
+    "description": "Error message when deck fails to load",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "deckNotFound": "Deck not found",
+  "@deckNotFound": {
+    "description": "Message when requested deck is not found"
+  },
+  "deckTasksLoadError": "Error loading tasks: {error}",
+  "@deckTasksLoadError": {
+    "description": "Error message when deck tasks fail to load",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "decksLoadError": "Error loading decks: {error}",
+  "@decksLoadError": {
+    "description": "Error message when decks fail to load",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -735,6 +735,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLanguageMalayalam => 'Malayalam';
 
   @override
+  String get settingsLanguageSanskrit => 'Sanskrit';
+
+  @override
   String get settingsShortcuts => 'Shortcuts';
 
   @override
@@ -1223,6 +1226,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aboutMadeWithLoveIn => 'Made with ❤ in India';
+
+  @override
+  String madeWithLove(String heart) {
+    return 'Made with $heart from India';
+  }
+
+  @override
+  String get madeWithLoveA11y => 'Made with love from India';
+
+  @override
+  String get aboutDetailAuthor => 'Author';
+
+  @override
+  String get aboutDetailEmail => 'Email';
+
+  @override
+  String get aboutDetailLicense => 'License';
+
+  @override
+  String get aboutDetailAiUsed => 'AI used';
+
+  @override
+  String get aboutDetailIdeUsed => 'IDE used';
 
   @override
   String get statsDailyOverview => 'Daily Overview';
@@ -3817,4 +3843,197 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ocrLanguageEnglish => 'English';
+
+  @override
+  String get tooltipClose => 'Close';
+
+  @override
+  String get tooltipRefresh => 'Refresh';
+
+  @override
+  String get tooltipClear => 'Clear';
+
+  @override
+  String get tooltipTogglePassword => 'Show or hide password';
+
+  @override
+  String get tooltipRemoveTask => 'Remove task';
+
+  @override
+  String get tooltipRemoveSubTask => 'Remove sub-task';
+
+  @override
+  String get tooltipToggleStatus => 'Toggle status';
+
+  @override
+  String get tooltipMoreOptions => 'More options';
+
+  @override
+  String get tooltipVoiceRecord => 'Voice record';
+
+  @override
+  String get tooltipAirQrShare => 'AirQR Share Stream';
+
+  @override
+  String get tooltipAirQrScan => 'AirQR Scan Camera';
+
+  @override
+  String get tooltipCopyPairingDetails => 'Copy pairing details';
+
+  @override
+  String airQrBackupReceived(int count) {
+    return 'AirQR backup payload received ($count tasks).';
+  }
+
+  @override
+  String airQrSyncComplete(int count) {
+    return 'AirQR sync complete: Imported $count tasks.';
+  }
+
+  @override
+  String get navMastery => 'Mastery';
+
+  @override
+  String dataHandoffExportSuccess(String fileName) {
+    return 'Export saved to $fileName';
+  }
+
+  @override
+  String dataHandoffExportFailed(String error) {
+    return 'Export failed: $error';
+  }
+
+  @override
+  String get dataHandoffSaveMarkdown => 'Save Markdown File (.md)';
+
+  @override
+  String dataHandoffSavedMarkdown(String fileName) {
+    return 'Saved to $fileName';
+  }
+
+  @override
+  String get dataHandoffCopyMarkdown => 'Copy Markdown to Clipboard';
+
+  @override
+  String get dataHandoffCopiedMarkdown => 'Markdown copied to clipboard.';
+
+  @override
+  String get dataHandoffDayLockedError =>
+      'Target date is past (day-locked). Select today or a future date to import.';
+
+  @override
+  String dataHandoffImportSuccess(int count, String date) {
+    return 'Successfully imported $count tasks onto $date.';
+  }
+
+  @override
+  String dataHandoffImportFailed(String error) {
+    return 'Import failed: $error';
+  }
+
+  @override
+  String dataHandoffImportedTasks(int count, String date) {
+    return 'Imported $count tasks onto $date.';
+  }
+
+  @override
+  String ocrImageCaptureFailed(String error) {
+    return 'Failed to capture image: $error';
+  }
+
+  @override
+  String ocrImagePickFailed(String error) {
+    return 'Failed to pick image: $error';
+  }
+
+  @override
+  String get p2pEnterHostDetailsPrompt =>
+      'Please enter Host IP, Port, and Pairing PIN.';
+
+  @override
+  String get p2pInvalidPortPrompt => 'Invalid port number.';
+
+  @override
+  String p2pSyncFailedMessage(String error) {
+    return 'P2P Sync Failed: $error';
+  }
+
+  @override
+  String get p2pPayloadCopiedMessage => 'Pairing payload copied to clipboard!';
+
+  @override
+  String get airQrPayloadFormatError => 'Unrecognized AirQR payload format.';
+
+  @override
+  String get airQrSkipDuplicates => 'Skip Duplicates';
+
+  @override
+  String get airQrImportAll => 'Import All';
+
+  @override
+  String get airQrStreamGenError => 'Could not generate AirQR stream payload.';
+
+  @override
+  String get dayLockedBadge => 'Day Locked';
+
+  @override
+  String get p2pSyncSummaryTitle => 'Sync Summary';
+
+  @override
+  String get p2pScreenTitle => 'Local P2P Wi-Fi Sync';
+
+  @override
+  String get p2pConnectAndSync => 'Connect & Sync';
+
+  @override
+  String get p2pOptionTodayTasks => 'Today\'s Tasks';
+
+  @override
+  String get p2pOptionTodayTasksSubtitle => 'Sync today\'s active task list';
+
+  @override
+  String get p2pOptionTimeSegments => 'Time Segments';
+
+  @override
+  String get p2pOptionTimeSegmentsSubtitle => 'Sync tracked time duration logs';
+
+  @override
+  String get p2pOptionRecurrenceRules => 'Recurrence Rules';
+
+  @override
+  String get p2pOptionRecurrenceRulesSubtitle =>
+      'Sync iCalendar RRULE task schedules';
+
+  @override
+  String get p2pOptionMasteryDeck => 'Mastery Deck';
+
+  @override
+  String get p2pOptionMasteryDeckSubtitle =>
+      'Sync Spaced Repetition mastery items';
+
+  @override
+  String airQrDatePrefix(String date) {
+    return 'Date: $date';
+  }
+
+  @override
+  String get airQrFrameRenderError => 'Frame rendering error';
+
+  @override
+  String deckLoadError(String error) {
+    return 'Error loading deck: $error';
+  }
+
+  @override
+  String get deckNotFound => 'Deck not found';
+
+  @override
+  String deckTasksLoadError(String error) {
+    return 'Error loading tasks: $error';
+  }
+
+  @override
+  String decksLoadError(String error) {
+    return 'Error loading decks: $error';
+  }
 }

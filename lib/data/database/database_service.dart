@@ -123,7 +123,9 @@ class DatabaseService {
         if (password != null && password.isNotEmpty) {
           try {
             await db.rawQuery("PRAGMA key = '$password'");
-          } catch (_) {}
+          } catch (_) {
+            // Safe to ignore: FFI build might not bundle SQLCipher extension.
+          }
         }
         if (onOpen != null) {
           await onOpen(db);

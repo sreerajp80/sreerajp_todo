@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
 import 'package:sreerajp_todo/data/services/air_qr_service.dart';
@@ -205,15 +206,16 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
 
     if (_frames.isEmpty) {
       return AlertDialog(
         title: Text(widget.title),
-        content: const Text('Could not generate AirQR stream payload.'),
+        content: Text(l10n.airQrStreamGenError),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: Text(l10n.tooltipClose),
           ),
         ],
       );
@@ -260,7 +262,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
                   size: 230,
                   backgroundColor: Colors.white,
                   errorStateBuilder: (_, _) =>
-                      const Center(child: Text('Frame rendering error')),
+                      Center(child: Text(l10n.airQrFrameRenderError)),
                 ),
               ),
             ),
@@ -298,7 +300,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close'),
+          child: Text(l10n.tooltipClose),
         ),
       ],
     );

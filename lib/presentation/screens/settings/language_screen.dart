@@ -30,6 +30,11 @@ class LanguageScreen extends ConsumerWidget {
         label: l10n.settingsLanguageMalayalam,
         icon: Icons.translate_outlined,
       ),
+      (
+        code: 'sa',
+        label: l10n.settingsLanguageSanskrit,
+        icon: Icons.auto_stories_outlined,
+      ),
     ];
 
     return Scaffold(

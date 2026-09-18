@@ -43,7 +43,9 @@ class DataHandoffPayload {
       if (item is Map<String, dynamic>) {
         try {
           todos.add(_todoFromMapWithSubtasks(item));
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed todo item skipped to preserve valid entries.
+        }
       }
     }
 
@@ -53,7 +55,9 @@ class DataHandoffPayload {
       if (item is Map<String, dynamic>) {
         try {
           timeSegments.add(TimeSegmentEntity.fromMap(item));
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed time segment skipped to preserve valid entries.
+        }
       }
     }
 
@@ -63,7 +67,9 @@ class DataHandoffPayload {
       if (item is Map<String, dynamic>) {
         try {
           recurrenceRules.add(RecurrenceRuleEntity.fromMap(item));
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed recurrence rule skipped to preserve valid entries.
+        }
       }
     }
 
@@ -92,7 +98,9 @@ class DataHandoffPayload {
       if (s is Map<String, dynamic>) {
         try {
           subTasks.add(SubTaskItem.fromMap(s));
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: malformed subtask skipped to preserve valid entries.
+        }
       }
     }
     return TodoEntity.fromMap(map, subTasks: subTasks);

@@ -286,7 +286,9 @@ class DataHandoffService {
         final remappedSeg = seg.copyWith(id: _uuid.v4());
         try {
           await segmentRepo.insertManualSegment(remappedSeg);
-        } catch (_) {}
+        } catch (_) {
+          // Safe to ignore: segment insertion collision or terminal lock during bulk import.
+        }
       }
     }
 
@@ -328,7 +330,9 @@ class DataHandoffService {
         type: FileType.custom,
         allowedExtensions: [p.extension(defaultFileName).replaceAll('.', '')],
       );
-    } catch (_) {}
+    } catch (_) {
+      // Safe to ignore: platform file picker dialog might be unavailable; fallback handles it.
+    }
 
     if (selectedPath == null) {
       // Fallback to Documents/Downloads folder if save dialog is unsupported

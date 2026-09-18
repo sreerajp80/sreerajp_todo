@@ -741,6 +741,9 @@ class AppLocalizationsMl extends AppLocalizations {
   String get settingsLanguageMalayalam => 'മലയാളം';
 
   @override
+  String get settingsLanguageSanskrit => 'സംസ്കൃതം';
+
+  @override
   String get settingsShortcuts => 'കുറുക്കുവഴികൾ';
 
   @override
@@ -1230,6 +1233,29 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get aboutMadeWithLoveIn => 'ഇന്ത്യയിൽ ❤ യോടെ നിർമ്മിച്ചത്';
+
+  @override
+  String madeWithLove(String heart) {
+    return 'സ്നേഹത്തോടെ $heart ഇന്ത്യയിൽ നിന്ന്';
+  }
+
+  @override
+  String get madeWithLoveA11y => 'സ്നേഹത്തോടെ ഇന്ത്യയിൽ നിന്ന്';
+
+  @override
+  String get aboutDetailAuthor => 'രചയിതാവ്';
+
+  @override
+  String get aboutDetailEmail => 'ഇമെയിൽ';
+
+  @override
+  String get aboutDetailLicense => 'ലൈസൻസ്';
+
+  @override
+  String get aboutDetailAiUsed => 'ഉപയോഗിച്ച AI';
+
+  @override
+  String get aboutDetailIdeUsed => 'ഉപയോഗിച്ച IDE';
 
   @override
   String get statsDailyOverview => 'ദൈനംദിന അവലോകനം';
@@ -3841,4 +3867,205 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get ocrLanguageEnglish => 'ഇംഗ്ലീഷ്';
+
+  @override
+  String get tooltipClose => 'അടയ്ക്കുക';
+
+  @override
+  String get tooltipRefresh => 'പുതുക്കുക';
+
+  @override
+  String get tooltipClear => 'മായ്ക്കുക';
+
+  @override
+  String get tooltipTogglePassword =>
+      'പാസ്‌വേഡ് കാണിക്കുക അല്ലെങ്കിൽ മറയ്ക്കുക';
+
+  @override
+  String get tooltipRemoveTask => 'ടാസ്ക് നീക്കം ചെയ്യുക';
+
+  @override
+  String get tooltipRemoveSubTask => 'ഉപ-ടാസ്ക് നീക്കം ചെയ്യുക';
+
+  @override
+  String get tooltipToggleStatus => 'സ്റ്റാറ്റസ് മാറ്റുക';
+
+  @override
+  String get tooltipMoreOptions => 'കൂടുതൽ ഓപ്ഷനുകൾ';
+
+  @override
+  String get tooltipVoiceRecord => 'ശബ്ദം റെക്കോർഡ് ചെയ്യുക';
+
+  @override
+  String get tooltipAirQrShare => 'എയർ ക്യുആർ ഷെയർ സ്ട്രീം';
+
+  @override
+  String get tooltipAirQrScan => 'എയർ ക്യുആർ ക്യാമറ സ്കാൻ';
+
+  @override
+  String get tooltipCopyPairingDetails => 'പെയറിംഗ് വിശദാംശങ്ങൾ പകർത്തുക';
+
+  @override
+  String airQrBackupReceived(int count) {
+    return 'എയർ ക്യുആർ ബാക്കപ്പ് ലഭിച്ചു ($count ടാസ്കുകൾ).';
+  }
+
+  @override
+  String airQrSyncComplete(int count) {
+    return 'എയർ ക്യുആർ സിങ്ക് പൂർത്തിയായി: $count ടാസ്കുകൾ ഇറക്കുമതി ചെയ്തു.';
+  }
+
+  @override
+  String get navMastery => 'മാസ്റ്ററി';
+
+  @override
+  String dataHandoffExportSuccess(String fileName) {
+    return '$fileName-ലേക്ക് സേവ് ചെയ്തു';
+  }
+
+  @override
+  String dataHandoffExportFailed(String error) {
+    return 'എക്സ്പോർട്ട് പരാജയപ്പെട്ടു: $error';
+  }
+
+  @override
+  String get dataHandoffSaveMarkdown => 'മാർക്ക്ഡൗൺ ഫയൽ സേവ് ചെയ്യുക (.md)';
+
+  @override
+  String dataHandoffSavedMarkdown(String fileName) {
+    return '$fileName-ലേക്ക് സേവ് ചെയ്തു';
+  }
+
+  @override
+  String get dataHandoffCopyMarkdown =>
+      'മാർക്ക്ഡൗൺ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തുക';
+
+  @override
+  String get dataHandoffCopiedMarkdown =>
+      'മാർക്ക്ഡൗൺ ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി.';
+
+  @override
+  String get dataHandoffDayLockedError =>
+      'ലക്ഷ്യ തീയതി കഴിഞ്ഞുപോയി (ഡേ-ലോക്ക്ഡ്). ഇന്ന് അല്ലെങ്കിൽ ഭാവി തീയതി തിരഞ്ഞെടുക്കുക.';
+
+  @override
+  String dataHandoffImportSuccess(int count, String date) {
+    return '$date-ലേക്ക് $count ടാസ്കുകൾ വിജയകരമായി ഇറക്കുമതി ചെയ്തു.';
+  }
+
+  @override
+  String dataHandoffImportFailed(String error) {
+    return 'ഇറക്കുമതി പരാജയപ്പെട്ടു: $error';
+  }
+
+  @override
+  String dataHandoffImportedTasks(int count, String date) {
+    return '$date-ലേക്ക് $count ടാസ്കുകൾ ഇറക്കുമതി ചെയ്തു.';
+  }
+
+  @override
+  String ocrImageCaptureFailed(String error) {
+    return 'ചിത്രം പകർത്താൻ കഴിഞ്ഞില്ല: $error';
+  }
+
+  @override
+  String ocrImagePickFailed(String error) {
+    return 'ചിത്രം തിരഞ്ഞെടുക്കാൻ കഴിഞ്ഞില്ല: $error';
+  }
+
+  @override
+  String get p2pEnterHostDetailsPrompt =>
+      'ഹോസ്റ്റ് IP, പോർട്ട്, പെയറിംഗ് PIN എന്നിവ നൽകുക.';
+
+  @override
+  String get p2pInvalidPortPrompt => 'അസാധുവായ പോർട്ട് നമ്പർ.';
+
+  @override
+  String p2pSyncFailedMessage(String error) {
+    return 'P2P സിങ്ക് പരാജയപ്പെട്ടു: $error';
+  }
+
+  @override
+  String get p2pPayloadCopiedMessage =>
+      'പെയറിംഗ് പേലോഡ് ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തി!';
+
+  @override
+  String get airQrPayloadFormatError =>
+      'തിരിച്ചറിയാത്ത എയർ ക്യുആർ പേലോഡ് ഫോർമാറ്റ്.';
+
+  @override
+  String get airQrSkipDuplicates => 'തനിപ്പകർപ്പുകൾ ഒഴിവാക്കുക';
+
+  @override
+  String get airQrImportAll => 'എല്ലാം ഇറക്കുമതി ചെയ്യുക';
+
+  @override
+  String get airQrStreamGenError =>
+      'എയർ ക്യുആർ സ്ട്രീം പേലോഡ് നിർമ്മിക്കാൻ കഴിഞ്ഞില്ല.';
+
+  @override
+  String get dayLockedBadge => 'ഡേ ലോക്ക്ഡ്';
+
+  @override
+  String get p2pSyncSummaryTitle => 'സിങ്ക് സംഗ്രഹം';
+
+  @override
+  String get p2pScreenTitle => 'ലോക്കൽ P2P വൈ-ഫൈ സിങ്ക്';
+
+  @override
+  String get p2pConnectAndSync => 'കണക്റ്റ് ചെയ്ത് സിങ്ക് ചെയ്യുക';
+
+  @override
+  String get p2pOptionTodayTasks => 'ഇന്നത്തെ ടാസ്കുകൾ';
+
+  @override
+  String get p2pOptionTodayTasksSubtitle =>
+      'ഇന്നത്തെ സജീവ ടാസ്ക് ലിസ്റ്റ് സിങ്ക് ചെയ്യുക';
+
+  @override
+  String get p2pOptionTimeSegments => 'സമയ ഭാഗങ്ങൾ';
+
+  @override
+  String get p2pOptionTimeSegmentsSubtitle =>
+      'ട്രാക്ക് ചെയ്ത സമയ ദൈർഘ്യ വിവരങ്ങൾ സിങ്ക് ചെയ്യുക';
+
+  @override
+  String get p2pOptionRecurrenceRules => 'ആവർത്തന നിയമങ്ങൾ';
+
+  @override
+  String get p2pOptionRecurrenceRulesSubtitle =>
+      'ഐകലണ്ടർ RRULE ടാസ്ക് ഷെഡ്യൂളുകൾ സിങ്ക് ചെയ്യുക';
+
+  @override
+  String get p2pOptionMasteryDeck => 'മാസ്റ്ററി ഡെക്ക്';
+
+  @override
+  String get p2pOptionMasteryDeckSubtitle =>
+      'സ്പേസ്ഡ് റിപ്പറ്റീഷൻ മാസ്റ്ററി ഇനങ്ങൾ സിങ്ക് ചെയ്യുക';
+
+  @override
+  String airQrDatePrefix(String date) {
+    return 'തീയതി: $date';
+  }
+
+  @override
+  String get airQrFrameRenderError => 'ഫ്രെയിം റെൻഡറിംഗ് പിശക്';
+
+  @override
+  String deckLoadError(String error) {
+    return 'ഡെക്ക് ലോഡ് ചെയ്യുന്നതിൽ പിശക്: $error';
+  }
+
+  @override
+  String get deckNotFound => 'ഡെക്ക് കണ്ടെത്തിയില്ല';
+
+  @override
+  String deckTasksLoadError(String error) {
+    return 'ടാസ്കുകൾ ലോഡ് ചെയ്യുന്നതിൽ പിശക്: $error';
+  }
+
+  @override
+  String decksLoadError(String error) {
+    return 'ഡെക്കുകൾ ലോഡ് ചെയ്യുന്നതിൽ പിശക്: $error';
+  }
 }

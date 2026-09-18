@@ -34,6 +34,15 @@ void main() {
       expect(notifier.state, const Locale('ml'));
     });
 
+    test('initial state loads Locale("sa") when preference is "sa"', () async {
+      SharedPreferences.setMockInitialValues({kLocalePreferenceKey: 'sa'});
+      final prefs = await SharedPreferences.getInstance();
+
+      final notifier = LocaleNotifier(prefs);
+
+      expect(notifier.state, const Locale('sa'));
+    });
+
     test(
       'setLocale("en") updates state to English and persists preference',
       () async {
@@ -59,6 +68,20 @@ void main() {
 
         expect(notifier.state, const Locale('ml'));
         expect(prefs.getString(kLocalePreferenceKey), 'ml');
+      },
+    );
+
+    test(
+      'setLocale("sa") updates state to Sanskrit and persists preference',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+
+        final notifier = LocaleNotifier(prefs);
+        await notifier.setLocale('sa');
+
+        expect(notifier.state, const Locale('sa'));
+        expect(prefs.getString(kLocalePreferenceKey), 'sa');
       },
     );
 

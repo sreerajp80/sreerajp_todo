@@ -8,7 +8,7 @@ Read [implementation_plan.md](implementation_plan.md) and [features.md](features
 
 ---
 
-## Phase Status Summary
+## 1. Phase Status Summary
 
 | Phase | Description | Status | Verification Date |
 |---|---|---|---|
@@ -23,7 +23,7 @@ Read [implementation_plan.md](implementation_plan.md) and [features.md](features
 
 ---
 
-## Detailed Task Checklist
+## 2. Detailed Task Checklist
 
 ### Phase 1: Foundation & Core Utilities
 - [x] Pure Dart `core/` package structure with zero Flutter imports

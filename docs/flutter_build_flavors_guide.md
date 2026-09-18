@@ -1,11 +1,15 @@
-# Flutter Build Flavors Guide
+# Flutter Build Flavors Guide — SreerajP ToDo
+
+This document provides the build flavor reference, commands, and artifact details for SreerajP ToDo's dev and prod environments. Read this before configuring Android build flavors or executing flavor-specific builds.
+
+Read [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), and [release_process.md](release_process.md) first. For the general multi-platform flavor reference, see [guidelines/flutter_build_flavors_guide.md](guidelines/flutter_build_flavors_guide.md).
 
 > This project uses `dev` and `prod` Android build flavors. Configuration is in
-> `android/app/build.gradle.kts`. For release steps, see `docs/release_process.md`.
+> `android/app/build.gradle.kts`. For release steps, see [release_process.md](release_process.md).
 
-Use this as a reusable reference for Flutter projects that define Android product flavors such as `dev` and `prod`.
+---
 
-## Flavor Basics
+## 1. Flavor Basics
 
 A flavor usually represents an environment or release lane.
 
@@ -23,7 +27,9 @@ Common combinations:
 | `prod` | `debug` | Rare, but useful when you need production configuration with debug tooling |
 | `prod` | `release` | Real release artifact |
 
-## Recommended Commands
+---
+
+## 2. Recommended Commands
 
 Replace flavor names if your project uses names other than `dev` and `prod`.
 
@@ -57,7 +63,9 @@ Build a Play Store bundle:
 flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/
 ```
 
-## Which Artifact To Use
+---
+
+## 3. Which Artifact To Use
 
 Use split APKs when you distribute the app yourself.
 
@@ -69,7 +77,9 @@ Output files usually look like this:
 
 Use an App Bundle when publishing to Google Play. Google Play serves optimized device-specific downloads from the `.aab`.
 
-## Important Flag Distinction
+---
+
+## 4. Important Flag Distinction
 
 `--target-platform` controls compilation targets. It does not automatically guarantee that a normal APK becomes ABI-specific.
 
@@ -81,7 +91,9 @@ Examples:
 
 If you need one APK that is truly arm64-only, use Gradle `abiFilters` or install the arm64 split APK from a `--split-per-abi` build.
 
-## Recommended Release Matrix
+---
+
+## 5. Recommended Release Matrix
 
 For most Flutter Android projects:
 
@@ -90,7 +102,9 @@ For most Flutter Android projects:
 - Shareable release APKs: `flutter build apk --flavor prod --release --split-per-abi`
 - Play Store submission: `flutter build appbundle --flavor prod --release`
 
-## Optional Commands
+---
+
+## 6. Optional Commands
 
 Build a release-like QA build for the dev flavor:
 
@@ -104,7 +118,9 @@ Build a debug APK for the prod flavor:
 flutter build apk --flavor prod --debug
 ```
 
-## Notes For New Projects
+---
+
+## 7. Notes For New Projects
 
 To support this workflow, the Android project typically needs:
 
