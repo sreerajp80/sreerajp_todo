@@ -375,7 +375,9 @@ class FeaturesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context).settingsFeatures)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context).settingsFeatures),
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),

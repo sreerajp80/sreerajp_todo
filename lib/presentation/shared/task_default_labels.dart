@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/constants/todo_sort_option.dart';
 import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
-import 'package:sreerajp_todo/data/models/todo_priority.dart';
+import 'package:sreerajp_todo/domain/entities/todo_priority.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 /// Shared labels and colours for the task-default values.

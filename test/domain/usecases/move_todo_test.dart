@@ -89,9 +89,9 @@ void main() {
         expect(result.fromDate, '2026-08-28');
         expect(result.toDate, _todayIso());
 
-        // Task is no longer on previous day
+        // Task remains visible on previous day as part of its multi-day journey
         final prevTodos = await todoRepo.getTodosByDate('2026-08-28');
-        expect(prevTodos.where((t) => t.id == 'task-1'), isEmpty);
+        expect(prevTodos.where((t) => t.id == 'task-1'), isNotEmpty);
 
         // Task is now on today with same ID
         final todayTodos = await todoRepo.getTodosByDate(_todayIso());

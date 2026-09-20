@@ -5,8 +5,6 @@ import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/status_badge.dart';
@@ -63,8 +61,9 @@ class TodoListTile extends ConsumerWidget {
   }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final isReached = trackedSeconds >= targetSeconds;
     final isOver = trackedSeconds > targetSeconds;
-    final barColor = isOver ? colorScheme.error : colorScheme.primary;
+    final barColor = isReached ? Colors.green : colorScheme.primary;
     final fraction = targetSeconds <= 0
         ? 0.0
         : (trackedSeconds / targetSeconds).clamp(0.0, 1.0);
@@ -73,18 +72,28 @@ class TodoListTile extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          isOver
-              ? context.l10n.targetOverBy(
-                  formatDuration(trackedSeconds - targetSeconds),
-                )
-              : context.l10n.targetProgressLabel(
-                  formatDuration(trackedSeconds),
-                  formatDuration(targetSeconds),
-                ),
-          style: theme.textTheme.labelSmall?.copyWith(
-            color: isOver ? colorScheme.error : colorScheme.onSurfaceVariant,
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              isOver
+                  ? context.l10n.targetOverBy(
+                      formatDuration(trackedSeconds - targetSeconds),
+                    )
+                  : context.l10n.targetProgressLabel(
+                      formatDuration(trackedSeconds),
+                      formatDuration(targetSeconds),
+                    ),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: isReached ? Colors.green : colorScheme.onSurfaceVariant,
+                fontWeight: isReached ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+            if (isReached) ...[
+              const SizedBox(width: 4),
+              const Icon(Icons.check_circle, size: 12, color: Colors.green),
+            ],
+          ],
         ),
         const SizedBox(height: 3),
         SizedBox(
@@ -369,9 +378,21 @@ class TodoListTile extends ConsumerWidget {
 
     final totalSeconds = trackingState.totalDurationSeconds;
     final liveElapsed = ref.watch(liveTimerProvider(todo.id));
-    final displaySeconds = isRunning
-        ? totalSeconds + (liveElapsed.valueOrNull ?? 0)
+    final liveSeconds = liveElapsed.valueOrNull ?? 0;
+    final displayTotalSeconds = isRunning
+        ? totalSeconds + liveSeconds
         : totalSeconds;
+
+    final todaySegments = trackingState.segments
+        .where((s) => s.startTime.startsWith(todo.date));
+    final todaySegmentSeconds = todaySegments.fold<int>(
+      0,
+      (sum, s) => sum + (s.durationSeconds ?? 0),
+    );
+    final displayTodaySeconds =
+        todaySegmentSeconds + (isRunning ? liveSeconds : 0);
+    final hasMultiDayHistory = displayTotalSeconds > displayTodaySeconds;
+    final displaySeconds = displayTodaySeconds;
     final masteryDecksMap = ref.watch(allMasteryDecksMapProvider);
     final deckTitle = todo.spacedRepetitionItemId != null
         ? masteryDecksMap[todo.spacedRepetitionItemId]
@@ -845,9 +866,7 @@ class TodoListTile extends ConsumerWidget {
                                     ],
                                   ),
                                 ),
-                              // Tapping the time chip opens the full screen
-                              // Focus view for this task.
-                              if (displaySeconds > 0 || isRunning)
+                              if (displayTotalSeconds > 0 || isRunning)
                                 GestureDetector(
                                   behavior: HitTestBehavior.opaque,
                                   onTap: isMultiSelectMode
@@ -856,7 +875,12 @@ class TodoListTile extends ConsumerWidget {
                                           AppRoutes.focusPath(todo.id),
                                         ),
                                   child: Tooltip(
-                                    message: context.l10n.focusOpen,
+                                    message: hasMultiDayHistory
+                                        ? context.l10n.todayAndTotalTime(
+                                            formatDuration(displayTodaySeconds),
+                                            formatDuration(displayTotalSeconds),
+                                          )
+                                        : context.l10n.focusOpen,
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 10,
@@ -891,7 +915,9 @@ class TodoListTile extends ConsumerWidget {
                                           ),
                                           const SizedBox(width: 4),
                                           Text(
-                                            isRunning
+                                            hasMultiDayHistory
+                                                ? '${formatDuration(displayTodaySeconds)} / ${formatDuration(displayTotalSeconds)}'
+                                                : isRunning
                                                 ? formatDuration(displaySeconds)
                                                 : formatDuration(
                                                     displaySeconds,
@@ -916,7 +942,7 @@ class TodoListTile extends ConsumerWidget {
                               if (todo.targetSeconds != null)
                                 _buildTargetProgress(
                                   context,
-                                  trackedSeconds: displaySeconds,
+                                  trackedSeconds: displayTotalSeconds,
                                   targetSeconds: todo.targetSeconds!,
                                 ),
                               if (todo.sourceDate != null)

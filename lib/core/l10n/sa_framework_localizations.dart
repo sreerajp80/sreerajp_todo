@@ -64,6 +64,7 @@ class SaWidgetsLocalizationsDelegate
       GlobalWidgetsLocalizations.delegate.load(const Locale('en'));
 
   @override
-  bool shouldReload(covariant LocalizationsDelegate<WidgetsLocalizations> old) =>
-      false;
+  bool shouldReload(
+    covariant LocalizationsDelegate<WidgetsLocalizations> old,
+  ) => false;
 }

@@ -371,8 +371,8 @@
   "aboutAppVersion": "संस्करणम्",
   "aboutBuildNumber": "निर्मितिसङ्ख्या",
   "aboutMadeWithLoveIn": "भारते प्रेम्णा निर्मितम्",
-  "madeWithLove": "भारतात् {heart} सह निर्मितम्",
-  "madeWithLoveA11y": "भारते प्रेम्णा निर्मितम्",
+  "madeWithLove": "सस्नेहं निर्मितम् {heart} भारततः",
+  "madeWithLoveA11y": "सस्नेहं निर्मितम् भारततः",
   "aboutDetailAuthor": "रचयिता",
   "aboutDetailEmail": "विद्युत्पत्रम्",
   "aboutDetailLicense": "अनुज्ञापत्रम्",
@@ -1168,5 +1168,14 @@
   "deckLoadError": "पत्रसङ्ग्रहस्योद्घाटने दोषः: {error}",
   "deckNotFound": "पत्रसङ्ग्रहः न प्राप्तः",
   "deckTasksLoadError": "कार्योद्घाटने दोषः: {error}",
-  "decksLoadError": "पत्राणामुद्घाटने दोषः: {error}"
+  "decksLoadError": "पत्राणामुद्घाटने दोषः: {error}",
+  "timeDetailsTabToday": "अद्य",
+  "timeDetailsTabAllTime": "सर्वकालः",
+  "multiDayDuplicateTitleAlert": "{date} दिने अनेन शीर्षकेन सह कार्यं पूर्वमेव विद्यते। अन्यं शीर्षकं चिनोतु।",
+  "deleteMultiDayTaskTitle": "कार्यं विलोपयतु",
+  "deleteMultiDayTaskMessage": "अस्य कार्यस्य पूर्वदिनेषु समयः अभिलिखितः अस्ति। किं भवान् एतत् केवलम् अद्यतनदिनात् निष्कासयितुम् इच्छति उत अस्य समग्रम् इतिहासम् अपमार्टुम् इच्छति?",
+  "deleteFromTodayOnly": "केवलम् अद्यतनात् निष्कासयतु",
+  "deleteEntireHistory": "समग्रम् इतिहासम् अपमार्जतु",
+  "targetReachedBadge": "लक्ष्यं प्राप्तम्",
+  "todayAndTotalTime": "अद्य {todayTime} · आहत्य {totalTime}"
 }

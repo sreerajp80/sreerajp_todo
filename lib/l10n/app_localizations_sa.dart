@@ -1226,11 +1226,11 @@ class AppLocalizationsSa extends AppLocalizations {
 
   @override
   String madeWithLove(String heart) {
-    return 'भारतात् $heart सह निर्मितम्';
+    return 'सस्नेहं निर्मितम् $heart भारततः';
   }
 
   @override
-  String get madeWithLoveA11y => 'भारते प्रेम्णा निर्मितम्';
+  String get madeWithLoveA11y => 'सस्नेहं निर्मितम् भारततः';
 
   @override
   String get aboutDetailAuthor => 'रचयिता';
@@ -3993,5 +3993,37 @@ class AppLocalizationsSa extends AppLocalizations {
   @override
   String decksLoadError(String error) {
     return 'पत्राणामुद्घाटने दोषः: $error';
+  }
+
+  @override
+  String get timeDetailsTabToday => 'अद्य';
+
+  @override
+  String get timeDetailsTabAllTime => 'सर्वकालः';
+
+  @override
+  String multiDayDuplicateTitleAlert(String date) {
+    return '$date दिने अनेन शीर्षकेन सह कार्यं पूर्वमेव विद्यते। अन्यं शीर्षकं चिनोतु।';
+  }
+
+  @override
+  String get deleteMultiDayTaskTitle => 'कार्यं विलोपयतु';
+
+  @override
+  String get deleteMultiDayTaskMessage =>
+      'अस्य कार्यस्य पूर्वदिनेषु समयः अभिलिखितः अस्ति। किं भवान् एतत् केवलम् अद्यतनदिनात् निष्कासयितुम् इच्छति उत अस्य समग्रम् इतिहासम् अपमार्टुम् इच्छति?';
+
+  @override
+  String get deleteFromTodayOnly => 'केवलम् अद्यतनात् निष्कासयतु';
+
+  @override
+  String get deleteEntireHistory => 'समग्रम् इतिहासम् अपमार्जतु';
+
+  @override
+  String get targetReachedBadge => 'लक्ष्यं प्राप्तम्';
+
+  @override
+  String todayAndTotalTime(String todayTime, String totalTime) {
+    return 'अद्य $todayTime · आहत्य $totalTime';
   }
 }

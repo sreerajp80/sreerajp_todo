@@ -5011,5 +5011,54 @@
         "type": "String"
       }
     }
+  },
+  "timeDetailsTabToday": "Today",
+  "@timeDetailsTabToday": {
+    "description": "Tab label for today's time segments"
+  },
+  "timeDetailsTabAllTime": "All Time",
+  "@timeDetailsTabAllTime": {
+    "description": "Tab label for all recorded time segments across all days"
+  },
+  "multiDayDuplicateTitleAlert": "A task with this title already exists on {date}. Please choose a different title.",
+  "@multiDayDuplicateTitleAlert": {
+    "description": "Alert shown when renaming a multi-day task clashes with a task on another date",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteMultiDayTaskTitle": "Delete Task",
+  "@deleteMultiDayTaskTitle": {
+    "description": "Title of the dialog when deleting a multi-day task with recorded time"
+  },
+  "deleteMultiDayTaskMessage": "This task has recorded time on past days. Do you want to remove it only from today or delete its entire history?",
+  "@deleteMultiDayTaskMessage": {
+    "description": "Message in delete dialog asking user whether to remove from today only or delete entire history"
+  },
+  "deleteFromTodayOnly": "Remove from today only",
+  "@deleteFromTodayOnly": {
+    "description": "Button to remove a multi-day task from today onwards while keeping past history"
+  },
+  "deleteEntireHistory": "Delete entire history",
+  "@deleteEntireHistory": {
+    "description": "Button to delete a task and all its past history and time segments"
+  },
+  "targetReachedBadge": "Target reached",
+  "@targetReachedBadge": {
+    "description": "Badge indicating that the task cumulative target duration has been reached"
+  },
+  "todayAndTotalTime": "{todayTime} today · {totalTime} total",
+  "@todayAndTotalTime": {
+    "description": "Display format showing today's time and cumulative total time",
+    "placeholders": {
+      "todayTime": {
+        "type": "String"
+      },
+      "totalTime": {
+        "type": "String"
+      }
+    }
   }
 }

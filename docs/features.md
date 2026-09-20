@@ -23,11 +23,11 @@ index, make encrypted local backups, move data between devices with QR codes, lo
 or JSON/Markdown files, and switch theme and language inside the app.
 
 ### Inclusive Design & Accessibility Profile
-- **Multi-Lingual & Multi-Script Inclusion:** English (`en`) and Malayalam (`ml`). The app
+- **Multi-Lingual & Multi-Script Inclusion:** English (`en`), Malayalam (`ml`), and Sanskrit (`sa`). The app
   follows the device language by default, and the Settings screen also has an in-app
-  language selector (System / English / Malayalam). Text direction is detected per field
+  language selector (System / English / Malayalam / Sanskrit). Text direction is detected per field
   with `unicodeUtils.detectTextDirection()` and applied through `AdaptiveDirectionality`,
-  so Latin, Malayalam, Arabic, Hebrew, and mixed text all flow correctly.
+  so Latin, Malayalam, Devanagari, Arabic, Hebrew, and mixed text all flow correctly.
 - **Visual & Colorblind Accessibility:** Hand-made Light and Dark themes (`AppTheme.light`
   and `AppTheme.dark`) with distinct icons (check marks, alert flags, forward arrows,
   crosses) next to colour badges, so status is clear without relying on colour alone.
@@ -48,7 +48,7 @@ or JSON/Markdown files, and switch theme and language inside the app.
   through `ConfigService`)
 - **Target Audience:** Daily planners, time-tracking professionals, multi-lingual users,
   and privacy-conscious individuals who need fully local data.
-- **Platforms:** Android, Windows (v1.0 active targets); iOS, Linux, macOS (not built yet)
+- **Platforms:** Android (minSdk 21, targetSdk 35), Windows (v1.0 active targets); iOS, Linux, macOS (not built yet)
 - **Framework & Language:** Flutter (`3.44.8 stable`) / Dart (`3.12.2`)
 - **Database Storage:** Local SQLite database (`sreerajp_todo.db`) via `sqflite_sqlcipher`
   (mobile) and `sqflite_common_ffi` with SQLCipher (desktop). The live database is opened
@@ -129,9 +129,9 @@ or JSON/Markdown files, and switch theme and language inside the app.
    - Title uniqueness per day is checked after NFC normalization.
    - Text direction is detected per field and rendered through `AdaptiveDirectionality`.
 
-5. **Bilingual Localization (English & Malayalam):**
-   - The whole interface and its messages exist in `app_en.arb` and `app_ml.arb`.
-   - Default is the device language; Settings can override it to English or Malayalam and
+5. **Trilingual Localization (English, Malayalam & Sanskrit):**
+   - The whole interface and its messages exist in `app_en.arb`, `app_ml.arb`, and `app_sa.arb`.
+   - Default is the device language; Settings can override it to English, Malayalam, or Sanskrit, and
      the choice is remembered.
 
 6. **Domain Exception Mapping:**

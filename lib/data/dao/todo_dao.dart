@@ -224,11 +224,17 @@ class TodoDao {
 
   Future<List<TodoEntity>> findByDate(String date) async {
     final db = await _databaseService.database;
-    final maps = await db.query(
-      'todos',
-      where: 'date = ?',
-      whereArgs: [date],
-      orderBy: 'sort_order ASC, created_at ASC',
+    final maps = await db.rawQuery(
+      '''
+      SELECT t.* FROM todos t
+      LEFT JOIN time_segments ts ON ts.todo_id = t.id AND substr(ts.start_time, 1, 10) = ?
+      WHERE t.date = ?
+         OR (t.source_date IS NOT NULL AND t.source_date <= ? AND t.date >= ?)
+         OR ts.id IS NOT NULL
+      GROUP BY t.id
+      ORDER BY t.sort_order ASC, t.created_at ASC
+      ''',
+      [date, date, date, date],
     );
     final todos = <TodoEntity>[];
     for (final map in maps) {
@@ -238,11 +244,29 @@ class TodoDao {
         id,
         executor: db,
       );
+
+      final dbDate = map['date'] as String;
+      final dbStatus = TodoStatus.fromDbString(map['status'] as String);
+
+      // If viewing a past date where this task was not yet completed/dropped on that date,
+      // present it as pending for that day's snapshot.
+      var effectiveStatus = dbStatus;
+      if (date.compareTo(dbDate) < 0 &&
+          (dbStatus == TodoStatus.completed || dbStatus == TodoStatus.dropped)) {
+        effectiveStatus = TodoStatus.pending;
+      }
+
+      final entity = TodoEntity.fromMap(
+        map,
+        subTasks: subTasks,
+        prerequisiteTodoIds: prereqIds,
+      );
+
       todos.add(
-        TodoEntity.fromMap(
-          map,
-          subTasks: subTasks,
-          prerequisiteTodoIds: prereqIds,
+        entity.copyWith(
+          date: date,
+          status: effectiveStatus,
+          sourceDate: entity.sourceDate ?? dbDate,
         ),
       );
     }
@@ -289,6 +313,33 @@ class TodoDao {
       limit: 1,
     );
     return result.isNotEmpty;
+  }
+
+  Future<String?> findConflictingDateForTitle(
+    String title,
+    String fromDate,
+    String toDate, {
+    String? excludeId,
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final where = excludeId != null
+        ? 'title = ? AND date >= ? AND date <= ? AND id != ?'
+        : 'title = ? AND date >= ? AND date <= ?';
+    final whereArgs = excludeId != null
+        ? [title, fromDate, toDate, excludeId]
+        : [title, fromDate, toDate];
+    final result = await db.query(
+      'todos',
+      columns: ['date'],
+      where: where,
+      whereArgs: whereArgs,
+      limit: 1,
+    );
+    if (result.isNotEmpty) {
+      return result.first['date'] as String;
+    }
+    return null;
   }
 
   /// Distinct titles starting with [prefix], capped at [limit].

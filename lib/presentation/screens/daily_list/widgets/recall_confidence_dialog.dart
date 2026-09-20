@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/data/models/recall_confidence.dart';
+import 'package:sreerajp_todo/domain/entities/recall_confidence.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 class RecallConfidenceDialog extends StatelessWidget {

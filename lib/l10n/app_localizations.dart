@@ -7119,6 +7119,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error loading decks: {error}'**
   String decksLoadError(String error);
+
+  /// Tab label for today's time segments
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get timeDetailsTabToday;
+
+  /// Tab label for all recorded time segments across all days
+  ///
+  /// In en, this message translates to:
+  /// **'All Time'**
+  String get timeDetailsTabAllTime;
+
+  /// Alert shown when renaming a multi-day task clashes with a task on another date
+  ///
+  /// In en, this message translates to:
+  /// **'A task with this title already exists on {date}. Please choose a different title.'**
+  String multiDayDuplicateTitleAlert(String date);
+
+  /// Title of the dialog when deleting a multi-day task with recorded time
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Task'**
+  String get deleteMultiDayTaskTitle;
+
+  /// Message in delete dialog asking user whether to remove from today only or delete entire history
+  ///
+  /// In en, this message translates to:
+  /// **'This task has recorded time on past days. Do you want to remove it only from today or delete its entire history?'**
+  String get deleteMultiDayTaskMessage;
+
+  /// Button to remove a multi-day task from today onwards while keeping past history
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from today only'**
+  String get deleteFromTodayOnly;
+
+  /// Button to delete a task and all its past history and time segments
+  ///
+  /// In en, this message translates to:
+  /// **'Delete entire history'**
+  String get deleteEntireHistory;
+
+  /// Badge indicating that the task cumulative target duration has been reached
+  ///
+  /// In en, this message translates to:
+  /// **'Target reached'**
+  String get targetReachedBadge;
+
+  /// Display format showing today's time and cumulative total time
+  ///
+  /// In en, this message translates to:
+  /// **'{todayTime} today · {totalTime} total'**
+  String todayAndTotalTime(String todayTime, String totalTime);
 }
 
 class _AppLocalizationsDelegate

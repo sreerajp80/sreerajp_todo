@@ -3,7 +3,7 @@ import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
 import 'package:uuid/uuid.dart';
 
 class ManualSegmentForm extends StatefulWidget {

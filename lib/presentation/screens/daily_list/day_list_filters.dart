@@ -1,5 +1,5 @@
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 
 /// The show/hide and sink-to-bottom rules for the day list.
 ///

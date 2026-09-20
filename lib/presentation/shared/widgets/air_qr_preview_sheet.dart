@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
+import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 enum AirQrMergeDecision { importAll, skipDuplicates, cancel }
@@ -91,23 +91,25 @@ class AirQrPreviewSheet extends StatelessWidget {
               ),
             ),
           ] else if (payload.type == AirQrPayloadType.backup) ...[
-            Container(
-              padding: const EdgeInsets.all(16),
+            DecoratedBox(
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Row(
-                children: [
-                  const Icon(Icons.backup, color: Colors.indigo),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      'Full App Backup Payload (${payload.rawJson.length} keys)',
-                      style: theme.textTheme.bodyMedium,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    const Icon(Icons.backup, color: Colors.indigo),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        'Full App Backup Payload (${payload.rawJson.length} keys)',
+                        style: theme.textTheme.bodyMedium,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ] else ...[

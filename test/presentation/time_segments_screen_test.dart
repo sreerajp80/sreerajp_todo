@@ -4,12 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_priority.dart';
-import 'package:sreerajp_todo/data/models/todo_search_result.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
@@ -57,6 +51,19 @@ class _FakeTodoRepo implements TodoRepository {
     String date, {
     String? excludeId,
   }) async => false;
+  @override
+  Future<String?> findConflictingDateForTitle(
+    String title,
+    String fromDate,
+    String toDate, {
+    String? excludeId,
+  }) async => null;
+  @override
+  Future<void> deleteTodoFromDate(
+    String id,
+    String date, {
+    bool bypassLock = false,
+  }) async {}
   @override
   Future<void> updateStatus(
     String id,
@@ -170,6 +177,15 @@ class _FakeTimeSegmentRepo implements TimeSegmentRepository {
     restoreCalled = true;
     segments.add(segment);
   }
+
+  @override
+  Future<int> getElapsedSecondsOnDate(String todoId, String date) async => 0;
+
+  @override
+  Future<int> getTotalElapsedSeconds(String todoId) async => 0;
+
+  @override
+  Future<bool> hasSegmentsBeforeDate(String todoId, String date) async => false;
 }
 
 void main() {

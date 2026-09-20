@@ -179,12 +179,10 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
   /// Asks the host to keep the screen on only while it is actually wanted.
   Future<void> _syncKeepAwake() async {
     final settings = ref.read(timeTrackingSettingsProvider);
-    final running = settings.keepScreenAwake
-        ? (await ref
-                  .read(timeSegmentRepositoryProvider)
-                  .getAllRunningSegments())
-              .isNotEmpty
-        : false;
+    final running =
+        settings.keepScreenAwake &&
+        (await ref.read(timeSegmentRepositoryProvider).getAllRunningSegments())
+            .isNotEmpty;
 
     if (running == _keepAwakeRequested) return;
     _keepAwakeRequested = running;

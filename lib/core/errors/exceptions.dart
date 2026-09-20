@@ -28,6 +28,21 @@ class DuplicateTitleException implements Exception {
   String toString() => 'DuplicateTitleException: $message';
 }
 
+class MultiDayDuplicateTitleException implements Exception {
+  const MultiDayDuplicateTitleException(
+    this.conflictingDate, [
+    this.message =
+        'A task with this title already exists on another date where this task was active.',
+  ]);
+
+  final String conflictingDate;
+  final String message;
+
+  @override
+  String toString() =>
+      'MultiDayDuplicateTitleException: $message (conflictingDate: $conflictingDate)';
+}
+
 class SegmentAlreadyRunningException implements Exception {
   const SegmentAlreadyRunningException([
     this.message = 'A time segment is already running for this task.',

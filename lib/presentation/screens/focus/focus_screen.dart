@@ -6,8 +6,6 @@ import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/screens/focus/widgets/focus_pulse_ring.dart';
 import 'package:sreerajp_todo/presentation/screens/focus/widgets/focus_sub_task_list.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';

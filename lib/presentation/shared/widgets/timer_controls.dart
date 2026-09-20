@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/time_tracking_notifier.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 
 /// Runs a timer action and shows whatever the user needs to know about it.
 ///

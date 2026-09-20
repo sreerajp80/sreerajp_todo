@@ -15,10 +15,7 @@ void main() {
     });
 
     test('byLocale resolves according to languageCode and falls back', () {
-      const text = LocalizedText.byLocale({
-        'en': 'Hello',
-        'ml': 'നമസ്കാരം',
-      });
+      const text = LocalizedText.byLocale({'en': 'Hello', 'ml': 'നമസ്കാരം'});
       expect(text.resolve('en'), equals('Hello'));
       expect(text.resolve('ml'), equals('നമസ്കാരം'));
       expect(text.resolve('fr'), equals('Hello')); // falls back to en
@@ -43,8 +40,8 @@ void main() {
   group('AppConfig', () {
     test('fallback returns expected default values', () {
       expect(AppConfig.fallback.appName.resolve('en'), equals('SreerajP ToDo'));
-      expect(AppConfig.fallback.version, equals('1.14.8'));
-      expect(AppConfig.fallback.build, equals('43'));
+      expect(AppConfig.fallback.version, equals('2.1.0'));
+      expect(AppConfig.fallback.build, equals('45'));
       expect(AppConfig.fallback.details, isNotEmpty);
       expect(
         AppConfig.fallback.description.resolve('en'),

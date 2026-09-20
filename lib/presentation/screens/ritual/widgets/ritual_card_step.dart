@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/data/models/daily_intention_entity.dart';
 import 'package:sreerajp_todo/domain/entities/ritual_card.dart';
 import 'package:sreerajp_todo/domain/entities/ritual_review_state.dart';
 import 'package:sreerajp_todo/presentation/screens/ritual/ritual_card_text.dart';

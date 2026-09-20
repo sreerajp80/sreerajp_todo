@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/data/services/p2p_wifi_sync_service.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_payload.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_scope.dart';
 
@@ -149,7 +148,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
     } catch (e) {
       setState(() {
         _isPeerSyncing = false;
-        _peerStatusMessage = 'Sync failed: ${e.toString()}';
+        _peerStatusMessage = 'Sync failed: $e';
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

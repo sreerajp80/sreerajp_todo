@@ -7,9 +7,6 @@ import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/screens/time_segments/widgets/manual_segment_form.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
@@ -172,10 +169,35 @@ class _SegmentsBody extends ConsumerWidget {
             format: settings.format,
           );
 
+    final todayDate = todo.date;
+    final todaySegments = segments
+        .where((s) => s.startTime.startsWith(todayDate))
+        .toList();
+    final todayTotal = todaySegments.fold<int>(
+          0,
+          (sum, s) => sum + (s.durationSeconds ?? 0),
+        ) +
+        (isRunning ? runningExtra : 0);
+    final todayText = isRunning
+        ? formatDuration(todayTotal)
+        : formatDuration(
+            todayTotal,
+            rounding: settings.rounding,
+            format: settings.format,
+          );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildHeader(context, theme, colorScheme, grandTotal, totalText),
+        _buildHeader(
+          context,
+          theme,
+          colorScheme,
+          grandTotal,
+          totalText,
+          todayTotal,
+          todayText,
+        ),
         if (canTrack)
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
@@ -218,33 +240,83 @@ class _SegmentsBody extends ConsumerWidget {
             child: PomodoroBanner(todoId: todoId),
           ),
         const Divider(height: 1),
-        if (segments.isEmpty)
-          Expanded(
-            child: AppEmptyState(
-              icon: Icons.timer_off,
-              title: context.l10n.noSegments,
-              message: context.l10n.noSegmentsRecordedDetailed,
-            ),
-          )
-        else
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.only(top: 8, bottom: 80),
-              itemCount: segments.length,
-              itemBuilder: (context, index) {
-                final segment = segments[index];
-                final isRunning =
-                    runningSegment != null && segment.id == runningSegment!.id;
-                return _SegmentTile(
-                  index: index + 1,
-                  segment: segment,
-                  isRunning: isRunning,
-                  todoId: todoId,
-                  isPast: isPast,
-                );
-              },
+        Expanded(
+          child: DefaultTabController(
+            length: 2,
+            child: Column(
+              children: [
+                TabBar(
+                  tabs: [
+                    Tab(
+                      text:
+                          '${context.l10n.timeDetailsTabToday} ($todayText)',
+                    ),
+                    Tab(
+                      text:
+                          '${context.l10n.timeDetailsTabAllTime} ($totalText)',
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      todaySegments.isEmpty
+                          ? AppEmptyState(
+                              icon: Icons.timer_off,
+                              title: context.l10n.noSegments,
+                              message: context.l10n.noSegmentsRecordedDetailed,
+                            )
+                          : ListView.builder(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 80,
+                              ),
+                              itemCount: todaySegments.length,
+                              itemBuilder: (context, index) {
+                                final segment = todaySegments[index];
+                                final isRunning = runningSegment != null &&
+                                    segment.id == runningSegment!.id;
+                                return _SegmentTile(
+                                  index: index + 1,
+                                  segment: segment,
+                                  isRunning: isRunning,
+                                  todoId: todoId,
+                                  isPast: isPast,
+                                );
+                              },
+                            ),
+                      segments.isEmpty
+                          ? AppEmptyState(
+                              icon: Icons.timer_off,
+                              title: context.l10n.noSegments,
+                              message: context.l10n.noSegmentsRecordedDetailed,
+                            )
+                          : ListView.builder(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                bottom: 80,
+                              ),
+                              itemCount: segments.length,
+                              itemBuilder: (context, index) {
+                                final segment = segments[index];
+                                final isRunning = runningSegment != null &&
+                                    segment.id == runningSegment!.id;
+                                return _SegmentTile(
+                                  index: index + 1,
+                                  segment: segment,
+                                  isRunning: isRunning,
+                                  todoId: todoId,
+                                  isPast: isPast,
+                                );
+                              },
+                            ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
+        ),
       ],
     );
   }
@@ -255,6 +327,8 @@ class _SegmentsBody extends ConsumerWidget {
     ColorScheme colorScheme,
     int grandTotal,
     String totalText,
+    int todayTotal,
+    String todayText,
   ) {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -288,24 +362,89 @@ class _SegmentsBody extends ConsumerWidget {
             ),
           ],
           const SizedBox(height: 12),
-          Semantics(
-            label: context.l10n.totalTimeForTask(todo.title, totalText),
-            child: ExcludeSemantics(
-              child: Row(
+          Wrap(
+            spacing: 16,
+            runSpacing: 8,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.access_time, size: 20, color: colorScheme.primary),
-                  const SizedBox(width: 8),
+                  Icon(Icons.today, size: 18, color: colorScheme.primary),
+                  const SizedBox(width: 6),
                   Text(
-                    '${context.l10n.totalTime}: $totalText',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: colorScheme.primary,
-                      fontWeight: FontWeight.w700,
+                    '${context.l10n.timeDetailsTabToday}: $todayText',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
               ),
-            ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.access_time, size: 18, color: colorScheme.primary),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${context.l10n.timeDetailsTabAllTime}: $totalText',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+              if (todo.targetSeconds != null &&
+                  grandTotal >= todo.targetSeconds!)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(
+                      color: Colors.green.withValues(alpha: 0.5),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.check_circle,
+                        size: 14,
+                        color: Colors.green,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        context.l10n.targetReachedBadge,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
           ),
+          if (todo.targetSeconds != null) ...[
+            const SizedBox(height: 10),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: (grandTotal / todo.targetSeconds!).clamp(0.0, 1.0),
+                minHeight: 6,
+                backgroundColor: colorScheme.surfaceContainerHighest,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  grandTotal >= todo.targetSeconds!
+                      ? Colors.green
+                      : colorScheme.primary,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );

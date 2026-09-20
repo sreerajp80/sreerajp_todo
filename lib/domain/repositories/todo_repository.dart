@@ -33,6 +33,17 @@ abstract class TodoRepository {
     String date, {
     String? excludeId,
   });
+  Future<String?> findConflictingDateForTitle(
+    String title,
+    String fromDate,
+    String toDate, {
+    String? excludeId,
+  });
+  Future<void> deleteTodoFromDate(
+    String id,
+    String date, {
+    bool bypassLock = false,
+  });
   Future<List<String>> getAutocompleteSuggestions(
     String prefix, {
     int limit = kAutocompleteLimit,

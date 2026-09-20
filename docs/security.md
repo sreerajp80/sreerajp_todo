@@ -107,10 +107,10 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 
 ## 7. Authentication And Access Control
 
-- App-lock strategy: None in v1.0 (the device's own screen lock is the primary access barrier).
-- Fallback behavior: Not applicable.
-- Session-expiry rule: Not applicable.
-- Background lock rule: Not applicable.
+- App-lock strategy: Optional PIN and biometric device lock supported via the native `in.sreerajp.todo/app_lock` channel (Android). When enabled in Settings, the app requires device authentication before displaying task content.
+- Fallback behavior: System device credentials (PIN/pattern/password) serve as fallback when biometrics fail.
+- Session-expiry rule: Immediate on app backgrounding when lock is active.
+- Background lock rule: Window shielding via `FLAG_SECURE` obscures recent task snapshots.
 - Protected-route strategy: Day lock (past dates are read-only) enforced at the repository layer.
 
 ---
@@ -146,7 +146,7 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 
 - `android:allowBackup`: `false` (prevents Android's auto-backup from copying the encrypted DB to Google Drive in plaintext-accessible form).
 - `android:fullBackupContent`: Not used (allowBackup is false).
-- Screenshot protection: Not enabled in v1.0 (task lists are not considered high-sensitivity like passwords or financial data).
+- Screenshot protection: Enabled via `FLAG_SECURE` through the `in.sreerajp.todo/app_lock` channel, shielding screen content against screen captures and recent task previews.
 - Root or tamper detection: Not implemented (out-of-scope threat model).
 - `INTERNET` permission: Deliberately absent. Android OS blocks all network access at the system level.
 - `ACCESS_NETWORK_STATE` / `ACCESS_WIFI_STATE`: Absent.
@@ -265,8 +265,8 @@ sentence ends or the sheet closes.
   Hardening option: Show a prominent, non-dismissible warning at export time. Consider passphrase hint storage in a future version (stored locally, never in the backup).
 - Risk: Device key loss after factory reset — live database is unrecoverable without a backup.
   Hardening option: Encourage regular backups with clear in-app guidance. Consider periodic backup reminders in a future version.
-- Risk: No app lock means anyone with device access can read task data.
-  Hardening option: Add biometric/PIN app lock in a future version (v2.0).
+- Risk: Casual local access if app lock is disabled by user.
+  Hardening option: Offer prominent, opt-in device authentication lock in app settings.
 - Risk: SQLCipher library vulnerability.
   Hardening option: Monitor SQLCipher releases and update promptly. The `sqflite_sqlcipher` package tracks upstream SQLCipher versions.
 

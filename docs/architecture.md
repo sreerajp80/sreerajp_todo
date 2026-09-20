@@ -14,7 +14,7 @@ Read [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) first before making
   - `Core Baseline`
   - `Production App Extension`
   - `Sensitive Data Extension`
-- Platforms: `Android`, `Windows` (v1.0); `iOS`, `Linux`, `macOS` (future — architecture must not block these)
+- Platforms: `Android (minSdk 21, targetSdk 35)`, `Windows` (v1.0 active); `iOS`, `Linux`, `macOS` (future — architecture must not block these)
 
 ---
 
@@ -28,19 +28,19 @@ Read [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) first before making
 - Copy/port tasks between days, recurring task generation, and cross-day search.
 - Statistical reporting with charts and paginated data tables.
 - Full Unicode support including CJK, RTL scripts, Devanagari, and emoji.
+- Trilingual UI (English, Malayalam, Sanskrit) with dynamic per-field directionality.
 
 ### Non-Goals
 
-- Multi-user support, shared access, or data sync between devices.
+- Multi-user support, shared cloud access, or remote server sync between devices.
 - Cloud storage, remote backup, online accounts, or any network connectivity.
-- Push notifications or reminders (deferred to a future version).
-- User authentication or app lock (no login, no biometric gate in v1.0).
+- Push notifications or reminders via remote servers (deferred to a future version).
 
 ---
 
 ## 3. Architecture Summary
 
-The app uses a custom 5-layer architecture (Presentation / Application / Domain / Data / Core) with Riverpod for state management. Screens delegate to StateNotifiers or FutureProviders, which route through use-case classes for multi-step business operations or directly through repository implementations for simple CRUD. All persistence is isolated behind a DAO layer backed by an encrypted SQLite database via `sqflite_sqlcipher`. Navigation is declarative via `go_router`.
+The app uses a custom 5-layer architecture (Presentation / Application / Domain / Data / Core) with Riverpod for state management. Screens delegate to StateNotifiers or FutureProviders, which route through use-case classes for multi-step business operations or directly through repository implementations for simple CRUD. All persistence is isolated behind a DAO layer backed by an encrypted SQLite database via `sqflite_sqlcipher` (mobile) and `sqflite_common_ffi` (desktop). Navigation is declarative via `go_router`. The user interface is fully trilingual (English, Malayalam, and Sanskrit) with per-field dynamic text directionality (`AdaptiveDirectionality`), strictly adhering to `docs/guidelines/guideline.md` and `docs/guidelines/flutter_project_engineering_standard.md`.
 
 ---
 
@@ -387,7 +387,7 @@ test/
 |----------|---------------|-----|----------|
 | Database library | `sqflite_sqlcipher` + `sqflite_common_ffi` | Lean dependency graph, drop-in encrypted replacement for `sqflite` | Less type-safety than `drift`; raw SQL strings in DAOs |
 | No background isolates for queries | Main isolate with paginated queries | `sqflite` handles are not transferable across Dart isolates | Large stat queries may briefly block UI; mitigated by pagination and caching |
-| No build flavors in v1.0 | Single build configuration | Single developer, no dev/prod environment split needed | Must add flavors later if side-by-side installs or environment config is needed |
+| Android build flavors | `dev` and `prod` environments (`in.sreerajp.sreerajp_todo.dev` / `in.sreerajp.sreerajp_todo`) | Isolates debug testing and QA from release data | Requires `--flavor` argument during build and run |
 | Dual-key encryption | Device key (live DB) + user passphrase (backups) | Transparent daily use + portable backups | Forgotten passphrase = unrecoverable backup |
 | No in-memory autocomplete cache | Direct DB query per keystroke (debounced 300 ms) | Always fresh, no stale cache logic, SQLite index is fast enough | Slightly more DB queries; acceptable given < 1 ms query time with index |
 | Layer-first over feature-first | Single domain, shared entities across screens | Less indirection for a small app | May need refactoring if the app grows to multiple domains |

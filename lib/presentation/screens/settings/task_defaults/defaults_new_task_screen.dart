@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
-import 'package:sreerajp_todo/data/models/todo_priority.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_choice_list.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 

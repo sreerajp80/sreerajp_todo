@@ -66,4 +66,8 @@ abstract class TimeSegmentRepository {
     String todayDate, {
     DateTime? Function(DateTime segmentStart)? closeAt,
   });
+
+  Future<int> getElapsedSecondsOnDate(String todoId, String date);
+  Future<int> getTotalElapsedSeconds(String todoId);
+  Future<bool> hasSegmentsBeforeDate(String todoId, String date);
 }

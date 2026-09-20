@@ -249,4 +249,61 @@ class TimeSegmentDao {
     await db.delete('time_segments', where: 'todo_id = ?', whereArgs: [todoId]);
     await reindexTodoInIndex(db, todoId);
   }
+
+  Future<int> getElapsedSecondsForTodoOnDate(
+    String todoId,
+    String date, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final result = await db.rawQuery(
+      '''
+      SELECT COALESCE(SUM(duration_seconds), 0) as total
+      FROM time_segments
+      WHERE todo_id = ? AND substr(start_time, 1, 10) = ? AND end_time IS NOT NULL
+      ''',
+      [todoId, date],
+    );
+    final total = result.first['total'];
+    if (total is int) return total;
+    if (total is num) return total.toInt();
+    return 0;
+  }
+
+  Future<int> getTotalElapsedSecondsForTodo(
+    String todoId, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final result = await db.rawQuery(
+      '''
+      SELECT COALESCE(SUM(duration_seconds), 0) as total
+      FROM time_segments
+      WHERE todo_id = ? AND end_time IS NOT NULL
+      ''',
+      [todoId],
+    );
+    final total = result.first['total'];
+    if (total is int) return total;
+    if (total is num) return total.toInt();
+    return 0;
+  }
+
+  Future<bool> hasSegmentsBeforeDate(
+    String todoId,
+    String date, {
+    DatabaseExecutor? executor,
+  }) async {
+    final db = executor ?? await _databaseService.database;
+    final result = await db.rawQuery(
+      '''
+      SELECT COUNT(*) as cnt
+      FROM time_segments
+      WHERE todo_id = ? AND substr(start_time, 1, 10) < ?
+      ''',
+      [todoId, date],
+    );
+    final count = result.first['cnt'];
+    return (count is int ? count : (count as num).toInt()) > 0;
+  }
 }

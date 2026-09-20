@@ -46,7 +46,7 @@ Read [architecture.md](architecture.md) and [features.md](features.md) first to 
 - Build custom Light and Dark theme definitions (`AppTheme`).
 - Implement responsive layout scaffold adapting `NavigationBar` (mobile `<600dp`) and `NavigationRail` (desktop/tablet `>=600dp`).
 - Implement screens: `DailyListScreen`, `CreateEditTodoScreen`, `SearchResultsScreen`, `CopyTodosScreen`, `RecurringTodosScreen`, `StatisticsScreen`, `BackupScreen`.
-- Ensure bilingual UI rendering (English and Malayalam) with dynamic per-field LTR/RTL directionality.
+- Ensure trilingual UI rendering (English, Malayalam, and Sanskrit) with dynamic per-field LTR/RTL directionality.
 
 ---
 

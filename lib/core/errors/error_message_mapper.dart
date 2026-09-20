@@ -6,6 +6,8 @@ String mapErrorToMessage(AppLocalizations l10n, Object error) {
     DayLockedException() => l10n.errorDayLocked,
     CompletedLockException() => l10n.errorCompletedLocked,
     DuplicateTitleException() => l10n.errorDuplicateTitle,
+    final MultiDayDuplicateTitleException e =>
+      l10n.multiDayDuplicateTitleAlert(e.conflictingDate),
     SegmentAlreadyRunningException() => l10n.errorSegmentAlreadyRunning,
     SegmentOverlapException() => l10n.segmentOverlap,
     TodoNotFoundException() => l10n.errorTodoNotFound,

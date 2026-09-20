@@ -1189,5 +1189,14 @@
   "deckLoadError": "ഡെക്ക് ലോഡ് ചെയ്യുന്നതിൽ പിശക്: {error}",
   "deckNotFound": "ഡെക്ക് കണ്ടെത്തിയില്ല",
   "deckTasksLoadError": "ടാസ്കുകൾ ലോഡ് ചെയ്യുന്നതിൽ പിശക്: {error}",
-  "decksLoadError": "ഡെക്കുകൾ ലോഡ് ചെയ്യുന്നതിൽ പിശക്: {error}"
+  "decksLoadError": "ഡെക്കുകൾ ലോഡ് ചെയ്യുന്നതിൽ പിശക്: {error}",
+  "timeDetailsTabToday": "ഇന്ന്",
+  "timeDetailsTabAllTime": "എല്ലാ സമയവും",
+  "multiDayDuplicateTitleAlert": "{date}-ൽ ഈ തലക്കെട്ടുള്ള ഒരു ടാസ്ക് ഇതിനകം നിലവിലുണ്ട്. ദയവായി മറ്റൊരു തലക്കെട്ട് തിരഞ്ഞെടുക്കുക.",
+  "deleteMultiDayTaskTitle": "ടാസ്ക് ഇല്ലാതാക്കുക",
+  "deleteMultiDayTaskMessage": "ഈ ടാസ്കിന് കഴിഞ്ഞ ദിവസങ്ങളിൽ രേഖപ്പെടുത്തിയ സമയമുണ്ട്. ഇത് ഇന്നിൽ നിന്ന് മാത്രം നീക്കംചെയ്യണോ അതോ ഇതിന്റെ മുഴുവൻ ചരിത്രവും ഇല്ലാതാക്കണോ?",
+  "deleteFromTodayOnly": "ഇന്നിൽ നിന്ന് മാത്രം നീക്കുക",
+  "deleteEntireHistory": "മുഴുവൻ ചരിത്രവും ഇല്ലാതാക്കുക",
+  "targetReachedBadge": "ലക്ഷ്യം കൈവരിച്ചു",
+  "todayAndTotalTime": "{todayTime} ഇന്ന് · {totalTime} ആകെ"
 }

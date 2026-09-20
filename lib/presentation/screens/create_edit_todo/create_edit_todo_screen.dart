@@ -11,10 +11,6 @@ import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_priority.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
-import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/repeat_option_picker.dart';
 import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/priority_selector.dart';
@@ -29,8 +25,6 @@ import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_comm
 import 'package:sreerajp_todo/presentation/screens/ocr/ocr_scan_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/core/utils/rrule_display_utils.dart';
-
-import 'package:sreerajp_todo/data/models/sub_task_item.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
 
 class CreateEditTodoScreen extends ConsumerStatefulWidget {

@@ -4,11 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_search_result.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
@@ -106,6 +101,23 @@ class InMemoryTodoRepository implements TodoRepository {
       (todo) =>
           todo.date == date && todo.title == title && todo.id != excludeId,
     );
+  }
+
+  @override
+  Future<String?> findConflictingDateForTitle(
+    String title,
+    String fromDate,
+    String toDate, {
+    String? excludeId,
+  }) async => null;
+
+  @override
+  Future<void> deleteTodoFromDate(
+    String id,
+    String date, {
+    bool bypassLock = false,
+  }) async {
+    _todos.removeWhere((t) => t.id == id);
   }
 
   @override
@@ -260,6 +272,15 @@ class FakeTimeSegmentRepository implements TimeSegmentRepository {
 
   @override
   Future<void> restoreSegment(TimeSegmentEntity segment) async {}
+
+  @override
+  Future<int> getElapsedSecondsOnDate(String todoId, String date) async => 0;
+
+  @override
+  Future<int> getTotalElapsedSeconds(String todoId) async => 0;
+
+  @override
+  Future<bool> hasSegmentsBeforeDate(String todoId, String date) async => false;
 }
 
 class _UndoSnackBarHarness extends StatelessWidget {

@@ -4068,4 +4068,36 @@ class AppLocalizationsMl extends AppLocalizations {
   String decksLoadError(String error) {
     return 'ഡെക്കുകൾ ലോഡ് ചെയ്യുന്നതിൽ പിശക്: $error';
   }
+
+  @override
+  String get timeDetailsTabToday => 'ഇന്ന്';
+
+  @override
+  String get timeDetailsTabAllTime => 'എല്ലാ സമയവും';
+
+  @override
+  String multiDayDuplicateTitleAlert(String date) {
+    return '$date-ൽ ഈ തലക്കെട്ടുള്ള ഒരു ടാസ്ക് ഇതിനകം നിലവിലുണ്ട്. ദയവായി മറ്റൊരു തലക്കെട്ട് തിരഞ്ഞെടുക്കുക.';
+  }
+
+  @override
+  String get deleteMultiDayTaskTitle => 'ടാസ്ക് ഇല്ലാതാക്കുക';
+
+  @override
+  String get deleteMultiDayTaskMessage =>
+      'ഈ ടാസ്കിന് കഴിഞ്ഞ ദിവസങ്ങളിൽ രേഖപ്പെടുത്തിയ സമയമുണ്ട്. ഇത് ഇന്നിൽ നിന്ന് മാത്രം നീക്കംചെയ്യണോ അതോ ഇതിന്റെ മുഴുവൻ ചരിത്രവും ഇല്ലാതാക്കണോ?';
+
+  @override
+  String get deleteFromTodayOnly => 'ഇന്നിൽ നിന്ന് മാത്രം നീക്കുക';
+
+  @override
+  String get deleteEntireHistory => 'മുഴുവൻ ചരിത്രവും ഇല്ലാതാക്കുക';
+
+  @override
+  String get targetReachedBadge => 'ലക്ഷ്യം കൈവരിച്ചു';
+
+  @override
+  String todayAndTotalTime(String todayTime, String totalTime) {
+    return '$todayTime ഇന്ന് · $totalTime ആകെ';
+  }
 }

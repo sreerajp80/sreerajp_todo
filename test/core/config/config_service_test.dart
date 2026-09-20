@@ -57,8 +57,10 @@ void main() {
       expect(config.version, equals(AppConfig.fallback.version));
     });
 
-    test('loadAndVerify returns loaded config and handles version check', () async {
-      const mockJson = '''
+    test(
+      'loadAndVerify returns loaded config and handles version check',
+      () async {
+        const mockJson = '''
       {
         "appName": "Mock App",
         "description": "Mock Description",
@@ -68,14 +70,15 @@ void main() {
       }
       ''';
 
-      final service = ConfigService(loadAsset: (_) async => mockJson);
-      final config = await service.loadAndVerify(
-        packageVersion: '1.0.0',
-        packageBuild: '10',
-      );
+        final service = ConfigService(loadAsset: (_) async => mockJson);
+        final config = await service.loadAndVerify(
+          packageVersion: '1.0.0',
+          packageBuild: '10',
+        );
 
-      expect(config.version, equals('1.0.0'));
-      expect(config.build, equals('10'));
-    });
+        expect(config.version, equals('1.0.0'));
+        expect(config.build, equals('10'));
+      },
+    );
   });
 }

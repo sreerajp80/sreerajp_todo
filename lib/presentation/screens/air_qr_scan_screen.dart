@@ -1,10 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
-import 'package:sreerajp_todo/data/services/air_qr_service.dart';
+import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/domain/entities/air_qr_progress.dart';
-import 'package:sreerajp_todo/presentation/widgets/air_qr_preview_sheet.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/air_qr_preview_sheet.dart';
 
 class AirQrScanScreen extends StatefulWidget {
   const AirQrScanScreen({super.key});

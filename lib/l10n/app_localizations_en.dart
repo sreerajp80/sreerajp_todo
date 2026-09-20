@@ -4036,4 +4036,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String decksLoadError(String error) {
     return 'Error loading decks: $error';
   }
+
+  @override
+  String get timeDetailsTabToday => 'Today';
+
+  @override
+  String get timeDetailsTabAllTime => 'All Time';
+
+  @override
+  String multiDayDuplicateTitleAlert(String date) {
+    return 'A task with this title already exists on $date. Please choose a different title.';
+  }
+
+  @override
+  String get deleteMultiDayTaskTitle => 'Delete Task';
+
+  @override
+  String get deleteMultiDayTaskMessage =>
+      'This task has recorded time on past days. Do you want to remove it only from today or delete its entire history?';
+
+  @override
+  String get deleteFromTodayOnly => 'Remove from today only';
+
+  @override
+  String get deleteEntireHistory => 'Delete entire history';
+
+  @override
+  String get targetReachedBadge => 'Target reached';
+
+  @override
+  String todayAndTotalTime(String todayTime, String totalTime) {
+    return '$todayTime today · $totalTime total';
+  }
 }

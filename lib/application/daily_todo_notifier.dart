@@ -114,6 +114,8 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
       await loadTodos();
     } on DuplicateTitleException {
       rethrow;
+    } on MultiDayDuplicateTitleException {
+      rethrow;
     } on DayLockedException {
       rethrow;
     } on Exception catch (e) {
@@ -139,6 +141,16 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   Future<void> deleteTodo(String id) async {
     try {
       await todoRepository.deleteTodo(id, bypassLock: true);
+      await loadTodos();
+      onDataChanged?.call();
+    } on Exception catch (e) {
+      state = state.copyWith(error: e.toString());
+    }
+  }
+
+  Future<void> deleteTodoFromDate(String id, String date) async {
+    try {
+      await todoRepository.deleteTodoFromDate(id, date, bypassLock: true);
       await loadTodos();
       onDataChanged?.call();
     } on Exception catch (e) {

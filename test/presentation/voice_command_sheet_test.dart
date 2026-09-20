@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/platform/speech_channel.dart';
 import 'package:sreerajp_todo/core/voice/voice_parse_result.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_command_sheet.dart';
@@ -23,7 +22,6 @@ class _FakeSpeechChannel extends SpeechChannel {
   _FakeSpeechChannel({this.reason}) : super(isSupported: true);
 
   final SpeechUnavailableReason? reason;
-  final _controller = StreamController<SpeechEvent>.broadcast();
 
   @override
   Future<SpeechUnavailableReason?> check() async => reason;
@@ -38,7 +36,7 @@ class _FakeSpeechChannel extends SpeechChannel {
   Future<void> stop() async {}
 
   @override
-  Stream<SpeechEvent> get events => _controller.stream;
+  Stream<SpeechEvent> get events => const Stream.empty();
 }
 
 late SharedPreferences testPrefs;

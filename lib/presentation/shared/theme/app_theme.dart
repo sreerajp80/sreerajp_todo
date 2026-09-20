@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 
 abstract final class AppTheme {
   static const _seedColor = Color(0xFF4F46E5);

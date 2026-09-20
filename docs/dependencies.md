@@ -20,7 +20,7 @@ Before adding any package:
 
 | Package | Purpose | Category |
 |---|---|---|
-| `flutter_localizations` | Bilingual localization (English & Malayalam) | Internationalization |
+| `flutter_localizations` | Trilingual localization (English, Malayalam & Sanskrit) | Internationalization |
 | `cupertino_icons` | iOS-style iconography support | UI |
 | `characters` | Grapheme-cluster-aligned string walking for Indic search folding | Core Utilities |
 | `sqflite_sqlcipher` | AES-256 encrypted SQLite engine (Mobile) | Database |

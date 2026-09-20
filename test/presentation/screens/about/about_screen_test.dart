@@ -12,26 +12,24 @@ import '../../../helpers/test_l10n.dart';
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  testWidgets('MadeWithLove widget renders heart icon and accessible semantics', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      const MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        locale: Locale('en'),
-        home: Scaffold(body: MadeWithLove()),
-      ),
-    );
-    await tester.pumpAndSettle();
+  testWidgets(
+    'MadeWithLove widget renders heart icon and accessible semantics',
+    (tester) async {
+      await tester.pumpWidget(
+        const MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: Locale('en'),
+          home: Scaffold(body: MadeWithLove()),
+        ),
+      );
+      await tester.pumpAndSettle();
 
-    expect(find.byType(MadeWithLove), findsOneWidget);
-    expect(find.byIcon(Icons.favorite), findsOneWidget);
-    expect(
-      find.bySemanticsLabel(testL10n.madeWithLoveA11y),
-      findsOneWidget,
-    );
-  });
+      expect(find.byType(MadeWithLove), findsOneWidget);
+      expect(find.byIcon(Icons.favorite), findsOneWidget);
+      expect(find.bySemanticsLabel(testL10n.madeWithLoveA11y), findsOneWidget);
+    },
+  );
 
   testWidgets('AboutScreen renders app config details and MadeWithLove badge', (
     tester,

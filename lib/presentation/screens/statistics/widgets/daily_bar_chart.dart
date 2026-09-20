@@ -4,8 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/data/models/statistics_models.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/statistics_models.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 
@@ -102,7 +102,7 @@ class DailyBarChart extends StatelessWidget {
                           enabled: true,
                           touchTooltipData: BarTouchTooltipData(
                             getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                              final item = stats[group.x.toInt()];
+                              final item = stats[group.x];
                               final labels = [
                                 context.l10n.statusPending,
                                 context.l10n.statusWorking,

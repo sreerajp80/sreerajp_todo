@@ -14,8 +14,6 @@ import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/day_list_filters.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/carry_over_sheet.dart';
@@ -24,6 +22,7 @@ import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/morning_in
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_command_sheet.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/recall_confidence_dialog.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/daily_progress_header.dart';
+import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/delete_task_choice_dialog.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
 import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
@@ -31,9 +30,8 @@ import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/responsive_scaffold.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
-import 'package:sreerajp_todo/presentation/widgets/air_qr_share_dialog.dart';
-import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
-import 'package:sreerajp_todo/presentation/widgets/air_qr_preview_sheet.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/air_qr_preview_sheet.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/air_qr_share_dialog.dart';
 
 class DailyListScreen extends ConsumerStatefulWidget {
   const DailyListScreen({super.key, required this.date});
@@ -765,12 +763,36 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           if (todo.recurrenceRuleId != null) {
             await _handleRecurringDelete(context, notifier, todo);
           } else {
-            final confirmed = await showConfirmDialog(
-              context,
-              title: context.l10n.confirmDelete,
-              content: context.l10n.confirmDeleteBody,
-            );
-            if (confirmed && context.mounted) {
+            final hasPastSegments = await ref
+                .read(timeSegmentRepositoryProvider)
+                .hasSegmentsBeforeDate(todo.id, widget.date);
+
+            if (hasPastSegments && context.mounted) {
+              final choice = await showDeleteTaskChoiceDialog(context);
+              if (choice == null || !context.mounted) return;
+              if (choice == DeleteChoice.fromTodayOnly) {
+                try {
+                  await notifier.deleteTodoFromDate(todo.id, widget.date);
+                  if (context.mounted) {
+                    showAppSnackBar(context, message: context.l10n.todoDeleted);
+                  }
+                } on Exception catch (error) {
+                  if (context.mounted) _showError(error);
+                }
+                return;
+              }
+              // If entireHistory was chosen, proceed to delete
+            } else {
+              if (!context.mounted) return;
+              final confirmed = await showConfirmDialog(
+                context,
+                title: context.l10n.confirmDelete,
+                content: context.l10n.confirmDeleteBody,
+              );
+              if (!confirmed || !context.mounted) return;
+            }
+
+            if (context.mounted) {
               try {
                 await notifier.deleteTodo(todo.id);
                 if (context.mounted) {

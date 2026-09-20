@@ -11,8 +11,8 @@ Read it before making any change. See the docs table below for full detail.
 |-------|-------|
 | App name | SreerajP ToDo |
 | Type | Personal offline-first daily ToDo and time-tracker |
-| Platform(s) | Android (minSdk 21, targetSdk 34) + Windows desktop (v1.0 active); iOS, Linux, macOS (future) |
-| Package / org id | `in.sreerajp` |
+| Platform(s) | Android (minSdk 21, targetSdk 35) + Windows desktop (v1.0 active); iOS, Linux, macOS (future) |
+| Package / org id | `in.sreerajp.sreerajp_todo` |
 | Flutter SDK | 3.44.8 stable |
 | Dart SDK | 3.12.2 |
 | State management | Riverpod (`flutter_riverpod`) |
@@ -51,7 +51,7 @@ Read it before making any change. See the docs table below for full detail.
 7. **No Direct DB Access From Widgets:** Widgets consume Riverpod providers from `lib/application/providers.dart` only. Never call DAOs directly.
 8. **Immutable Models:** All domain entities and data models use `@freezed`. Never mutate in place; use `copyWith()`. Never edit generated `*.freezed.dart` or `*.g.dart` files manually.
 9. **Measurements & Metric Formatting:** Display durations as `HH:MM:SS` via `lib/core/utils/duration_utils.dart`. Use logical pixels (dp) only. Use metric terminology in comments and documentation.
-10. **Localization First:** All user-visible text comes from `lib/l10n/*.arb` via `AppLocalizations` (or `context.l10n`), never raw string literals in widgets. Every ARB key must have an `@key` description. SQL strings belong in DAO classes only.
+10. **Localization First:** All user-visible text comes from `lib/l10n/*.arb` via `AppLocalizations` (or `context.l10n`), never raw string literals in widgets. All three mandatory languages (English, Malayalam, and Sanskrit) must maintain strict key parity. Every ARB key must have an `@key` description. SQL strings belong in DAO classes only.
 
 ---
 
@@ -113,8 +113,8 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 
 | Flavor | App ID | Display name | Signing |
 |--------|--------|--------------|---------|
-| dev | `in.sreerajp.dev` | SreerajP ToDo Dev | Debug keystore (automatic) |
-| prod | `in.sreerajp` | SreerajP ToDo | Release keystore (`android/key.properties`) |
+| dev | `in.sreerajp.sreerajp_todo.dev` | SreerajP ToDo Dev | Debug keystore (automatic) |
+| prod | `in.sreerajp.sreerajp_todo` | SreerajP ToDo | Release keystore (`android/key.properties`) |
 
 ---
 
@@ -128,9 +128,16 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 
 ## Localization rules
 
-- All user-visible text comes from `lib/l10n/*.arb` via `AppLocalizations` (or `context.l10n`) — never a raw string literal in a widget. This applies to all supported languages (English & Malayalam).
-- `l10n.yaml` (project root) and `lib/l10n/app_<base>.arb` must exist. Run `flutter gen-l10n` after editing any `.arb` file.
+- All user-visible text comes from `lib/l10n/*.arb` via `AppLocalizations` (or `context.l10n`) — never a raw string literal in a widget.
+- Every app MUST support all three mandatory languages: English (`en`), Malayalam (`ml`), and Sanskrit (`sa`). Never drop Sanskrit.
+- Key parity is mandatory: every key in `lib/l10n/app_en.arb` must have matching entries in `lib/l10n/app_ml.arb` and `lib/l10n/app_sa.arb`.
 - Every ARB key needs an `@key` description entry.
+- Sanskrit-not-Hindi rule: Sanskrit text must be authentic classical Sanskrit, never Hindi loans, words, or crutches written in Devanagari.
+- In-app language picker rule: The app supports an explicit language override (System Default, English, Malayalam, Sanskrit) persisted in preferences.
+- Tooltip rule: Every icon-only button or interactive control MUST have an explicit localized tooltip (`tooltip: context.l10n...`).
+- Short-label budget rule: Action buttons and navigation labels must adhere to compact width constraints (under 22 characters).
+- About-screen rule: Single source of truth in `assets/config/app_config.json` loaded via `ConfigService`, including the fixed "Made with ❤️ from India" badge (`MadeWithLove`).
+- Run `flutter gen-l10n` after editing any `.arb` file.
 - Literals are allowed only for logs, non-UI exception messages, asset paths, route names, and map/JSON keys.
 
 ---
@@ -217,7 +224,7 @@ Create `plans/` and `change_log/` if they do not exist.
 3. Enforce NFC normalization on every DB text write path (`unicodeUtils.nfcNormalize`).
 4. Enforce day-lock checks in every repository mutation.
 5. Add unit tests with every new DAO method.
-6. Keep user-visible text localized via `lib/l10n/*.arb` and `AppLocalizations`.
+6. Keep user-visible text localized via `lib/l10n/*.arb` and `AppLocalizations` with strict parity across English, Malayalam, and Sanskrit.
 7. Route multi-step operations through domain use-cases (`lib/domain/usecases/`).
 8. Use bundled assets only (`AssetImage`, `Image.asset()`, `Image.file()`).
 9. Use PowerShell syntax in docs and command examples on Windows.

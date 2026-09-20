@@ -306,7 +306,7 @@ class _OcrResultBottomSheetState extends ConsumerState<OcrResultBottomSheet> {
 
                 // Expandable Raw OCR Text card
                 if (widget.result.rawText.isNotEmpty)
-                  Container(
+                  DecoratedBox(
                     decoration: BoxDecoration(
                       color: theme.colorScheme.surfaceContainerHighest
                           .withValues(alpha: 0.5),

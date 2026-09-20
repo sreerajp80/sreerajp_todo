@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 
 /// A modern, motivating daily progress summary card shown at the top of the daily list.

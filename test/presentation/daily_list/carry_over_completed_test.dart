@@ -6,8 +6,6 @@ import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/data/repositories/time_segment_repository_impl.dart';
 import 'package:sreerajp_todo/data/repositories/todo_repository_impl.dart';
 import 'package:sreerajp_todo/domain/usecases/move_todo.dart';
@@ -179,9 +177,9 @@ void main() {
           reason: 'Original sourceDate preserved',
         );
 
-        // Verify yesterday has no remaining duplicate
+        // Verify task remains visible on yesterday as part of its multi-day journey
         final yesterdayTodos = await todoRepo.getTodosByDate(yesterday);
-        expect(yesterdayTodos.any((t) => t.id == originalId), isFalse);
+        expect(yesterdayTodos.any((t) => t.id == originalId), isTrue);
 
         // Complete the task on today
         await todoRepo.updateStatus(originalId, TodoStatus.completed);

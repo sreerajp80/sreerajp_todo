@@ -85,9 +85,13 @@ void main() {
       final rule = makeRule();
       await ruleRepo.insert(rule);
 
-      const pastDate = '2026-08-01';
       final today = todayAsIso();
-      const futureDate = '2026-09-20';
+      final pastDate = dateTimeToIso(
+        parseIsoDate(today).subtract(const Duration(days: 7)),
+      );
+      final futureDate = dateTimeToIso(
+        parseIsoDate(today).add(const Duration(days: 7)),
+      );
 
       final pastTodo = makeTodo(id: 't-past', date: pastDate, ruleId: rule.id);
       final todayTodo = makeTodo(id: 't-today', date: today, ruleId: rule.id);
@@ -136,9 +140,13 @@ void main() {
         final rule = makeRule();
         await ruleRepo.insert(rule);
 
-        const pastDate = '2026-08-01';
         final today = todayAsIso();
-        const futureDate = '2026-09-20';
+        final pastDate = dateTimeToIso(
+          parseIsoDate(today).subtract(const Duration(days: 7)),
+        );
+        final futureDate = dateTimeToIso(
+          parseIsoDate(today).add(const Duration(days: 7)),
+        );
 
         final pastTodo = makeTodo(
           id: 't-past',
@@ -208,9 +216,13 @@ void main() {
         final rule = makeRule();
         await ruleRepo.insert(rule);
 
-        const pastDate = '2026-08-01';
         final today = todayAsIso();
-        const futureDate = '2026-09-20';
+        final pastDate = dateTimeToIso(
+          parseIsoDate(today).subtract(const Duration(days: 7)),
+        );
+        final futureDate = dateTimeToIso(
+          parseIsoDate(today).add(const Duration(days: 7)),
+        );
 
         final pastTodo = makeTodo(
           id: 't-past',
@@ -264,7 +276,9 @@ void main() {
         await ruleRepo.insert(rule);
 
         final today = todayAsIso();
-        const futureDate = '2026-09-20';
+        final futureDate = dateTimeToIso(
+          parseIsoDate(today).add(const Duration(days: 7)),
+        );
 
         final todayTodo = makeTodo(id: 't-today', date: today, ruleId: rule.id);
         final futureTodo = makeTodo(

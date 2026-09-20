@@ -9,16 +9,13 @@ import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_health_dashboard.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_list_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/presentation/widgets/air_qr_share_dialog.dart';
-import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
-import 'package:sreerajp_todo/presentation/widgets/air_qr_preview_sheet.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/air_qr_preview_sheet.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/air_qr_share_dialog.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
   const BackupScreen({super.key});
@@ -252,9 +249,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                 if (payload != null &&
                     decision != null &&
                     decision != AirQrMergeDecision.cancel) {
-                  _showSnackBar(
-                    l10n.airQrBackupReceived(payload.todos.length),
-                  );
+                  _showSnackBar(l10n.airQrBackupReceived(payload.todos.length));
                 }
               }
             },

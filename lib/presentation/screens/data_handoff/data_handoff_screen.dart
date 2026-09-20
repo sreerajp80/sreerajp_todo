@@ -5,7 +5,6 @@ import 'package:path/path.dart' as p;
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/domain/entities/data_handoff_payload.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/data_handoff/widgets/markdown_import_dialog.dart';
@@ -241,10 +240,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              context.l10n.dataHandoffImportSuccess(
-                importedCount,
-                _targetDate,
-              ),
+              context.l10n.dataHandoffImportSuccess(importedCount, _targetDate),
             ),
             behavior: SnackBarBehavior.floating,
           ),

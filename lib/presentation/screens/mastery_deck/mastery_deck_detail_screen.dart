@@ -6,9 +6,6 @@ import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
-import 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/status_badge.dart';
@@ -131,9 +128,8 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
       ),
       body: deckAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, _) => Center(
-          child: Text(context.l10n.deckLoadError(err.toString())),
-        ),
+        error: (err, _) =>
+            Center(child: Text(context.l10n.deckLoadError(err.toString()))),
         data: (deck) {
           if (deck == null) {
             return Center(child: Text(context.l10n.deckNotFound));

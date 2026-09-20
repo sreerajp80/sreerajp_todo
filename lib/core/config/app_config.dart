@@ -60,8 +60,8 @@ class AppConfig {
     description: LocalizedText.plain(
       'Personal offline-first daily ToDo and time-tracker.',
     ),
-    version: '1.14.8',
-    build: '43',
+    version: '2.1.0',
+    build: '45',
     details: {
       'license': LocalizedText.plain('All libraries used are open source.'),
     },

@@ -38,8 +38,7 @@ class AboutScreen extends ConsumerWidget {
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
           children: [
             AppSectionCard(
-              title:
-                  resolvedAppName.isNotEmpty ? resolvedAppName : kAppName,
+              title: resolvedAppName.isNotEmpty ? resolvedAppName : kAppName,
               subtitle: context.l10n.aboutHeadline,
               child: Text(
                 resolvedDescription.isNotEmpty

@@ -77,11 +77,7 @@ void main() {
         }
       }
 
-      expect(
-        placeholderErrors,
-        isEmpty,
-        reason: placeholderErrors.join('\n'),
-      );
+      expect(placeholderErrors, isEmpty, reason: placeholderErrors.join('\n'));
     });
 
     test('all Sanskrit strings are NFC normalized', () {
@@ -111,16 +107,7 @@ void main() {
       );
 
       // Standalone forbidden words
-      const forbiddenWords = {
-        'था',
-        'थे',
-        'थी',
-        'हो',
-        'है',
-        'हैं',
-        'हूं',
-        'और',
-      };
+      const forbiddenWords = {'था', 'थे', 'थी', 'हो', 'है', 'हैं', 'हूं', 'और'};
 
       for (final key in saKeys) {
         // Skip card 14 Ramcharitmanas Avadhi quote if needed
@@ -135,11 +122,10 @@ void main() {
           );
         }
 
-        final tokens =
-            text
-                .split(RegExp(r'''[\s"'()\[\]{}<>।,.?!;:/|`#*~-]+'''))
-                .where((t) => t.isNotEmpty)
-                .toSet();
+        final tokens = text
+            .split(RegExp(r'''[\s"'()\[\]{}<>।,.?!;:/|`#*~-]+'''))
+            .where((t) => t.isNotEmpty)
+            .toSet();
 
         final badTokens = tokens.intersection(forbiddenWords);
         if (badTokens.isNotEmpty) {

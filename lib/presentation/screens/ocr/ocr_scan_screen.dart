@@ -928,7 +928,7 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     required VoidCallback onPressed,
     bool isActive = false,
   }) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         color: isActive
             ? AppTheme.defaultLightAccent.withValues(alpha: 0.8)

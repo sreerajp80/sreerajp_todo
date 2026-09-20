@@ -91,7 +91,7 @@ class BackupService {
         filePath: backupFilePath ?? destinationPath,
         fileSizeBytes: fileSizeBytes,
         triggerType: triggerType,
-        diagnosticMessage: 'Export failed: ${error.toString()}',
+        diagnosticMessage: 'Export failed: $error',
         nowTime: nowTime,
       );
       rethrow;

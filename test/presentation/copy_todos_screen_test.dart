@@ -4,10 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_search_result.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
@@ -62,6 +58,33 @@ class _InMemoryRepo implements TodoRepository {
     return todos.any(
       (t) => t.date == date && t.title == title && t.id != excludeId,
     );
+  }
+
+  @override
+  Future<String?> findConflictingDateForTitle(
+    String title,
+    String fromDate,
+    String toDate, {
+    String? excludeId,
+  }) async {
+    for (final t in todos) {
+      if (t.title == title &&
+          t.id != excludeId &&
+          t.date.compareTo(fromDate) >= 0 &&
+          t.date.compareTo(toDate) <= 0) {
+        return t.date;
+      }
+    }
+    return null;
+  }
+
+  @override
+  Future<void> deleteTodoFromDate(
+    String id,
+    String date, {
+    bool bypassLock = false,
+  }) async {
+    todos.removeWhere((t) => t.id == id);
   }
 
   @override

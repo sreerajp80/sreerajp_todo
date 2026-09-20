@@ -58,7 +58,7 @@ Read [implementation_plan.md](implementation_plan.md) and [features.md](features
 - [x] Daily list screen with task tiles, status toggles, and live timer controls
 - [x] Create/edit todo screen with status selection and dynamic LTR/RTL text fields
 - [x] Cross-day task copy screen (`CopyTodosScreen`)
-- [x] Bilingual localization support (English `app_en.arb` & Malayalam `app_ml.arb`)
+- [x] Trilingual localization support (English `app_en.arb`, Malayalam `app_ml.arb` & Sanskrit `app_sa.arb`)
 
 ### Phase 6: Backup & Encryption Engine
 - [x] AES-256 ZIP encrypted local backup export and import (`BackupService`)

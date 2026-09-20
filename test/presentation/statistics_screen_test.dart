@@ -8,7 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
-import 'package:sreerajp_todo/data/models/statistics_models.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/statistics_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/widgets/per_item_stats_table.dart';

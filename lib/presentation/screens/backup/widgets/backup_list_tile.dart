@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
+import 'package:sreerajp_todo/domain/entities/backup_file_info.dart';
 
 class BackupListTile extends StatelessWidget {
   const BackupListTile({super.key, required this.info, this.onDelete});

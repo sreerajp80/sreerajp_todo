@@ -72,12 +72,23 @@ class TodoRepositoryImpl implements TodoRepository {
     _checkDayLock(todo.date, bypassLock: bypassLock);
     final normalized = _normalize(todo);
 
-    if (await _todoDao.existsTitleOnDate(
+    final fromDate = todo.sourceDate ?? todo.date;
+    final toDate = todo.date;
+    final minDate = fromDate.compareTo(toDate) <= 0 ? fromDate : toDate;
+    final maxDate = fromDate.compareTo(toDate) >= 0 ? fromDate : toDate;
+
+    final conflict = await _todoDao.findConflictingDateForTitle(
       normalized.title,
-      normalized.date,
+      minDate,
+      maxDate,
       excludeId: normalized.id,
-    )) {
-      throw const DuplicateTitleException();
+    );
+    if (conflict != null) {
+      if (conflict == normalized.date) {
+        throw const DuplicateTitleException();
+      } else {
+        throw MultiDayDuplicateTitleException(conflict);
+      }
     }
 
     await _todoDao.update(normalized);
@@ -95,6 +106,59 @@ class TodoRepositoryImpl implements TodoRepository {
     if (todo == null) throw const TodoNotFoundException();
     _checkDayLock(todo.date, bypassLock: bypassLock);
     await _todoDao.delete(id);
+  }
+
+  @override
+  Future<void> deleteTodoFromDate(
+    String id,
+    String date, {
+    bool bypassLock = false,
+  }) async {
+    final todo = await _todoDao.findById(id);
+    if (todo == null) throw const TodoNotFoundException();
+    _checkDayLock(date, bypassLock: bypassLock);
+
+    final parsedDate = DateTime.parse(date);
+    final yesterday = parsedDate
+        .subtract(const Duration(days: 1))
+        .toIso8601String()
+        .substring(0, 10);
+
+    final source = todo.sourceDate ?? todo.date;
+    final targetCloseDate =
+        source.compareTo(yesterday) <= 0 ? yesterday : source;
+
+    final updated = todo.copyWith(
+      date: targetCloseDate,
+      status: TodoStatus.dropped,
+      portedTo: 'removed_from_$date',
+      updatedAt: DateTime.now().toUtc().toIso8601String(),
+    );
+
+    await _todoDao.update(updated);
+
+    await logHistoryEvent(
+      todoId: id,
+      eventType: TodoHistoryEventType.statusChanged,
+      description:
+          'Removed from $date onwards (preserved in history up to $targetCloseDate)',
+      metadata: '{"removed_from":"$date","closed_on":"$targetCloseDate"}',
+    );
+  }
+
+  @override
+  Future<String?> findConflictingDateForTitle(
+    String title,
+    String fromDate,
+    String toDate, {
+    String? excludeId,
+  }) {
+    return _todoDao.findConflictingDateForTitle(
+      nfcNormalize(title),
+      fromDate,
+      toDate,
+      excludeId: excludeId,
+    );
   }
 
   @override

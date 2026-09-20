@@ -1,11 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:sreerajp_todo/l10n/app_localizations.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/services/air_qr_payload_service.dart';
-import 'package:sreerajp_todo/data/services/air_qr_service.dart';
+import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/domain/entities/air_qr_frame.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 /// Shows an animated AirQR stream dialog for sharing todos or backups air-gapped.
 Future<void> showAirQrShareDialog(

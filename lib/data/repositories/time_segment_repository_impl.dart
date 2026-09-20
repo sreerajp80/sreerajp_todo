@@ -416,4 +416,19 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
       await _timeSegmentDao.closeSegment(orphan.id, endTime, interrupted: true);
     }
   }
+
+  @override
+  Future<int> getElapsedSecondsOnDate(String todoId, String date) {
+    return _timeSegmentDao.getElapsedSecondsForTodoOnDate(todoId, date);
+  }
+
+  @override
+  Future<int> getTotalElapsedSeconds(String todoId) {
+    return _timeSegmentDao.getTotalElapsedSecondsForTodo(todoId);
+  }
+
+  @override
+  Future<bool> hasSegmentsBeforeDate(String todoId, String date) {
+    return _timeSegmentDao.hasSegmentsBeforeDate(todoId, date);
+  }
 }
