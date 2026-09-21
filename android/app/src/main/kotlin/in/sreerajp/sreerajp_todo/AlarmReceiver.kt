@@ -91,21 +91,15 @@ class AlarmReceiver : BroadcastReceiver() {
 
             try {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-                        alarmManager.setAndAllowWhileIdle(
-                            AlarmManager.RTC_WAKEUP,
-                            nextTriggerMillis,
-                            pendingIntent
-                        )
-                    } else {
-                        alarmManager.setExactAndAllowWhileIdle(
-                            AlarmManager.RTC_WAKEUP,
-                            nextTriggerMillis,
-                            pendingIntent
-                        )
-                    }
+                    // Use setAndAllowWhileIdle so the Android system can batch alarms
+                    // during maintenance windows, reducing deep sleep wakeups and saving battery.
+                    alarmManager.setAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        nextTriggerMillis,
+                        pendingIntent
+                    )
                 } else {
-                    alarmManager.setExact(
+                    alarmManager.set(
                         AlarmManager.RTC_WAKEUP,
                         nextTriggerMillis,
                         pendingIntent

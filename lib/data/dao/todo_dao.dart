@@ -252,7 +252,8 @@ class TodoDao {
       // present it as pending for that day's snapshot.
       var effectiveStatus = dbStatus;
       if (date.compareTo(dbDate) < 0 &&
-          (dbStatus == TodoStatus.completed || dbStatus == TodoStatus.dropped)) {
+          (dbStatus == TodoStatus.completed ||
+              dbStatus == TodoStatus.dropped)) {
         effectiveStatus = TodoStatus.pending;
       }
 

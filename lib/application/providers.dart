@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart' show AppLifecycleState;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/focus_pulse_notifier.dart';
@@ -596,8 +597,21 @@ final pomodoroProvider = StateNotifierProvider<PomodoroNotifier, PomodoroState>(
   },
 );
 
+/// The current application lifecycle state, kept updated by the root lifecycle watcher.
+/// UI timers and countdown streams use this to suspend 1-second ticks while in the background.
+final appLifecycleStateProvider = StateProvider<AppLifecycleState>((ref) {
+  return AppLifecycleState.resumed;
+});
+
 /// Seconds left in the current Pomodoro block, ticking once a second.
-final pomodoroCountdownProvider = StreamProvider<int>((ref) {
+/// Automatically disposed when not watched, and suspends ticking in the background.
+final pomodoroCountdownProvider = StreamProvider.autoDispose<int>((ref) {
+  final lifecycle = ref.watch(appLifecycleStateProvider);
+  if (lifecycle == AppLifecycleState.paused ||
+      lifecycle == AppLifecycleState.hidden) {
+    return Stream.value(0);
+  }
+
   final pomodoro = ref.watch(pomodoroProvider);
   if (!pomodoro.isRunning) return Stream.value(0);
 
@@ -623,7 +637,14 @@ final focusPulseProvider =
     });
 
 /// Seconds until the next focus pulse, ticking once a second.
-final focusPulseCountdownProvider = StreamProvider<int>((ref) {
+/// Automatically disposed when not watched, and suspends ticking in the background.
+final focusPulseCountdownProvider = StreamProvider.autoDispose<int>((ref) {
+  final lifecycle = ref.watch(appLifecycleStateProvider);
+  if (lifecycle == AppLifecycleState.paused ||
+      lifecycle == AppLifecycleState.hidden) {
+    return Stream.value(0);
+  }
+
   final pulse = ref.watch(focusPulseProvider);
   if (!pulse.isArmed) return Stream.value(0);
 
@@ -642,7 +663,12 @@ final todoByIdProvider = FutureProvider.family<TodoEntity?, String>((
   return ref.read(todoRepositoryProvider).getTodoById(todoId);
 });
 
-final liveTimerProvider = StreamProvider.family<int, String>((ref, todoId) {
+/// Elapsed seconds for the active time segment on [todoId], ticking once a second.
+/// Automatically disposed when no UI listens, and suspends ticking in the background.
+final liveTimerProvider = StreamProvider.autoDispose.family<int, String>((
+  ref,
+  todoId,
+) {
   final trackingState = ref.watch(timeTrackingProvider(todoId));
   final running = trackingState.runningSegment;
   if (running == null) {
@@ -650,9 +676,20 @@ final liveTimerProvider = StreamProvider.family<int, String>((ref, todoId) {
   }
 
   final startTime = DateTime.parse(running.startTime);
-  return Stream.periodic(const Duration(seconds: 1), (_) {
-    return DateTime.now().difference(startTime).inSeconds;
-  });
+  final lifecycle = ref.watch(appLifecycleStateProvider);
+  if (lifecycle == AppLifecycleState.paused ||
+      lifecycle == AppLifecycleState.hidden) {
+    return Stream.value(DateTime.now().difference(startTime).inSeconds);
+  }
+
+  Stream<int> ticker() async* {
+    yield DateTime.now().difference(startTime).inSeconds;
+    yield* Stream.periodic(const Duration(seconds: 1), (_) {
+      return DateTime.now().difference(startTime).inSeconds;
+    });
+  }
+
+  return ticker();
 });
 
 /// Title suggestions for [prefix].

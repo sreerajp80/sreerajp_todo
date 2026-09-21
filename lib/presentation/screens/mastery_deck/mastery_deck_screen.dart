@@ -137,6 +137,11 @@ class MasteryDeckScreen extends ConsumerWidget {
             },
             tooltip: context.l10n.tooltipRefresh,
           ),
+          IconButton(
+            icon: const Icon(Icons.settings_outlined),
+            onPressed: () => context.push(AppRoutes.settings),
+            tooltip: context.l10n.settingsLabel,
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(

@@ -55,8 +55,11 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
       _evaluateAlertConditions();
+      _startPeriodicTimer();
     } else if (state == AppLifecycleState.paused ||
         state == AppLifecycleState.hidden) {
+      _checkTimer?.cancel();
+      _checkTimer = null;
       _syncBackgroundAlarmSchedule();
     }
   }

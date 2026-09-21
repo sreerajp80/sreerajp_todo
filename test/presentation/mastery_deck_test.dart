@@ -100,6 +100,28 @@ void main() {
     expect(find.text(testL10n.newMasteryDeck), findsWidgets);
   });
 
+  testWidgets('MasteryDeckScreen shows settings button in app bar', (
+    tester,
+  ) async {
+    when(() => mockSrsRepo.getAllItems()).thenAnswer((_) async => []);
+
+    await tester.pumpWidget(
+      buildTestApp(
+        prefs: prefs,
+        child: const MasteryDeckScreen(),
+        overrides: [
+          spacedRepetitionRepositoryProvider.overrideWithValue(mockSrsRepo),
+          todoRepositoryProvider.overrideWithValue(mockTodoRepo),
+        ],
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.byTooltip(testL10n.settingsLabel), findsOneWidget);
+    expect(find.byIcon(Icons.settings_outlined), findsOneWidget);
+  });
+
   testWidgets(
     'MasteryDeckScreen shows cards with title and progress when decks exist',
     (tester) async {

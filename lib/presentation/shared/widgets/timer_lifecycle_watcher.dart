@@ -55,6 +55,7 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
+    ref.read(appLifecycleStateProvider.notifier).state = state;
     switch (state) {
       case AppLifecycleState.paused:
       case AppLifecycleState.hidden:
@@ -70,6 +71,12 @@ class _TimerLifecycleWatcherState extends ConsumerState<TimerLifecycleWatcher>
   Future<void> _onLeftForeground() async {
     _autoStopTimer?.cancel();
     _autoStopTimer = null;
+
+    // Release screen keep-awake so the device screen can sleep normally while away.
+    if (_keepAwakeRequested) {
+      _keepAwakeRequested = false;
+      await ref.read(screenWakeChannelProvider).setKeepAwake(false);
+    }
 
     // No pulse can be heard while the app is away, so the schedule is dropped
     // and rebuilt from the clock on the way back.

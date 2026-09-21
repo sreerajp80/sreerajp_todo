@@ -125,8 +125,9 @@ class TodoRepositoryImpl implements TodoRepository {
         .substring(0, 10);
 
     final source = todo.sourceDate ?? todo.date;
-    final targetCloseDate =
-        source.compareTo(yesterday) <= 0 ? yesterday : source;
+    final targetCloseDate = source.compareTo(yesterday) <= 0
+        ? yesterday
+        : source;
 
     final updated = todo.copyWith(
       date: targetCloseDate,

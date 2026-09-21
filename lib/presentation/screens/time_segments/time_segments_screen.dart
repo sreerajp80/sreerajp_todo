@@ -173,10 +173,8 @@ class _SegmentsBody extends ConsumerWidget {
     final todaySegments = segments
         .where((s) => s.startTime.startsWith(todayDate))
         .toList();
-    final todayTotal = todaySegments.fold<int>(
-          0,
-          (sum, s) => sum + (s.durationSeconds ?? 0),
-        ) +
+    final todayTotal =
+        todaySegments.fold<int>(0, (sum, s) => sum + (s.durationSeconds ?? 0)) +
         (isRunning ? runningExtra : 0);
     final todayText = isRunning
         ? formatDuration(todayTotal)
@@ -248,8 +246,7 @@ class _SegmentsBody extends ConsumerWidget {
                 TabBar(
                   tabs: [
                     Tab(
-                      text:
-                          '${context.l10n.timeDetailsTabToday} ($todayText)',
+                      text: '${context.l10n.timeDetailsTabToday} ($todayText)',
                     ),
                     Tab(
                       text:
@@ -274,7 +271,8 @@ class _SegmentsBody extends ConsumerWidget {
                               itemCount: todaySegments.length,
                               itemBuilder: (context, index) {
                                 final segment = todaySegments[index];
-                                final isRunning = runningSegment != null &&
+                                final isRunning =
+                                    runningSegment != null &&
                                     segment.id == runningSegment!.id;
                                 return _SegmentTile(
                                   index: index + 1,
@@ -299,7 +297,8 @@ class _SegmentsBody extends ConsumerWidget {
                               itemCount: segments.length,
                               itemBuilder: (context, index) {
                                 final segment = segments[index];
-                                final isRunning = runningSegment != null &&
+                                final isRunning =
+                                    runningSegment != null &&
                                     segment.id == runningSegment!.id;
                                 return _SegmentTile(
                                   index: index + 1,

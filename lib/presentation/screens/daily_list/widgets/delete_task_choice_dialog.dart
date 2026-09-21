@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 
-enum DeleteChoice {
-  fromTodayOnly,
-  entireHistory,
-}
+enum DeleteChoice { fromTodayOnly, entireHistory }
 
 Future<DeleteChoice?> showDeleteTaskChoiceDialog(BuildContext context) {
   return showDialog<DeleteChoice>(
@@ -16,7 +13,10 @@ Future<DeleteChoice?> showDeleteTaskChoiceDialog(BuildContext context) {
       return AlertDialog(
         title: Text(context.l10n.deleteMultiDayTaskTitle),
         content: Text(context.l10n.deleteMultiDayTaskMessage),
-        actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        actionsPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(null),

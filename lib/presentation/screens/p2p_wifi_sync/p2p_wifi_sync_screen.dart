@@ -15,16 +15,14 @@ class P2pWifiSyncScreen extends ConsumerStatefulWidget {
 }
 
 class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-
-  // Host Mode Controls
-  P2pSyncScope _hostScope = const P2pSyncScope.full();
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
+  late final TabController _tabController;
   bool _isHostRunning = false;
   String _hostIp = '';
   int _hostPort = 0;
   String _pairingPin = '';
   String _qrPayload = '';
+  P2pSyncScope _hostScope = const P2pSyncScope.full();
 
   // Peer Mode Controls
   final _hostIpController = TextEditingController();
@@ -38,6 +36,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _tabController = TabController(length: 2, vsync: this);
     _initLocalIp();
   }
@@ -52,7 +51,27 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.hidden) {
+      if (_isHostRunning) {
+        ref.read(p2pWifiSyncServiceProvider).stopHostServer();
+        if (mounted) {
+          setState(() {
+            _isHostRunning = false;
+          });
+        }
+      }
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    if (_isHostRunning) {
+      ref.read(p2pWifiSyncServiceProvider).stopHostServer();
+    }
     _tabController.dispose();
     _hostIpController.dispose();
     _hostPortController.dispose();

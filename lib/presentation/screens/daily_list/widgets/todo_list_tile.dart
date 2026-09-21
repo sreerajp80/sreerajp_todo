@@ -383,8 +383,9 @@ class TodoListTile extends ConsumerWidget {
         ? totalSeconds + liveSeconds
         : totalSeconds;
 
-    final todaySegments = trackingState.segments
-        .where((s) => s.startTime.startsWith(todo.date));
+    final todaySegments = trackingState.segments.where(
+      (s) => s.startTime.startsWith(todo.date),
+    );
     final todaySegmentSeconds = todaySegments.fold<int>(
       0,
       (sum, s) => sum + (s.durationSeconds ?? 0),
