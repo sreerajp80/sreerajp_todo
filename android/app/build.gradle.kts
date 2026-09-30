@@ -166,6 +166,10 @@ dependencies {
     // the device and no network permission is involved.
     implementation("cz.adaptech.tesseract4android:tesseract4android:4.9.0")
 
+    // QR code decoding for the AirQR scanner. ZXing core is pure Java maths
+    // (Apache 2.0): no network code, no Play Services, no telemetry.
+    implementation("com.google.zxing:core:3.5.3")
+
     // Test only — never shipped in the APK. Covers the pure-arithmetic OCR
     // reading-order algorithm in OcrReadingOrder.kt.
     testImplementation("junit:junit:4.13.2")

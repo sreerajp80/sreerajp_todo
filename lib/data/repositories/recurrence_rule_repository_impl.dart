@@ -14,6 +14,7 @@ class RecurrenceRuleRepositoryImpl implements RecurrenceRuleRepository {
       description: rule.description != null
           ? nfcNormalize(rule.description!)
           : null,
+      subTaskTitles: rule.subTaskTitles?.map(nfcNormalize).toList(),
     );
   }
 

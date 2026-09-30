@@ -39,12 +39,42 @@ if ($blocked) {
 }
 Write-Host "Offline dep audit passed."
 
-Write-Host "=== Checking AndroidManifest.xml for network permissions ==="
+Write-Host "=== Checking AndroidManifest.xml for banned network permissions ==="
+# INTERNET is allowed (local Wi-Fi sync only). The permissions below are banned
+# unless the entry has tools:node="remove", which strips it from the final app.
 $manifestPath = Join-Path $PSScriptRoot "..\android\app\src\main\AndroidManifest.xml"
+$bannedPermissions = @(
+    "android.permission.ACCESS_NETWORK_STATE",
+    "android.permission.ACCESS_WIFI_STATE",
+    "android.permission.CHANGE_NETWORK_STATE",
+    "android.permission.CHANGE_WIFI_STATE",
+    "android.permission.CHANGE_WIFI_MULTICAST_STATE",
+    "android.permission.NEARBY_WIFI_DEVICES"
+)
 if (Test-Path $manifestPath) {
-    $manifestMatch = Select-String -Path $manifestPath -Pattern "INTERNET|NETWORK_STATE" -Quiet
-    if ($manifestMatch) {
-        Write-Host "AndroidManifest.xml contains network permissions. Commit aborted."
+    try {
+        [xml]$manifestXml = Get-Content -Path $manifestPath -Raw
+    } catch {
+        Write-Host "AndroidManifest.xml could not be read as XML. Commit aborted."
+        exit 1
+    }
+    $androidNs = "http://schemas.android.com/apk/res/android"
+    $toolsNs = "http://schemas.android.com/tools"
+    $found = @()
+    foreach ($element in $manifestXml.manifest.ChildNodes) {
+        if ($element.LocalName -ne "uses-permission" -and $element.LocalName -ne "uses-permission-sdk-23") {
+            continue
+        }
+        $name = $element.GetAttribute("name", $androidNs)
+        $node = $element.GetAttribute("node", $toolsNs)
+        if ($bannedPermissions -contains $name -and $node -ne "remove") {
+            $found += $name
+        }
+    }
+    if ($found.Count -gt 0) {
+        Write-Host "AndroidManifest.xml requests banned network permissions:"
+        $found | ForEach-Object { Write-Host "  $_" }
+        Write-Host "Only INTERNET is allowed. Commit aborted."
         exit 1
     }
 }

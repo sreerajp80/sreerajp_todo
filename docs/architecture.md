@@ -22,7 +22,7 @@ Read [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) first before making
 
 ### Goals
 
-- Fully offline daily ToDo and time-tracking app with zero internet dependency.
+- Fully offline daily ToDo and time-tracking app with zero internet dependency and no internet traffic. The only network use is user-started Wi-Fi sync on the local network.
 - All data encrypted at rest using AES-256 (SQLCipher) and stored exclusively on the local device.
 - Multi-segment time tracking per task per day, with both auto-recorded and manual entry.
 - Copy/port tasks between days, recurring task generation, and cross-day search.
@@ -182,7 +182,8 @@ Use-cases exist only for multi-step business orchestrations:
 |----------|-------|
 | `MarkTodoCompleted` | Close open segment -> set status to completed -> refresh |
 | `MarkTodoDropped` | Close open segment -> set status to dropped -> refresh |
-| `PortTodo` | Validate target date -> create copy on target -> mark source as ported (transaction) |
+| `MoveTodo` | Refuse a past target date (`DayLockedException`) -> check title on target date -> stop running timer -> update the same todo's date (keeps its ID, time segments and history) -> log a move event. Returns the start date (`sourceDate`) from before the move. Used by move and carry-over |
+| `UndoMoveTodo` | Undo of a move: stop running timer -> `restoreMove` puts back the exact old `date` and `sourceDate`, so a multi-day task shows again on every day it covered. The only path allowed to write a past date for a move |
 | `CopyTodos` | Conflict check per title -> batch insert -> return skip list |
 | `StartTimeSegment` | Check day lock -> check completed lock -> check no running segment -> insert |
 | `RepairOrphanedSegments` | Startup scan: close orphaned segments with zero duration |
@@ -276,6 +277,7 @@ Use-cases exist only for multi-step business orchestrations:
 - Database: `sqflite_sqlcipher` (mobile, AES-256 encrypted) + `sqflite_common_ffi` with SQLCipher (desktop)
 - Key-value storage: `shared_preferences` for appearance, language, time-tracking and task-default settings, plus the transient paused-timer marks and the "carry-over last asked on" date. No user task data is ever stored here.
 - Schema version: 9. Migration v9 adds `todos.priority` (TEXT, not null, default `normal`) and `todos.target_seconds` (INTEGER, nullable), plus an `idx_todos_priority` index on `(date, priority)`. It is guarded by a `PRAGMA table_info` check, so it is safe to run twice. A backup made by an older build restores as an older database and is upgraded on open; an older P2P peer or handoff file has both columns defaulted in `P2pSyncPayload`.
+- Schema version: 12. Migration v12 adds three nullable columns to `recurrence_rules`: `priority` (TEXT), `target_seconds` (INTEGER) and `sub_task_titles` (TEXT, a JSON list). They hold the series values that `GenerateRecurringTasks` copies onto each new occurrence. They are set when a repeat is created and on "this and future" / "all" edits, never on a "this instance only" edit. Rules saved before v12 keep nulls and fall back to copying the latest occurrence. `RecurrenceRuleEntity.fromMap` reads all three as optional, so older backups, hand-off files and P2P payloads still load.
 - Secure storage: Android Keystore (Android) / Windows DPAPI (Windows) for the device-derived database encryption key
 
 ### Network
@@ -293,6 +295,7 @@ Use-cases exist only for multi-step business orchestrations:
 - `in.sreerajp.todo/screen_wake`: Own channel setting and clearing `FLAG_KEEP_SCREEN_ON` while a timer runs (Android only). Written as a channel rather than a package so the audited dependency list stays unchanged
 - `in.sreerajp.todo/app_lock`: Own channel for `FLAG_SECURE` and the device unlock screen (Android only)
 - `in.sreerajp.todo/ocr`: Own channel to native Tesseract 5 (Tesseract4Android) for English and Malayalam text recognition (Android only). The language models ship in `assets/tessdata/` and are copied to app-internal storage on first use, so recognition is entirely on-device. Where the channel is absent — host tests, and Windows — `NativeOcrService` falls back to ML Kit
+- `in.sreerajp.todo/qr_decoder`: Own channel to on-device ZXing core for the AirQR scanner (Android only). Dart sends the brightness plane of one camera frame; the host decodes it on a background thread and answers with the QR text or null.
 - `image_cropper`: Platform channel to the native uCrop crop-and-rotate editor, used before recognition
 - `in.sreerajp.todo/speech` and `in.sreerajp.todo/speech_events`: Own method and event channel pair over Android `SpeechRecognizer`, for the voice task sheet (Android only). The host always asks for the on-device engine and refuses to listen when it cannot, so the offline guarantee holds; see `docs/security.md` section 10. Written as a channel rather than a package for the same reason as the two above
 
@@ -347,7 +350,7 @@ test/
 |       |-- mark_todo_completed_test.dart
 |       |-- mark_todo_dropped_test.dart
 |       |-- generate_recurring_tasks_test.dart
-|       |-- port_todo_test.dart
+|       |-- move_todo_test.dart
 |       `-- copy_todos_test.dart
 |-- core/
 |   `-- unicode_utils_test.dart
@@ -407,7 +410,9 @@ test/
 - Risk: Statistics queries slow on large datasets (> 10,000 rows).
   Mitigation: Paginated queries, yield to UI between batches, 10-second cache, optional read-only second DB connection.
 - Risk: Future package upgrade silently introduces a transitive networking dependency.
-  Mitigation: Pre-commit hook runs offline dep audit; `INTERNET` permission absence provides OS-level backstop.
+  Mitigation: Pre-commit hook runs offline dep audit; the release checklist audits the merged manifest for extra network permissions and telemetry backends.
+- Risk: A plugin adds its own telemetry (as Google ML Kit's `datatransport` did before ML Kit was removed).
+  Mitigation: Remove the backend with `tools:node="remove"` in `AndroidManifest.xml` and check the merged manifest on every release build.
 
 ---
 

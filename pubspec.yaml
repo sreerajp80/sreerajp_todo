@@ -1,7 +1,7 @@
 name: sreerajp_todo
 description: "SreerajP ToDo — Personal offline-first daily ToDo and time-tracker."
 publish_to: 'none'
-version: 2.2.1+47
+version: 2.3.0+52
 
 environment:
   sdk: ^3.12.2
@@ -31,9 +31,7 @@ dependencies:
   rrule: ^0.2.16
   shared_preferences: ^2.3.2
   qr_flutter: ^4.1.0
-  mobile_scanner: ^7.2.0
   camera: ^0.12.1
-  google_mlkit_text_recognition: ^0.17.1
   image_cropper: ^12.2.1
   image: ^4.5.4
 

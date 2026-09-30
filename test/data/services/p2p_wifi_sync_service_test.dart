@@ -1,4 +1,6 @@
+import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/dao/recurrence_rule_dao.dart';
 import 'package:sreerajp_todo/data/dao/spaced_repetition_dao.dart';
@@ -34,6 +36,33 @@ void main() {
   });
 
   group('P2pWifiSyncService Unit Tests', () {
+    test(
+      'connectAndSyncAsPeer refuses an address outside the local network',
+      () async {
+        await expectLater(
+          syncService.connectAndSyncAsPeer(
+            hostIp: '8.8.8.8',
+            hostPort: 4040,
+            pin: '123456',
+            salt: Uint8List(16),
+          ),
+          throwsA(isA<NonLocalAddressException>()),
+        );
+      },
+    );
+
+    test('connectAndSyncAsPeer refuses a host name', () async {
+      await expectLater(
+        syncService.connectAndSyncAsPeer(
+          hostIp: 'example.com',
+          hostPort: 4040,
+          pin: '123456',
+          salt: Uint8List(16),
+        ),
+        throwsA(isA<NonLocalAddressException>()),
+      );
+    });
+
     test('getLocalIpAddresses returns non-empty list of IP strings', () async {
       final ips = await P2pWifiSyncService.getLocalIpAddresses();
       expect(ips, isNotEmpty);

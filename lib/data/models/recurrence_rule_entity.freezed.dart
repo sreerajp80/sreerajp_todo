@@ -23,7 +23,12 @@ mixin _$RecurrenceRuleEntity {
   String get rrule => throw _privateConstructorUsedError;
   String get startDate => throw _privateConstructorUsedError;
   String? get endDate => throw _privateConstructorUsedError;
-  bool get active => throw _privateConstructorUsedError;
+  bool get active =>
+      throw _privateConstructorUsedError; // Series values copied onto every new occurrence. All three are null on
+  // rules saved before database v12; see [hasSeriesValues].
+  TodoPriority? get priority => throw _privateConstructorUsedError;
+  int? get targetSeconds => throw _privateConstructorUsedError;
+  List<String>? get subTaskTitles => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String get updatedAt => throw _privateConstructorUsedError;
 
@@ -49,6 +54,9 @@ abstract class $RecurrenceRuleEntityCopyWith<$Res> {
     String startDate,
     String? endDate,
     bool active,
+    TodoPriority? priority,
+    int? targetSeconds,
+    List<String>? subTaskTitles,
     String createdAt,
     String updatedAt,
   });
@@ -79,6 +87,9 @@ class _$RecurrenceRuleEntityCopyWithImpl<
     Object? startDate = null,
     Object? endDate = freezed,
     Object? active = null,
+    Object? priority = freezed,
+    Object? targetSeconds = freezed,
+    Object? subTaskTitles = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -112,6 +123,18 @@ class _$RecurrenceRuleEntityCopyWithImpl<
                 ? _value.active
                 : active // ignore: cast_nullable_to_non_nullable
                       as bool,
+            priority: freezed == priority
+                ? _value.priority
+                : priority // ignore: cast_nullable_to_non_nullable
+                      as TodoPriority?,
+            targetSeconds: freezed == targetSeconds
+                ? _value.targetSeconds
+                : targetSeconds // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            subTaskTitles: freezed == subTaskTitles
+                ? _value.subTaskTitles
+                : subTaskTitles // ignore: cast_nullable_to_non_nullable
+                      as List<String>?,
             createdAt: null == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
@@ -143,6 +166,9 @@ abstract class _$$RecurrenceRuleEntityImplCopyWith<$Res>
     String startDate,
     String? endDate,
     bool active,
+    TodoPriority? priority,
+    int? targetSeconds,
+    List<String>? subTaskTitles,
     String createdAt,
     String updatedAt,
   });
@@ -169,6 +195,9 @@ class __$$RecurrenceRuleEntityImplCopyWithImpl<$Res>
     Object? startDate = null,
     Object? endDate = freezed,
     Object? active = null,
+    Object? priority = freezed,
+    Object? targetSeconds = freezed,
+    Object? subTaskTitles = freezed,
     Object? createdAt = null,
     Object? updatedAt = null,
   }) {
@@ -202,6 +231,18 @@ class __$$RecurrenceRuleEntityImplCopyWithImpl<$Res>
             ? _value.active
             : active // ignore: cast_nullable_to_non_nullable
                   as bool,
+        priority: freezed == priority
+            ? _value.priority
+            : priority // ignore: cast_nullable_to_non_nullable
+                  as TodoPriority?,
+        targetSeconds: freezed == targetSeconds
+            ? _value.targetSeconds
+            : targetSeconds // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        subTaskTitles: freezed == subTaskTitles
+            ? _value._subTaskTitles
+            : subTaskTitles // ignore: cast_nullable_to_non_nullable
+                  as List<String>?,
         createdAt: null == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
@@ -226,9 +267,13 @@ class _$RecurrenceRuleEntityImpl extends _RecurrenceRuleEntity {
     required this.startDate,
     this.endDate,
     this.active = true,
+    this.priority,
+    this.targetSeconds,
+    final List<String>? subTaskTitles,
     required this.createdAt,
     required this.updatedAt,
-  }) : super._();
+  }) : _subTaskTitles = subTaskTitles,
+       super._();
 
   @override
   final String id;
@@ -245,6 +290,22 @@ class _$RecurrenceRuleEntityImpl extends _RecurrenceRuleEntity {
   @override
   @JsonKey()
   final bool active;
+  // Series values copied onto every new occurrence. All three are null on
+  // rules saved before database v12; see [hasSeriesValues].
+  @override
+  final TodoPriority? priority;
+  @override
+  final int? targetSeconds;
+  final List<String>? _subTaskTitles;
+  @override
+  List<String>? get subTaskTitles {
+    final value = _subTaskTitles;
+    if (value == null) return null;
+    if (_subTaskTitles is EqualUnmodifiableListView) return _subTaskTitles;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String createdAt;
   @override
@@ -252,7 +313,7 @@ class _$RecurrenceRuleEntityImpl extends _RecurrenceRuleEntity {
 
   @override
   String toString() {
-    return 'RecurrenceRuleEntity(id: $id, title: $title, description: $description, rrule: $rrule, startDate: $startDate, endDate: $endDate, active: $active, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'RecurrenceRuleEntity(id: $id, title: $title, description: $description, rrule: $rrule, startDate: $startDate, endDate: $endDate, active: $active, priority: $priority, targetSeconds: $targetSeconds, subTaskTitles: $subTaskTitles, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -269,6 +330,14 @@ class _$RecurrenceRuleEntityImpl extends _RecurrenceRuleEntity {
                 other.startDate == startDate) &&
             (identical(other.endDate, endDate) || other.endDate == endDate) &&
             (identical(other.active, active) || other.active == active) &&
+            (identical(other.priority, priority) ||
+                other.priority == priority) &&
+            (identical(other.targetSeconds, targetSeconds) ||
+                other.targetSeconds == targetSeconds) &&
+            const DeepCollectionEquality().equals(
+              other._subTaskTitles,
+              _subTaskTitles,
+            ) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt) &&
             (identical(other.updatedAt, updatedAt) ||
@@ -285,6 +354,9 @@ class _$RecurrenceRuleEntityImpl extends _RecurrenceRuleEntity {
     startDate,
     endDate,
     active,
+    priority,
+    targetSeconds,
+    const DeepCollectionEquality().hash(_subTaskTitles),
     createdAt,
     updatedAt,
   );
@@ -311,6 +383,9 @@ abstract class _RecurrenceRuleEntity extends RecurrenceRuleEntity {
     required final String startDate,
     final String? endDate,
     final bool active,
+    final TodoPriority? priority,
+    final int? targetSeconds,
+    final List<String>? subTaskTitles,
     required final String createdAt,
     required final String updatedAt,
   }) = _$RecurrenceRuleEntityImpl;
@@ -329,7 +404,14 @@ abstract class _RecurrenceRuleEntity extends RecurrenceRuleEntity {
   @override
   String? get endDate;
   @override
-  bool get active;
+  bool get active; // Series values copied onto every new occurrence. All three are null on
+  // rules saved before database v12; see [hasSeriesValues].
+  @override
+  TodoPriority? get priority;
+  @override
+  int? get targetSeconds;
+  @override
+  List<String>? get subTaskTitles;
   @override
   String get createdAt;
   @override

@@ -30,6 +30,7 @@ class StartTimeSegment {
   ///
   /// Throws [TodoNotFoundException] if the todo does not exist.
   /// Throws [DayLockedException] if the todo's date is in the past.
+  /// Throws [FutureDayTimerException] if the todo starts on a future day.
   /// Throws [CompletedLockException] if the todo is completed or dropped.
   /// Throws [SegmentAlreadyRunningException] if a segment is already running.
   Future<List<String>> call(String todoId) async {
@@ -37,6 +38,9 @@ class StartTimeSegment {
     if (todo == null) throw const TodoNotFoundException();
 
     if (isPastDate(todo.date)) throw const DayLockedException();
+    if (startsInFuture(todo.date, todo.sourceDate)) {
+      throw const FutureDayTimerException();
+    }
 
     if (todo.status == TodoStatus.completed ||
         todo.status == TodoStatus.dropped) {

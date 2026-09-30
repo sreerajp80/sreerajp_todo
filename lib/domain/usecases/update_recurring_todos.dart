@@ -80,7 +80,10 @@ class UpdateRecurringTodos {
       final patternChanged =
           currentRule != null && currentRule.rrule != updatedRule.rrule;
 
-      await _recurrenceRuleRepository.update(updatedRule);
+      // Whole-series edit: new occurrences must get these values too.
+      await _recurrenceRuleRepository.update(
+        updatedRule.withSeriesValuesFrom(updatedTodo),
+      );
 
       await _todoRepository.updateTodo(updatedTodo);
 
@@ -164,7 +167,10 @@ class UpdateRecurringTodos {
       final patternChanged =
           currentRule != null && currentRule.rrule != updatedRule.rrule;
 
-      await _recurrenceRuleRepository.update(updatedRule);
+      // Whole-series edit: new occurrences must get these values too.
+      await _recurrenceRuleRepository.update(
+        updatedRule.withSeriesValuesFrom(updatedTodo),
+      );
 
       await _todoRepository.updateTodo(updatedTodo);
 

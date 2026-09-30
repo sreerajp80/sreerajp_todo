@@ -54,8 +54,8 @@ sreerajp_todo/
 
 - **`lib/core/`**: Utilities (`unicode_utils.dart`, `date_utils.dart`, `duration_utils.dart`), config (`app_config.dart`, `config_service.dart`), constants (`app_constants.dart`, `app_routes.dart`), app theme definitions, and custom exception classes. Pure Dart utilities and domain types; `config/` implements the standard About-screen config loader adhering to `docs/guidelines/guideline.md §1`.
 - **`lib/l10n/`**: Trilingual ARB localization files (`app_en.arb`, `app_ml.arb`, `app_sa.arb`) and generated `AppLocalizations` classes. Every user-visible text string in the app originates from this layer.
-- **`lib/domain/`**: Pure business logic containing entity definitions (`TodoEntity`, `TimeSegmentEntity`, `RecurringPatternEntity`), repository and service interface declarations (`OcrService`, `OcrEnhancer`, `ImageEditService` under `services/`), and orchestration use-cases (`PortTodo`, `RepairOrphanedSegments`, `DeleteRecurringTodos`).
-- **`lib/data/`**: Data access and persistence layer implementing domain interfaces. Includes DAOs (`TodoDao`, `TimeSegmentDao`, `RecurringPatternDao`), SQLite migration runners (`migration_v1.dart`, `migration_v2.dart`), encrypted database backup helpers (`backup_service.dart`), and the device-facing services under `services/` — including the OCR engines (`native_ocr_service.dart`, `mlkit_ocr_service.dart`) and the image enhancement isolate (`isolate_ocr_enhancer.dart`).
+- **`lib/domain/`**: Pure business logic containing entity definitions (`TodoEntity`, `TimeSegmentEntity`, `RecurringPatternEntity`), repository and service interface declarations (`OcrService`, `OcrEnhancer`, `ImageEditService` under `services/`), and orchestration use-cases (`MoveTodo`, `RepairOrphanedSegments`, `DeleteRecurringTodos`).
+- **`lib/data/`**: Data access and persistence layer implementing domain interfaces. Includes DAOs (`TodoDao`, `TimeSegmentDao`, `RecurringPatternDao`), SQLite migration runners (`migration_v1.dart`, `migration_v2.dart`), encrypted database backup helpers (`backup_service.dart`), and the device-facing services under `services/` — including the OCR engine (`native_ocr_service.dart`, Tesseract), the QR decoder (`native_qr_decoder_service.dart`, ZXing) and the image enhancement isolate (`isolate_ocr_enhancer.dart`).
 - **`lib/application/`**: State management layer holding Riverpod providers (`providers.dart`) and StateNotifiers managing daily lists, search, statistics, backup, and settings state.
 - **`lib/presentation/`**: Flutter UI layer structured by screens under `screens/` (`daily_list`, `create_edit_todo`, `statistics`, `backup`, `search_results`, `copy_todos`, `recurring_todos`, `about`, `air_qr_scan`) with screen-private `widgets/` subdirectories, and reusable components under `shared/widgets/` (dialogs, bottom sheets, banners, empty/error states, and `MadeWithLove` adhering to `docs/guidelines/guideline.md §1.7`). Consumes `AppLocalizations` via `context.l10n`. Completely decoupled from direct `lib/data/` imports.
 
@@ -63,8 +63,8 @@ sreerajp_todo/
 
 ## 3. Platform Host Directories
 
-- **`android/`**: Configured with target SDK 35, AGP 8.x, native splash configuration, locale configuration (`locales_config.xml`), and zero network permissions.
-- **`windows/`**: Configured for Windows C++ desktop host with SQLCipher FFI binding support and zero network capabilities.
+- **`android/`**: Configured with target SDK 35, AGP 8.x, native splash configuration, locale configuration (`locales_config.xml`), and `INTERNET` as the only network permission (local Wi-Fi sync only).
+- **`windows/`**: Configured for Windows C++ desktop host with SQLCipher FFI binding support and no internet traffic (Wi-Fi sync stays on the local network).
 
 ---
 

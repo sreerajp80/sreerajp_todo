@@ -25,6 +25,10 @@ class UndoEntry with _$UndoEntry {
     String? copiedTodoId,
     String? sourceDate,
     String? targetDate,
+    // Set for a move, so undo can put the todo back on every day it covered.
+    // `previousSourceDate` may be null, so `isMove` marks the entry as a move.
+    @Default(false) bool isMove,
+    String? previousSourceDate,
     required DateTime timestamp,
   }) = _UndoEntry;
 }

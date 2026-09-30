@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/time_tracking_state.dart';
 import 'package:sreerajp_todo/application/timer_paused_store.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
 import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
@@ -8,13 +9,20 @@ import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 
 /// What happened when the user started a timer.
 class StartTimerResult {
-  const StartTimerResult({this.stoppedTodoIds = const [], this.error});
+  const StartTimerResult({
+    this.stoppedTodoIds = const [],
+    this.error,
+    this.futureDay = false,
+  });
 
   /// Todos whose timer was stopped because "only one timer at a time" is on.
   final List<String> stoppedTodoIds;
 
   /// Set when the start was refused. The timer did not start.
   final String? error;
+
+  /// True when the start was refused because the task starts on a future day.
+  final bool futureDay;
 
   /// True when another timer had to be stopped to make room for this one.
   bool get tookOver => stoppedTodoIds.isNotEmpty;
@@ -94,6 +102,9 @@ class TimeTrackingNotifier extends StateNotifier<TimeTrackingState> {
       await _pausedTodos?.clearPaused(_todoId);
       await loadSegments();
       return StartTimerResult(stoppedTodoIds: stopped);
+    } on FutureDayTimerException catch (e) {
+      state = state.copyWith(error: e.toString());
+      return StartTimerResult(error: e.toString(), futureDay: true);
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
       return StartTimerResult(error: e.toString());

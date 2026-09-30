@@ -489,7 +489,7 @@
   "targetMinutesLabel": "निमेषाः",
   "targetHoursRangeError": "०–२३",
   "targetMinutesRangeError": "०–५९",
-  "targetProgressLabel": "{tracked} / {target}",
+  "targetProgressLabel": "आहत्य {target} मध्ये {tracked}",
   "targetOverBy": "{amount} अधिकम्",
   "defaultsSortTitle": "पूर्वनिर्धारितः क्रमः",
   "defaultsSortSubtitle": "दिनसूची येन क्रमेण उद्घाट्यते।",
@@ -1177,5 +1177,58 @@
   "deleteFromTodayOnly": "केवलम् अद्यतनात् निष्कासयतु",
   "deleteEntireHistory": "समग्रम् इतिहासम् अपमार्जतु",
   "targetReachedBadge": "लक्ष्यं प्राप्तम्",
-  "todayAndTotalTime": "अद्य {todayTime} · आहत्य {totalTime}"
+  "todayAndTotalTime": "अद्य {todayTime} · आहत्य {totalTime}",
+  "taskDateLabel": "कार्यदिनाङ्कः",
+  "@taskDateLabel": {
+    "description": "Label and picker title for choosing the date of a new task"
+  },
+  "tooltipChangeTaskDate": "कार्यदिनाङ्कं परिवर्तय",
+  "@tooltipChangeTaskDate": {
+    "description": "Tooltip for the calendar button that changes a new task's date"
+  },
+  "errorTimerFutureTask": "इदं कार्यम् आगामिनि दिने आरभ्यते। तस्मिन्नेव दिने समयगणनम् आरभ्यताम्।",
+  "@errorTimerFutureTask": {
+    "description": "Shown when the user tries to start a timer on a task that starts on a future day"
+  },
+  "newDayShowingToday": "नूतनं दिनम् — अद्यतनानि कार्याणि दर्श्यन्ते",
+  "@newDayShowingToday": {
+    "description": "Shown when the app returns on a new day and switches the list to today"
+  },
+  "confirmFutureTaskTitle": "आगामिदिनस्य कार्यम्",
+  "@confirmFutureTaskTitle": {
+    "description": "Title of the dialog shown before finishing a task that belongs to a later day"
+  },
+  "confirmCompleteFutureBody": "इदं कार्यं {date} दिनस्य। किम् इदानीं समापितम् इति अङ्क्यताम्?",
+  "@confirmCompleteFutureBody": {
+    "description": "Asks before completing a task that belongs to a later day",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Wed, Sep 30, 2026"
+      }
+    }
+  },
+  "confirmDropFutureBody": "इदं कार्यं {date} दिनस्य। किम् इदानीं त्यज्यताम्?",
+  "@confirmDropFutureBody": {
+    "description": "Asks before dropping a task that belongs to a later day",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Wed, Sep 30, 2026"
+      }
+    }
+  },
+  "ocrUnavailableMessage": "अस्मिन् यन्त्रे लेखपठनं न उपलभ्यते।",
+  "airQrScanReceivingTitle": "AirQR-धारा गृह्यते",
+  "airQrScanHint": "छायाग्राहिणम् AirQR-पटलम् अभिमुखीकुरु",
+  "airQrScanProgress": "AirQR-धारा: {percent}%",
+  "airQrScanFps": "प्रतिक्षणं {fps} चित्राणि",
+  "airQrScanBlocks": "{total} खण्डेषु {received} खण्डाः गृहीताः",
+  "airQrScanTorchOn": "दीपं प्रज्वालय",
+  "airQrScanTorchOff": "दीपं निर्वापय",
+  "airQrScanUnrecognized": "अयम् AirQR-सङ्केतः न भवति।",
+  "airQrScanStreamFailed": "AirQR-धाराखण्डाः न संयुक्ताः। पुनः प्रयतस्व।",
+  "airQrScanPermissionDenied": "AirQR-सङ्केतान् पठितुं छायाग्राहिणः अनुमतिः आवश्यकी। तन्त्रविन्यासेषु अनुमतिं देहि।",
+  "airQrScanCameraError": "छायाग्राही आरब्धुं न शक्तः।",
+  "airQrScanUnavailable": "QR-पठनम् Android-यन्त्रेषु एव उपलभ्यते।"
 }

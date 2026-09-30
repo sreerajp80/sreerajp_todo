@@ -231,7 +231,11 @@ class _FocusBody extends ConsumerWidget {
           ],
           const SizedBox(height: 24),
           if (canTrack)
-            _FocusControls(todoId: todo.id, isRunning: isRunning)
+            _FocusControls(
+              todoId: todo.id,
+              isRunning: isRunning,
+              canStart: !startsInFuture(todo.date, todo.sourceDate),
+            )
           else
             Center(
               child: Text(
@@ -257,14 +261,33 @@ class _FocusBody extends ConsumerWidget {
 
 /// Start, pause and stop, laid out large enough to hit without looking.
 class _FocusControls extends ConsumerWidget {
-  const _FocusControls({required this.todoId, required this.isRunning});
+  const _FocusControls({
+    required this.todoId,
+    required this.isRunning,
+    required this.canStart,
+  });
 
   final String todoId;
   final bool isRunning;
 
+  /// False when the task starts on a later day, so no timer may start yet.
+  final bool canStart;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
+
+    if (!isRunning && !canStart) {
+      return Center(
+        child: Text(
+          l10n.errorTimerFutureTask,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+      );
+    }
 
     if (!isRunning) {
       return Center(

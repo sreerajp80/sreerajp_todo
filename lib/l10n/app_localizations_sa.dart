@@ -1609,7 +1609,7 @@ class AppLocalizationsSa extends AppLocalizations {
 
   @override
   String targetProgressLabel(String target, String tracked) {
-    return '$tracked / $target';
+    return 'आहत्य $target मध्ये $tracked';
   }
 
   @override
@@ -4026,4 +4026,78 @@ class AppLocalizationsSa extends AppLocalizations {
   String todayAndTotalTime(String todayTime, String totalTime) {
     return 'अद्य $todayTime · आहत्य $totalTime';
   }
+
+  @override
+  String get taskDateLabel => 'कार्यदिनाङ्कः';
+
+  @override
+  String get tooltipChangeTaskDate => 'कार्यदिनाङ्कं परिवर्तय';
+
+  @override
+  String get errorTimerFutureTask =>
+      'इदं कार्यम् आगामिनि दिने आरभ्यते। तस्मिन्नेव दिने समयगणनम् आरभ्यताम्।';
+
+  @override
+  String get newDayShowingToday =>
+      'नूतनं दिनम् — अद्यतनानि कार्याणि दर्श्यन्ते';
+
+  @override
+  String get confirmFutureTaskTitle => 'आगामिदिनस्य कार्यम्';
+
+  @override
+  String confirmCompleteFutureBody(String date) {
+    return 'इदं कार्यं $date दिनस्य। किम् इदानीं समापितम् इति अङ्क्यताम्?';
+  }
+
+  @override
+  String confirmDropFutureBody(String date) {
+    return 'इदं कार्यं $date दिनस्य। किम् इदानीं त्यज्यताम्?';
+  }
+
+  @override
+  String get ocrUnavailableMessage => 'अस्मिन् यन्त्रे लेखपठनं न उपलभ्यते।';
+
+  @override
+  String get airQrScanReceivingTitle => 'AirQR-धारा गृह्यते';
+
+  @override
+  String get airQrScanHint => 'छायाग्राहिणम् AirQR-पटलम् अभिमुखीकुरु';
+
+  @override
+  String airQrScanProgress(int percent) {
+    return 'AirQR-धारा: $percent%';
+  }
+
+  @override
+  String airQrScanFps(String fps) {
+    return 'प्रतिक्षणं $fps चित्राणि';
+  }
+
+  @override
+  String airQrScanBlocks(int received, int total) {
+    return '$total खण्डेषु $received खण्डाः गृहीताः';
+  }
+
+  @override
+  String get airQrScanTorchOn => 'दीपं प्रज्वालय';
+
+  @override
+  String get airQrScanTorchOff => 'दीपं निर्वापय';
+
+  @override
+  String get airQrScanUnrecognized => 'अयम् AirQR-सङ्केतः न भवति।';
+
+  @override
+  String get airQrScanStreamFailed =>
+      'AirQR-धाराखण्डाः न संयुक्ताः। पुनः प्रयतस्व।';
+
+  @override
+  String get airQrScanPermissionDenied =>
+      'AirQR-सङ्केतान् पठितुं छायाग्राहिणः अनुमतिः आवश्यकी। तन्त्रविन्यासेषु अनुमतिं देहि।';
+
+  @override
+  String get airQrScanCameraError => 'छायाग्राही आरब्धुं न शक्तः।';
+
+  @override
+  String get airQrScanUnavailable => 'QR-पठनम् Android-यन्त्रेषु एव उपलभ्यते।';
 }

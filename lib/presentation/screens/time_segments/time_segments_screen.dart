@@ -159,6 +159,8 @@ class _SegmentsBody extends ConsumerWidget {
     final isPaused =
         !isRunning && ref.watch(pausedTodosProvider).contains(todoId);
     final canTrack = !isPast && !isTerminal;
+    // A task that starts on a later day cannot be timed yet.
+    final canStart = !startsInFuture(todo.date, todo.sourceDate);
 
     // A running total keeps its seconds; a settled one follows the settings.
     final totalText = isRunning
@@ -217,7 +219,14 @@ class _SegmentsBody extends ConsumerWidget {
                       label: Text(context.l10n.stopTimer),
                     ),
                   ),
-                ] else
+                ] else if (!canStart)
+                  Expanded(
+                    child: Text(
+                      context.l10n.errorTimerFutureTask,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                else
                   Expanded(
                     child: FilledButton.icon(
                       onPressed: () => TimerActions.start(context, ref, todoId),

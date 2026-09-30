@@ -3040,10 +3040,10 @@ abstract class AppLocalizations {
   /// **'0–59'**
   String get targetMinutesRangeError;
 
-  /// Tracked time against the target on a task tile.
+  /// Tracked time against the target on a task tile. {tracked} is the time already spent; {target} is the total target time.
   ///
   /// In en, this message translates to:
-  /// **'{tracked} of {target}'**
+  /// **'{tracked} out of {target}'**
   String targetProgressLabel(String target, String tracked);
 
   /// Shown when tracked time has passed the target.
@@ -7173,6 +7173,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{todayTime} today · {totalTime} total'**
   String todayAndTotalTime(String todayTime, String totalTime);
+
+  /// Label and picker title for choosing the date of a new task
+  ///
+  /// In en, this message translates to:
+  /// **'Task date'**
+  String get taskDateLabel;
+
+  /// Tooltip for the calendar button that changes a new task's date
+  ///
+  /// In en, this message translates to:
+  /// **'Change task date'**
+  String get tooltipChangeTaskDate;
+
+  /// Shown when the user tries to start a timer on a task that starts on a future day
+  ///
+  /// In en, this message translates to:
+  /// **'This task starts on a later day. You can start its timer on that day.'**
+  String get errorTimerFutureTask;
+
+  /// Shown when the app returns on a new day and switches the list to today
+  ///
+  /// In en, this message translates to:
+  /// **'New day — showing today\'s tasks'**
+  String get newDayShowingToday;
+
+  /// Title of the dialog shown before finishing a task that belongs to a later day
+  ///
+  /// In en, this message translates to:
+  /// **'Task for a later day'**
+  String get confirmFutureTaskTitle;
+
+  /// Asks before completing a task that belongs to a later day
+  ///
+  /// In en, this message translates to:
+  /// **'This task is for {date}. Mark it done now?'**
+  String confirmCompleteFutureBody(String date);
+
+  /// Asks before dropping a task that belongs to a later day
+  ///
+  /// In en, this message translates to:
+  /// **'This task is for {date}. Drop it now?'**
+  String confirmDropFutureBody(String date);
+
+  /// Snack bar shown when on-device text reading (OCR) is not available on this platform.
+  ///
+  /// In en, this message translates to:
+  /// **'Text reading is not available on this device.'**
+  String get ocrUnavailableMessage;
+
+  /// AirQR scan screen title while stream frames are being received.
+  ///
+  /// In en, this message translates to:
+  /// **'Receiving AirQR stream'**
+  String get airQrScanReceivingTitle;
+
+  /// Hint under the target box on the AirQR scan screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Point the camera at the AirQR screen'**
+  String get airQrScanHint;
+
+  /// Progress line while an AirQR stream is being received.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR stream: {percent}%'**
+  String airQrScanProgress(int percent);
+
+  /// Frames per second read by the AirQR scanner. FPS is a standard unit.
+  ///
+  /// In en, this message translates to:
+  /// **'{fps} FPS'**
+  String airQrScanFps(String fps);
+
+  /// How many AirQR blocks have been received out of the total.
+  ///
+  /// In en, this message translates to:
+  /// **'Captured {received} of {total} blocks'**
+  String airQrScanBlocks(int received, int total);
+
+  /// Tooltip for the AirQR scanner torch button when the torch is off.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn torch on'**
+  String get airQrScanTorchOn;
+
+  /// Tooltip for the AirQR scanner torch button when the torch is on.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn torch off'**
+  String get airQrScanTorchOff;
+
+  /// Snack bar when the scanned QR code is not an AirQR code.
+  ///
+  /// In en, this message translates to:
+  /// **'This QR code is not an AirQR code.'**
+  String get airQrScanUnrecognized;
+
+  /// Snack bar when the AirQR stream frames cannot be joined back together.
+  ///
+  /// In en, this message translates to:
+  /// **'The AirQR stream could not be joined. Please try again.'**
+  String get airQrScanStreamFailed;
+
+  /// Shown on the AirQR scan screen when camera permission is refused.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access is needed to scan AirQR codes. Allow camera access in system settings.'**
+  String get airQrScanPermissionDenied;
+
+  /// Shown on the AirQR scan screen when the camera fails to start.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera could not be started.'**
+  String get airQrScanCameraError;
+
+  /// Shown on the AirQR scan screen on platforms without the native QR decoder.
+  ///
+  /// In en, this message translates to:
+  /// **'QR scanning is available on Android only.'**
+  String get airQrScanUnavailable;
 }
 
 class _AppLocalizationsDelegate

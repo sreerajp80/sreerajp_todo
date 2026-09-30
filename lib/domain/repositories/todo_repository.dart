@@ -64,7 +64,27 @@ abstract class TodoRepository {
   });
   Future<List<TodoEntity>> getPendingPrerequisites(String todoId);
   Future<bool> isTodoBlocked(String todoId);
-  Future<void> moveTodo(String todoId, String targetDate);
+
+  /// Moves a todo to [targetDate].
+  ///
+  /// When [detach] is false (carry-over), the todo keeps its original start
+  /// date, so it still shows on the days it was active before. When [detach]
+  /// is true (an explicit move), the todo belongs only to [targetDate].
+  Future<void> moveTodo(
+    String todoId,
+    String targetDate, {
+    bool detach = false,
+  });
+
+  /// Puts a moved todo back on [originalDate] with [originalSourceDate].
+  ///
+  /// Used only to undo a move, so it may write a past date. It still checks
+  /// title uniqueness on [originalDate].
+  Future<void> restoreMove(
+    String todoId, {
+    required String originalDate,
+    required String? originalSourceDate,
+  });
   Future<List<TodoHistoryEntity>> getHistoryForTodo(String todoId);
   Future<void> logHistoryEvent({
     required String todoId,

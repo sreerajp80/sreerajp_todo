@@ -2,7 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/core/utils/network_address_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/dao/recurrence_rule_dao.dart';
 import 'package:sreerajp_todo/data/dao/spaced_repetition_dao.dart';
@@ -134,6 +136,12 @@ class P2pWifiSyncService {
   }
 
   Future<void> _handleHostConnection(Socket socket, P2pSyncScope scope) async {
+    // Only devices on the local network may connect.
+    if (!isLocalNetworkAddress(socket.remoteAddress.address)) {
+      socket.destroy();
+      return;
+    }
+
     _idleTimer?.cancel();
     _hostStatus = P2pHostStatus.peerConnected;
 
@@ -207,6 +215,11 @@ class P2pWifiSyncService {
     required Uint8List salt,
     P2pSyncScope scope = const P2pSyncScope.full(),
   }) async {
+    // Never open a socket to anything outside the local network.
+    if (!isLocalNetworkAddress(hostIp)) {
+      throw NonLocalAddressException(hostIp);
+    }
+
     final sessionKey = P2pWifiSyncCrypto.deriveSessionKey(pin: pin, salt: salt);
     final socket = await Socket.connect(
       hostIp,

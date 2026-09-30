@@ -406,9 +406,19 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<void> moveTodo(String todoId, String targetDate) async {
+  Future<void> moveTodo(
+    String todoId,
+    String targetDate, {
+    bool detach = false,
+  }) async {
     final todo = await _todoDao.findById(todoId);
     if (todo == null) throw const TodoNotFoundException();
+
+    if (todo.date != targetDate && isPastDate(targetDate)) {
+      throw const DayLockedException(
+        'Cannot move a task to a day in the past.',
+      );
+    }
 
     final normalizedTitle = nfcNormalize(todo.title);
     if (await _todoDao.existsTitleOnDate(
@@ -430,7 +440,9 @@ class TodoRepositoryImpl implements TodoRepository {
           ? TodoStatus.pending
           : todo.status,
       portedTo: null,
-      sourceDate: todo.sourceDate ?? fromDate,
+      // An explicit move leaves the old date. A carry-over keeps the start
+      // date so the task stays visible on the days it was active.
+      sourceDate: detach ? null : todo.sourceDate ?? fromDate,
       updatedAt: DateTime.now().toUtc().toIso8601String(),
     );
 
@@ -441,6 +453,40 @@ class TodoRepositoryImpl implements TodoRepository {
       eventType: TodoHistoryEventType.moved,
       description: 'Moved from $fromDate to $targetDate',
       metadata: '{"from_date":"$fromDate","to_date":"$targetDate"}',
+    );
+  }
+
+  @override
+  Future<void> restoreMove(
+    String todoId, {
+    required String originalDate,
+    required String? originalSourceDate,
+  }) async {
+    final todo = await _todoDao.findById(todoId);
+    if (todo == null) throw const TodoNotFoundException();
+
+    final normalizedTitle = nfcNormalize(todo.title);
+    if (await _todoDao.existsTitleOnDate(
+      normalizedTitle,
+      originalDate,
+      excludeId: todo.id,
+    )) {
+      throw const DuplicateTitleException();
+    }
+
+    var sortOrder = todo.sortOrder;
+    if (todo.date != originalDate) {
+      final maxSort = await _todoDao.maxSortOrder(originalDate);
+      sortOrder = maxSort < 0 ? 0 : maxSort + 1;
+    }
+
+    await _todoDao.update(
+      todo.copyWith(
+        date: originalDate,
+        sortOrder: sortOrder,
+        sourceDate: originalSourceDate,
+        updatedAt: DateTime.now().toUtc().toIso8601String(),
+      ),
     );
   }
 }

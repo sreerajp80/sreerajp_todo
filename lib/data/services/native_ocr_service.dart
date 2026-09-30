@@ -1,22 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sreerajp_todo/data/services/mlkit_ocr_service.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/domain/services/ocr_service.dart';
 
 /// On-device OCR implementation backed by native Tesseract 5 (Tesseract4Android)
 /// via MethodChannel, providing accurate Malayalam and English text recognition.
 class NativeOcrService implements OcrService {
-  const NativeOcrService({
-    this.channel = _defaultChannel,
-    this.fallbackService = const MlKitOcrService(),
-  });
+  const NativeOcrService({this.channel = _defaultChannel});
 
   static const MethodChannel _defaultChannel = MethodChannel(
     'in.sreerajp.todo/ocr',
   );
 
   final MethodChannel channel;
-  final OcrService fallbackService;
 
   @override
   Future<String> extractTextFromImage(
@@ -35,13 +31,9 @@ class NativeOcrService implements OcrService {
       );
       return result?.trim() ?? '';
     } on MissingPluginException catch (_) {
-      // No native side here — a host test, or a platform without the channel.
-      // Fall back to ML Kit rather than failing the scan outright.
-      return fallbackService.extractTextFromImage(
-        imagePath,
-        language: language,
-        requestId: requestId,
-      );
+      // No native side here, for example on Windows. Tesseract is the only
+      // OCR engine, so text reading is simply not available.
+      throw const OcrUnavailableException();
     } catch (e) {
       debugPrint('NativeOcrService: recognition failed ($e)');
       rethrow;

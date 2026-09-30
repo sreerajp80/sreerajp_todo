@@ -211,6 +211,42 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     }
   }
 
+  /// Lets the user choose the day a new task belongs to. Past days are
+  /// locked, so the earliest choice is today.
+  Future<void> _pickTaskDate() async {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final current = parseIsoDate(_effectiveDate);
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: current.isBefore(today) ? today : current,
+      firstDate: today,
+      lastDate: today.add(const Duration(days: 365)),
+      helpText: context.l10n.taskDateLabel,
+    );
+    if (picked == null || !mounted) return;
+
+    final newDate = dateTimeToIso(picked);
+    if (newDate == _effectiveDate) return;
+
+    final dayTodos = await ref
+        .read(todoRepositoryProvider)
+        .getTodosByDate(newDate);
+    if (!mounted) return;
+    setState(() {
+      _effectiveDate = newDate;
+      // Prerequisites must be tasks on the same day, so the old picks no
+      // longer apply.
+      _availablePrerequisites = dayTodos;
+      _prerequisiteTodoIds = [];
+      // A repeat end date cannot be earlier than the new start date.
+      if (_customEndDate != null && _customEndDate!.compareTo(newDate) < 0) {
+        _customEndDate = newDate;
+      }
+    });
+    _checkTitleUniqueness(_titleController.text);
+  }
+
   void _checkTitleUniqueness(String title) {
     _uniquenessDebounce?.cancel();
     if (title.trim().isEmpty) {
@@ -370,7 +406,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                 endDate: _hasCustomEndDate ? _customEndDate : null,
                 updatedAt: now,
               );
-              await rulesNotifier.updateRule(updatedRule);
+              await rulesNotifier.updateRule(
+                _withFormSeriesValues(updatedRule),
+              );
               recurrenceRuleId = _existingRule!.id;
             } else {
               // Create new rule
@@ -386,7 +424,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                 createdAt: now,
                 updatedAt: now,
               );
-              await rulesNotifier.createRule(rule);
+              await rulesNotifier.createRule(_withFormSeriesValues(rule));
             }
           } else if (_repeatOption == SimpleRepeatOption.none &&
               _existingRule != null) {
@@ -428,7 +466,9 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
             createdAt: now,
             updatedAt: now,
           );
-          await ref.read(recurrenceRulesProvider.notifier).createRule(rule);
+          await ref
+              .read(recurrenceRulesProvider.notifier)
+              .createRule(_withFormSeriesValues(rule));
         }
 
         final todo = TodoEntity(
@@ -452,10 +492,10 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
         await notifier.createTodo(todo);
       }
 
-      if (_selectedMasteryDeckId != null) {
-        ref.invalidate(masteryDeckTodosProvider(_selectedMasteryDeckId!));
-        ref.invalidate(masteryDeckProgressProvider(_selectedMasteryDeckId!));
-      }
+      // Refresh every deck, not only the selected one: the task may have left
+      // an old deck, or a recurring edit may have touched several tasks.
+      ref.invalidate(masteryDeckTodosProvider);
+      ref.invalidate(masteryDeckProgressProvider);
 
       // Generate recurring tasks for the look-ahead window
       if (_repeatOption == SimpleRepeatOption.repeat &&
@@ -733,6 +773,25 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                     : null,
                 child: Column(
                   children: [
+                    if (!widget.isEditing && !_isReadOnly) ...[
+                      InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: _pickTaskDate,
+                        child: InputDecorator(
+                          decoration: InputDecoration(
+                            labelText: context.l10n.taskDateLabel,
+                            border: const OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.calendar_month_outlined),
+                              tooltip: context.l10n.tooltipChangeTaskDate,
+                              onPressed: _pickTaskDate,
+                            ),
+                          ),
+                          child: Text(formatDateFromIso(_effectiveDate)),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                    ],
                     TitleAutocompleteField(
                       controller: _titleController,
                       focusNode: _titleFocusNode,
@@ -969,6 +1028,15 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
     if (_repeatOption == SimpleRepeatOption.none) return null;
     return describeRrule(_buildRruleFromRepeatOption());
   }
+
+  /// The rule with this form's priority, target time and sub-tasks saved as
+  /// the series values for future occurrences.
+  RecurrenceRuleEntity _withFormSeriesValues(RecurrenceRuleEntity rule) =>
+      rule.withSeriesValues(
+        priority: _priority,
+        targetSeconds: _targetSeconds,
+        subTasks: _subTasks,
+      );
 
   String _buildRruleFromRepeatOption() {
     if (_repeatOption == SimpleRepeatOption.none) return '';

@@ -2039,9 +2039,9 @@
   "@targetMinutesRangeError": {
     "description": "Validation error shown when minutes entered in target time exceeds 59."
   },
-  "targetProgressLabel": "{tracked} of {target}",
+  "targetProgressLabel": "{tracked} out of {target}",
   "@targetProgressLabel": {
-    "description": "Tracked time against the target on a task tile.",
+    "description": "Tracked time against the target on a task tile. {tracked} is the time already spent; {target} is the total target time.",
     "placeholders": {
       "target": {
         "type": "String"
@@ -2769,7 +2769,6 @@
   "@trackingFocusPomodoroNote": {
     "description": "Note explaining that the nudge is quiet while Pomodoro is on."
   },
-
   "voiceSheetTitle": "Voice task",
   "@voiceSheetTitle": {
     "description": "Title of the voice task sheet."
@@ -5060,5 +5059,115 @@
         "type": "String"
       }
     }
+  },
+  "taskDateLabel": "Task date",
+  "@taskDateLabel": {
+    "description": "Label and picker title for choosing the date of a new task"
+  },
+  "tooltipChangeTaskDate": "Change task date",
+  "@tooltipChangeTaskDate": {
+    "description": "Tooltip for the calendar button that changes a new task's date"
+  },
+  "errorTimerFutureTask": "This task starts on a later day. You can start its timer on that day.",
+  "@errorTimerFutureTask": {
+    "description": "Shown when the user tries to start a timer on a task that starts on a future day"
+  },
+  "newDayShowingToday": "New day — showing today's tasks",
+  "@newDayShowingToday": {
+    "description": "Shown when the app returns on a new day and switches the list to today"
+  },
+  "confirmFutureTaskTitle": "Task for a later day",
+  "@confirmFutureTaskTitle": {
+    "description": "Title of the dialog shown before finishing a task that belongs to a later day"
+  },
+  "confirmCompleteFutureBody": "This task is for {date}. Mark it done now?",
+  "@confirmCompleteFutureBody": {
+    "description": "Asks before completing a task that belongs to a later day",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Wed, Sep 30, 2026"
+      }
+    }
+  },
+  "confirmDropFutureBody": "This task is for {date}. Drop it now?",
+  "@confirmDropFutureBody": {
+    "description": "Asks before dropping a task that belongs to a later day",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Wed, Sep 30, 2026"
+      }
+    }
+  },
+  "ocrUnavailableMessage": "Text reading is not available on this device.",
+  "@ocrUnavailableMessage": {
+    "description": "Snack bar shown when on-device text reading (OCR) is not available on this platform."
+  },
+  "airQrScanReceivingTitle": "Receiving AirQR stream",
+  "@airQrScanReceivingTitle": {
+    "description": "AirQR scan screen title while stream frames are being received."
+  },
+  "airQrScanHint": "Point the camera at the AirQR screen",
+  "@airQrScanHint": {
+    "description": "Hint under the target box on the AirQR scan screen."
+  },
+  "airQrScanProgress": "AirQR stream: {percent}%",
+  "@airQrScanProgress": {
+    "description": "Progress line while an AirQR stream is being received.",
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrScanFps": "{fps} FPS",
+  "@airQrScanFps": {
+    "description": "Frames per second read by the AirQR scanner. FPS is a standard unit.",
+    "placeholders": {
+      "fps": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrScanBlocks": "Captured {received} of {total} blocks",
+  "@airQrScanBlocks": {
+    "description": "How many AirQR blocks have been received out of the total.",
+    "placeholders": {
+      "received": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrScanTorchOn": "Turn torch on",
+  "@airQrScanTorchOn": {
+    "description": "Tooltip for the AirQR scanner torch button when the torch is off."
+  },
+  "airQrScanTorchOff": "Turn torch off",
+  "@airQrScanTorchOff": {
+    "description": "Tooltip for the AirQR scanner torch button when the torch is on."
+  },
+  "airQrScanUnrecognized": "This QR code is not an AirQR code.",
+  "@airQrScanUnrecognized": {
+    "description": "Snack bar when the scanned QR code is not an AirQR code."
+  },
+  "airQrScanStreamFailed": "The AirQR stream could not be joined. Please try again.",
+  "@airQrScanStreamFailed": {
+    "description": "Snack bar when the AirQR stream frames cannot be joined back together."
+  },
+  "airQrScanPermissionDenied": "Camera access is needed to scan AirQR codes. Allow camera access in system settings.",
+  "@airQrScanPermissionDenied": {
+    "description": "Shown on the AirQR scan screen when camera permission is refused."
+  },
+  "airQrScanCameraError": "The camera could not be started.",
+  "@airQrScanCameraError": {
+    "description": "Shown on the AirQR scan screen when the camera fails to start."
+  },
+  "airQrScanUnavailable": "QR scanning is available on Android only.",
+  "@airQrScanUnavailable": {
+    "description": "Shown on the AirQR scan screen on platforms without the native QR decoder."
   }
 }

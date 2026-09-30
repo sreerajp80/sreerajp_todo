@@ -54,10 +54,10 @@ import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
 import 'package:sreerajp_todo/domain/usecases/get_todo_history.dart';
 import 'package:sreerajp_todo/domain/usecases/move_todo.dart';
-import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/reopen_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/repair_orphaned_segments.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
+import 'package:sreerajp_todo/domain/usecases/undo_move_todo.dart';
 import 'package:sreerajp_todo/data/dao/spaced_repetition_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
 import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
@@ -116,13 +116,13 @@ import 'package:sreerajp_todo/data/dao/backup_logs_dao.dart';
 import 'package:sreerajp_todo/data/services/cropper_image_edit_service.dart';
 import 'package:sreerajp_todo/data/services/isolate_ocr_enhancer.dart';
 import 'package:sreerajp_todo/data/services/ocr_capture_downscaler.dart';
-import 'package:sreerajp_todo/data/services/mlkit_ocr_service.dart';
 import 'package:sreerajp_todo/data/services/native_ocr_service.dart';
-import 'package:sreerajp_todo/data/services/ocr_image_preprocessor.dart';
+import 'package:sreerajp_todo/data/services/native_qr_decoder_service.dart';
 import 'package:sreerajp_todo/domain/services/image_edit_service.dart';
 import 'package:sreerajp_todo/domain/services/ocr_capture_downscaler.dart';
 import 'package:sreerajp_todo/domain/services/ocr_enhancer.dart';
 import 'package:sreerajp_todo/domain/services/ocr_service.dart';
+import 'package:sreerajp_todo/domain/services/qr_decoder_service.dart';
 import 'package:sreerajp_todo/data/models/backup_log_entity.dart';
 
 final airQrServiceProvider = Provider<AirQrService>((ref) {
@@ -137,20 +137,15 @@ final databaseKeyServiceProvider = Provider<DatabaseKeyService>((ref) {
   return DatabaseKeyService();
 });
 
-/// Prepares a photo for recognition — enlarge, grayscale, contrast — so thin
-/// marks such as `.` and `=` are big enough for the recognizer to see.
-final ocrImagePreprocessorProvider = Provider<OcrImagePreprocessor>((ref) {
-  return const ImagePackageOcrPreprocessor();
+/// On-device text recognition. Native Tesseract reads English and Malayalam.
+/// Where the platform channel is missing, recognition is unavailable.
+final ocrServiceProvider = Provider<OcrService>((ref) {
+  return const NativeOcrService();
 });
 
-/// On-device text recognition. Native Tesseract reads English and Malayalam;
-/// ML Kit stands in only where the platform channel is missing.
-final ocrServiceProvider = Provider<OcrService>((ref) {
-  return NativeOcrService(
-    fallbackService: MlKitOcrService(
-      preprocessor: ref.watch(ocrImagePreprocessorProvider),
-    ),
-  );
+/// On-device QR decoding for the AirQR scanner (ZXing on the Android host).
+final qrDecoderServiceProvider = Provider<QrDecoderService>((ref) {
+  return const NativeQrDecoderService();
 });
 
 /// Shrinks a full-resolution capture to a size the Dart image pipeline can
@@ -251,13 +246,6 @@ final markTodoDroppedProvider = Provider<MarkTodoDropped>((ref) {
   );
 });
 
-final portTodoProvider = Provider<PortTodo>((ref) {
-  return PortTodo(
-    ref.read(todoRepositoryProvider),
-    ref.read(timeSegmentRepositoryProvider),
-  );
-});
-
 final reopenTodoProvider = Provider<ReopenTodo>((ref) {
   return ReopenTodo(
     ref.read(todoRepositoryProvider),
@@ -267,6 +255,13 @@ final reopenTodoProvider = Provider<ReopenTodo>((ref) {
 
 final moveTodoProvider = Provider<MoveTodo>((ref) {
   return MoveTodo(
+    ref.read(todoRepositoryProvider),
+    ref.read(timeSegmentRepositoryProvider),
+  );
+});
+
+final undoMoveTodoProvider = Provider<UndoMoveTodo>((ref) {
+  return UndoMoveTodo(
     ref.read(todoRepositoryProvider),
     ref.read(timeSegmentRepositoryProvider),
   );
@@ -471,17 +466,22 @@ final dailyTodoProvider =
         todoRepository: ref.read(todoRepositoryProvider),
         markTodoCompleted: ref.read(markTodoCompletedProvider),
         markTodoDropped: ref.read(markTodoDroppedProvider),
-        portTodoUseCase: ref.read(portTodoProvider),
         copyTodosUseCase: ref.read(copyTodosProvider),
         deleteRecurringTodos: ref.read(deleteRecurringTodosProvider),
         moveTodoUseCase: ref.read(moveTodoProvider),
         reopenTodoUseCase: ref.read(reopenTodoProvider),
+        undoMoveTodoUseCase: ref.read(undoMoveTodoProvider),
         onDataChanged: () {
           ref.invalidate(statisticsProvider);
           ref.invalidate(pendingAlertPayloadProvider);
+          // A daily-list change may touch a deck task; refresh every deck.
+          ref.invalidate(masteryDeckTodosProvider);
+          ref.invalidate(masteryDeckProgressProvider);
         },
         onTimerStopped: (id) {
           ref.invalidate(timeTrackingProvider(id));
+          ref.invalidate(masteryDeckTodosProvider);
+          ref.invalidate(masteryDeckProgressProvider);
           // A finished task must never keep showing a Resume button.
           ref.read(pausedTodosProvider.notifier).clearPaused(id);
           ref.read(timerActivityTickProvider.notifier).state++;

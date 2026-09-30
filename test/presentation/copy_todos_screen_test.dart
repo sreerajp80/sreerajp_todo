@@ -177,7 +177,18 @@ class _InMemoryRepo implements TodoRepository {
   Future<int> maxSortOrder(String date) async => todos.length;
 
   @override
-  Future<void> moveTodo(String todoId, String targetDate) async {}
+  Future<void> moveTodo(
+    String todoId,
+    String targetDate, {
+    bool detach = false,
+  }) async {}
+
+  @override
+  Future<void> restoreMove(
+    String todoId, {
+    required String originalDate,
+    required String? originalSourceDate,
+  }) async {}
 
   @override
   Future<List<TodoHistoryEntity>> getHistoryForTodo(String todoId) async => [];

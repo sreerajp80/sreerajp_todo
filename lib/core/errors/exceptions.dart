@@ -18,6 +18,17 @@ class CompletedLockException implements Exception {
   String toString() => 'CompletedLockException: $message';
 }
 
+class FutureDayTimerException implements Exception {
+  const FutureDayTimerException([
+    this.message =
+        'Cannot start a timer on a task that starts on a future day.',
+  ]);
+  final String message;
+
+  @override
+  String toString() => 'FutureDayTimerException: $message';
+}
+
 class DuplicateTitleException implements Exception {
   const DuplicateTitleException([
     this.message = 'A task with this title already exists for this date.',
@@ -100,4 +111,45 @@ class BackupCorruptedException implements Exception {
   String toString() => details == null
       ? 'BackupCorruptedException: $message'
       : 'BackupCorruptedException: $message ($details)';
+}
+
+/// Thrown when Wi-Fi sync is asked to talk to an address outside the local
+/// network. The app never sends data over the internet.
+class NonLocalAddressException implements Exception {
+  const NonLocalAddressException(
+    this.address, [
+    this.message = 'Wi-Fi sync works only with devices on the local network.',
+  ]);
+
+  final String address;
+  final String message;
+
+  @override
+  String toString() => 'NonLocalAddressException: $message ($address)';
+}
+
+/// Thrown when on-device text reading (Tesseract OCR) is not available on
+/// this platform, for example on Windows.
+class OcrUnavailableException implements Exception {
+  const OcrUnavailableException([
+    this.message = 'Text reading is not available on this device.',
+  ]);
+
+  final String message;
+
+  @override
+  String toString() => 'OcrUnavailableException: $message';
+}
+
+/// Thrown when the native QR decoder is not available on this platform, for
+/// example on Windows.
+class QrScannerUnavailableException implements Exception {
+  const QrScannerUnavailableException([
+    this.message = 'QR scanning is not available on this device.',
+  ]);
+
+  final String message;
+
+  @override
+  String toString() => 'QrScannerUnavailableException: $message';
 }

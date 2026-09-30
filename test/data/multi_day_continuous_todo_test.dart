@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
@@ -36,6 +37,12 @@ void main() {
     await databaseService.close();
   });
 
+  /// Today plus [days], so moves never target a locked past day.
+  String dayFromToday(int days) {
+    final now = DateTime.now();
+    return dateTimeToIso(DateTime(now.year, now.month, now.day + days));
+  }
+
   TodoEntity makeTodo({
     required String id,
     required String date,
@@ -60,37 +67,140 @@ void main() {
   test(
     'incomplete task created on day 1 appears on both day 1 and day 2 when carried forward',
     () async {
+      final day1 = dayFromToday(-1);
+      final day2 = dayFromToday(0);
       final todo = makeTodo(
         id: 'task-1',
-        date: '2026-09-20',
+        date: day1,
         title: 'Continuous task',
         status: TodoStatus.pending,
       );
       await todoDao.insert(todo);
 
-      // Query on Sept 20: visible on Sept 20
-      final day1Todos = await todoDao.findByDate('2026-09-20');
+      // Query on day 1: visible on day 1
+      final day1Todos = await todoDao.findByDate(day1);
       expect(day1Todos.length, 1);
       expect(day1Todos.first.id, 'task-1');
-      expect(day1Todos.first.date, '2026-09-20');
+      expect(day1Todos.first.date, day1);
 
-      // When carried forward to Sept 21
-      await todoRepo.moveTodo('task-1', '2026-09-21');
+      // When carried forward to day 2
+      await todoRepo.moveTodo('task-1', day2);
 
-      // Query on Sept 21: visible on Sept 21 as pending
-      final day2Todos = await todoDao.findByDate('2026-09-21');
+      // Query on day 2: visible on day 2 as pending
+      final day2Todos = await todoDao.findByDate(day2);
       expect(day2Todos.length, 1);
       expect(day2Todos.first.id, 'task-1');
-      expect(day2Todos.first.date, '2026-09-21');
-      expect(day2Todos.first.sourceDate, '2026-09-20');
+      expect(day2Todos.first.date, day2);
+      expect(day2Todos.first.sourceDate, day1);
       expect(day2Todos.first.status, TodoStatus.pending);
 
-      // Query on Sept 20: STILL visible on Sept 20 (sourceDate <= date AND date >= sourceDate)
-      final day1After = await todoDao.findByDate('2026-09-20');
+      // Query on day 1: STILL visible on day 1 (sourceDate <= date AND date >= sourceDate)
+      final day1After = await todoDao.findByDate(day1);
       expect(day1After.length, 1);
       expect(day1After.first.id, 'task-1');
     },
   );
+
+  test(
+    'an explicit move (detach) removes the task from the old date',
+    () async {
+      final oldDate = dayFromToday(-1);
+      final newDate = dayFromToday(2);
+      final todo = makeTodo(
+        id: 'task-move',
+        date: oldDate,
+        title: 'Moved task',
+        status: TodoStatus.pending,
+      );
+      await todoDao.insert(todo);
+
+      await todoRepo.moveTodo('task-move', newDate, detach: true);
+
+      final newDay = await todoDao.findByDate(newDate);
+      expect(newDay.map((t) => t.id), contains('task-move'));
+
+      final oldDay = await todoDao.findByDate(oldDate);
+      expect(oldDay.where((t) => t.id == 'task-move'), isEmpty);
+
+      // Days in between do not show it either.
+      final middleDay = await todoDao.findByDate(dayFromToday(0));
+      expect(middleDay.where((t) => t.id == 'task-move'), isEmpty);
+    },
+  );
+
+  test('a move to a past day is refused', () async {
+    await todoDao.insert(
+      makeTodo(id: 'task-past', date: dayFromToday(0), title: 'Past move'),
+    );
+
+    expect(
+      () => todoRepo.moveTodo('task-past', dayFromToday(-1)),
+      throwsA(isA<DayLockedException>()),
+    );
+  });
+
+  test('restoreMove puts back the date and start date exactly', () async {
+    final start = dayFromToday(-2);
+    final current = dayFromToday(0);
+    await todoDao.insert(
+      makeTodo(
+        id: 'task-undo',
+        date: current,
+        title: 'Undo me',
+        sourceDate: start,
+      ),
+    );
+
+    await todoRepo.moveTodo('task-undo', dayFromToday(3), detach: true);
+    expect((await todoDao.findById('task-undo'))!.sourceDate, isNull);
+
+    await todoRepo.restoreMove(
+      'task-undo',
+      originalDate: current,
+      originalSourceDate: start,
+    );
+
+    final restored = await todoDao.findById('task-undo');
+    expect(restored!.date, current);
+    expect(restored.sourceDate, start);
+    // Visible again on the day it started.
+    final firstDay = await todoDao.findByDate(start);
+    expect(firstDay.map((t) => t.id), contains('task-undo'));
+  });
+
+  test('restoreMove may go back to a past day', () async {
+    final yesterday = dayFromToday(-1);
+    await todoDao.insert(
+      makeTodo(id: 'task-back', date: yesterday, title: 'Carried'),
+    );
+    await todoRepo.moveTodo('task-back', dayFromToday(0));
+
+    await todoRepo.restoreMove(
+      'task-back',
+      originalDate: yesterday,
+      originalSourceDate: null,
+    );
+
+    final restored = await todoDao.findById('task-back');
+    expect(restored!.date, yesterday);
+    expect(restored.sourceDate, isNull);
+  });
+
+  test('restoreMove refuses a duplicate title on the old day', () async {
+    final today = dayFromToday(0);
+    await todoDao.insert(makeTodo(id: 'a', date: today, title: 'Same'));
+    await todoRepo.moveTodo('a', dayFromToday(1), detach: true);
+    await todoDao.insert(makeTodo(id: 'b', date: today, title: 'Same'));
+
+    expect(
+      () => todoRepo.restoreMove(
+        'a',
+        originalDate: today,
+        originalSourceDate: null,
+      ),
+      throwsA(isA<DuplicateTitleException>()),
+    );
+  });
 
   test(
     'completing a task on day 2 shows completed on day 2 and pending on day 1',

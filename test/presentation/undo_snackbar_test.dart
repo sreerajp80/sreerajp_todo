@@ -10,7 +10,6 @@ import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
-import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/daily_list_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
@@ -204,10 +203,34 @@ class InMemoryTodoRepository implements TodoRepository {
   );
 
   @override
-  Future<void> moveTodo(String todoId, String targetDate) async {
+  Future<void> moveTodo(
+    String todoId,
+    String targetDate, {
+    bool detach = false,
+  }) async {
     final index = _todos.indexWhere((item) => item.id == todoId);
     if (index >= 0) {
-      _todos[index] = _todos[index].copyWith(date: targetDate);
+      final todo = _todos[index];
+      _todos[index] = todo.copyWith(
+        date: targetDate,
+        // Same rule as the real repository: carry-over keeps the start date.
+        sourceDate: detach ? null : todo.sourceDate ?? todo.date,
+      );
+    }
+  }
+
+  @override
+  Future<void> restoreMove(
+    String todoId, {
+    required String originalDate,
+    required String? originalSourceDate,
+  }) async {
+    final index = _todos.indexWhere((item) => item.id == todoId);
+    if (index >= 0) {
+      _todos[index] = _todos[index].copyWith(
+        date: originalDate,
+        sourceDate: originalSourceDate,
+      );
     }
   }
 
@@ -348,9 +371,6 @@ void main() {
           markTodoDroppedProvider.overrideWithValue(
             MarkTodoDropped(todoRepository, timeSegmentRepository),
           ),
-          portTodoProvider.overrideWithValue(
-            PortTodo(todoRepository, timeSegmentRepository),
-          ),
           copyTodosProvider.overrideWithValue(CopyTodos(todoRepository)),
           startTimeSegmentProvider.overrideWithValue(
             StartTimeSegment(todoRepository, timeSegmentRepository),
@@ -419,6 +439,67 @@ void main() {
     await markTodoCompletedFromStrip(tester);
 
     expect(find.byIcon(Icons.undo), findsOneWidget);
+  });
+
+  testWidgets('completing a future-day task asks first; cancel keeps it', (
+    tester,
+  ) async {
+    date = dateOffsetIso(2);
+    todo = buildTodo(id: 'todo-1', date: date, title: 'Future task');
+    todoRepository = InMemoryTodoRepository([todo]);
+
+    await pumpDailyList(tester);
+    await markTodoCompletedFromStrip(tester);
+
+    expect(find.text(testL10n.confirmFutureTaskTitle), findsOneWidget);
+    await tester.tap(find.text(testL10n.cancel));
+    await tester.pumpAndSettle();
+
+    final unchanged = await todoRepository.getTodoById(todo.id);
+    expect(unchanged?.status, TodoStatus.pending);
+  });
+
+  testWidgets('completing a future-day task after confirming completes it', (
+    tester,
+  ) async {
+    date = dateOffsetIso(2);
+    todo = buildTodo(id: 'todo-1', date: date, title: 'Future task');
+    todoRepository = InMemoryTodoRepository([todo]);
+
+    await pumpDailyList(tester);
+    await markTodoCompletedFromStrip(tester);
+    await tester.tap(find.text(testL10n.confirm));
+    await tester.pumpAndSettle();
+
+    final done = await todoRepository.getTodoById(todo.id);
+    expect(done?.status, TodoStatus.completed);
+  });
+
+  testWidgets('dropping a future-day task asks first', (tester) async {
+    date = dateOffsetIso(2);
+    todo = buildTodo(id: 'todo-1', date: date, title: 'Future task');
+    todoRepository = InMemoryTodoRepository([todo]);
+
+    await pumpDailyList(tester);
+    await tester.tap(find.bySemanticsLabel(testL10n.dropAction));
+    await tester.pumpAndSettle();
+
+    expect(find.text(testL10n.confirmFutureTaskTitle), findsOneWidget);
+    await tester.tap(find.text(testL10n.cancel));
+    await tester.pumpAndSettle();
+    expect(
+      (await todoRepository.getTodoById(todo.id))?.status,
+      TodoStatus.pending,
+    );
+  });
+
+  testWidgets('completing a today task shows no future-day question', (
+    tester,
+  ) async {
+    await pumpDailyList(tester);
+    await markTodoCompletedFromStrip(tester);
+
+    expect(find.text(testL10n.confirmFutureTaskTitle), findsNothing);
   });
 
   testWidgets('past-day app bar keeps copy-to-another-day visible', (

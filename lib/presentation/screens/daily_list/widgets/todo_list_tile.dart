@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
@@ -81,8 +82,8 @@ class TodoListTile extends ConsumerWidget {
                       formatDuration(trackedSeconds - targetSeconds),
                     )
                   : context.l10n.targetProgressLabel(
-                      formatDuration(trackedSeconds),
                       formatDuration(targetSeconds),
+                      formatDuration(trackedSeconds),
                     ),
               style: theme.textTheme.labelSmall?.copyWith(
                 color: isReached ? Colors.green : colorScheme.onSurfaceVariant,
@@ -409,6 +410,13 @@ class TodoListTile extends ConsumerWidget {
     final tileLongPress = isPast ? null : onLongPress;
     final showQuickActions =
         !isMultiSelectMode && !isPast && _canShowQuickActions(displayStatus);
+    // A task that starts on a later day cannot be timed yet. A timer that is
+    // already running can still be stopped.
+    final canStartTimer = !startsInFuture(todo.date, todo.sourceDate);
+    // In a day list, `sourceDate` holds the day the task started. Show it only
+    // when that is really an earlier day than the one shown.
+    final startedEarlier =
+        todo.sourceDate != null && todo.sourceDate!.compareTo(todo.date) < 0;
     final showReopenAction =
         !isMultiSelectMode &&
         !isPast &&
@@ -609,45 +617,50 @@ class TodoListTile extends ConsumerWidget {
                                   ),
                                   const SizedBox(width: 8),
                                 ],
-                                _buildCompactActionButton(
-                                  context,
-                                  icon: isRunning
-                                      ? Icons.stop_circle_outlined
-                                      : isPaused
-                                      ? Icons.play_circle_outline_rounded
-                                      : Icons.play_circle_fill_rounded,
-                                  tooltip: isRunning
-                                      ? context.l10n.stopTimer
-                                      : isPaused
-                                      ? context.l10n.resumeTimer
-                                      : context.l10n.startTimer,
-                                  onPressed: () {
-                                    if (isRunning) {
-                                      TimerActions.stop(context, ref, todo.id);
-                                      return;
-                                    }
-                                    if (isBlocked) {
-                                      showAppSnackBar(
-                                        context,
-                                        message: context.l10n.blockedWarning,
-                                        backgroundColor: colorScheme.error,
-                                      );
-                                    }
-                                    TimerActions.start(context, ref, todo.id);
-                                  },
-                                  backgroundColor: isRunning
-                                      ? colorScheme.errorContainer
-                                      : isBlocked
-                                      ? colorScheme.errorContainer.withValues(
-                                          alpha: 0.3,
-                                        )
-                                      : colorScheme.primaryContainer,
-                                  foregroundColor: isRunning
-                                      ? colorScheme.onErrorContainer
-                                      : isBlocked
-                                      ? colorScheme.error
-                                      : colorScheme.onPrimaryContainer,
-                                ),
+                                if (isRunning || canStartTimer)
+                                  _buildCompactActionButton(
+                                    context,
+                                    icon: isRunning
+                                        ? Icons.stop_circle_outlined
+                                        : isPaused
+                                        ? Icons.play_circle_outline_rounded
+                                        : Icons.play_circle_fill_rounded,
+                                    tooltip: isRunning
+                                        ? context.l10n.stopTimer
+                                        : isPaused
+                                        ? context.l10n.resumeTimer
+                                        : context.l10n.startTimer,
+                                    onPressed: () {
+                                      if (isRunning) {
+                                        TimerActions.stop(
+                                          context,
+                                          ref,
+                                          todo.id,
+                                        );
+                                        return;
+                                      }
+                                      if (isBlocked) {
+                                        showAppSnackBar(
+                                          context,
+                                          message: context.l10n.blockedWarning,
+                                          backgroundColor: colorScheme.error,
+                                        );
+                                      }
+                                      TimerActions.start(context, ref, todo.id);
+                                    },
+                                    backgroundColor: isRunning
+                                        ? colorScheme.errorContainer
+                                        : isBlocked
+                                        ? colorScheme.errorContainer.withValues(
+                                            alpha: 0.3,
+                                          )
+                                        : colorScheme.primaryContainer,
+                                    foregroundColor: isRunning
+                                        ? colorScheme.onErrorContainer
+                                        : isBlocked
+                                        ? colorScheme.error
+                                        : colorScheme.onPrimaryContainer,
+                                  ),
                               ],
                               if (!isMultiSelectMode) ...[
                                 if (isPast) ...[
@@ -946,7 +959,7 @@ class TodoListTile extends ConsumerWidget {
                                   trackedSeconds: displayTotalSeconds,
                                   targetSeconds: todo.targetSeconds!,
                                 ),
-                              if (todo.sourceDate != null)
+                              if (startedEarlier)
                                 Text(
                                   '${context.l10n.copiedFrom} ${todo.sourceDate}',
                                   style: theme.textTheme.bodySmall?.copyWith(

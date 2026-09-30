@@ -310,5 +310,68 @@ void main() {
         expect(reloadedRule?.endDate, isNotNull);
       },
     );
+
+    group('series values on the rule', () {
+      Future<TodoEntity> editedBase() async {
+        await ruleRepo.insert(makeRule());
+        final base = makeTodo(id: 'base', date: todayAsIso(), ruleId: 'rule-1');
+        await todoDao.insert(base);
+        return base;
+      }
+
+      TodoEntity withChanges(TodoEntity base) {
+        final now = nowUtc();
+        return base.copyWith(
+          priority: TodoPriority.high,
+          targetSeconds: 1200,
+          subTasks: [
+            SubTaskItem(
+              id: 'st-1',
+              todoId: base.id,
+              title: 'Step',
+              createdAt: now,
+              updatedAt: now,
+            ),
+          ],
+        );
+      }
+
+      for (final target in [
+        RecurringEditTarget.allFutureInstances,
+        RecurringEditTarget.allInstances,
+      ]) {
+        test('$target saves the values on the rule', () async {
+          final base = await editedBase();
+          final rule = (await ruleRepo.findById('rule-1'))!;
+
+          await useCase.execute(
+            baseTodo: base,
+            updatedTodo: withChanges(base),
+            updatedRule: rule,
+            target: target,
+          );
+
+          final saved = (await ruleRepo.findById('rule-1'))!;
+          expect(saved.priority, TodoPriority.high);
+          expect(saved.targetSeconds, 1200);
+          expect(saved.subTaskTitles, ['Step']);
+        });
+      }
+
+      test('thisInstanceOnly leaves the rule untouched', () async {
+        final base = await editedBase();
+        final rule = (await ruleRepo.findById('rule-1'))!;
+
+        await useCase.execute(
+          baseTodo: base,
+          updatedTodo: withChanges(base),
+          updatedRule: rule,
+          target: RecurringEditTarget.thisInstanceOnly,
+        );
+
+        final saved = (await ruleRepo.findById('rule-1'))!;
+        expect(saved.hasSeriesValues, isFalse);
+      });
+    });
   });
 }

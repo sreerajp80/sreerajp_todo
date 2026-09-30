@@ -494,7 +494,7 @@
   "targetMinutesLabel": "മിനിറ്റ്",
   "targetHoursRangeError": "0–23",
   "targetMinutesRangeError": "0–59",
-  "targetProgressLabel": "{target} ൽ {tracked}",
+  "targetProgressLabel": "ആകെ {target}-ൽ {tracked}",
   "targetOverBy": "{amount} കൂടുതൽ",
   "defaultsSortTitle": "ഡിഫോൾട്ട് ക്രമം",
   "defaultsSortSubtitle": "ദിന പട്ടിക തുറക്കുന്ന ക്രമം.",
@@ -1198,5 +1198,58 @@
   "deleteFromTodayOnly": "ഇന്നിൽ നിന്ന് മാത്രം നീക്കുക",
   "deleteEntireHistory": "മുഴുവൻ ചരിത്രവും ഇല്ലാതാക്കുക",
   "targetReachedBadge": "ലക്ഷ്യം കൈവരിച്ചു",
-  "todayAndTotalTime": "{todayTime} ഇന്ന് · {totalTime} ആകെ"
+  "todayAndTotalTime": "{todayTime} ഇന്ന് · {totalTime} ആകെ",
+  "taskDateLabel": "ടാസ്ക് തീയതി",
+  "@taskDateLabel": {
+    "description": "Label and picker title for choosing the date of a new task"
+  },
+  "tooltipChangeTaskDate": "ടാസ്ക് തീയതി മാറ്റുക",
+  "@tooltipChangeTaskDate": {
+    "description": "Tooltip for the calendar button that changes a new task's date"
+  },
+  "errorTimerFutureTask": "ഈ ടാസ്ക് പിന്നീടുള്ള ഒരു ദിവസമാണ് തുടങ്ങുന്നത്. ആ ദിവസം ടൈമർ ആരംഭിക്കാം.",
+  "@errorTimerFutureTask": {
+    "description": "Shown when the user tries to start a timer on a task that starts on a future day"
+  },
+  "newDayShowingToday": "പുതിയ ദിവസം — ഇന്നത്തെ ടാസ്കുകൾ കാണിക്കുന്നു",
+  "@newDayShowingToday": {
+    "description": "Shown when the app returns on a new day and switches the list to today"
+  },
+  "confirmFutureTaskTitle": "പിന്നീടുള്ള ദിവസത്തെ ടാസ്ക്",
+  "@confirmFutureTaskTitle": {
+    "description": "Title of the dialog shown before finishing a task that belongs to a later day"
+  },
+  "confirmCompleteFutureBody": "ഈ ടാസ്ക് {date} ദിവസത്തേതാണ്. ഇപ്പോൾ പൂർത്തിയായി എന്ന് അടയാളപ്പെടുത്തണോ?",
+  "@confirmCompleteFutureBody": {
+    "description": "Asks before completing a task that belongs to a later day",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Wed, Sep 30, 2026"
+      }
+    }
+  },
+  "confirmDropFutureBody": "ഈ ടാസ്ക് {date} ദിവസത്തേതാണ്. ഇപ്പോൾ ഉപേക്ഷിക്കണോ?",
+  "@confirmDropFutureBody": {
+    "description": "Asks before dropping a task that belongs to a later day",
+    "placeholders": {
+      "date": {
+        "type": "String",
+        "example": "Wed, Sep 30, 2026"
+      }
+    }
+  },
+  "ocrUnavailableMessage": "ഈ ഉപകരണത്തിൽ എഴുത്ത് വായിക്കാനുള്ള സൗകര്യം ലഭ്യമല്ല.",
+  "airQrScanReceivingTitle": "AirQR സ്ട്രീം സ്വീകരിക്കുന്നു",
+  "airQrScanHint": "ക്യാമറ AirQR സ്ക്രീനിലേക്ക് തിരിക്കുക",
+  "airQrScanProgress": "AirQR സ്ട്രീം: {percent}%",
+  "airQrScanFps": "സെക്കൻഡിൽ {fps} ഫ്രെയിം",
+  "airQrScanBlocks": "{total} ബ്ലോക്കുകളിൽ {received} എണ്ണം ലഭിച്ചു",
+  "airQrScanTorchOn": "ടോർച്ച് ഓണാക്കുക",
+  "airQrScanTorchOff": "ടോർച്ച് ഓഫാക്കുക",
+  "airQrScanUnrecognized": "ഇത് ഒരു AirQR കോഡ് അല്ല.",
+  "airQrScanStreamFailed": "AirQR സ്ട്രീം ചേർത്തെടുക്കാനായില്ല. വീണ്ടും ശ്രമിക്കുക.",
+  "airQrScanPermissionDenied": "AirQR കോഡുകൾ സ്കാൻ ചെയ്യാൻ ക്യാമറ അനുമതി ആവശ്യമാണ്. സിസ്റ്റം ക്രമീകരണങ്ങളിൽ ക്യാമറ അനുമതി നൽകുക.",
+  "airQrScanCameraError": "ക്യാമറ ആരംഭിക്കാനായില്ല.",
+  "airQrScanUnavailable": "QR സ്കാനിംഗ് ആൻഡ്രോയിഡിൽ മാത്രമേ ലഭ്യമാകൂ."
 }

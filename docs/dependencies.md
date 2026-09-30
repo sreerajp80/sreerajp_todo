@@ -8,9 +8,9 @@ Read [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) first before adding
 
 ## 1. Dependency Constraints & Policy
 
-SreerajP ToDo is a **100% offline-first application**. Zero internet connectivity is permitted.
+SreerajP ToDo is a **100% offline-first application**. No internet traffic is permitted. The only network use is user-started Wi-Fi sync on the local network.
 Before adding any package:
-1. Confirm the package operates completely offline without network permissions.
+1. Confirm the package operates completely offline, sends no telemetry, and adds no network permission other than `INTERNET`. Check the merged manifest after adding it.
 2. Audit transitive dependencies for networking, cloud, or telemetry libraries.
 3. Obtain explicit confirmation and run the dependency audit command.
 
@@ -40,9 +40,9 @@ Before adding any package:
 | `rrule` | RFC 5545 iCalendar recurrence rule processing | Recurrence Engine |
 | `shared_preferences` | Persistent key-value storage for app settings & language preferences | Storage / Preferences |
 | `qr_flutter` | Animated QR code stream rendering for AirQR optical sync | AirQR Sync / UI |
-| `mobile_scanner` | Local camera barcode scanner for AirQR stream reception | AirQR Sync / Camera |
-| `camera` | Live camera viewfinder, flash/torch control, zoom, and still capture | Camera / Viewfinder |
-| `google_mlkit_text_recognition` | On-device ML Kit text recognition, the fallback OCR engine where the native channel is absent | Machine Learning / OCR |
+| `camera` | Live camera viewfinder, flash/torch control, zoom, still capture, and the frame stream for the AirQR scanner | Camera / Viewfinder |
+| `com.google.zxing:core` (Android Gradle, not pub) | Pure-Java QR decoding for the AirQR scanner. No network code, no Play Services, no telemetry | AirQR Sync / Camera |
+| `tesseract4android` (Android Gradle, not pub) | On-device Tesseract 5 OCR for English and Malayalam | OCR |
 | `image` | Pure-Dart pixel work for OCR image enhancement, run in a background isolate | Imaging / OCR |
 | `image_cropper` | Native crop-and-rotate editor (uCrop) used before recognition | Imaging / OCR |
 

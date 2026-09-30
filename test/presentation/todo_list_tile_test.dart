@@ -152,7 +152,18 @@ class _FakeTodoRepository implements TodoRepository {
   ) async => false;
 
   @override
-  Future<void> moveTodo(String todoId, String targetDate) async {}
+  Future<void> moveTodo(
+    String todoId,
+    String targetDate, {
+    bool detach = false,
+  }) async {}
+
+  @override
+  Future<void> restoreMove(
+    String todoId, {
+    required String originalDate,
+    required String? originalSourceDate,
+  }) async {}
 
   @override
   Future<List<TodoHistoryEntity>> getHistoryForTodo(String todoId) async => [];
@@ -168,8 +179,10 @@ class _FakeTodoRepository implements TodoRepository {
 }
 
 class _FakeTimeSegmentRepository implements TimeSegmentRepository {
+  List<TimeSegmentEntity> segments = const [];
+
   @override
-  Future<List<TimeSegmentEntity>> getSegments(String todoId) async => const [];
+  Future<List<TimeSegmentEntity>> getSegments(String todoId) async => segments;
 
   @override
   Future<TimeSegmentEntity?> getRunningSegment(String todoId) async => null;
@@ -306,6 +319,58 @@ void main() {
     expect(segmentCalls, 1);
   });
 
+  testWidgets('task that starts on a later day hides the start button', (
+    tester,
+  ) async {
+    // How a future task looks when a stray time record pulls it into today.
+    todo = buildTodo(
+      id: 'todo-future',
+      title: 'Future task',
+      sourceDate: dateOffsetIso(2),
+    );
+    todoRepository = _FakeTodoRepository([todo]);
+
+    await pumpTile(tester, isPast: false, onLongPress: () {});
+
+    expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+    expect(find.bySemanticsLabel(testL10n.startTimer), findsNothing);
+    expect(find.textContaining(testL10n.copiedFrom), findsNothing);
+  });
+
+  testWidgets('no "copied from" label when the source is the same day', (
+    tester,
+  ) async {
+    todo = buildTodo(
+      id: 'todo-same',
+      title: 'Same day task',
+      sourceDate: dateOffsetIso(0),
+    );
+    todoRepository = _FakeTodoRepository([todo]);
+
+    await pumpTile(tester, isPast: false, onLongPress: () {});
+
+    expect(find.textContaining(testL10n.copiedFrom), findsNothing);
+    expect(find.bySemanticsLabel(testL10n.startTimer), findsOneWidget);
+  });
+
+  testWidgets('"copied from" label shows for a task started earlier', (
+    tester,
+  ) async {
+    todo = buildTodo(
+      id: 'todo-carried',
+      title: 'Carried task',
+      sourceDate: dateOffsetIso(-1),
+    );
+    todoRepository = _FakeTodoRepository([todo]);
+
+    await pumpTile(tester, isPast: false, onLongPress: () {});
+
+    expect(
+      find.text('${testL10n.copiedFrom} ${dateOffsetIso(-1)}'),
+      findsOneWidget,
+    );
+  });
+
   testWidgets('current-day todo shows quick task strip actions', (
     tester,
   ) async {
@@ -369,4 +434,33 @@ void main() {
       expect(find.byIcon(Icons.lock_outline), findsOneWidget);
     },
   );
+
+  testWidgets('target progress shows tracked time before target time', (
+    tester,
+  ) async {
+    todo = buildTodo(
+      id: 'todo-target',
+      title: 'Meditation',
+    ).copyWith(targetSeconds: 30 * 60);
+    todoRepository = _FakeTodoRepository([todo]);
+    final now = DateTime.now().toUtc().toIso8601String();
+    timeSegmentRepository.segments = [
+      TimeSegmentEntity(
+        id: 'segment-1',
+        todoId: todo.id,
+        startTime: '${todo.date}T08:00:00.000',
+        endTime: '${todo.date}T08:29:00.000',
+        durationSeconds: 29 * 60,
+        createdAt: now,
+      ),
+    ];
+
+    await pumpTile(tester, isPast: false, onLongPress: () {});
+
+    expect(
+      find.text(testL10n.targetProgressLabel('00:30:00', '00:29:00')),
+      findsOneWidget,
+    );
+    expect(find.text('00:29:00 out of 00:30:00'), findsOneWidget);
+  });
 }

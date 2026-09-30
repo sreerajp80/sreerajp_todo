@@ -66,6 +66,13 @@ bool isPastDate(String date) => date.compareTo(todayAsIso()) < 0;
 
 bool isFutureDate(String date) => date.compareTo(todayAsIso()) > 0;
 
+/// True when a task starts on a later day than today.
+///
+/// A multi-day task starts on [sourceDate]; a one-day task starts on [date].
+/// Timers are allowed only once a task has started.
+bool startsInFuture(String date, String? sourceDate) =>
+    isFutureDate(sourceDate ?? date);
+
 /// The date formatter for the chosen style. Built per call because the style
 /// can change while the app is running.
 DateFormat _dateFormatter() => switch (_dateFormat) {

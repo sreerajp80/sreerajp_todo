@@ -1615,7 +1615,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String targetProgressLabel(String target, String tracked) {
-    return '$tracked of $target';
+    return '$tracked out of $target';
   }
 
   @override
@@ -4068,4 +4068,79 @@ class AppLocalizationsEn extends AppLocalizations {
   String todayAndTotalTime(String todayTime, String totalTime) {
     return '$todayTime today · $totalTime total';
   }
+
+  @override
+  String get taskDateLabel => 'Task date';
+
+  @override
+  String get tooltipChangeTaskDate => 'Change task date';
+
+  @override
+  String get errorTimerFutureTask =>
+      'This task starts on a later day. You can start its timer on that day.';
+
+  @override
+  String get newDayShowingToday => 'New day — showing today\'s tasks';
+
+  @override
+  String get confirmFutureTaskTitle => 'Task for a later day';
+
+  @override
+  String confirmCompleteFutureBody(String date) {
+    return 'This task is for $date. Mark it done now?';
+  }
+
+  @override
+  String confirmDropFutureBody(String date) {
+    return 'This task is for $date. Drop it now?';
+  }
+
+  @override
+  String get ocrUnavailableMessage =>
+      'Text reading is not available on this device.';
+
+  @override
+  String get airQrScanReceivingTitle => 'Receiving AirQR stream';
+
+  @override
+  String get airQrScanHint => 'Point the camera at the AirQR screen';
+
+  @override
+  String airQrScanProgress(int percent) {
+    return 'AirQR stream: $percent%';
+  }
+
+  @override
+  String airQrScanFps(String fps) {
+    return '$fps FPS';
+  }
+
+  @override
+  String airQrScanBlocks(int received, int total) {
+    return 'Captured $received of $total blocks';
+  }
+
+  @override
+  String get airQrScanTorchOn => 'Turn torch on';
+
+  @override
+  String get airQrScanTorchOff => 'Turn torch off';
+
+  @override
+  String get airQrScanUnrecognized => 'This QR code is not an AirQR code.';
+
+  @override
+  String get airQrScanStreamFailed =>
+      'The AirQR stream could not be joined. Please try again.';
+
+  @override
+  String get airQrScanPermissionDenied =>
+      'Camera access is needed to scan AirQR codes. Allow camera access in system settings.';
+
+  @override
+  String get airQrScanCameraError => 'The camera could not be started.';
+
+  @override
+  String get airQrScanUnavailable =>
+      'QR scanning is available on Android only.';
 }

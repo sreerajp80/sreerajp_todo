@@ -373,7 +373,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
       try {
         await ref
             .read(dailyTodoProvider(widget.date).notifier)
-            .moveTodo(todoId, targetDate);
+            .moveTodo(todoId, targetDate, detach: true);
         if (mounted) {
           ref.invalidate(dailyTodoProvider(targetDate));
           showUndoSnackBar(
@@ -653,7 +653,20 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           notifier.toggleSelect(todo.id);
         },
         onComplete: () async {
-          if (defaults.confirmComplete) {
+          // A task for a later day is easy to finish by mistake, for example
+          // when the list was left on that day. Always ask, even when the
+          // usual question is turned off.
+          final startDay = todo.sourceDate ?? todo.date;
+          if (startsInFuture(todo.date, todo.sourceDate)) {
+            final confirmed = await showConfirmDialog(
+              context,
+              title: context.l10n.confirmFutureTaskTitle,
+              content: context.l10n.confirmCompleteFutureBody(
+                formatDateFromIso(startDay),
+              ),
+            );
+            if (!confirmed || !context.mounted) return;
+          } else if (defaults.confirmComplete) {
             final confirmed = await showConfirmDialog(
               context,
               title: context.l10n.confirmCompleteTitle,
@@ -701,7 +714,16 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
           // The question is now a setting. When it is off the drop happens on
           // the tap, and the undo SnackBar is the safety net.
           var confirmed = true;
-          if (defaults.confirmDrop) {
+          final startDay = todo.sourceDate ?? todo.date;
+          if (startsInFuture(todo.date, todo.sourceDate)) {
+            confirmed = await showConfirmDialog(
+              context,
+              title: context.l10n.confirmFutureTaskTitle,
+              content: context.l10n.confirmDropFutureBody(
+                formatDateFromIso(startDay),
+              ),
+            );
+          } else if (defaults.confirmDrop) {
             confirmed = await showConfirmDialog(
               context,
               title: context.l10n.confirmDrop,

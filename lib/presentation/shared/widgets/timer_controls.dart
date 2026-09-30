@@ -24,6 +24,11 @@ class TimerActions {
     final result = await ref
         .read(timeTrackingProvider(todoId).notifier)
         .startTimer();
+    if (result.futureDay) {
+      messenger
+        ..clearSnackBars()
+        ..showSnackBar(SnackBar(content: Text(l10n.errorTimerFutureTask)));
+    }
     if (result.error != null) return;
     ref.read(timerActivityTickProvider.notifier).state++;
 

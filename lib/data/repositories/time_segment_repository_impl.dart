@@ -79,6 +79,9 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
     if (isPastDate(todo.date)) {
       throw const DayLockedException();
     }
+    if (startsInFuture(todo.date, todo.sourceDate)) {
+      throw const FutureDayTimerException();
+    }
 
     _checkTerminalStatus(todo.status);
 

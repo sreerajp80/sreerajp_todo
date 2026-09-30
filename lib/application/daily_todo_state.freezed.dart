@@ -310,7 +310,11 @@ mixin _$UndoEntry {
   TodoStatus get newStatus => throw _privateConstructorUsedError;
   String? get copiedTodoId => throw _privateConstructorUsedError;
   String? get sourceDate => throw _privateConstructorUsedError;
-  String? get targetDate => throw _privateConstructorUsedError;
+  String? get targetDate =>
+      throw _privateConstructorUsedError; // Set for a move, so undo can put the todo back on every day it covered.
+  // `previousSourceDate` may be null, so `isMove` marks the entry as a move.
+  bool get isMove => throw _privateConstructorUsedError;
+  String? get previousSourceDate => throw _privateConstructorUsedError;
   DateTime get timestamp => throw _privateConstructorUsedError;
 
   /// Create a copy of UndoEntry
@@ -332,6 +336,8 @@ abstract class $UndoEntryCopyWith<$Res> {
     String? copiedTodoId,
     String? sourceDate,
     String? targetDate,
+    bool isMove,
+    String? previousSourceDate,
     DateTime timestamp,
   });
 }
@@ -357,6 +363,8 @@ class _$UndoEntryCopyWithImpl<$Res, $Val extends UndoEntry>
     Object? copiedTodoId = freezed,
     Object? sourceDate = freezed,
     Object? targetDate = freezed,
+    Object? isMove = null,
+    Object? previousSourceDate = freezed,
     Object? timestamp = null,
   }) {
     return _then(
@@ -385,6 +393,14 @@ class _$UndoEntryCopyWithImpl<$Res, $Val extends UndoEntry>
                 ? _value.targetDate
                 : targetDate // ignore: cast_nullable_to_non_nullable
                       as String?,
+            isMove: null == isMove
+                ? _value.isMove
+                : isMove // ignore: cast_nullable_to_non_nullable
+                      as bool,
+            previousSourceDate: freezed == previousSourceDate
+                ? _value.previousSourceDate
+                : previousSourceDate // ignore: cast_nullable_to_non_nullable
+                      as String?,
             timestamp: null == timestamp
                 ? _value.timestamp
                 : timestamp // ignore: cast_nullable_to_non_nullable
@@ -411,6 +427,8 @@ abstract class _$$UndoEntryImplCopyWith<$Res>
     String? copiedTodoId,
     String? sourceDate,
     String? targetDate,
+    bool isMove,
+    String? previousSourceDate,
     DateTime timestamp,
   });
 }
@@ -435,6 +453,8 @@ class __$$UndoEntryImplCopyWithImpl<$Res>
     Object? copiedTodoId = freezed,
     Object? sourceDate = freezed,
     Object? targetDate = freezed,
+    Object? isMove = null,
+    Object? previousSourceDate = freezed,
     Object? timestamp = null,
   }) {
     return _then(
@@ -463,6 +483,14 @@ class __$$UndoEntryImplCopyWithImpl<$Res>
             ? _value.targetDate
             : targetDate // ignore: cast_nullable_to_non_nullable
                   as String?,
+        isMove: null == isMove
+            ? _value.isMove
+            : isMove // ignore: cast_nullable_to_non_nullable
+                  as bool,
+        previousSourceDate: freezed == previousSourceDate
+            ? _value.previousSourceDate
+            : previousSourceDate // ignore: cast_nullable_to_non_nullable
+                  as String?,
         timestamp: null == timestamp
             ? _value.timestamp
             : timestamp // ignore: cast_nullable_to_non_nullable
@@ -482,6 +510,8 @@ class _$UndoEntryImpl implements _UndoEntry {
     this.copiedTodoId,
     this.sourceDate,
     this.targetDate,
+    this.isMove = false,
+    this.previousSourceDate,
     required this.timestamp,
   });
 
@@ -497,12 +527,19 @@ class _$UndoEntryImpl implements _UndoEntry {
   final String? sourceDate;
   @override
   final String? targetDate;
+  // Set for a move, so undo can put the todo back on every day it covered.
+  // `previousSourceDate` may be null, so `isMove` marks the entry as a move.
+  @override
+  @JsonKey()
+  final bool isMove;
+  @override
+  final String? previousSourceDate;
   @override
   final DateTime timestamp;
 
   @override
   String toString() {
-    return 'UndoEntry(todoId: $todoId, oldStatus: $oldStatus, newStatus: $newStatus, copiedTodoId: $copiedTodoId, sourceDate: $sourceDate, targetDate: $targetDate, timestamp: $timestamp)';
+    return 'UndoEntry(todoId: $todoId, oldStatus: $oldStatus, newStatus: $newStatus, copiedTodoId: $copiedTodoId, sourceDate: $sourceDate, targetDate: $targetDate, isMove: $isMove, previousSourceDate: $previousSourceDate, timestamp: $timestamp)';
   }
 
   @override
@@ -521,6 +558,9 @@ class _$UndoEntryImpl implements _UndoEntry {
                 other.sourceDate == sourceDate) &&
             (identical(other.targetDate, targetDate) ||
                 other.targetDate == targetDate) &&
+            (identical(other.isMove, isMove) || other.isMove == isMove) &&
+            (identical(other.previousSourceDate, previousSourceDate) ||
+                other.previousSourceDate == previousSourceDate) &&
             (identical(other.timestamp, timestamp) ||
                 other.timestamp == timestamp));
   }
@@ -534,6 +574,8 @@ class _$UndoEntryImpl implements _UndoEntry {
     copiedTodoId,
     sourceDate,
     targetDate,
+    isMove,
+    previousSourceDate,
     timestamp,
   );
 
@@ -554,6 +596,8 @@ abstract class _UndoEntry implements UndoEntry {
     final String? copiedTodoId,
     final String? sourceDate,
     final String? targetDate,
+    final bool isMove,
+    final String? previousSourceDate,
     required final DateTime timestamp,
   }) = _$UndoEntryImpl;
 
@@ -568,7 +612,12 @@ abstract class _UndoEntry implements UndoEntry {
   @override
   String? get sourceDate;
   @override
-  String? get targetDate;
+  String? get targetDate; // Set for a move, so undo can put the todo back on every day it covered.
+  // `previousSourceDate` may be null, so `isMove` marks the entry as a move.
+  @override
+  bool get isMove;
+  @override
+  String? get previousSourceDate;
   @override
   DateTime get timestamp;
 

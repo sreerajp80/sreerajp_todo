@@ -19,7 +19,7 @@ Read it before making any change. See the docs table below for full detail.
 | Navigation | `go_router` |
 | Database | SQLite via `sqflite_sqlcipher` (mobile, AES-256 encrypted) + `sqflite_common_ffi` with SQLCipher (desktop) |
 | Orientation | Both portrait and landscape supported |
-| Connectivity | **Fully offline — zero internet access required or permitted** |
+| Connectivity | **No internet traffic — works fully offline; the only network use is user-started Wi-Fi sync on the local network** |
 
 ---
 
@@ -42,7 +42,7 @@ Read it before making any change. See the docs table below for full detail.
 
 ## Hard rules (must follow — these override convenience)
 
-1. **Fully Offline:** Zero network packages, zero cloud SDKs, zero analytics/crash reporting. `AndroidManifest.xml` must not contain `INTERNET` or network permissions. Runtime assets must be bundled (`AssetImage`, `Image.asset()`, `Image.file()`). Never use `NetworkImage`.
+1. **No Internet Traffic:** Zero network packages, zero cloud SDKs, zero analytics/telemetry/crash reporting. The app never sends data over the internet. `INTERNET` is declared **only** so user-started Wi-Fi sync can reach the user's own devices on the local network; `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE` and all other network permissions stay banned. No Google ML Kit, Play Services or Firebase code, not even through a plugin: OCR uses Tesseract and QR decoding uses ZXing core. Runtime assets must be bundled (`AssetImage`, `Image.asset()`, `Image.file()`). Never use `NetworkImage`.
 2. **Unicode First:** NFC-normalize every string written to the database with `unicodeUtils.nfcNormalize(value)`. Use `unicodeUtils.detectTextDirection(value)` for dynamic text direction. Title uniqueness is enforced after NFC normalization.
 3. **Day Lock:** Any `TodoEntity` dated before today is read-only. Repository methods must enforce this and throw `DayLockedException`.
 4. **Terminal Status Lock:** `completed` and `dropped` todos cannot accept new time segments. Any open segment must be stopped when a todo becomes terminal. Repository throws `CompletedLockException`. UI hides start/stop controls for terminal todos.
@@ -145,7 +145,7 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 ## Security rules
 
 - Never log secrets, keys, passwords, or decrypted user data.
-- 100% offline operational guarantee — zero network permissions in `AndroidManifest.xml`.
+- No internet traffic guarantee — `INTERNET` is the only network permission, used only by Wi-Fi sync on the local network. Check the merged release manifest: no `ACCESS_NETWORK_STATE`, and no `com.google.mlkit`, `com.google.android.gms` or `datatransport` entries.
 - `android:allowBackup="false"` must remain set in `AndroidManifest.xml`.
 - Dual-key encryption design: live SQLite database encrypted with device-derived key; backup export files encrypted with user passphrase (AES-256 ZIP encryption).
 
@@ -177,7 +177,7 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 - **Do not upgrade packages** without running `flutter analyze` and all tests afterwards.
 - **Android Gradle Plugin:** Stay on AGP **8.x**.
 - **Blocked package categories:** HTTP clients, WebSockets, Cloud/BaaS SDKs, Analytics, Crash reporting, Ads, Network status packages.
-- **Approved local-only packages:** `sqflite_sqlcipher`, `sqflite_common_ffi`, `path`, `path_provider`, `flutter_riverpod`, `go_router`, `intl`, `fl_chart`, `table_calendar`, `uuid`, `flutter_localizations`, `characters`, `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner`, `mocktail`, `flutter_test`, `unorm_dart`, `file_picker`, `flutter_native_splash`, `rrule`, `image`, `image_cropper`, `shared_preferences`.
+- **Approved local-only packages:** `sqflite_sqlcipher`, `sqflite_common_ffi`, `path`, `path_provider`, `flutter_riverpod`, `go_router`, `intl`, `fl_chart`, `table_calendar`, `uuid`, `flutter_localizations`, `characters`, `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner`, `mocktail`, `flutter_test`, `unorm_dart`, `file_picker`, `flutter_native_splash`, `rrule`, `image`, `image_cropper`, `camera`, `qr_flutter`, `shared_preferences`. Android Gradle: `com.google.zxing:core` (pure-Java QR decoding; the name is historical, it has no Google services).
 
 ---
 
@@ -242,9 +242,9 @@ Create `plans/` and `change_log/` if they do not exist.
 8. Store secrets, keys, or signing credentials in the project root.
 9. Use `Navigator.push()` instead of `go_router`.
 10. Add cloud, analytics, networking, telemetry, or connectivity dependencies.
-11. Add Android network permissions (`INTERNET`, `ACCESS_NETWORK_STATE`).
+11. Add Android network permissions other than `INTERNET` (for example `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`), or use `INTERNET` for anything except local Wi-Fi sync.
 12. Use `NetworkImage` or URL-based image loading.
 13. Store or transmit data outside the local device filesystem.
-14. Make outbound network calls from Dart for any reason.
+14. Make network calls from Dart, except sockets in `P2pWifiSyncService` to addresses that pass `isLocalNetworkAddress()`.
 15. Use `compute()` or `Isolate.spawn()` for `sqflite` queries.
 16. Cache the full autocomplete title list in memory.

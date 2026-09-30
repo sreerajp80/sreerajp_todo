@@ -113,6 +113,70 @@ void main() {
       },
     );
 
+    test('detach moves the todo off its previous day', () async {
+      final todo = makeTodo(
+        id: 'task-detach',
+        title: 'Explicit move',
+        date: _todayIso(),
+      );
+      await todoDao.insert(todo);
+
+      final result = await moveTodoUseCase(
+        'task-detach',
+        _tomorrowIso(),
+        detach: true,
+      );
+      expect(result.detached, isTrue);
+
+      final todayTodos = await todoRepo.getTodosByDate(_todayIso());
+      expect(todayTodos.where((t) => t.id == 'task-detach'), isEmpty);
+
+      final tomorrowTodos = await todoRepo.getTodosByDate(_tomorrowIso());
+      expect(tomorrowTodos.where((t) => t.id == 'task-detach'), isNotEmpty);
+
+      // The move is still in the task history.
+      final history = await todoRepo.getHistoryForTodo('task-detach');
+      expect(
+        history.any((e) => e.eventType == TodoHistoryEventType.moved),
+        isTrue,
+      );
+    });
+
+    test('refuses to move a todo to a past day', () async {
+      await todoDao.insert(makeTodo(id: 'task-past', title: 'No going back'));
+
+      expect(
+        () => moveTodoUseCase('task-past', '2026-01-01'),
+        throwsA(isA<DayLockedException>()),
+      );
+      final unchanged = await todoRepo.getTodoById('task-past');
+      expect(unchanged!.date, _todayIso());
+    });
+
+    test('result carries the start date from before the move', () async {
+      final now = DateTime.now().toUtc().toIso8601String();
+      await todoDao.insert(
+        TodoEntity(
+          id: 'task-multi',
+          date: _todayIso(),
+          sourceDate: '2026-08-20',
+          title: 'Multi-day',
+          status: TodoStatus.pending,
+          sortOrder: 0,
+          createdAt: now,
+          updatedAt: now,
+        ),
+      );
+
+      final result = await moveTodoUseCase(
+        'task-multi',
+        _tomorrowIso(),
+        detach: true,
+      );
+
+      expect(result.previousSourceDate, '2026-08-20');
+    });
+
     test('stops running timer when moving todo', () async {
       final todo = makeTodo(id: 'task-timer', title: 'Timing task');
       await todoDao.insert(todo);

@@ -69,7 +69,7 @@
 **SreerajP ToDo** is a personal daily planner and time-tracking application built for people who value privacy, discipline, and complete data ownership.
 
 Most modern task apps push your personal schedule, thoughts, and habits into external cloud databases. SreerajP ToDo takes the opposite path:
-- **100% Offline by Design:** The app operates completely without internet connectivity. Outbound network requests are physically blocked at the OS level because the app does not request or hold network permissions.
+- **100% Offline by Design:** The app operates completely without internet connectivity and sends nothing over the internet. The only network use is optional Wi-Fi sync between your own devices on the same local network, and the code refuses every address outside that network.
 - **Strict Historical Integrity:** The unique **Day Lock** rule ensures that once a day passes, its records are permanently sealed. You cannot rewrite history, giving you an honest, reliable log of your time and achievements.
 - **Deep Productivity Features:** Includes live multi-timer tracking, distraction-free focus sessions, an on-device OCR paper scanner, hands-free bilingual voice parsing, SM-2 spaced repetition mastery decks, and mindful daily rituals.
 - **Zero-Cloud Data Portability:** Seamlessly move your data between your devices using optical **Air-QR** scanning or direct peer-to-peer local Wi-Fi transfer without a single byte ever touching a remote server.
@@ -196,8 +196,8 @@ SreerajP ToDo operates under an uncompromising privacy and security model:
 |                              DEVICE SANDBOX                             |
 |                                                                         |
 |  +--------------------+   +---------------------+   +----------------+  |
-|  |  Presentation & UI |   | On-Device ML Kit    |   |  Local Speech  |  |
-|  |  (Flutter Widgets) |   | (Offline OCR Engine)|   |  Recognizer    |  |
+|  |  Presentation & UI |   | Tesseract & ZXing   |   |  Local Speech  |  |
+|  |  (Flutter Widgets) |   | (Offline OCR & QR)  |   |  Recognizer    |  |
 |  +---------+----------+   +----------+----------+   +--------+-------+  |
 |            |                         |                       |          |
 |            v                         v                       v          |
@@ -216,12 +216,12 @@ SreerajP ToDo operates under an uncompromising privacy and security model:
 |  |     Keys secured in Android Keystore / Windows DPAPI at Rest      |  |
 |  +-------------------------------------------------------------------+  |
 |                                                                         |
-|  [X] ZERO INTERNET PERMISSION IN MANIFEST (OS KERNEL BLOCKS NETWORKING)  |
+|  [X] NO INTERNET TRAFFIC (WI-FI SYNC STAYS ON THE LOCAL NETWORK ONLY)   |
 +-------------------------------------------------------------------------+
 ```
 
-1. **Zero Internet Permission:** `AndroidManifest.xml` does not include `android.permission.INTERNET`, `ACCESS_NETWORK_STATE`, or `ACCESS_WIFI_STATE`. Even if third-party code attempted a network connection, the operating system kernel rejects it outright.
-2. **100% On-Device Processing:** Text recognition (Google ML Kit) and voice task parsing run locally on your device hardware without transmitting audio or images to remote APIs.
+1. **No Internet Traffic:** `INTERNET` is declared only because Android needs it for Wi-Fi sync sockets. Sync refuses any address outside the local network. `ACCESS_NETWORK_STATE` and `ACCESS_WIFI_STATE` are not declared, and the app contains no Google ML Kit, Play Services or Firebase code.
+2. **100% On-Device Processing:** Text recognition (Tesseract), QR decoding (ZXing) and voice task parsing run locally on your device hardware without transmitting audio or images to remote APIs.
 3. **Dual-Key Cryptography:**
    - **Live Database:** Encrypted at rest using AES-256 SQLCipher. The database encryption key is generated on the first run and stored securely in the hardware-backed Android Keystore or Windows DPAPI.
    - **User Backups:** Exported backup files are encrypted with an 8+ character user passphrase using AES-256 ZIP encryption.
@@ -320,7 +320,7 @@ Tap the **Focus** button on any pending task to enter full-screen focus mode:
 ### On-Device Offline OCR Task Scanner
 
 Capture physical task notes from paper, notebooks, whiteboards, or printed sheets:
-- Uses on-device Google ML Kit text recognition without sending images or data to any cloud service.
+- Uses on-device Tesseract text recognition (English and Malayalam) without sending images or data to any cloud service.
 - **Post-Capture Document Editor:** Built-in tools let you **crop**, **rotate**, and adjust **contrast and brightness** to ensure optimal recognition accuracy.
 - Intelligently parses checkboxes, bullet points, and numbered lists into structured task titles and descriptions.
 
@@ -451,7 +451,8 @@ lib/
 | **Database** | SQLCipher (`sqflite_sqlcipher`) | AES-256 encrypted SQLite with WAL mode and foreign keys |
 | **Search Engine** | SQLite FTS5 | Full-text indexing with Indic phonetic search rules |
 | **Key Storage** | Android Keystore / Windows DPAPI | Secure storage for database encryption keys at rest |
-| **Text Recognition** | Google ML Kit (On-Device) | Offline OCR document scanning without cloud calls |
+| **Text Recognition** | Tesseract 5 (On-Device) | Offline OCR document scanning without cloud calls |
+| **QR Decoding** | ZXing core (On-Device) | AirQR camera scanning with no Google services |
 | **Voice Parsing** | Speech-to-Text & Custom Lexicons | Bilingual voice task parsing for English and Malayalam |
 | **Recurrence** | `rrule` (RFC 5545) | Rule-based recurring task scheduling |
 
@@ -482,11 +483,11 @@ lib/
 
 ### Permissions the App Does NOT Have
 
-The application **deliberately omits** all network and privacy-invasive permissions:
+The application **deliberately omits** privacy-invasive permissions, and uses its only network permission for local Wi-Fi sync:
 
 | Permission | Status | Rationale |
 |---|---|---|
-| `android.permission.INTERNET` | **ABSENT** | The app never connects to the internet. The OS blocks all socket and HTTP traffic. |
+| `android.permission.INTERNET` | **LOCAL SYNC ONLY** | Needed by Android for any socket. Used only by Wi-Fi sync to the user's own devices on the local network. The app never connects to the internet. |
 | `android.permission.ACCESS_NETWORK_STATE` | **ABSENT** | The app does not monitor network connectivity status. |
 | `android.permission.ACCESS_WIFI_STATE` | **ABSENT** | The app does not inspect Wi-Fi state. |
 | Location Permissions | **ABSENT** | Zero location tracking or GPS access. |

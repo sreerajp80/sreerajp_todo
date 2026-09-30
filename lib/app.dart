@@ -65,6 +65,7 @@ import 'package:sreerajp_todo/presentation/screens/statistics/statistics_screen.
 import 'package:sreerajp_todo/presentation/screens/task_history/task_history_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/time_segments/time_segments_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/day_rollover_watcher.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/timer_lifecycle_watcher.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/pending_alert_watcher.dart';
 
@@ -493,9 +494,13 @@ class _TodoAppState extends ConsumerState<TodoApp> {
           data: media.copyWith(textScaler: TextScaler.linear(combined)),
           // Owns auto-stop, auto-pause on background, and keep-screen-awake.
           child: TimerLifecycleWatcher(
-            child: PendingAlertWatcher(
-              navigatorKey: rootNavigatorKey,
-              child: child ?? const SizedBox.shrink(),
+            // Brings a day list back to today when the app returns on a new day.
+            child: DayRolloverWatcher(
+              router: _router,
+              child: PendingAlertWatcher(
+                navigatorKey: rootNavigatorKey,
+                child: child ?? const SizedBox.shrink(),
+              ),
             ),
           ),
         );

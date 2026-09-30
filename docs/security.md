@@ -74,8 +74,9 @@ Read [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), and [architecture.md]
 
 ### In Transit
 
-- Network use: None. The app has zero networking code, zero networking permissions, and zero networking dependencies.
-- Transport protections: Not applicable.
+- Internet use: None. The app never sends data over the internet. It has zero networking dependencies, zero cloud SDKs and zero telemetry.
+- Local network use: Wi-Fi sync only, and only when the user starts it. `P2pWifiSyncService` opens a TCP socket between the user's own devices on the same Wi-Fi or hotspot. It refuses to connect to, or accept a connection from, any address that fails `isLocalNetworkAddress()` (`lib/core/utils/network_address_utils.dart`). Only private (`10/8`, `172.16/12`, `192.168/16`), link-local (`169.254/16`) and loopback (`127/8`) IPv4 addresses pass. Host names are never resolved.
+- Transport protections: The sync payload is encrypted with a session key derived from the pairing PIN and a random salt.
 
 ---
 
@@ -148,15 +149,17 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 - `android:fullBackupContent`: Not used (allowBackup is false).
 - Screenshot protection: Enabled via `FLAG_SECURE` through the `in.sreerajp.todo/app_lock` channel, shielding screen content against screen captures and recent task previews.
 - Root or tamper detection: Not implemented (out-of-scope threat model).
-- `INTERNET` permission: Deliberately absent. Android OS blocks all network access at the system level.
-- `ACCESS_NETWORK_STATE` / `ACCESS_WIFI_STATE`: Absent.
+- `INTERNET` permission: Declared **only** for Wi-Fi sync on the local network. Android asks for it for any socket, even one that never leaves the Wi-Fi. The Dart address guard above is what keeps traffic local.
+- `ACCESS_NETWORK_STATE`: Not needed. Removed from the final manifest with `tools:node="remove"` in case a plugin adds it.
+- `ACCESS_WIFI_STATE`: Absent.
+- No Google ML Kit, Play Services or Firebase code. OCR uses on-device Tesseract, and the AirQR scanner decodes camera frames with ZXing core (pure Java, no network code). Google ML Kit was removed because it shipped `com.google.android.datatransport`, which uploads usage events to Google.
 - `CAMERA`: Declared, for QR code scanning between the user's own devices. No photo is stored.
 - `RECORD_AUDIO`: Declared, for the offline voice task sheet only. See section 10.
 
 ### Windows
 
 - No firewall rules registered.
-- No outbound network connections.
+- No internet connections. Wi-Fi sync, when the user starts it, talks only to local-network addresses (same guard as Android).
 - No WinRT network capabilities (`internetClient`, `internetClientServer`, `privateNetworkClientServer`) declared.
 - Database encryption key stored via Windows DPAPI, tied to the Windows user account.
 
@@ -169,18 +172,19 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 | Local file storage (implicit) | SQLite database in app's private directory | Automatic (OS grants to all apps for their own data directory) | Not applicable |
 | External storage / file access | Backup export/import to user-accessible location | When the user taps Export or Import on the Backup screen | Show error explaining file access is required for backup |
 | `CAMERA` | Scanning an AirQR code to move data between the user's own devices | When the user opens the QR scanner | The scanner screen explains that the camera is required; every other feature keeps working |
+| `INTERNET` | Wi-Fi sync between the user's own devices on the local network. No internet traffic | Granted at install (normal permission) | Not applicable |
 | `RECORD_AUDIO` | The offline voice task sheet | Only after the user turns **Voice input** on in Settings → Task defaults → Day list, and then taps the microphone | The sheet shows its text box instead, and the sentence is parsed exactly the same way |
 
-Permissions the app explicitly does NOT request: `INTERNET`, `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `LOCATION`, `CONTACTS`, `PHONE`, `NOTIFICATIONS`.
+Permissions the app explicitly does NOT request: `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `LOCATION`, `CONTACTS`, `PHONE`, `NOTIFICATIONS`.
 
 ### Why `RECORD_AUDIO` does not break the offline guarantee
 
 Flutter cannot read a microphone by itself, so speech-to-text has to come from
 somewhere. The choice made here keeps the offline promise in three ways:
 
-1. **This app still holds no network permission.** Nothing in the app process
-   can reach the network, before or after this feature. The manifest audit in
-   section 12 is unchanged and must still find zero matches.
+1. **The app itself sends nothing over the internet.** The only socket code is
+   Wi-Fi sync, which is limited to local-network addresses. The voice feature
+   adds no network code, and the manifest audit in section 12 still applies.
 2. **The recogniser is always asked for its on-device engine.** From API 33 the
    host calls `SpeechRecognizer.createOnDeviceSpeechRecognizer`; below that it
    sets `RecognizerIntent.EXTRA_PREFER_OFFLINE`. A device that cannot offer an
@@ -235,7 +239,8 @@ sentence ends or the sheet closes.
 | Wrong passphrase rejection | Unit | Import with incorrect passphrase returns clear error |
 | Schema version validation | Unit | Backup with newer version throws `BackupVersionTooNewException` |
 | Integrity check | Unit | Corrupted backup file throws `BackupCorruptedException` |
-| No network permissions | Integration | Verify merged Android manifest contains no INTERNET or network permissions |
+| No internet traffic | Integration | Verify the merged Android manifest has `INTERNET` as its only network permission, and no `com.google.mlkit`, `com.google.android.gms` or `datatransport` entries |
+| Local-only Wi-Fi sync | Unit | `isLocalNetworkAddress()` accepts only local ranges; `connectAndSyncAsPeer` throws `NonLocalAddressException` for other addresses |
 | Offline operation | Integration | Disable all network interfaces -> launch app -> full CRUD -> verify zero errors |
 
 ### Required Test Vectors Or Regression Areas
@@ -243,7 +248,7 @@ sentence ends or the sheet closes.
 - Backup round-trip with known passphrase (deterministic test).
 - Import of a file encrypted with the wrong passphrase (must fail gracefully).
 - Import of a file with a future schema version (must reject).
-- Merged manifest audit for network permissions (must be zero matches).
+- Merged manifest audit: `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `com.google.mlkit`, `com.google.android.gms` and `datatransport` must have zero matches. `INTERNET` is expected.
 
 ---
 
@@ -267,6 +272,8 @@ sentence ends or the sheet closes.
   Hardening option: Encourage regular backups with clear in-app guidance. Consider periodic backup reminders in a future version.
 - Risk: Casual local access if app lock is disabled by user.
   Hardening option: Offer prominent, opt-in device authentication lock in app settings.
+- Risk: A new plugin adds its own telemetry or network permission through manifest merge.
+  Hardening option: Run the merged-manifest audit in `docs/release_process.md` on every release build.
 - Risk: SQLCipher library vulnerability.
   Hardening option: Monitor SQLCipher releases and update promptly. The `sqflite_sqlcipher` package tracks upstream SQLCipher versions.
 

@@ -14,8 +14,8 @@ import 'package:sreerajp_todo/domain/usecases/delete_recurring_todos.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_completed.dart';
 import 'package:sreerajp_todo/domain/usecases/mark_todo_dropped.dart';
 import 'package:sreerajp_todo/domain/usecases/move_todo.dart';
-import 'package:sreerajp_todo/domain/usecases/port_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/reopen_todo.dart';
+import 'package:sreerajp_todo/domain/usecases/undo_move_todo.dart';
 
 class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   DailyTodoNotifier({
@@ -23,24 +23,14 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     required this.todoRepository,
     required this.markTodoCompleted,
     required this.markTodoDropped,
-    required this.portTodoUseCase,
     required this.copyTodosUseCase,
     required this.deleteRecurringTodos,
-    MoveTodo? moveTodoUseCase,
-    ReopenTodo? reopenTodoUseCase,
+    required this.moveTodoUseCase,
+    required this.reopenTodoUseCase,
+    required this.undoMoveTodoUseCase,
     this.onDataChanged,
     this.onTimerStopped,
-  }) : moveTodoUseCase =
-           moveTodoUseCase ??
-           MoveTodo(
-             todoRepository,
-             // fallback if not directly passed in test
-             portTodoUseCase.timeSegmentRepository,
-           ),
-       reopenTodoUseCase =
-           reopenTodoUseCase ??
-           ReopenTodo(todoRepository, portTodoUseCase.timeSegmentRepository),
-       super(const DailyTodoState()) {
+  }) : super(const DailyTodoState()) {
     loadTodos();
   }
 
@@ -48,10 +38,10 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
   final TodoRepository todoRepository;
   final MarkTodoCompleted markTodoCompleted;
   final MarkTodoDropped markTodoDropped;
-  final PortTodo portTodoUseCase;
   final CopyTodos copyTodosUseCase;
   final DeleteRecurringTodos deleteRecurringTodos;
   final MoveTodo moveTodoUseCase;
+  final UndoMoveTodo undoMoveTodoUseCase;
   final ReopenTodo reopenTodoUseCase;
   final void Function()? onDataChanged;
   final void Function(String todoId)? onTimerStopped;
@@ -99,6 +89,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     try {
       await todoRepository.createTodo(todo);
       await loadTodos();
+      onDataChanged?.call();
     } on DuplicateTitleException {
       rethrow;
     } on DayLockedException {
@@ -112,6 +103,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     try {
       await todoRepository.updateTodo(todo);
       await loadTodos();
+      onDataChanged?.call();
     } on DuplicateTitleException {
       rethrow;
     } on MultiDayDuplicateTitleException {
@@ -195,6 +187,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
         ),
       );
       await loadTodos();
+      onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -217,6 +210,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
         ),
       );
       await loadTodos();
+      onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -235,6 +229,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
         ),
       );
       await loadTodos();
+      onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -254,6 +249,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
         ),
       );
       await loadTodos();
+      onDataChanged?.call();
     } on DayLockedException {
       rethrow;
     } on Exception catch (e) {
@@ -266,12 +262,16 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     await moveTodo(todoId, targetDate);
   }
 
-  Future<void> moveTodo(String todoId, String targetDate) async {
+  Future<void> moveTodo(
+    String todoId,
+    String targetDate, {
+    bool detach = false,
+  }) async {
     try {
       final todo = await todoRepository.getTodoById(todoId);
       final oldStatus = todo?.status ?? TodoStatus.pending;
 
-      final result = await moveTodoUseCase(todoId, targetDate);
+      final result = await moveTodoUseCase(todoId, targetDate, detach: detach);
       _pushUndo(
         UndoEntry(
           todoId: todoId,
@@ -279,6 +279,8 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
           newStatus: TodoStatus.pending,
           sourceDate: result.fromDate,
           targetDate: result.toDate,
+          isMove: true,
+          previousSourceDate: result.previousSourceDate,
           timestamp: DateTime.now(),
         ),
       );
@@ -316,6 +318,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
       }
       clearSelection();
       await loadTodos();
+      onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -337,6 +340,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
       }
       clearSelection();
       await loadTodos();
+      onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }
@@ -359,6 +363,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
       }
       clearSelection();
       await loadTodos();
+      onDataChanged?.call();
     } on DayLockedException {
       rethrow;
     } on Exception catch (e) {
@@ -375,8 +380,12 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
     state = state.copyWith(undoStack: newStack);
 
     try {
-      if (entry.sourceDate != null && entry.targetDate != null) {
-        await moveTodoUseCase(entry.todoId, entry.sourceDate!);
+      if (entry.isMove && entry.sourceDate != null) {
+        await undoMoveTodoUseCase(
+          todoId: entry.todoId,
+          originalDate: entry.sourceDate!,
+          originalSourceDate: entry.previousSourceDate,
+        );
         await loadTodos();
         onDataChanged?.call();
         return;
@@ -392,6 +401,7 @@ class DailyTodoNotifier extends StateNotifier<DailyTodoState> {
         portedTo: null,
       );
       await loadTodos();
+      onDataChanged?.call();
     } on Exception catch (e) {
       state = state.copyWith(error: e.toString());
     }

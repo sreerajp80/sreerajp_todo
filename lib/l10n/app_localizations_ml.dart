@@ -1631,7 +1631,7 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String targetProgressLabel(String target, String tracked) {
-    return '$target ൽ $tracked';
+    return 'ആകെ $target-ൽ $tracked';
   }
 
   @override
@@ -4100,4 +4100,80 @@ class AppLocalizationsMl extends AppLocalizations {
   String todayAndTotalTime(String todayTime, String totalTime) {
     return '$todayTime ഇന്ന് · $totalTime ആകെ';
   }
+
+  @override
+  String get taskDateLabel => 'ടാസ്ക് തീയതി';
+
+  @override
+  String get tooltipChangeTaskDate => 'ടാസ്ക് തീയതി മാറ്റുക';
+
+  @override
+  String get errorTimerFutureTask =>
+      'ഈ ടാസ്ക് പിന്നീടുള്ള ഒരു ദിവസമാണ് തുടങ്ങുന്നത്. ആ ദിവസം ടൈമർ ആരംഭിക്കാം.';
+
+  @override
+  String get newDayShowingToday =>
+      'പുതിയ ദിവസം — ഇന്നത്തെ ടാസ്കുകൾ കാണിക്കുന്നു';
+
+  @override
+  String get confirmFutureTaskTitle => 'പിന്നീടുള്ള ദിവസത്തെ ടാസ്ക്';
+
+  @override
+  String confirmCompleteFutureBody(String date) {
+    return 'ഈ ടാസ്ക് $date ദിവസത്തേതാണ്. ഇപ്പോൾ പൂർത്തിയായി എന്ന് അടയാളപ്പെടുത്തണോ?';
+  }
+
+  @override
+  String confirmDropFutureBody(String date) {
+    return 'ഈ ടാസ്ക് $date ദിവസത്തേതാണ്. ഇപ്പോൾ ഉപേക്ഷിക്കണോ?';
+  }
+
+  @override
+  String get ocrUnavailableMessage =>
+      'ഈ ഉപകരണത്തിൽ എഴുത്ത് വായിക്കാനുള്ള സൗകര്യം ലഭ്യമല്ല.';
+
+  @override
+  String get airQrScanReceivingTitle => 'AirQR സ്ട്രീം സ്വീകരിക്കുന്നു';
+
+  @override
+  String get airQrScanHint => 'ക്യാമറ AirQR സ്ക്രീനിലേക്ക് തിരിക്കുക';
+
+  @override
+  String airQrScanProgress(int percent) {
+    return 'AirQR സ്ട്രീം: $percent%';
+  }
+
+  @override
+  String airQrScanFps(String fps) {
+    return 'സെക്കൻഡിൽ $fps ഫ്രെയിം';
+  }
+
+  @override
+  String airQrScanBlocks(int received, int total) {
+    return '$total ബ്ലോക്കുകളിൽ $received എണ്ണം ലഭിച്ചു';
+  }
+
+  @override
+  String get airQrScanTorchOn => 'ടോർച്ച് ഓണാക്കുക';
+
+  @override
+  String get airQrScanTorchOff => 'ടോർച്ച് ഓഫാക്കുക';
+
+  @override
+  String get airQrScanUnrecognized => 'ഇത് ഒരു AirQR കോഡ് അല്ല.';
+
+  @override
+  String get airQrScanStreamFailed =>
+      'AirQR സ്ട്രീം ചേർത്തെടുക്കാനായില്ല. വീണ്ടും ശ്രമിക്കുക.';
+
+  @override
+  String get airQrScanPermissionDenied =>
+      'AirQR കോഡുകൾ സ്കാൻ ചെയ്യാൻ ക്യാമറ അനുമതി ആവശ്യമാണ്. സിസ്റ്റം ക്രമീകരണങ്ങളിൽ ക്യാമറ അനുമതി നൽകുക.';
+
+  @override
+  String get airQrScanCameraError => 'ക്യാമറ ആരംഭിക്കാനായില്ല.';
+
+  @override
+  String get airQrScanUnavailable =>
+      'QR സ്കാനിംഗ് ആൻഡ്രോയിഡിൽ മാത്രമേ ലഭ്യമാകൂ.';
 }

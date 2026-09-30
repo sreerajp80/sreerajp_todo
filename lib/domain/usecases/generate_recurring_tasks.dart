@@ -2,7 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:rrule/rrule.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
+import 'package:sreerajp_todo/data/models/sub_task_item.dart';
 import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/data/models/todo_priority.dart';
 import 'package:sreerajp_todo/data/models/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
@@ -56,6 +58,28 @@ class GenerateRecurringTasks {
             ? nfcNormalize(rule.description!)
             : null;
 
+        // Series values come from the rule. Rules saved before database v12
+        // have none, so they fall back to the latest occurrence.
+        final TodoPriority priority;
+        final int? targetSeconds;
+        final List<String> subTaskTitles;
+        if (rule.hasSeriesValues) {
+          priority = rule.priority!;
+          targetSeconds = rule.targetSeconds;
+          subTaskTitles = rule.subTaskTitles ?? const [];
+        } else {
+          final existing = await _todoRepository.getTodosByRecurrenceRuleId(
+            rule.id,
+          );
+          final latest = existing.isNotEmpty ? existing.last : null;
+          priority = latest?.priority ?? TodoPriority.normal;
+          targetSeconds = latest?.targetSeconds;
+          subTaskTitles = [
+            for (final st in latest?.subTasks ?? const <SubTaskItem>[])
+              st.title,
+          ];
+        }
+
         final todosToInsert = <TodoEntity>[];
 
         for (final instance in instances) {
@@ -78,15 +102,30 @@ class GenerateRecurringTasks {
 
           final maxOrder = await _todoRepository.maxSortOrder(dateStr);
           final now = DateTime.now().toUtc().toIso8601String();
+          final todoId = _uuid.v4();
+          final subTasks = [
+            for (final (index, title) in subTaskTitles.indexed)
+              SubTaskItem(
+                id: _uuid.v4(),
+                todoId: todoId,
+                title: nfcNormalize(title),
+                sortOrder: index,
+                createdAt: now,
+                updatedAt: now,
+              ),
+          ];
           todosToInsert.add(
             TodoEntity(
-              id: _uuid.v4(),
+              id: todoId,
               date: dateStr,
               title: normalizedTitle,
               description: normalizedDescription,
               status: TodoStatus.pending,
+              priority: priority,
+              targetSeconds: targetSeconds,
               recurrenceRuleId: rule.id,
               sortOrder: maxOrder + 1,
+              subTasks: subTasks,
               createdAt: now,
               updatedAt: now,
             ),

@@ -54,6 +54,7 @@ class MainActivity : FlutterActivity() {
     private val PENDING_CHANNEL_ID = "pending_todo_reminder_channel"
     private val PENDING_NOTIFICATION_ID = 1002
     private val OCR_CHANNEL = "in.sreerajp.todo/ocr"
+    private val QR_DECODER_CHANNEL = "in.sreerajp.todo/qr_decoder"
     private val KEY_ALIAS = "SreerajpTodoMasterKey"
     private val PREFS_NAME = "sreerajp_todo_secure_prefs"
     private val PREF_KEY_DATA = "encrypted_db_key"
@@ -81,6 +82,7 @@ class MainActivity : FlutterActivity() {
     // Recognition runs one job at a time. Tesseract holds a lot of native
     // memory, and two scans at once on a phone is a crash waiting to happen.
     private val ocrExecutor = Executors.newSingleThreadExecutor()
+    private val qrExecutor = Executors.newSingleThreadExecutor()
 
     /** Ids of recognition requests whose caller has gone away. */
     private val cancelledOcrRequests = mutableSetOf<Int>()
@@ -310,6 +312,32 @@ class MainActivity : FlutterActivity() {
                         cancelledOcrRequests.addAll(requestIds)
                     }
                     result.success(null)
+                }
+                else -> result.notImplemented()
+            }
+        }
+
+        // On-device QR decoding for the AirQR scanner (ZXing). Dart sends the
+        // brightness plane of one camera frame; the answer is the QR text or null.
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, QR_DECODER_CHANNEL).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "decodeFrame" -> {
+                    val bytes = call.argument<ByteArray>("bytes")
+                    val width = call.argument<Int>("width")
+                    val height = call.argument<Int>("height")
+                    val rowStride = call.argument<Int>("rowStride")
+                    if (bytes == null || width == null || height == null || rowStride == null) {
+                        result.error("invalid_args", "bytes, width, height and rowStride are required", null)
+                        return@setMethodCallHandler
+                    }
+                    qrExecutor.execute {
+                        try {
+                            val text = QrFrameDecoder.decode(bytes, width, height, rowStride)
+                            runOnUiThread { result.success(text) }
+                        } catch (e: Exception) {
+                            runOnUiThread { result.error("qr_failure", e.message, null) }
+                        }
+                    }
                 }
                 else -> result.notImplemented()
             }
@@ -640,6 +668,7 @@ class MainActivity : FlutterActivity() {
         activeTessApi?.recycle()
         activeTessApi = null
         ocrExecutor.shutdown()
+        qrExecutor.shutdown()
         super.onDestroy()
     }
 

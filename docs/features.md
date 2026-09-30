@@ -76,8 +76,8 @@ or JSON/Markdown files, and switch theme and language inside the app.
   language is stored with `shared_preferences`.
 - **Unicode & Text Handling:** `unorm_dart` for NFC normalization and per-field LTR/RTL
   detection.
-- **Optical Transfer:** `qr_flutter` (showing QR frames) and `mobile_scanner` (camera
-  scanning) for the AirQR transfer feature.
+- **Optical Transfer:** `qr_flutter` (showing QR frames), and the `camera` frame stream
+  decoded on the device by ZXing core (camera scanning), for the AirQR transfer feature.
 - **Backup Archiving:** ZIP creation and passphrase encryption using the `archive` package
   plus helpers in `core/utils/crypto_utils.dart` and `core/utils/atomic_saver.dart`.
 - **Data & Security Policy:** No internet, no cloud sync, no analytics, no crash
@@ -90,14 +90,18 @@ or JSON/Markdown files, and switch theme and language inside the app.
 ## 2. Core Architectural Guarantees & Constraints
 
 1. **Offline Enforcement (No Internet, Local Network Only When You Ask):**
-   - `AndroidManifest.xml` has no `INTERNET`, `ACCESS_NETWORK_STATE`, or
-     `ACCESS_WIFI_STATE` permission. The only declared permission is `CAMERA`, used by the
-     AirQR scanner.
+   - The app never sends data over the internet. `AndroidManifest.xml` declares
+     `INTERNET` only because Android needs it for any socket, and the only socket code is
+     Wi-Fi Sync on the local network. `ACCESS_NETWORK_STATE` and `ACCESS_WIFI_STATE` are
+     not declared.
+   - No Google ML Kit, Play Services or Firebase code. OCR uses Tesseract, and QR codes
+     are decoded by ZXing core, both on the device.
    - No HTTP client, WebSocket client, cloud SDK, analytics SDK, or telemetry package is
      used. The app never contacts a server on the internet.
    - The optional Wi-Fi Sync feature (section 12) opens a plain TCP `ServerSocket` on the
      device and connects to another device on the **same local network** only, and only
-     while you keep that screen open.
+     while you keep that screen open. The code refuses any address that is not a private,
+     link-local or loopback IPv4 address, and it never looks up host names.
    - All runtime assets are bundled (`AssetImage`, `Image.asset()`, `Image.file()`).
      `NetworkImage` and `Image.network()` are not used.
 
@@ -329,7 +333,8 @@ no speech app, and on a phone with no offline language pack — and is read exac
 way. Where the microphone cannot be used, the sheet says why in one line and shows the text
 box only. The keyboard's own microphone key still works in that box.
 
-**Staying offline.** The app declares no network permission of any kind. The phone
+**Staying offline.** The app sends nothing over the internet, and voice entry adds no
+network code. The phone
 recogniser is always asked for its on-device engine, and listening is refused rather than
 allowed to go online; a recogniser that reaches for the network is reported as a missing
 offline language pack. No audio is recorded or kept. The full reasoning, and the honest
@@ -642,7 +647,8 @@ Off by default. Turned on in **Settings -> Ritual mode** (`/settings/ritual`).
   stream of QR frames shown one after another on screen (`qr_flutter`). Extra parity frames
   (an LT fountain code) are added so the receiver can rebuild the data even if some frames
   are missed.
-- **Scan:** `/air-qr-scan` uses the camera (`mobile_scanner`) to read the frame stream,
+- **Scan:** `/air-qr-scan` uses the camera (`camera` frame stream, decoded by ZXing on
+  Android) to read the frame stream. On other platforms it says scanning is Android only. It
   shows live progress, checks a CRC32 checksum, and rebuilds the payload.
 - **Import:** After a successful scan you can *Import All* or *Skip Duplicates*.
 - This is the only feature that needs the `CAMERA` permission.

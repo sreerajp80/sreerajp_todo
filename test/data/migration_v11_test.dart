@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/data/database/migrations/migration_v11.dart';
 
 import '../helpers/test_database.dart';
@@ -83,18 +84,21 @@ void main() {
       await db.close();
     });
 
-    test('fresh database is at version 11 with the new columns', () async {
-      final service = await createTestDatabaseService();
-      final db = await service.database;
+    test(
+      'fresh database is at the current version with the new columns',
+      () async {
+        final service = await createTestDatabaseService();
+        final db = await service.database;
 
-      final columns = await columnsOf(db, 'time_segments');
-      expect(columns, contains('edited_after_completion'));
-      expect(columns, contains('times_edited_at'));
+        final columns = await columnsOf(db, 'time_segments');
+        expect(columns, contains('edited_after_completion'));
+        expect(columns, contains('times_edited_at'));
 
-      final version = await db.rawQuery('PRAGMA user_version');
-      expect(version.single['user_version'], 11);
+        final version = await db.rawQuery('PRAGMA user_version');
+        expect(version.single['user_version'], kDatabaseVersion);
 
-      await service.close();
-    });
+        await service.close();
+      },
+    );
   });
 }

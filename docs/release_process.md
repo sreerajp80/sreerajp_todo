@@ -48,7 +48,7 @@ Read [AGENTS.md](../AGENTS.md) and [CLAUDE.md](../CLAUDE.md) first. For shared r
   - `flutter analyze` — zero errors.
   - `flutter test` — all pass.
   - Offline dep audit — zero matches.
-  - Manifest check — zero network permissions.
+  - Manifest check — `INTERNET` is the only network permission, and no ML Kit, Play Services or `datatransport` entries.
 
 ---
 
@@ -137,13 +137,15 @@ Complete these items before every release.
   ```powershell
   flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics|dio|chopper|retrofit|amplitude|mixpanel|datadog"
   ```
-- [ ] Source manifest clean — zero network permissions:
+- [ ] Merged release manifest clean — `INTERNET` (for local Wi-Fi sync only) is expected; nothing below may match:
   ```powershell
-  Select-String -Path "android\app\src\main\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+  Select-String -Path "build\app\intermediates\merged_manifest\prodRelease\processProdReleaseMainManifest\AndroidManifest.xml" -Pattern "ACCESS_NETWORK_STATE|ACCESS_WIFI_STATE|CHANGE_WIFI|com\.google\.mlkit|com\.google\.android\.gms|datatransport|firebase"
+  # Expected: ZERO matches.
   ```
-- [ ] Merged release manifest clean — zero network permissions:
+- [ ] Only Wi-Fi sync opens sockets, and it checks every address with `isLocalNetworkAddress()`:
   ```powershell
-  Select-String -Path "build\app\intermediates\merged_manifests\prodRelease\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+  Select-String -Path "lib\**\*.dart" -Pattern "Socket\.connect|ServerSocket\.bind|RawDatagramSocket|HttpClient" -Recurse
+  # Expected: matches in lib\data\services\p2p_wifi_sync_service.dart only.
   ```
 - [ ] No `Image.network()` or `NetworkImage` in codebase:
   ```powershell
@@ -206,17 +208,19 @@ Complete these items before every release.
    ```powershell
    # Archive build/symbols/android-prod/ alongside release notes
    ```
-7. Verify INTERNET permission is absent from the merged manifest:
+7. Verify the merged manifest has no extra network permission and no Google ML Kit, Play Services or telemetry entries:
    ```powershell
-   Select-String -Path "build\app\intermediates\merged_manifests\prodRelease\AndroidManifest.xml" -Pattern "INTERNET|NETWORK"
+   Select-String -Path "build\app\intermediates\merged_manifest\prodRelease\processProdReleaseMainManifest\AndroidManifest.xml" -Pattern "ACCESS_NETWORK_STATE|ACCESS_WIFI_STATE|com\.google\.mlkit|com\.google\.android\.gms|datatransport|firebase"
    # Expected: ZERO matches. If any found: HALT and investigate.
+   # INTERNET is expected: it is used only by Wi-Fi sync on the local network.
    ```
 8. Install the release APK on a physical device.
 9. **Disable Wi-Fi AND mobile data** (airplane mode).
 10. Launch the app and perform a full smoke test: create todo, start/stop timer, change status, view statistics, export/import backup.
 11. Verify the app functions normally with zero network access.
-12. Complete the Google Play readiness gate (§9A) before uploading to Play.
-13. Tag the release in git: `git tag v2.1.0`.
+12. Turn Wi-Fi back on (no mobile data) and run one Wi-Fi sync between two devices, plus one OCR scan and one QR scan.
+13. Complete the Google Play readiness gate (§9A) before uploading to Play.
+14. Tag the release in git: `git tag v2.1.0`.
 
 ### Release Artifacts
 
@@ -246,7 +250,7 @@ Complete these items before every release.
 5. Copy the entire `Release` folder to a clean Windows 10 machine (or VM).
 6. **Disable the network adapter.**
 7. Run the `.exe` and perform a full smoke test.
-8. Verify the app functions normally with zero network access and no firewall prompts.
+8. Verify the app functions normally with zero network access and no firewall prompts. (Starting Wi-Fi sync as host may show a Windows firewall prompt. That is expected, and it is for the local network only.)
 
 ### Release Artifacts
 
@@ -288,11 +292,12 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 
 ### 9A.4 Manifest, permissions, and policy declarations
 
-- Every permission in the merged manifest is justified and used: `CAMERA` (for AirQR sync) and `RECORD_AUDIO` (for on-device speech-to-text voice input). Remove anything inherited from a dependency that the app does not need (`tools:node="remove"`).
+- Every permission in the merged manifest is justified and used: `CAMERA` (for AirQR sync), `RECORD_AUDIO` (for on-device speech-to-text voice input) and `INTERNET` (for Wi-Fi sync on the local network only). Remove anything inherited from a dependency that the app does not need (`tools:node="remove"`).
 - Sensitive permissions require an in-console declaration: camera and microphone declarations explain offline, user-initiated usage.
 - `android:debuggable=false`, `android:allowBackup="false"`, `usesCleartextTraffic=false`.
 - No accidental `android:exported="true"`.
-- Zero network permissions (`INTERNET`, `ACCESS_NETWORK_STATE`, etc.).
+- No network permission except `INTERNET` (local Wi-Fi sync). No `ACCESS_NETWORK_STATE`, no `ACCESS_WIFI_STATE`, and no ML Kit, Play Services or `datatransport` entries.
+- Play Data safety form: no data is collected or shared. Wi-Fi sync moves data only between the user's own devices on the local network.
 
 ### 9A.5 Store account declarations
 

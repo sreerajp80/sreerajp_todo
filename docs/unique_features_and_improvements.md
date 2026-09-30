@@ -16,7 +16,7 @@ Following a comprehensive audit of all 18 applications across the personal Flutt
 
 All proposed features and enhancements strictly observe the core architectural invariants of `SreerajP ToDo`:
 
-1. **100% Offline Operational Guarantee:** Zero network permissions in `AndroidManifest.xml`, zero external cloud SDKs, zero analytics, zero telemetry.
+1. **No Internet Traffic Guarantee:** `INTERNET` is the only network permission, used only by Wi-Fi sync on the local network. Zero external cloud SDKs, zero analytics, zero telemetry.
 2. **NFC Normalization First:** Every text string written to SQLite is NFC-normalized via `unicodeUtils.nfcNormalize(value)`.
 3. **Day-Lock Constraint:** Historical tasks dated before today remain immutable read-only records (`DayLockedException`).
 4. **Terminal Status Lock:** `completed` and `dropped` tasks cannot accept new time segments (`CompletedLockException`).
@@ -214,7 +214,7 @@ By auditing all 18 applications in `myapps.md`, we identify existing, production
 - **Current Implementation:**
   - **Fountain Code Streaming Engine (`AirQrService`):** Implements Luby Transform (LT1) Fountain codes with systematic v1 direct frames and LT1 XOR parity frames, CRC32 checksum validation, and real-time streaming frame reduction (belief propagation decoding over GF(2)).
   - **Animated Stream Sender (`AirQrShareDialog`):** Displays animated QR code stream with customizable frame rates (5 FPS, 10 FPS, 15 FPS, 20 FPS, 25 FPS), play/pause controls, frame sequence metadata, and high-density QR encoding using `qr_flutter`.
-  - **Camera Stream Receiver (`AirQrScanScreen`):** Live camera barcode scanner powered by `mobile_scanner`, displaying a real-time stream decoding progress overlay (progress percentage, block count ratio, live FPS counter, torch button).
+  - **Camera Stream Receiver (`AirQrScanScreen`):** Live camera QR scanner built on the `camera` frame stream and on-device ZXing decoding, displaying a real-time stream decoding progress overlay (progress percentage, block count ratio, live FPS counter, torch button).
   - **Interactive Preview & Merge Sheet (`AirQrPreviewSheet`):** Parses reassembled payloads (`AirQrPayloadService`), presents an interactive preview sheet for tasks/timecards/backups, and merges tasks safely into local SQLite storage with conflict duplicate handling.
   - **Air-Gapped Isolation:** Operates with complete air-gap isolation—zero network packets transmitted over Wi-Fi, Cellular, or Bluetooth.
 - **Concept:** Serverless, air-gapped data transfer between two nearby phones using screen-to-camera optical QR code streams without Wi-Fi, Bluetooth, or internet connections.
@@ -315,7 +315,7 @@ All proposed unique features and enhancements strictly comply with the architect
 +-----------------------------------------------------------------------------------+
 |                            ARCHITECTURAL GUARANTEES                              |
 +-----------------------------------------------------------------------------------+
-| 1. Fully Offline Guarantee: Zero network calls; zero INTERNET permission.        |
+| 1. No Internet Traffic: local Wi-Fi sync only; no cloud, no telemetry.            |
 | 2. NFC Normalization: unicodeUtils.nfcNormalize() on all text write paths.        |
 | 3. Day-Lock Immutability: Past-day tasks remain read-only (DayLockedException).   |
 | 4. Terminal Status Lock: No new segments on completed/dropped tasks.              |

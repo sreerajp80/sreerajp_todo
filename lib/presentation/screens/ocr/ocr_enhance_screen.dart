@@ -8,12 +8,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/domain/services/image_edit_service.dart';
 import 'package:sreerajp_todo/domain/services/ocr_capture_downscaler.dart';
 import 'package:sreerajp_todo/domain/services/ocr_enhancer.dart';
 import 'package:sreerajp_todo/domain/services/ocr_service.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
 
 enum _EnhanceToolTab { none, filters, adjust }
 
@@ -260,6 +262,9 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
       debugPrint('OcrEnhanceScreen: live OCR failed ($e)');
       if (mounted && requestId == _ocrRequestCounter) {
         setState(() => _isScanning = false);
+        if (e is OcrUnavailableException) {
+          showAppSnackBar(context, message: context.l10n.ocrUnavailableMessage);
+        }
       }
     }
   }

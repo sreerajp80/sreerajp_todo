@@ -17,6 +17,13 @@ String _todayIso() {
       '${now.day.toString().padLeft(2, '0')}';
 }
 
+String _dayIso(int offset) {
+  final d = DateTime.now().add(Duration(days: offset));
+  return '${d.year.toString().padLeft(4, '0')}-'
+      '${d.month.toString().padLeft(2, '0')}-'
+      '${d.day.toString().padLeft(2, '0')}';
+}
+
 String _yesterdayIso() {
   final y = DateTime.now().subtract(const Duration(days: 1));
   return '${y.year.toString().padLeft(4, '0')}-'
@@ -28,6 +35,7 @@ TodoEntity _makeTodo({
   required String id,
   String? date,
   String? title,
+  String? sourceDate,
   TodoStatus status = TodoStatus.pending,
 }) {
   final now = DateTime.now().toUtc().toIso8601String();
@@ -36,6 +44,7 @@ TodoEntity _makeTodo({
     date: date ?? _todayIso(),
     title: title ?? 'Task $id',
     status: status,
+    sourceDate: sourceDate,
     sortOrder: 0,
     createdAt: now,
     updatedAt: now,
@@ -114,5 +123,36 @@ void main() {
 
   test('throws TodoNotFoundException for nonexistent todo', () async {
     expect(() => useCase('nonexistent'), throwsA(isA<TodoNotFoundException>()));
+  });
+
+  test('throws FutureDayTimerException for a future-date todo', () async {
+    await todoRepo.createTodo(_makeTodo(id: 'st-future', date: _dayIso(2)));
+
+    await expectLater(
+      () => useCase('st-future'),
+      throwsA(isA<FutureDayTimerException>()),
+    );
+    expect(await timeSegmentRepo.getRunningSegment('st-future'), isNull);
+  });
+
+  test('repository refuses a timer on a future-date todo', () async {
+    await todoRepo.createTodo(
+      _makeTodo(id: 'st-future-repo', date: _dayIso(1)),
+    );
+
+    await expectLater(
+      () => timeSegmentRepo.startSegment('st-future-repo'),
+      throwsA(isA<FutureDayTimerException>()),
+    );
+  });
+
+  test('allows a timer on a multi-day todo that started today', () async {
+    await todoRepo.createTodo(
+      _makeTodo(id: 'st-multi', date: _dayIso(2), sourceDate: _todayIso()),
+    );
+
+    await useCase('st-multi');
+
+    expect(await timeSegmentRepo.getRunningSegment('st-multi'), isNotNull);
   });
 }

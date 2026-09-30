@@ -34,10 +34,14 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
     };
   }
 
-  void _onAddTodo(BuildContext context) {
-    context.push(
+  Future<void> _onAddTodo(BuildContext context, WidgetRef ref) async {
+    // The create screen opens on today; the user can pick another start date
+    // there.
+    await context.push(
       AppRoutes.createTodoPath(date: todayAsIso(), masteryDeckId: deckId),
     );
+    ref.invalidate(masteryDeckTodosProvider(deckId));
+    ref.invalidate(masteryDeckProgressProvider(deckId));
   }
 
   Future<void> _deleteDeck(
@@ -122,7 +126,7 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _onAddTodo(context),
+        onPressed: () => _onAddTodo(context, ref),
         icon: const Icon(Icons.add_task_rounded),
         label: Text(context.l10n.addTodoToDeck),
       ),
@@ -368,7 +372,7 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
                             ),
                             const SizedBox(height: 16),
                             FilledButton.icon(
-                              onPressed: () => _onAddTodo(context),
+                              onPressed: () => _onAddTodo(context, ref),
                               icon: const Icon(Icons.add, size: 18),
                               label: Text(context.l10n.addTodoToDeck),
                             ),

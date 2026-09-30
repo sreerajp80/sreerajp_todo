@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/application/providers.dart';
+import 'package:sreerajp_todo/application/statistics_notifier.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
 import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
@@ -142,7 +146,18 @@ class _FakeTodoRepository implements TodoRepository {
   ) async => false;
 
   @override
-  Future<void> moveTodo(String todoId, String targetDate) async {}
+  Future<void> moveTodo(
+    String todoId,
+    String targetDate, {
+    bool detach = false,
+  }) async {}
+
+  @override
+  Future<void> restoreMove(
+    String todoId, {
+    required String originalDate,
+    required String? originalSourceDate,
+  }) async {}
 
   @override
   Future<List<TodoHistoryEntity>> getHistoryForTodo(String todoId) async => [];
@@ -181,6 +196,31 @@ class _FakeRecurrenceRuleRepo implements RecurrenceRuleRepository {
 
   @override
   Future<void> delete(String id) async {}
+}
+
+/// Counts how often a deck's task list is read, so a test can see a refresh.
+class _DeckCountingTodoRepository extends _FakeTodoRepository {
+  _DeckCountingTodoRepository(super.todo);
+
+  int deckReads = 0;
+
+  @override
+  Future<List<TodoEntity>> getTodosByMasteryDeckId(String deckId) async {
+    deckReads++;
+    return super.getTodosByMasteryDeckId(deckId);
+  }
+}
+
+class _MockStatisticsQueryService extends Mock
+    implements StatisticsQueryService {}
+
+/// Saving refreshes statistics too; keep them off the database.
+class _IdleStatisticsNotifier extends StatisticsNotifier {
+  _IdleStatisticsNotifier()
+    : super(_MockStatisticsQueryService(), workingDays: () => const {});
+
+  @override
+  Future<void> refresh({bool force = false}) async {}
 }
 
 void main() {
@@ -276,6 +316,45 @@ void main() {
       find.byType(TextFormField),
     );
     expect(textFields.every((field) => field.enabled == false), isTrue);
+  });
+
+  testWidgets('new task shows a date picker row; editing does not', (
+    tester,
+  ) async {
+    final todo = buildTodo(id: 'active-todo', date: dateOffsetIso(0));
+
+    Widget screen(CreateEditTodoScreen home) => ProviderScope(
+      overrides: [
+        todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todo)),
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
+      child: MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: home,
+      ),
+    );
+
+    await tester.pumpWidget(
+      screen(CreateEditTodoScreen(date: dateOffsetIso(0))),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(testL10n.taskDateLabel), findsOneWidget);
+    expect(find.byTooltip(testL10n.tooltipChangeTaskDate), findsOneWidget);
+
+    // The calendar button opens the date picker.
+    await tester.tap(find.byTooltip(testL10n.tooltipChangeTaskDate));
+    await tester.pumpAndSettle();
+    expect(find.byType(DatePickerDialog), findsOneWidget);
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+    expect(find.text(formatDateFromIso(dateOffsetIso(0))), findsWidgets);
+
+    await tester.pumpWidget(
+      screen(const CreateEditTodoScreen(todoId: 'active-todo')),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text(testL10n.taskDateLabel), findsNothing);
   });
 
   testWidgets('repeat sheet "For N days" resolves to start + (N - 1)', (
@@ -383,5 +462,72 @@ void main() {
     expect(find.text(testL10n.editOnlyThis), findsOneWidget);
     expect(find.text(testL10n.editThisAndFuture), findsOneWidget);
     expect(find.text(testL10n.editAllOccurrences), findsOneWidget);
+  });
+
+  testWidgets('saving an edit refreshes decks the task is no longer in', (
+    tester,
+  ) async {
+    // The task is not in 'old-deck' any more (for example the user just
+    // removed it). That deck's list must still refresh on save.
+    final todo = buildTodo(
+      id: 'active-todo',
+      date: dateOffsetIso(0),
+      title: 'Deck task',
+    );
+    final repo = _DeckCountingTodoRepository(todo);
+    final container = ProviderContainer(
+      overrides: [
+        todoRepositoryProvider.overrideWithValue(repo),
+        sharedPreferencesProvider.overrideWithValue(prefs),
+        statisticsProvider.overrideWith((ref) => _IdleStatisticsNotifier()),
+      ],
+    );
+    addTearDown(container.dispose);
+    // An open deck screen keeps this list cached.
+    container.listen(masteryDeckTodosProvider('old-deck'), (_, _) {});
+    await container.read(masteryDeckTodosProvider('old-deck').future);
+    final readsBeforeSave = repo.deckReads;
+
+    final router = GoRouter(
+      initialLocation: '/edit',
+      routes: [
+        GoRoute(
+          path: '/',
+          builder: (_, _) => const SizedBox(),
+          routes: [
+            GoRoute(
+              path: 'edit',
+              builder: (_, _) =>
+                  const CreateEditTodoScreen(todoId: 'active-todo'),
+            ),
+          ],
+        ),
+      ],
+    );
+    addTearDown(router.dispose);
+
+    await tester.pumpWidget(
+      UncontrolledProviderScope(
+        container: container,
+        child: MaterialApp.router(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerConfig: router,
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final saveButton = find.widgetWithText(FilledButton, testL10n.save);
+    await tester.dragUntilVisible(
+      saveButton,
+      find.byType(ListView),
+      const Offset(0, -100),
+    );
+    await tester.tap(saveButton);
+    await tester.pumpAndSettle();
+
+    await container.read(masteryDeckTodosProvider('old-deck').future);
+    expect(repo.deckReads, greaterThan(readsBeforeSave));
   });
 }
