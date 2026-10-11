@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:sreerajp_todo/domain/services/image_edit_service.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 /// On-device image editing backed by [ImageCropper] (uCrop on Android).
 class CropperImageEditService implements ImageEditService {
@@ -46,8 +46,12 @@ class CropperImageEditService implements ImageEditService {
 
       if (croppedFile == null) return null;
       return croppedFile.path;
-    } catch (e) {
-      debugPrint('CropperImageEditService: crop failed ($e)');
+    } catch (e, st) {
+      AppLogger.error(
+        'CropperImageEditService: crop failed',
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }

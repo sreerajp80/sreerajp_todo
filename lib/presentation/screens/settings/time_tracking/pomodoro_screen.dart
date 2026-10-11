@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/time_tracking_settings_notifier.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_note_card.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 

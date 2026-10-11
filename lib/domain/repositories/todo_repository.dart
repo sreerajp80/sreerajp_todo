@@ -1,8 +1,8 @@
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_search_result.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_history_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_search_result.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 
 abstract class TodoRepository {
   Future<List<TodoEntity>> getTodosByDate(String date);

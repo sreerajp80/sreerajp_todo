@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/domain/entities/todo_priority.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 

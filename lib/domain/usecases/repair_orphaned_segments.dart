@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
+import 'package:sreerajp_todo/core/rules/time_tracking_rules.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 class RepairOrphanedSegments {
   RepairOrphanedSegments(
@@ -46,6 +46,6 @@ class RepairOrphanedSegments {
               customMinute: _autoStopMinute(),
             ),
     );
-    debugPrint('RepairOrphanedSegments: repaired orphans before $today');
+    AppLogger.info('RepairOrphanedSegments: repaired orphans before $today');
   }
 }

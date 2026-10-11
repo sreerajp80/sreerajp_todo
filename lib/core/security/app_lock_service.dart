@@ -3,7 +3,7 @@ import 'dart:isolate';
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:sreerajp_todo/core/utils/crypto_utils.dart';
+import 'package:sreerajp_todo/core/security/crypto_utils.dart';
 
 /// A stored PIN or password, as salt and hash only.
 ///

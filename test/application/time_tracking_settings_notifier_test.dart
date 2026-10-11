@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/time_tracking_settings_notifier.dart';
-import 'package:sreerajp_todo/core/utils/focus_pulse_rules.dart';
-import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
+import 'package:sreerajp_todo/core/rules/focus_pulse_rules.dart';
+import 'package:sreerajp_todo/core/rules/time_tracking_rules.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

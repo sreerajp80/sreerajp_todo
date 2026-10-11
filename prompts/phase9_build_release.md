@@ -8,7 +8,7 @@ Produce signed, distributable builds for Android (APK + AAB) and Windows (portab
 - Read `CLAUDE.md` — build rules, signing, offline enforcement.
 - Read `docs/release_process.md` — full release checklist (§7), Android release steps (§8), Windows release steps (§9), signing and secret handling (§6).
 - Read `docs/security.md` — platform security controls (§9 — Android manifest, Windows network capabilities), offline enforcement, permissions (§10).
-- Read `docs/flutter_project_engineering_standard.md` — Definition of Done (§14 — all three profiles), artifact selection (§5.4), CI standard (§10).
+- Read `docs/guidelines/flutter_project_engineering_standard.md` — Definition of Done (§14 — all three profiles), artifact selection (§5.4), CI standard (§10).
 
 ---
 

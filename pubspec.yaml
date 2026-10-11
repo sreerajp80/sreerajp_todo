@@ -1,7 +1,7 @@
 name: sreerajp_todo
 description: "SreerajP ToDo — Personal offline-first daily ToDo and time-tracker."
 publish_to: 'none'
-version: 2.3.0+52
+version: 2.3.2+54
 
 environment:
   sdk: ^3.12.2
@@ -12,7 +12,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
-  cupertino_icons: ^1.0.8
   characters: ^1.4.0
   sqflite_sqlcipher: ^3.1.0
   sqflite_common_ffi: ^2.3.4

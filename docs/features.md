@@ -79,7 +79,7 @@ or JSON/Markdown files, and switch theme and language inside the app.
 - **Optical Transfer:** `qr_flutter` (showing QR frames), and the `camera` frame stream
   decoded on the device by ZXing core (camera scanning), for the AirQR transfer feature.
 - **Backup Archiving:** ZIP creation and passphrase encryption using the `archive` package
-  plus helpers in `core/utils/crypto_utils.dart` and `core/utils/atomic_saver.dart`.
+  plus helpers in `core/security/crypto_utils.dart` and `core/storage/atomic_saver.dart`.
 - **Data & Security Policy:** No internet, no cloud sync, no analytics, no crash
   reporting, no telemetry. The only network use is optional device-to-device sync over the
   local network (section 2.1).
@@ -109,7 +109,7 @@ or JSON/Markdown files, and switch theme and language inside the app.
    - **Live Database:** Opened with a password from `DatabaseKeyService`. The key is a
      random 256-bit value created on first run and kept by the platform: on Android through
      a `MethodChannel` (`in.sreerajp.todo/database_key`) backed by the Android Keystore in
-     `MainActivity.kt`, and on Windows through DPAPI (`core/utils/win32_dpapi.dart`), which
+     `MainActivity.kt`, and on Windows through DPAPI (`core/security/win32_dpapi.dart`), which
      stores the protected key file in the app documents directory. If an older
      plain database is found, `DatabaseService` opens it once, re-encrypts it with the
      device key, and continues with the encrypted file.

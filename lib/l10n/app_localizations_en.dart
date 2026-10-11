@@ -3818,6 +3818,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ocrEnhanceInvert => 'Invert';
 
   @override
+  String get ocrFilterScreen => 'Screenshot';
+
+  @override
+  String get ocrFilterAdaptive => 'Shadow fix';
+
+  @override
+  String get ocrSharpnessLabel => 'Sharpness';
+
+  @override
   String get ocrEnhanceLiveText => 'Recognised text';
 
   @override
@@ -3831,6 +3840,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ocrEnhanceScanning => 'Reading...';
+
+  @override
+  String get ocrExtractTextTooltip => 'Extract text';
+
+  @override
+  String get ocrEnhanceExtractHint =>
+      'Finish editing, then tap the scan button to read the text.';
 
   @override
   String get ocrLanguageTooltip => 'Recognition language';
@@ -4143,4 +4159,1531 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get airQrScanUnavailable =>
       'QR scanning is available on Android only.';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get errorNotLocalNetwork =>
+      'Wi-Fi sync works only with devices on your local network.';
+
+  @override
+  String get errorInvalidInput => 'Some of the values entered are not valid.';
+
+  @override
+  String get p2pSummaryTasks => 'Tasks';
+
+  @override
+  String p2pSummaryAdded(int count) {
+    return '+$count added';
+  }
+
+  @override
+  String p2pSummarySkipped(int count) {
+    return '($count skipped)';
+  }
+
+  @override
+  String p2pDayLockSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other:
+          '$count items from past days were skipped because past days are locked.',
+      one: '1 item from a past day was skipped because past days are locked.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get p2pTabHost => 'Host (Share)';
+
+  @override
+  String get p2pTabPeer => 'Peer (Receive)';
+
+  @override
+  String get p2pHostActive => 'Host server active';
+
+  @override
+  String get p2pHostStopped => 'Host server stopped';
+
+  @override
+  String p2pHostListening(String address) {
+    return 'Listening on $address';
+  }
+
+  @override
+  String get p2pHostIdleHint => 'Tap below to open an encrypted connection.';
+
+  @override
+  String get p2pPairingPinLabel => 'Pairing PIN';
+
+  @override
+  String get p2pSelectScope => 'Select sync scope';
+
+  @override
+  String get p2pStartHost => 'Start host server';
+
+  @override
+  String get p2pStopHost => 'Stop host server';
+
+  @override
+  String get p2pConnectToHost => 'Connect to host device';
+
+  @override
+  String get p2pHostIpLabel => 'Host IP address';
+
+  @override
+  String get p2pHostIpHint => 'e.g. 192.168.1.105';
+
+  @override
+  String get p2pPinHint => '6-digit PIN';
+
+  @override
+  String get p2pRequestedScope => 'Requested sync scope';
+
+  @override
+  String p2pStatusConnecting(String address) {
+    return 'Connecting to $address…';
+  }
+
+  @override
+  String get p2pStatusAuthenticating => 'Setting up a secure session…';
+
+  @override
+  String daysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String daysShort(int count) {
+    return '${count}d';
+  }
+
+  @override
+  String tasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks',
+      one: '1 task',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subtasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count subtasks',
+      one: '1 subtask',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subtasksProgress(int done, int total) {
+    return '$done/$total subtasks';
+  }
+
+  @override
+  String get pendingAlertsView => 'View';
+
+  @override
+  String get masteryTasksInDeck => 'Tasks in deck';
+
+  @override
+  String masteryTargetTime(String duration) {
+    return 'Target: $duration';
+  }
+
+  @override
+  String carryOverLookBackValue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count days',
+      one: '1 day (yesterday)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String carryOverLookBackChip(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '${count}d',
+      one: '1d (yesterday)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get eventTimerSession => 'Timer session';
+
+  @override
+  String get eventManualTime => 'Manual time';
+
+  @override
+  String get eventStatusChange => 'Status change';
+
+  @override
+  String prerequisitesSelected(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String get ocrNoCamera => 'No camera found on this device.';
+
+  @override
+  String get ocrCameraStartFailed => 'The camera could not be started.';
+
+  @override
+  String get ocrOverlayTaskName => '1. Task name';
+
+  @override
+  String get ocrOverlaySeparator => 'space / # / ---';
+
+  @override
+  String get ocrOverlayDescription => '2. Description (all remaining text)';
+
+  @override
+  String pendingNotificationBody(int count, String summary) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You have $count pending tasks waiting ($summary)',
+      one: 'You have 1 pending task waiting ($summary)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pendingNotificationSummarySplit(int today, int previous) {
+    return '$today today, $previous from previous days';
+  }
+
+  @override
+  String pendingNotificationSummaryToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks remaining today',
+      one: '1 task remaining today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get airQrBackupShareTitle => 'AirQR backup share';
+
+  @override
+  String airQrSyncDayTitle(String date) {
+    return 'AirQR sync ($date)';
+  }
+
+  @override
+  String airQrEstimate(String time, String size) {
+    return 'Estimated scan time: $time ($size)';
+  }
+
+  @override
+  String get airQrLargeBackupWarning =>
+      'This is a large database, so camera sync may take a while. For a faster transfer, use an encrypted backup file (.zip).';
+
+  @override
+  String get airQrBackupReady =>
+      'Full app backup ready to send by camera. Hold the receiving phone\'s camera steady.';
+
+  @override
+  String get airQrFrameParity => 'Fountain parity';
+
+  @override
+  String get airQrFrameSystematic => 'Systematic block';
+
+  @override
+  String airQrStreamFrames(int count) {
+    return 'AirQR optical stream ($count frames)';
+  }
+
+  @override
+  String airQrFrameCounter(int current, int total, String type) {
+    return 'Frame $current / $total • $type';
+  }
+
+  @override
+  String get airQrPauseStream => 'Pause stream';
+
+  @override
+  String get airQrResumeStream => 'Resume stream';
+
+  @override
+  String airQrFpsChip(int fps) {
+    return '$fps FPS';
+  }
+
+  @override
+  String airQrBackupPayloadEntries(int count) {
+    return 'Full app backup ($count entries)';
+  }
+
+  @override
+  String get airQrReceivedTasks => 'AirQR tasks received';
+
+  @override
+  String get airQrReceivedTimecard => 'AirQR timecard received';
+
+  @override
+  String get airQrReceivedBackup => 'AirQR backup received';
+
+  @override
+  String get airQrReceivedUnknown => 'AirQR data received';
+
+  @override
+  String airQrTasksReady(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tasks ready to merge into your list.',
+      one: '1 task ready to merge into your list.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String airQrTimecardReady(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Daily timecard with $count items ready to merge.',
+      one: 'Daily timecard with 1 item ready to merge.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get airQrBackupReceivedDetail =>
+      'Full app backup received through the camera.';
+
+  @override
+  String get backupHideLogs => 'Hide logs';
+
+  @override
+  String backupViewLogs(int count) {
+    return 'View logs ($count)';
+  }
+
+  @override
+  String backupLastRun(String time, String trigger) {
+    return 'Last run: $time ($trigger)';
+  }
+
+  @override
+  String backupArchiveSize(String size) {
+    return 'Archive size: $size';
+  }
+
+  @override
+  String get progressAllDone => 'All caught up! 🎉';
+
+  @override
+  String get progressAllDoneDetail => 'Great job finishing today\'s agenda.';
+
+  @override
+  String progressCompletedOf(int completed, int total) {
+    return '$completed of $total completed';
+  }
+
+  @override
+  String get recallTitle => 'Recall confidence';
+
+  @override
+  String get recallPrompt => 'How easily did you recall or complete this task?';
+
+  @override
+  String get recallHard => 'Hard';
+
+  @override
+  String get recallHardDetail => 'Struggled or forgot. Next review in 1 day.';
+
+  @override
+  String get recallRevision => 'Revision';
+
+  @override
+  String get recallRevisionDetail => 'Moderate effort. Next review in 3 days.';
+
+  @override
+  String get recallEasy => 'Easy';
+
+  @override
+  String recallEasyDetail(int days, int level) {
+    return 'Effortless! Next review in $days days (level $level).';
+  }
+
+  @override
+  String get dataHandoffExportSection => 'Export options';
+
+  @override
+  String get dataHandoffImportSection => 'Import options';
+
+  @override
+  String markdownTargetDate(String date) {
+    return 'Target date: $date';
+  }
+
+  @override
+  String get markdownImportHint =>
+      '- [ ] Task title\n  - [ ] Subtask title\n  > Note';
+
+  @override
+  String get markdownNoItems => 'No `- [ ]` or `- [x]` checklist items found.';
+
+  @override
+  String get markdownPastDateLocked =>
+      'Past days are locked. Choose today or a later date to import.';
+
+  @override
+  String get helpTaskMgmtTitle => 'Daily Lists & Day Lock';
+
+  @override
+  String get helpTaskMgmtIntro =>
+      'SreerajP ToDo organizes your tasks strictly on a day-by-day basis. Learn how the daily list, day lock protection, and terminal status locks maintain the integrity of your productivity logs.';
+
+  @override
+  String get helpTaskMgmtDayLockTitle => 'The Day Lock Principle';
+
+  @override
+  String get helpTaskMgmtDayLock1 =>
+      'Tasks dated prior to today are permanently read-only and cannot be modified or deleted.';
+
+  @override
+  String get helpTaskMgmtDayLock2 =>
+      'This ensures historical data remains an authentic, unedited reflection of what actually occurred.';
+
+  @override
+  String get helpTaskMgmtDayLock3 =>
+      'If you need to work on an incomplete task from yesterday, copy it to today’s list rather than editing the past.';
+
+  @override
+  String get helpTaskMgmtStatusTitle => 'Task Statuses & Terminal Locks';
+
+  @override
+  String get helpTaskMgmtStatus1 =>
+      'Tasks progress through statuses: Pending, Working, Completed, and Dropped.';
+
+  @override
+  String get helpTaskMgmtStatus2 =>
+      'Completed and Dropped are terminal statuses. Once a task reaches a terminal status, no new time segments can be started on it.';
+
+  @override
+  String get helpTaskMgmtStatus3 =>
+      'Marking an in-progress task as Completed or Dropped automatically stops any active running time segment.';
+
+  @override
+  String get helpTaskMgmtUndoTitle => 'Accidental Changes & Undo Action';
+
+  @override
+  String get helpTaskMgmtUndo1 =>
+      'Whenever a task status is changed, a 5-second SnackBar appears with an Undo button.';
+
+  @override
+  String get helpTaskMgmtUndo2 =>
+      'A persistent Undo button is also available in the app bar to quickly reverse your last status transition.';
+
+  @override
+  String get helpTaskMgmtUnicodeTitle =>
+      'Unicode NFC Normalization & Title Uniqueness';
+
+  @override
+  String get helpTaskMgmtUnicode1 =>
+      'All task titles are NFC-normalized before being written to the database.';
+
+  @override
+  String get helpTaskMgmtUnicode2 =>
+      'No two tasks on the same day can share identical titles (ignoring case and whitespace).';
+
+  @override
+  String get helpTaskMgmtUnicode3 =>
+      'Text direction (RTL/LTR) is dynamically detected per item for seamless multilingual support (English, Malayalam, Hindi, etc.).';
+
+  @override
+  String get helpTaskMgmtTip =>
+      'Tip: Use the date picker or swipe between days on the daily list to review past productivity or plan future days.';
+
+  @override
+  String get helpRecurringTitle => 'Recurring Tasks & Bulk Copy';
+
+  @override
+  String get helpRecurringIntro =>
+      'Save time by automating repetitive daily routines, weekly meetings, and habit tasks using standard RFC-5545 recurrence rules or bulk copying tasks across days.';
+
+  @override
+  String get helpRecurringRulesTitle => 'Recurrence Rules (RRule)';
+
+  @override
+  String get helpRecurringRules1 =>
+      'Create recurring rules with flexible frequencies: Daily, Weekly (selected weekdays), Monthly, or Custom intervals.';
+
+  @override
+  String get helpRecurringRules2 =>
+      'When you view a day, the app automatically generates that day\'s recurring task instances with preset priorities and target durations.';
+
+  @override
+  String get helpRecurringRules3 =>
+      'Editing or completing a single day’s recurring instance does not affect future or past instances.';
+
+  @override
+  String get helpRecurringCopyTitle => 'Bulk Copying Past Tasks';
+
+  @override
+  String get helpRecurringCopy1 =>
+      'From the daily list menu, tap \"Copy Tasks\" to open the copy assistant.';
+
+  @override
+  String get helpRecurringCopy2 =>
+      'Quickly select all unfinished tasks from yesterday or a custom past date and clone them into today’s list.';
+
+  @override
+  String get helpRecurringCopy3 =>
+      'Copied tasks start fresh with status Pending and zero elapsed time segments.';
+
+  @override
+  String get helpRecurringTip =>
+      'Tip: Use Recurring Tasks for regular habits (like morning workouts or reviews), and Bulk Copy for ad-hoc carried-over items.';
+
+  @override
+  String get helpTimeTrackingTitle => 'Time Tracking & Segments';
+
+  @override
+  String get helpTimeTrackingIntro =>
+      'SreerajP ToDo includes a built-in time tracker that measures the real duration spent on each task. Each task records time through individual start and end intervals called Time Segments.';
+
+  @override
+  String get helpTimeTrackingSegmentsTitle => 'Time Segments Architecture';
+
+  @override
+  String get helpTimeTrackingSegments1 =>
+      'Each time you start and stop the timer, a Time Segment is recorded with an exact start timestamp and end timestamp.';
+
+  @override
+  String get helpTimeTrackingSegments2 =>
+      'A task can contain multiple segments (e.g. morning work session, afternoon session). The total time is the sum of all segments.';
+
+  @override
+  String get helpTimeTrackingSegments3 =>
+      'Durations are always displayed in standard HH:MM:SS format across the entire app.';
+
+  @override
+  String get helpTimeTrackingSingleTitle => 'Single Running Timer Rule';
+
+  @override
+  String get helpTimeTrackingSingle1 =>
+      'At most one open time segment (running timer) can exist across the entire app at any time.';
+
+  @override
+  String get helpTimeTrackingSingle2 =>
+      'Starting a timer on a new task automatically stops any currently running timer on another task.';
+
+  @override
+  String get helpTimeTrackingSingle3 =>
+      'This single-active-timer guarantee prevents conflicting logs and inflated tracking numbers.';
+
+  @override
+  String get helpTimeTrackingAutoTitle => 'Auto-Stop & Background Pausing';
+
+  @override
+  String get helpTimeTrackingAuto1 =>
+      'Under Settings → Time Tracking, you can configure timers to automatically stop at midnight or at a custom hour.';
+
+  @override
+  String get helpTimeTrackingAuto2 =>
+      'You can enable \"Auto-pause when leaving the app\" to pause tracking if you switch to other apps.';
+
+  @override
+  String get helpTimeTrackingAuto3 =>
+      'Short accidental timer taps under a configurable threshold (e.g. 10s or 30s) can be automatically discarded.';
+
+  @override
+  String get helpTimeTrackingTip =>
+      'Tip: Tap the stopwatch icon or time badge on any task card to start tracking instantly. Tap it again to stop.';
+
+  @override
+  String get helpFocusTitle => 'Focus Mode & Pomodoro';
+
+  @override
+  String get helpFocusIntro =>
+      'Focus Mode provides a distraction-free full-screen environment for deep work sessions, coupled with customizable Pomodoro intervals and target duration countdowns.';
+
+  @override
+  String get helpFocusScreenTitle => 'Full-Screen Focus Mode';
+
+  @override
+  String get helpFocusScreen1 =>
+      'Open Focus Mode from any task details menu to immerse in a clean, distraction-free screen.';
+
+  @override
+  String get helpFocusScreen2 =>
+      'Focus Mode displays a large elapsed or countdown timer, target progress ring, and quick pause/resume controls.';
+
+  @override
+  String get helpFocusScreen3 =>
+      'Keep-screen-awake mode keeps your display active while your focus timer is running.';
+
+  @override
+  String get helpFocusPomodoroTitle => 'Pomodoro Technique';
+
+  @override
+  String get helpFocusPomodoro1 =>
+      'Customize your focus work duration (e.g. 25 minutes) and break intervals (e.g. 5 minutes) under Settings → Time Tracking → Pomodoro.';
+
+  @override
+  String get helpFocusPomodoro2 =>
+      'Audio and haptic vibrations signal the end of work intervals and break periods.';
+
+  @override
+  String get helpFocusPomodoro3 =>
+      'All focus sessions seamlessly record standard Time Segments under the parent task.';
+
+  @override
+  String get helpFocusTip =>
+      'Tip: Target durations can be configured when creating or editing a task to automatically calculate your remaining focus time.';
+
+  @override
+  String get helpMasteryTitle => 'Mastery Deck & Flashcards';
+
+  @override
+  String get helpMasteryIntro =>
+      'Mastery Deck turns your daily learnings, key concepts, and study notes into an active spaced repetition flashcard system. Retain what you learn long-term with scientifically scheduled review intervals.';
+
+  @override
+  String get helpMasteryReviewTitle => 'Spaced Repetition Review';
+
+  @override
+  String get helpMasteryReview1 =>
+      'Cards are scheduled for review based on how well you remember them (Easy, Good, Hard, Again).';
+
+  @override
+  String get helpMasteryReview2 =>
+      'Cards rated \"Easy\" increase their review intervals exponentially (e.g. 1 day → 3 days → 7 days → 16 days).';
+
+  @override
+  String get helpMasteryReview3 =>
+      'Cards rated \"Hard\" or \"Again\" reset or shorten their intervals for frequent reinforcement.';
+
+  @override
+  String get helpMasteryDecksTitle => 'Decks & Organization';
+
+  @override
+  String get helpMasteryDecks1 =>
+      'Group flashcards by subject, project, or language into custom Decks.';
+
+  @override
+  String get helpMasteryDecks2 =>
+      'Each card has a Question (Front) and Answer/Explanation (Back), with optional tags.';
+
+  @override
+  String get helpMasteryDecks3 =>
+      'Decks show live metrics including Due Today count, Total Cards, and Overall Mastery Percentage.';
+
+  @override
+  String get helpMasteryLevelsTitle => 'Mastery Levels';
+
+  @override
+  String get helpMasteryLevels1 =>
+      'Cards progress through 5 mastery levels: Learning, Novice, Competent, Proficient, and Mastered.';
+
+  @override
+  String get helpMasteryLevels2 =>
+      'Streaks and review consistency reward daily engagement and habit formation.';
+
+  @override
+  String get helpMasteryTip =>
+      'Tip: You can export and share your custom decks with other devices using Air QR beams or Local Wi-Fi Sync.';
+
+  @override
+  String get helpWifiTitle => 'Local Wi-Fi P2P Device Sync';
+
+  @override
+  String get helpWifiIntro =>
+      'Transfer and synchronize your tasks, time records, and mastery flashcards directly between two devices on the same local Wi-Fi network — with zero cloud servers and zero internet traffic.';
+
+  @override
+  String get helpWifiHowTitle => 'How Local Wi-Fi Sync Works';
+
+  @override
+  String get helpWifiHow1 =>
+      'Both devices must be connected to the same local Wi-Fi network (or one device connected to the other’s hotspot).';
+
+  @override
+  String get helpWifiHow2 =>
+      'One device acts as the Sender/Host (generating a temporary pairing code / QR code), and the other acts as the Receiver.';
+
+  @override
+  String get helpWifiHow3 =>
+      'Data is transferred directly socket-to-socket over your local LAN, completely bypassing external servers or the internet.';
+
+  @override
+  String get helpWifiEncryptionTitle => 'End-to-End Encryption';
+
+  @override
+  String get helpWifiEncryption1 =>
+      'Local sync connections negotiate an encrypted channel using one-time pairing credentials.';
+
+  @override
+  String get helpWifiEncryption2 =>
+      'Other devices on the same Wi-Fi network cannot inspect or tamper with the transferred payload.';
+
+  @override
+  String get helpWifiModesTitle => 'Sync Modes & Conflicts';
+
+  @override
+  String get helpWifiModes1 =>
+      'Two-Way Smart Merge: Combines tasks and segments from both devices without losing existing records.';
+
+  @override
+  String get helpWifiModes2 =>
+      'Replace All: Replaces the target device’s data completely with an exact clone of the source device (after confirmation).';
+
+  @override
+  String get helpWifiTip =>
+      'Tip: If your Wi-Fi router blocks client-to-client traffic (client isolation), simply turn on a mobile hotspot on one phone and connect the other phone to it.';
+
+  @override
+  String get helpQrTitle => 'Air QR & Data Handoff';
+
+  @override
+  String get helpQrIntro =>
+      'Move tasks, time tracking summaries, and flashcards across devices without Wi-Fi, cables, or internet. Air QR uses high-density animated visual QR codes to beam data directly into the camera of another device.';
+
+  @override
+  String get helpQrBeamTitle => 'Air QR Visual Beam';
+
+  @override
+  String get helpQrBeam1 =>
+      'Select tasks or decks and tap \"Air QR Share\" to produce a visual QR stream on screen.';
+
+  @override
+  String get helpQrBeam2 =>
+      'On the receiving device, open \"Air QR Scan\" and point the camera at the sending screen.';
+
+  @override
+  String get helpQrBeam3 =>
+      'The camera reassembles all data chunks in real time, validating checksums before applying imports.';
+
+  @override
+  String get helpQrBeam4 =>
+      'Camera permission is requested only while scanning and no photo or video is ever saved to disk.';
+
+  @override
+  String get helpQrHandoffTitle => 'Data Handoff (JSON & Markdown)';
+
+  @override
+  String get helpQrHandoff1 =>
+      'Generate formatted Markdown summaries of your daily accomplishments for email or reports.';
+
+  @override
+  String get helpQrHandoff2 =>
+      'Export and import raw JSON representations of specific tasks for cross-platform backup and scripts.';
+
+  @override
+  String get helpQrHandoff3 =>
+      'Paste JSON bundles directly into the app on desktop or mobile for instant 1-tap import.';
+
+  @override
+  String get helpQrTip =>
+      'Tip: Air QR is especially handy for moving a quick task or flashcard deck from your desktop screen to your phone in seconds.';
+
+  @override
+  String get helpPrivacyTitle => 'Security, App Lock & Encryption';
+
+  @override
+  String get helpPrivacyIntro =>
+      'SreerajP ToDo is built from the ground up with a privacy-first, zero-trust offline architecture. Your personal productivity data is strongly encrypted and protected by multiple layers of security.';
+
+  @override
+  String get helpPrivacyDbTitle => 'SQLCipher AES-256 Database Encryption';
+
+  @override
+  String get helpPrivacyDb1 =>
+      'The live SQLite database is fully encrypted with 256-bit AES cipher (SQLCipher).';
+
+  @override
+  String get helpPrivacyDb2 =>
+      'The database master encryption key is derived securely and stored in device-protected hardware storage (Android Keystore / OS keychain).';
+
+  @override
+  String get helpPrivacyDb3 =>
+      'Even if someone copies the raw database file from your device storage, it cannot be read without the key.';
+
+  @override
+  String get helpPrivacyLockTitle => 'Biometric & App PIN Lock';
+
+  @override
+  String get helpPrivacyLock1 =>
+      'Protect access to the app using your device’s fingerprint, face unlock, or a custom App PIN.';
+
+  @override
+  String get helpPrivacyLock2 =>
+      'Configure auto-lock timers (Immediately, 1 minute, 5 minutes) to secure the app when switching away.';
+
+  @override
+  String get helpPrivacyShotTitle => 'Screenshot Guard Defense';
+
+  @override
+  String get helpPrivacyShot1 =>
+      'Under Settings → Security, enable Screenshot Guard to block screenshots and screen recordings.';
+
+  @override
+  String get helpPrivacyShot2 =>
+      'Screenshot Guard also hides the app screen preview in Android’s Recent Apps switcher for complete visual privacy.';
+
+  @override
+  String get helpPrivacyNetTitle => 'Zero Network Guarantee';
+
+  @override
+  String get helpPrivacyNet1 =>
+      'The only network permission the app declares is INTERNET, and it is used only for Wi-Fi sync with your own devices on the local network. Nothing is ever sent over the internet.';
+
+  @override
+  String get helpPrivacyNet2 =>
+      'Zero telemetry, zero third-party cloud SDKs, zero crash tracking, and zero advertising.';
+
+  @override
+  String get helpPrivacyTip =>
+      'Tip: Keep your device lock (fingerprint/PIN) active on your phone for maximum hardware-backed cryptographic protection.';
+
+  @override
+  String get helpBackupTitle => 'Encrypted Backup & Restore';
+
+  @override
+  String get helpBackupIntro =>
+      'A backup creates a single encrypted archive (.todobak / ZIP) containing your tasks, time records, recurrence rules, and settings. Use it to transfer data to a new phone, recover after a factory reset, or keep periodic offline archives.';
+
+  @override
+  String get helpBackupContentsTitle => 'What the Backup Contains';
+
+  @override
+  String get helpBackupContents1 =>
+      'All tasks, descriptions, statuses, and historical time segments.';
+
+  @override
+  String get helpBackupContents2 =>
+      'Recurring task rules and generation schedules.';
+
+  @override
+  String get helpBackupContents3 =>
+      'Mastery Deck cards, review intervals, and mastery levels.';
+
+  @override
+  String get helpBackupContents4 =>
+      'Your personalized settings (Theme mode, accent colors, typography, task defaults).';
+
+  @override
+  String get helpBackupPassTitle => 'Password Encryption Safety';
+
+  @override
+  String get helpBackupPass1 =>
+      'Backup archives are strongly encrypted with a passphrase you choose using AES-256 standard encryption.';
+
+  @override
+  String get helpBackupPass2 =>
+      'The app does NOT store your backup passphrase anywhere. You must remember or store it in a password manager.';
+
+  @override
+  String get helpBackupPass3 =>
+      'If you lose the passphrase, the backup cannot be decrypted or recovered by anyone.';
+
+  @override
+  String get helpBackupRestoreTitle => 'Restoring from a Backup';
+
+  @override
+  String get helpBackupRestore1 =>
+      'Restoring replaces what is currently in the app and rebuilds an exact copy from the backup file.';
+
+  @override
+  String get helpBackupRestore2 =>
+      'Before restoring, the app verifies the archive checksum, decrypts with your passphrase, and validates data schema version.';
+
+  @override
+  String get helpBackupRestore3 =>
+      'If you want to merge tasks between two devices without replacing existing data, use \"Local Wi-Fi Sync\" instead.';
+
+  @override
+  String get helpBackupTip =>
+      'Tip: After creating a backup, save the file to a secure location such as an external USB drive, SD card, or your personal cloud storage.';
+
+  @override
+  String get helpFaqTitle => 'FAQs & Troubleshooting';
+
+  @override
+  String get helpFaqIntro =>
+      'Find answers to common questions about day lock, time tracking rules, offline security, and tips for getting the most out of SreerajP ToDo.';
+
+  @override
+  String get helpFaqGeneralTitle => 'General & Workflow';
+
+  @override
+  String get helpFaqEditPastQ =>
+      'Why can’t I edit or delete a task from yesterday?';
+
+  @override
+  String get helpFaqEditPastA =>
+      'SreerajP ToDo enforces the Day Lock rule: past dates are permanently read-only to preserve honest, tamper-proof productivity records. To work on an unfinished past task, tap \"Copy Tasks\" and copy it to today.';
+
+  @override
+  String get helpFaqTimerDoneQ =>
+      'Why can’t I start a timer on a completed task?';
+
+  @override
+  String get helpFaqTimerDoneA =>
+      'Completed and Dropped are terminal statuses. Once a task is completed, its time record is sealed. You can reopen the task (change status back to Pending or Working) if you wish to record more time.';
+
+  @override
+  String get helpFaqUndoQ => 'How do I undo an accidental status change?';
+
+  @override
+  String get helpFaqUndoA =>
+      'Whenever you update a status, a 5-second SnackBar appears with an \"Undo\" button. You can also tap the persistent Undo icon in the top app bar.';
+
+  @override
+  String get helpFaqTimeTitle => 'Time Tracking & Timers';
+
+  @override
+  String get helpFaqTwoTimersQ =>
+      'Can I run timers on two tasks simultaneously?';
+
+  @override
+  String get helpFaqTwoTimersA =>
+      'No. To maintain tracking integrity, the app enforces the Single Running Timer rule. Starting a timer on any task automatically pauses/stops any running timer on another task.';
+
+  @override
+  String get helpFaqForgotStopQ =>
+      'What happens if I forget to stop my timer at night?';
+
+  @override
+  String get helpFaqForgotStopA =>
+      'You can enable \"Auto-stop at midnight\" under Settings → Time Tracking → Auto-stop so open timers are automatically closed at day’s end without overflowing into the next morning.';
+
+  @override
+  String get helpFaqShortTapsQ => 'Why are very short timer taps not saved?';
+
+  @override
+  String get helpFaqShortTapsA =>
+      'Under Settings → Time Tracking → Minimum length, you can discard accidental taps under 10 or 30 seconds to keep your time segments clean.';
+
+  @override
+  String get helpFaqPrivacyTitle => 'Privacy & Offline Guarantee';
+
+  @override
+  String get helpFaqUploadQ =>
+      'Is any data uploaded to cloud servers or analytics?';
+
+  @override
+  String get helpFaqUploadA =>
+      'No data is uploaded. SreerajP ToDo works fully offline. Its only network permission, INTERNET, is used just for Wi-Fi sync with your own devices on the local network. All database tables and logs stay on your device in AES-256 encrypted storage.';
+
+  @override
+  String get helpFaqLostPassQ => 'What happens if I forget my backup password?';
+
+  @override
+  String get helpFaqLostPassA =>
+      'Because backups are strongly encrypted on-device with AES-256 and there is no cloud server or master key, a lost backup password cannot be recovered. Always store your passphrase securely.';
+
+  @override
+  String get helpFaqSyncTitle => 'Sync & Device Transfer';
+
+  @override
+  String get helpFaqNewPhoneQ =>
+      'How do I transfer all my tasks to a new phone?';
+
+  @override
+  String get helpFaqNewPhoneA =>
+      'You have two easy options: (1) Use \"Local Wi-Fi P2P Sync\" to transfer directly over your home Wi-Fi, or (2) Create an encrypted Backup ZIP file under Settings → Backup and restore it on the new phone.';
+
+  @override
+  String get helpFaqDiscoverQ =>
+      'Why is Local Wi-Fi Sync not discovering the other device?';
+
+  @override
+  String get helpFaqDiscoverA =>
+      'Ensure both devices are on the exact same Wi-Fi network. If your router has \"Client Isolation\" turned on, enable a portable Wi-Fi hotspot on one phone and connect the other to it.';
+
+  @override
+  String get helpFaqFooter =>
+      'Need further details? Explore the individual topic guides under Help & User Guides or review your permissions under Settings → Permissions.';
+
+  @override
+  String get helpHomeTaskSection => 'Task Management & Workflow';
+
+  @override
+  String get helpHomeTaskMgmtSubtitle =>
+      'How the daily timeline, day-lock immutability, and terminal status locks protect your records.';
+
+  @override
+  String get helpHomeRecurringSubtitle =>
+      'Setting up automated recurrence rules (daily, weekly, monthly) and bulk copying past tasks.';
+
+  @override
+  String get helpHomeTimeSection => 'Time Tracking & Focus';
+
+  @override
+  String get helpHomeTimeTrackingSubtitle =>
+      'How multi-segment logging, target durations, and the single running timer rule work.';
+
+  @override
+  String get helpHomeFocusSubtitle =>
+      'Using the distraction-free focus screen, Pomodoro countdowns, and auto-stop safeguards.';
+
+  @override
+  String get helpHomeMasterySection => 'Mastery Deck & Spaced Repetition';
+
+  @override
+  String get helpHomeMasterySubtitle =>
+      'How card decks, spaced repetition review intervals, and mastery scoring operate.';
+
+  @override
+  String get helpHomeSyncSection => 'Sync & Offline Transfer';
+
+  @override
+  String get helpHomeWifiSubtitle =>
+      'Direct device-to-device synchronization over local Wi-Fi with end-to-end encryption and zero cloud.';
+
+  @override
+  String get helpHomeQrTitle => 'Air QR Scanner & Data Handoff';
+
+  @override
+  String get helpHomeQrSubtitle =>
+      'Transferring tasks and decks offline via visual animated QR code streams and clipboard handoff.';
+
+  @override
+  String get helpHomePrivacySection => 'Privacy, Security & Backups';
+
+  @override
+  String get helpHomePrivacySubtitle =>
+      'SQLCipher AES-256 database encryption, biometric authentication, and screenshot guard.';
+
+  @override
+  String get helpHomeBackupSubtitle =>
+      'Creating password-protected ZIP backup files, safety practices, and full restore steps.';
+
+  @override
+  String get helpHomeFaqSection => 'Frequently Asked Questions';
+
+  @override
+  String get helpHomeFaqTitle => 'FAQs & Troubleshooting Guide';
+
+  @override
+  String get helpHomeFaqSubtitle =>
+      'Direct answers to common questions about day lock, offline operation, and database safety.';
+
+  @override
+  String get helpHomeHeaderTitle => 'Help Center & Knowledge Base';
+
+  @override
+  String get helpHomeHeaderSubtitle =>
+      'Browse in-depth guides, rules, and solutions for all features of SreerajP ToDo.';
+
+  @override
+  String get featDailyName => 'Daily Tasks & Workflow';
+
+  @override
+  String get featDailySubtitle =>
+      'Fast planning, day lock protection, Unicode normalization, and undo';
+
+  @override
+  String get featUnicodeTitle => 'Unicode First & Multi-Script Normalization';
+
+  @override
+  String get featUnicodeDesc =>
+      'NFC normalizes all task titles for exact uniqueness and detects text direction dynamically for English, Malayalam, Hindi, and more.';
+
+  @override
+  String get featUnicodeH1 => 'NFC Unicode';
+
+  @override
+  String get featUnicodeH2 => 'Multi-script text';
+
+  @override
+  String get featUnicodeH3 => 'RTL & LTR';
+
+  @override
+  String get featDayLockTitle => 'Day Lock Safeguard';
+
+  @override
+  String get featDayLockDesc =>
+      'Strict day-level immutability locks past days against retroactive modifications to preserve historical record integrity.';
+
+  @override
+  String get featDayLockH1 => 'Historical lock';
+
+  @override
+  String get featDayLockH2 => 'Immutable past';
+
+  @override
+  String get featDayLockH3 => 'Read-only records';
+
+  @override
+  String get featCalendarTitle => 'Daily List & Calendar Navigation';
+
+  @override
+  String get featCalendarDesc =>
+      'Fast day-by-day task planning with visual calendar picker, quick-jump to Today, and date swipe navigation.';
+
+  @override
+  String get featCalendarH1 => 'Calendar picker';
+
+  @override
+  String get featCalendarH2 => 'Today jump';
+
+  @override
+  String get featCalendarH3 => 'Fast navigation';
+
+  @override
+  String get featUndoTitle => 'Instant Undo & Reversible Actions';
+
+  @override
+  String get featUndoDesc =>
+      '5-second undo toast with persistent app bar undo button for task completions, drops, and status updates.';
+
+  @override
+  String get featUndoH1 => '5-second undo';
+
+  @override
+  String get featUndoH2 => 'Persistent button';
+
+  @override
+  String get featUndoH3 => 'Safe transitions';
+
+  @override
+  String get featSearchTitle => 'Full-Text Search & Filters';
+
+  @override
+  String get featSearchDesc =>
+      'Instant search across all your tasks, descriptions, and historical logs by status, priority, and date ranges.';
+
+  @override
+  String get featSearchH1 => 'Full-text search';
+
+  @override
+  String get featSearchH2 => 'Status filters';
+
+  @override
+  String get featSearchH3 => 'Date ranges';
+
+  @override
+  String get featTimeSubtitle =>
+      'Stopwatch timers, single running timer rule, and Pomodoro focus';
+
+  @override
+  String get featSegmentsTitle => 'Multi-Segment Time Tracking';
+
+  @override
+  String get featSegmentsDesc =>
+      'Measure exact time spent on any task across multiple sessions with live second-by-second precision and target progress.';
+
+  @override
+  String get featSegmentsH1 => 'Multiple segments';
+
+  @override
+  String get featSegmentsH2 => 'Stopwatch timer';
+
+  @override
+  String get featSegmentsH3 => 'HH:MM:SS format';
+
+  @override
+  String get featSingleDesc =>
+      'Guarantees at most one active running timer at any given moment across the entire app to maintain tracking integrity.';
+
+  @override
+  String get featSingleH1 => 'One active timer';
+
+  @override
+  String get featSingleH2 => 'Auto-pause previous';
+
+  @override
+  String get featSingleH3 => 'Accurate metrics';
+
+  @override
+  String get featFocusDesc =>
+      'Distraction-free full-screen focus screen with custom work and break countdown timers.';
+
+  @override
+  String get featFocusH1 => 'Pomodoro timer';
+
+  @override
+  String get featFocusH2 => 'Full-screen focus';
+
+  @override
+  String get featCustomIntervals => 'Custom intervals';
+
+  @override
+  String get featStreamTitle => 'Live Dynamic Timer Stream';
+
+  @override
+  String get featStreamDesc =>
+      'Second-by-second live timer updates with optimized rendering that consumes minimal battery and never lags.';
+
+  @override
+  String get featStreamH1 => 'StreamProvider';
+
+  @override
+  String get featStreamH2 => 'Zero UI lag';
+
+  @override
+  String get featStreamH3 => 'Battery efficient';
+
+  @override
+  String get featTerminalTitle => 'Terminal Status Time Lock';
+
+  @override
+  String get featTerminalDesc =>
+      'Completed and dropped tasks automatically stop active timers and prevent new segment additions.';
+
+  @override
+  String get featTerminalH1 => 'Auto-stop on finish';
+
+  @override
+  String get featTerminalH2 => 'Terminal lock';
+
+  @override
+  String get featTerminalH3 => 'Protected logs';
+
+  @override
+  String get featRitualName => 'Ritual Mode';
+
+  @override
+  String get featRitualSubtitle =>
+      'A quiet, guided way to open and close the day';
+
+  @override
+  String get featDayOpenTitle => 'Guided Day Open';
+
+  @override
+  String get featDayOpenDesc =>
+      'Breathe, read one reflection card, settle what is left over from before, then begin the day. Off by default, and every step can be skipped.';
+
+  @override
+  String get featDayOpenH1 => 'Breathing timer';
+
+  @override
+  String get featDayOpenH2 => 'Carry over';
+
+  @override
+  String get featDayOpenH3 => 'Today\'s three';
+
+  @override
+  String get featRitualDeckTitle => 'Ritual Deck';
+
+  @override
+  String get featRitualDeckDesc =>
+      'Fifty reflection cards in English and Malayalam, each with a question and a grounding quote, resurfaced by their own spaced repetition.';
+
+  @override
+  String get featRitualDeckH1 => '50 cards';
+
+  @override
+  String get featRitualDeckH2 => 'Bilingual';
+
+  @override
+  String get featRitualDeckH3 => 'Comes back when due';
+
+  @override
+  String get featEveningTitle => 'Evening Close';
+
+  @override
+  String get featEveningDesc =>
+      'Once a day, later on, the day list offers the evening reflection so the day is closed as deliberately as it was opened.';
+
+  @override
+  String get featEveningH1 => 'Once a day';
+
+  @override
+  String get featEveningH2 => 'Optional';
+
+  @override
+  String get featEveningH3 => 'Your chosen hour';
+
+  @override
+  String get featMasterySubtitle =>
+      'Flashcards, spaced repetition retention, and recurring habits';
+
+  @override
+  String get featSrsTitle => 'Spaced Repetition Flashcards';
+
+  @override
+  String get featSrsDesc =>
+      'Convert daily learnings and study notes into flashcards with optimized spaced repetition review scheduling.';
+
+  @override
+  String get featSrsH1 => 'Spaced repetition';
+
+  @override
+  String get featSrsH2 => 'Retention intervals';
+
+  @override
+  String get featSrsH3 => 'Confidence rating';
+
+  @override
+  String get featDecksTitle => 'Decks & Mastery Levels';
+
+  @override
+  String get featDecksDesc =>
+      'Organize flashcards into custom decks and track your mastery score progression from Novice to Master.';
+
+  @override
+  String get featDecksH1 => 'Custom decks';
+
+  @override
+  String get featDecksH2 => 'Mastery scoring';
+
+  @override
+  String get featDecksH3 => 'Streak tracking';
+
+  @override
+  String get featRruleTitle => 'Recurring Tasks & RRule Engine';
+
+  @override
+  String get featRruleDesc =>
+      'Automate daily, weekly, monthly, or interval-based task generation with the standard RFC-5545 RRule engine.';
+
+  @override
+  String get featRruleH1 => 'RRule standard';
+
+  @override
+  String get featRruleH3 => 'Automated generation';
+
+  @override
+  String get featCopyTitle => 'Bulk Task Copying';
+
+  @override
+  String get featCopyDesc =>
+      'Easily copy unfinished or selected tasks from past days into today\'s list with 1 tap.';
+
+  @override
+  String get featCopyH1 => '1-tap copying';
+
+  @override
+  String get featCopyH2 => 'Select multiple';
+
+  @override
+  String get featCopyH3 => 'Carry over unfinished';
+
+  @override
+  String get featSyncName => 'Offline Sync & Air QR Transfer';
+
+  @override
+  String get featSyncSubtitle =>
+      'Local Wi-Fi P2P sync, Air QR visual beam, and data handoff';
+
+  @override
+  String get featWifiTitle => 'Encrypted Local Wi-Fi P2P Sync';
+
+  @override
+  String get featWifiDesc =>
+      'Direct device-to-device synchronization over your local Wi-Fi with end-to-end encryption and zero cloud servers.';
+
+  @override
+  String get featWifiH1 => '100% Local Wi-Fi';
+
+  @override
+  String get featWifiH2 => 'Zero cloud';
+
+  @override
+  String get featWifiH3 => 'End-to-end encrypted';
+
+  @override
+  String get featQrTitle => 'Air QR Task Beam & Scanner';
+
+  @override
+  String get featQrDesc =>
+      'Transfer individual tasks, time logs, and decks between devices via visual animated QR code streams.';
+
+  @override
+  String get featQrH1 => 'Visual QR stream';
+
+  @override
+  String get featQrH2 => 'Camera scanner';
+
+  @override
+  String get featQrH3 => 'Zero network needed';
+
+  @override
+  String get featHandoffTitle => 'Offline Data Handoff';
+
+  @override
+  String get featHandoffDesc =>
+      'Export and import formatted task bundles, JSON, and Markdown summaries via clipboard or local files.';
+
+  @override
+  String get featHandoffH1 => 'JSON & Markdown';
+
+  @override
+  String get featHandoffH2 => 'Clipboard handoff';
+
+  @override
+  String get featHandoffH3 => 'Portable data';
+
+  @override
+  String get featOfflineTitle => '100% Offline Operational Guarantee';
+
+  @override
+  String get featOfflineDesc =>
+      'Absolute privacy with zero cloud SDKs and zero analytics. The only network use is Wi-Fi sync that you start, with your own devices on the local network.';
+
+  @override
+  String get featOfflineH1 => 'Zero network';
+
+  @override
+  String get featOfflineH2 => 'Zero analytics';
+
+  @override
+  String get featOfflineH3 => 'Local network only';
+
+  @override
+  String get featPrivacyName => 'Privacy, Security & Storage';
+
+  @override
+  String get featPrivacySubtitle =>
+      'SQLCipher AES-256 database, app lock, and encrypted backups';
+
+  @override
+  String get featDbDesc =>
+      'All tasks, time records, and settings are encrypted at rest with hardware-backed SQLCipher encryption.';
+
+  @override
+  String get featDbH1 => 'SQLCipher AES-256';
+
+  @override
+  String get featDbH2 => 'Device-derived key';
+
+  @override
+  String get featDbH3 => 'Encrypted at rest';
+
+  @override
+  String get featLockDesc =>
+      'Lock your tasks and settings with fingerprint, face unlock, or a custom app PIN.';
+
+  @override
+  String get featLockH1 => 'Fingerprint & Face unlock';
+
+  @override
+  String get featLockH2 => 'App PIN fallback';
+
+  @override
+  String get featLockH3 => 'Auto-lock timer';
+
+  @override
+  String get featShotDesc =>
+      'Prevents screen captures and hides app window previews in the Android recent apps switcher.';
+
+  @override
+  String get featShotH1 => 'Screenshot blocking';
+
+  @override
+  String get featShotH2 => 'Recent apps shield';
+
+  @override
+  String get featShotH3 => 'Privacy protection';
+
+  @override
+  String get featBackupTitle => 'Password-Protected Encrypted Backups';
+
+  @override
+  String get featBackupDesc =>
+      'Export and restore encrypted ZIP backup archives protected with AES-256 user passphrases.';
+
+  @override
+  String get featBackupH1 => 'AES-256 ZIP';
+
+  @override
+  String get featBackupH2 => 'User passphrase';
+
+  @override
+  String get featBackupH3 => 'Safe portable backups';
+
+  @override
+  String get featCustomName => 'Customization & Analytics';
+
+  @override
+  String get featCustomSubtitle =>
+      'Themes, Malayalam typography, charts, and defaults';
+
+  @override
+  String get featThemeTitle => 'Light, Dark & Accent Palettes';
+
+  @override
+  String get featThemeDesc =>
+      'Support for light, dark, and OLED themes with 8 vibrant curated accent color presets.';
+
+  @override
+  String get featThemeH1 => 'Light & Dark themes';
+
+  @override
+  String get featThemeH2 => 'Vibrant accents';
+
+  @override
+  String get featThemeH3 => 'OLED styling';
+
+  @override
+  String get featTypeTitle => 'Typography & Text Scaling';
+
+  @override
+  String get featTypeDesc =>
+      'Choose from Manjari, Anek Malayalam, Noto Sans, or system fonts with dynamic text scaling.';
+
+  @override
+  String get featTypeH1 => 'Malayalam fonts';
+
+  @override
+  String get featTypeH2 => 'Dynamic scaling';
+
+  @override
+  String get featTypeH3 => 'Readable typography';
+
+  @override
+  String get featStatsTitle => 'Productivity Statistics & Charts';
+
+  @override
+  String get featStatsDesc =>
+      'Interactive charts and tables showing completion ratios, time distribution, and daily trends.';
+
+  @override
+  String get featStatsH1 => 'fl_chart graphs';
+
+  @override
+  String get featStatsH2 => 'Time distribution';
+
+  @override
+  String get featStatsH3 => 'Completion trends';
+
+  @override
+  String get featDefaultsTitle => 'Task Defaults & Time Display';
+
+  @override
+  String get featDefaultsDesc =>
+      'Configure default priorities, target durations, week start day, working days, and time formats.';
+
+  @override
+  String get featDefaultsH1 => 'Custom defaults';
+
+  @override
+  String get featDefaultsH2 => 'Flexible formats';
+
+  @override
+  String get featDefaultsH3 => 'Tailored workflow';
+
+  @override
+  String get featHeaderTitle => 'SreerajP ToDo Features';
+
+  @override
+  String get featHeaderSubtitle =>
+      'Explore every productivity tool, time tracker, and offline safeguard designed for you.';
 }

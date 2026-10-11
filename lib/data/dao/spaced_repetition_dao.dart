@@ -1,7 +1,7 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart';
+import 'package:sreerajp_todo/domain/entities/spaced_repetition_item_entity.dart';
 
 class SpacedRepetitionDao {
   SpacedRepetitionDao(this._databaseService);

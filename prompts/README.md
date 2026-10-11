@@ -40,12 +40,12 @@ Phases must be executed in order — each depends on the previous:
 ## Key References
 
 - **`CLAUDE.md`** — The single source of truth for all project rules and constraints. Every prompt references it.
-- **`flutter_todo_app_plan.md`** — The full project plan with detailed specifications.
+- **`docs/sreerajp_todo_idea.md`** — The full project plan with detailed specifications.
 - **`docs/`** — Engineering standards, architecture, security, and release process. Each prompt lists the specific docs relevant to that phase, but the following apply universally:
 
 | Document | Applies To | Key Sections |
 |----------|-----------|-------------|
-| `docs/flutter_project_engineering_standard.md` | **All phases** | Coding standards (§8), testing standard (§9), AI assistant instructions (§13), Definition of Done (§14) |
+| `docs/guidelines/flutter_project_engineering_standard.md` | **All phases** | Coding standards (§8), testing standard (§9), AI assistant instructions (§13), Definition of Done (§14) |
 | `docs/architecture.md` | **All phases** | Layer boundaries, data flow, provider types, route table, test layout |
 | `docs/security.md` | Phases handling encryption or sensitive data (2, 5B, 7, 8, 9) | Encryption design, logging policy, never-log rules, platform security controls |
 | `docs/release_process.md` | Phase 9 (and final verification of any phase) | Release checklist, signing, offline enforcement |

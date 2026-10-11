@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sreerajp_todo/core/platform/speech_channel.dart';
+import 'package:sreerajp_todo/data/platform/speech_channel.dart';
 import 'package:sreerajp_todo/core/voice/voice_parse_result.dart';
 
 part 'voice_capture_state.freezed.dart';

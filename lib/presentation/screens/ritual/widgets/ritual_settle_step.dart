@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/ritual_rules.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/core/rules/ritual_rules.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/carry_over_sheet.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 

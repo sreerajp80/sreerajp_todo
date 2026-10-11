@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/security_settings_notifier.dart';
-import 'package:sreerajp_todo/core/platform/app_lock_channel.dart';
-import 'package:sreerajp_todo/core/utils/app_lock_rules.dart';
+import 'package:sreerajp_todo/data/platform/app_lock_channel.dart';
+import 'package:sreerajp_todo/core/rules/app_lock_rules.dart';
 
 /// SharedPreferences key for how many wrong tries have piled up.
 const String kFailedAttemptsKey = 'security_failed_attempts';

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
@@ -305,7 +305,7 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Tasks in Deck',
+                      context.l10n.masteryTasksInDeck,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -519,14 +519,19 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
                         ),
                         if (todo.targetSeconds != null)
                           Text(
-                            'Target: ${formatDuration(todo.targetSeconds!)}',
+                            context.l10n.masteryTargetTime(
+                              formatDuration(todo.targetSeconds!),
+                            ),
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),
                           ),
                         if (todo.subTasks.isNotEmpty)
                           Text(
-                            '${todo.subTasks.where((s) => s.isCompleted).length}/${todo.subTasks.length} subtasks',
+                            context.l10n.subtasksProgress(
+                              todo.subTasks.where((s) => s.isCompleted).length,
+                              todo.subTasks.length,
+                            ),
                             style: theme.textTheme.labelSmall?.copyWith(
                               color: colorScheme.onSurfaceVariant,
                             ),

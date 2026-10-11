@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/domain/entities/ocr_task_result.dart';
 
 /// Interactive review sheet displaying OCR recognized task title and description.

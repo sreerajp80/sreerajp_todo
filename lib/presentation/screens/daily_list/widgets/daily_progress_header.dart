@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
 import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
@@ -71,8 +71,8 @@ class DailyProgressHeader extends StatelessWidget {
                     children: [
                       Text(
                         isAllDone
-                            ? 'All caught up! 🎉'
-                            : '$completed of $total ${l10n.statusCompleted.toLowerCase()}',
+                            ? l10n.progressAllDone
+                            : l10n.progressCompletedOf(completed, total),
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w700,
                           color: colorScheme.onSurface,
@@ -82,7 +82,7 @@ class DailyProgressHeader extends StatelessWidget {
                       const SizedBox(height: 2),
                       Text(
                         isAllDone
-                            ? 'Great job finishing today’s agenda.'
+                            ? l10n.progressAllDoneDetail
                             : '$pending ${l10n.statusPending.toLowerCase()}${working > 0 ? ' • $working ${l10n.statusWorking.toLowerCase()}' : ''}',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSurfaceVariant,

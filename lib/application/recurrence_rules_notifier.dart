@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 class RecurrenceRulesNotifier
     extends StateNotifier<AsyncValue<List<RecurrenceRuleEntity>>> {
@@ -28,8 +28,12 @@ class RecurrenceRulesNotifier
     try {
       await _repository.insert(rule);
       await loadRules();
-    } on Exception catch (e) {
-      debugPrint('Error creating recurrence rule: $e');
+    } on Exception catch (e, st) {
+      AppLogger.error(
+        'Error creating recurrence rule',
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }
@@ -38,8 +42,12 @@ class RecurrenceRulesNotifier
     try {
       await _repository.update(rule);
       await loadRules();
-    } on Exception catch (e) {
-      debugPrint('Error updating recurrence rule: $e');
+    } on Exception catch (e, st) {
+      AppLogger.error(
+        'Error updating recurrence rule',
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }
@@ -48,8 +56,12 @@ class RecurrenceRulesNotifier
     try {
       await _repository.delete(id);
       await loadRules();
-    } on Exception catch (e) {
-      debugPrint('Error deleting recurrence rule: $e');
+    } on Exception catch (e, st) {
+      AppLogger.error(
+        'Error deleting recurrence rule',
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }
@@ -61,8 +73,12 @@ class RecurrenceRulesNotifier
       final toggled = rule.copyWith(active: !rule.active);
       await _repository.update(toggled);
       await loadRules();
-    } on Exception catch (e) {
-      debugPrint('Error toggling recurrence rule: $e');
+    } on Exception catch (e, st) {
+      AppLogger.error(
+        'Error toggling recurrence rule',
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }

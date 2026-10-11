@@ -4,7 +4,7 @@ import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/config/app_config.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/build_date.g.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/about/widgets/about_info_tile.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';

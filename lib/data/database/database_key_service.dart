@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sreerajp_todo/core/utils/win32_dpapi.dart';
+import 'package:sreerajp_todo/core/security/win32_dpapi.dart';
 
 class DatabaseKeyService {
   DatabaseKeyService({MethodChannel? methodChannel, this._win32dpapi})

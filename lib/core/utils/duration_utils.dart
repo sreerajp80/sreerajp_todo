@@ -1,4 +1,4 @@
-import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
+import 'package:sreerajp_todo/core/rules/time_tracking_rules.dart';
 
 /// Formats [seconds] for display.
 ///

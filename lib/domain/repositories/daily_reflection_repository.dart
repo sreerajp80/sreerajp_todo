@@ -1,5 +1,5 @@
-import 'package:sreerajp_todo/data/models/daily_intention_entity.dart';
-import 'package:sreerajp_todo/data/models/daily_reflection_entity.dart';
+import 'package:sreerajp_todo/domain/entities/daily_intention_entity.dart';
+import 'package:sreerajp_todo/domain/entities/daily_reflection_entity.dart';
 
 abstract class DailyReflectionRepository {
   Future<DailyReflectionEntity?> getReflectionForDate(String date);

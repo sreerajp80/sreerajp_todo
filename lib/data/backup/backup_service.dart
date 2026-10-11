@@ -8,12 +8,12 @@ import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
-import 'package:sreerajp_todo/core/utils/atomic_saver.dart';
-import 'package:sreerajp_todo/core/utils/crypto_utils.dart';
-import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
+import 'package:sreerajp_todo/core/storage/atomic_saver.dart';
+import 'package:sreerajp_todo/core/security/crypto_utils.dart';
+import 'package:sreerajp_todo/domain/entities/backup_file_info.dart';
 import 'package:sreerajp_todo/data/dao/backup_logs_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/backup_log_entity.dart';
+import 'package:sreerajp_todo/domain/entities/backup_log_entity.dart';
 
 const _wrongPassphraseDetails = 'wrong_passphrase';
 const _invalidArchiveDetails = 'invalid_archive';

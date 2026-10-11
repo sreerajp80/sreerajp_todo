@@ -1,14 +1,14 @@
-import 'package:flutter/foundation.dart';
 import 'package:rrule/rrule.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
-import 'package:sreerajp_todo/data/models/sub_task_item.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_priority.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/sub_task_item.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_priority.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:uuid/uuid.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 class GenerateRecurringTasks {
   GenerateRecurringTasks(this._recurrenceRuleRepository, this._todoRepository);
@@ -137,11 +137,11 @@ class GenerateRecurringTasks {
           totalGenerated += todosToInsert.length;
         }
       } on FormatException catch (e) {
-        debugPrint('Skipping rule ${rule.id}: invalid RRULE: $e');
+        AppLogger.warning('Skipping rule ${rule.id}: invalid RRULE', error: e);
       }
     }
 
-    debugPrint('GenerateRecurringTasks: created $totalGenerated tasks');
+    AppLogger.info('GenerateRecurringTasks: created $totalGenerated tasks');
     return totalGenerated;
   }
 }

@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/core/utils/ritual_rules.dart';
+import 'package:sreerajp_todo/core/rules/ritual_rules.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_choice_list.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 /// Interactive framing guide overlay rendered on top of the camera preview.
 ///
@@ -150,9 +151,9 @@ class _ScanFrameGuide extends StatelessWidget {
                       color: Colors.black.withValues(alpha: 0.6),
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: const Text(
-                      '1. Task Name',
-                      style: TextStyle(
+                    child: Text(
+                      context.l10n.ocrOverlayTaskName,
+                      style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
@@ -185,9 +186,9 @@ class _ScanFrameGuide extends StatelessWidget {
                         color: Colors.black.withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: const Text(
-                        'space / # / ---',
-                        style: TextStyle(
+                      child: Text(
+                        context.l10n.ocrOverlaySeparator,
+                        style: const TextStyle(
                           color: Colors.white54,
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
@@ -220,9 +221,9 @@ class _ScanFrameGuide extends StatelessWidget {
                     color: Colors.black.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Text(
-                    '2. Description (all remaining text)',
-                    style: TextStyle(
+                  child: Text(
+                    context.l10n.ocrOverlayDescription,
+                    style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

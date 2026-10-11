@@ -1,4 +1,4 @@
-import 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart';
+import 'package:sreerajp_todo/domain/entities/spaced_repetition_item_entity.dart';
 
 abstract class SpacedRepetitionRepository {
   Future<void> insertItem(SpacedRepetitionItemEntity item);

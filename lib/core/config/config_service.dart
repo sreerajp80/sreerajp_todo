@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:sreerajp_todo/core/config/app_config.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 class ConfigService {
   static const String assetPath = 'assets/config/app_config.json';
@@ -32,10 +33,8 @@ class ConfigService {
         final mismatch =
             packageVersion != config.version || packageBuild != config.build;
         if (mismatch && kDebugMode) {
-          debugPrint(
-            'ConfigService: version/build in app_config.json '
-            '(${config.version}+${config.build}) does not match the build '
-            '($packageVersion+$packageBuild).',
+          AppLogger.warning(
+            'ConfigService: version/build in app_config.json (${config.version}+${config.build}) does not match the build ($packageVersion+$packageBuild).',
           );
         }
       }

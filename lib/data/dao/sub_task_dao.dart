@@ -1,6 +1,6 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/sub_task_item.dart';
+import 'package:sreerajp_todo/domain/entities/sub_task_item.dart';
 
 class SubTaskDao {
   SubTaskDao(this._databaseService);

@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/presentation/screens/time_segments/widgets/manual_segment_form.dart';
@@ -755,7 +755,7 @@ class _SegmentTile extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(mapErrorToMessage(context.l10n, e)),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -838,6 +838,8 @@ class _SegmentTile extends ConsumerWidget {
           SnackBar(
             content: Text(context.l10n.timeSegmentDeleted),
             duration: const Duration(seconds: 5),
+            persist: false,
+            showCloseIcon: true,
             action: SnackBarAction(
               label: context.l10n.undo,
               onPressed: () {
@@ -851,7 +853,7 @@ class _SegmentTile extends ConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(mapErrorToMessage(context.l10n, e)),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );

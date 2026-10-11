@@ -4,6 +4,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/domain/entities/air_qr_frame.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
+import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 
 /// Shows an animated AirQR stream dialog for sharing todos or backups air-gapped.
 Future<void> showAirQrShareDialog(
@@ -110,15 +111,11 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
   int get _payloadSizeBytes => _totalBlocks * AirQrService.defaultBlockSize;
   double get _payloadSizeKb => _payloadSizeBytes / 1024;
 
+  /// Estimated scan time as `~HH:MM:SS` (Hard Rule 9).
   String get _estimatedTimeLabel {
-    if (_totalBlocks == 0 || _targetFps <= 0) return '0s';
+    if (_totalBlocks == 0 || _targetFps <= 0) return formatDuration(0);
     final totalSec = (_totalBlocks / _targetFps).ceil();
-    if (totalSec < 60) {
-      return '~${totalSec}s';
-    }
-    final mins = totalSec ~/ 60;
-    final secs = totalSec % 60;
-    return secs > 0 ? '~$mins m $secs s' : '~$mins m';
+    return '~${formatDuration(totalSec)}';
   }
 
   @override
@@ -127,7 +124,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
     super.dispose();
   }
 
-  Widget _buildPayloadEstimateBanner(ThemeData theme) {
+  Widget _buildPayloadEstimateBanner(ThemeData theme, AppLocalizations l10n) {
     final isBackup = widget.backupMap != null;
     final isLarge = _payloadSizeKb >= 300;
     final sizeFormatted = _payloadSizeKb < 1
@@ -168,7 +165,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
               const SizedBox(width: 6),
               Expanded(
                 child: Text(
-                  'Est. scan time: $_estimatedTimeLabel ($sizeFormatted)',
+                  l10n.airQrEstimate(_estimatedTimeLabel, sizeFormatted),
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: iconColor,
@@ -180,7 +177,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
           if (isBackup && isLarge) ...[
             const SizedBox(height: 4),
             Text(
-              'Large database detected. Camera sync may take time. For faster transfer, Encrypted File Backup (.zip) is recommended.',
+              l10n.airQrLargeBackupWarning,
               style: theme.textTheme.bodySmall?.copyWith(
                 fontSize: 11,
                 color: Colors.amber.shade900,
@@ -189,7 +186,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
           ] else if (isBackup) ...[
             const SizedBox(height: 2),
             Text(
-              'Full app backup ready for optical sync. Hold target phone camera steady.',
+              l10n.airQrBackupReady,
               style: theme.textTheme.bodySmall?.copyWith(
                 fontSize: 11,
                 color: Colors.blue.shade900,
@@ -221,8 +218,8 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
 
     final currentFrame = _frames[_currentIndex];
     final frameTypeLabel = currentFrame.isParity
-        ? 'Fountain Parity'
-        : 'Systematic Block';
+        ? l10n.airQrFrameParity
+        : l10n.airQrFrameSystematic;
 
     return AlertDialog(
       title: Text(widget.title),
@@ -236,7 +233,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
                 const Icon(Icons.sensors, size: 16, color: Colors.blue),
                 const SizedBox(width: 6),
                 Text(
-                  'AirQR Optical Stream (${_frames.length} frames)',
+                  l10n.airQrStreamFrames(_frames.length),
                   style: theme.textTheme.labelMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: Colors.blue.shade700,
@@ -245,7 +242,7 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
               ],
             ),
             const SizedBox(height: 8),
-            _buildPayloadEstimateBanner(theme),
+            _buildPayloadEstimateBanner(theme, l10n),
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(12),
@@ -266,7 +263,11 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
             ),
             const SizedBox(height: 12),
             Text(
-              'Frame ${_currentIndex + 1} / ${_frames.length} • $frameTypeLabel',
+              l10n.airQrFrameCounter(
+                _currentIndex + 1,
+                _frames.length,
+                frameTypeLabel,
+              ),
               style: theme.textTheme.bodySmall,
             ),
             const SizedBox(height: 8),
@@ -282,11 +283,13 @@ class _AirQrShareDialogState extends State<AirQrShareDialog> {
                   iconSize: 32,
                   color: theme.colorScheme.primary,
                   onPressed: _togglePlayPause,
-                  tooltip: _isPlaying ? 'Pause stream' : 'Resume stream',
+                  tooltip: _isPlaying
+                      ? l10n.airQrPauseStream
+                      : l10n.airQrResumeStream,
                 ),
                 for (final fps in [5, 10, 15, 20, 25])
                   ChoiceChip(
-                    label: Text('${fps}FPS'),
+                    label: Text(l10n.airQrFpsChip(fps)),
                     selected: _targetFps == fps,
                     onSelected: (_) => _changeFps(fps),
                   ),

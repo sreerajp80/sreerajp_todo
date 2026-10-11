@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:sreerajp_todo/core/utils/win32_dpapi.dart';
+import 'package:sreerajp_todo/core/security/win32_dpapi.dart';
 
 /// Encrypts a short secret so it can be kept on disk.
 ///

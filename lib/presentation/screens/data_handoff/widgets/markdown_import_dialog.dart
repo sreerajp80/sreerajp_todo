@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
 
 /// Modal dialog allowing users to paste raw Markdown checklist text with live parse preview.
 class MarkdownImportDialog extends ConsumerStatefulWidget {
@@ -96,7 +97,7 @@ class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
       if (mounted) {
         setState(() {
           _isImporting = false;
-          _errorMessage = e.toString();
+          _errorMessage = mapErrorToMessage(AppLocalizations.of(context), e);
         });
       }
     }
@@ -131,7 +132,7 @@ class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Target Date: ${widget.targetDate}',
+                l10n.markdownTargetDate(widget.targetDate),
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                   fontWeight: FontWeight.w600,
@@ -144,7 +145,7 @@ class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
                 minLines: 4,
                 style: const TextStyle(fontFamily: 'monospace', fontSize: 13),
                 decoration: InputDecoration(
-                  hintText: '- [ ] Task title\n  - [ ] Subtask title\n  > Note',
+                  hintText: l10n.markdownImportHint,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -163,7 +164,7 @@ class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
                     ),
                   ),
                   Chip(
-                    label: Text('${_parsedTodos.length} tasks'),
+                    label: Text(l10n.tasksCount(_parsedTodos.length)),
                     visualDensity: VisualDensity.compact,
                   ),
                 ],
@@ -178,7 +179,7 @@ class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'No `- [ ]` or `- [x]` checklist items detected.',
+                    l10n.markdownNoItems,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -219,7 +220,7 @@ class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
                           ),
                         ),
                         subtitle: item.subTasks.isNotEmpty
-                            ? Text('${item.subTasks.length} subtasks')
+                            ? Text(l10n.subtasksCount(item.subTasks.length))
                             : (item.description != null
                                   ? Text(
                                       item.description!,
@@ -249,7 +250,7 @@ class _MarkdownImportDialogState extends ConsumerState<MarkdownImportDialog> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          'Past dates are day-locked. Choose today or a future date to import.',
+                          l10n.markdownPastDateLocked,
                           style: TextStyle(
                             color: theme.colorScheme.onErrorContainer,
                             fontSize: 12,

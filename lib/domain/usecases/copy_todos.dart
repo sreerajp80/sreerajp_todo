@@ -1,6 +1,6 @@
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 import 'package:uuid/uuid.dart';
 

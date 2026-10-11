@@ -1,83 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/presentation/screens/help/widgets/help_widgets.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 class TaskManagementHelpScreen extends StatelessWidget {
   const TaskManagementHelpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: const Text('Daily Lists & Day Lock')),
+      appBar: AppBar(title: Text(l10n.helpTaskMgmtTitle)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          children: const [
-            HelpIntro(
-              'SreerajP ToDo organizes your tasks strictly on a day-by-day basis. '
-              'Learn how the daily list, day lock protection, and terminal status locks maintain the integrity of your productivity logs.',
-            ),
-            SizedBox(height: 24),
+          children: [
+            HelpIntro(l10n.helpTaskMgmtIntro),
+            const SizedBox(height: 24),
             HelpSection(
               icon: Icons.lock_clock_outlined,
-              title: 'The Day Lock Principle',
+              title: l10n.helpTaskMgmtDayLockTitle,
               children: [
-                HelpBullet(
-                  'Tasks dated prior to today are permanently read-only and cannot be modified or deleted.',
-                ),
-                HelpBullet(
-                  'This ensures historical data remains an authentic, unedited reflection of what actually occurred.',
-                ),
-                HelpBullet(
-                  'If you need to work on an incomplete task from yesterday, copy it to today’s list rather than editing the past.',
-                ),
+                HelpBullet(l10n.helpTaskMgmtDayLock1),
+                HelpBullet(l10n.helpTaskMgmtDayLock2),
+                HelpBullet(l10n.helpTaskMgmtDayLock3),
               ],
             ),
             HelpSection(
               icon: Icons.checklist_rounded,
-              title: 'Task Statuses & Terminal Locks',
+              title: l10n.helpTaskMgmtStatusTitle,
               children: [
-                HelpBullet(
-                  'Tasks progress through statuses: Pending, Working, Completed, and Dropped.',
-                ),
-                HelpBullet(
-                  'Completed and Dropped are terminal statuses. Once a task reaches a terminal status, no new time segments can be started on it.',
-                ),
-                HelpBullet(
-                  'Marking an in-progress task as Completed or Dropped automatically stops any active running time segment.',
-                ),
+                HelpBullet(l10n.helpTaskMgmtStatus1),
+                HelpBullet(l10n.helpTaskMgmtStatus2),
+                HelpBullet(l10n.helpTaskMgmtStatus3),
               ],
             ),
             HelpSection(
               icon: Icons.undo_rounded,
-              title: 'Accidental Changes & Undo Action',
+              title: l10n.helpTaskMgmtUndoTitle,
               children: [
-                HelpBullet(
-                  'Whenever a task status is changed, a 5-second SnackBar appears with an Undo button.',
-                ),
-                HelpBullet(
-                  'A persistent Undo button is also available in the app bar to quickly reverse your last status transition.',
-                ),
+                HelpBullet(l10n.helpTaskMgmtUndo1),
+                HelpBullet(l10n.helpTaskMgmtUndo2),
               ],
             ),
             HelpSection(
               icon: Icons.translate_rounded,
-              title: 'Unicode NFC Normalization & Title Uniqueness',
+              title: l10n.helpTaskMgmtUnicodeTitle,
               children: [
-                HelpBullet(
-                  'All task titles are NFC-normalized before being written to the database.',
-                ),
-                HelpBullet(
-                  'No two tasks on the same day can share identical titles (ignoring case and whitespace).',
-                ),
-                HelpBullet(
-                  'Text direction (RTL/LTR) is dynamically detected per item for seamless multilingual support (English, Malayalam, Hindi, etc.).',
-                ),
+                HelpBullet(l10n.helpTaskMgmtUnicode1),
+                HelpBullet(l10n.helpTaskMgmtUnicode2),
+                HelpBullet(l10n.helpTaskMgmtUnicode3),
               ],
             ),
-            SizedBox(height: 8),
-            HelpFooter(
-              'Tip: Use the date picker or swipe between days on the daily list to review past productivity or plan future days.',
-            ),
+            const SizedBox(height: 8),
+            HelpFooter(l10n.helpTaskMgmtTip),
           ],
         ),
       ),

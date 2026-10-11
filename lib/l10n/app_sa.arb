@@ -1108,10 +1108,15 @@
   "ocrEnhanceUseText": "पाठं प्रयुङ्क्तु",
   "ocrEnhanceCrop": "कर्तनम्",
   "ocrEnhanceInvert": "विपर्ययः",
+  "ocrFilterScreen": "पटलचित्रम्",
+  "ocrFilterAdaptive": "छायानिवारणम्",
+  "ocrSharpnessLabel": "तीक्ष्णता",
   "ocrEnhanceLiveText": "प्रत्यक्षपाठः",
   "ocrEnhanceLiveTextNone": "पाठः न दृष्टः",
   "ocrEnhanceWordCount": "{count} शब्दाः",
   "ocrEnhanceScanning": "अन्विष्यते...",
+  "ocrExtractTextTooltip": "पाठम् उद्धर",
+  "ocrEnhanceExtractHint": "सम्पादनं समाप्य पाठं पठितुं परीक्षणकुड्मलं स्पृश।",
   "ocrLanguageTooltip": "पाठभाषा",
   "ocrLanguageAll": "सर्वाः भाषाः",
   "ocrLanguageMalayalam": "മലയാളം",
@@ -1230,5 +1235,1839 @@
   "airQrScanStreamFailed": "AirQR-धाराखण्डाः न संयुक्ताः। पुनः प्रयतस्व।",
   "airQrScanPermissionDenied": "AirQR-सङ्केतान् पठितुं छायाग्राहिणः अनुमतिः आवश्यकी। तन्त्रविन्यासेषु अनुमतिं देहि।",
   "airQrScanCameraError": "छायाग्राही आरब्धुं न शक्तः।",
-  "airQrScanUnavailable": "QR-पठनम् Android-यन्त्रेषु एव उपलभ्यते।"
+  "airQrScanUnavailable": "QR-पठनम् Android-यन्त्रेषु एव उपलभ्यते।",
+  "ok": "अस्तु",
+  "@ok": {
+    "description": "Generic OK button that closes a dialog."
+  },
+  "errorNotLocalNetwork": "Wi-Fi-समकालनं केवलं स्थानीयजालस्थैः यन्त्रैः सह प्रवर्तते।",
+  "@errorNotLocalNetwork": {
+    "description": "Error shown when Wi-Fi sync is pointed at an address outside the local network."
+  },
+  "errorInvalidInput": "प्रविष्टेषु केचन अंशाः अमान्याः।",
+  "@errorInvalidInput": {
+    "description": "Generic error shown when the user's input breaks a rule."
+  },
+  "p2pSummaryTasks": "कार्याणि",
+  "@p2pSummaryTasks": {
+    "description": "Row label in the Wi-Fi sync summary dialog for tasks."
+  },
+  "p2pSummaryAdded": "+{count} योजितानि",
+  "@p2pSummaryAdded": {
+    "description": "Number of items added by a Wi-Fi sync, in the summary dialog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pSummarySkipped": "({count} त्यक्तानि)",
+  "@p2pSummarySkipped": {
+    "description": "Number of items skipped by a Wi-Fi sync, in the summary dialog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pDayLockSkipped": "{count, plural, other{व्यतीतदिनानि कीलितानि इति हेतोः तेषां {count} वस्तूनि त्यक्तानि।}}",
+  "@p2pDayLockSkipped": {
+    "description": "Warning in the Wi-Fi sync summary when items for locked past days were not merged.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pTabHost": "आतिथेयम् (वितरणम्)",
+  "@p2pTabHost": {
+    "description": "Tab label: this device shares its data. Keep short."
+  },
+  "p2pTabPeer": "सहयन्त्रम् (ग्रहणम्)",
+  "@p2pTabPeer": {
+    "description": "Tab label: this device receives data. Keep short."
+  },
+  "p2pHostActive": "आतिथेयसेवा सक्रिया",
+  "@p2pHostActive": {
+    "description": "Status title when this device is sharing over Wi-Fi."
+  },
+  "p2pHostStopped": "आतिथेयसेवा स्थगिता",
+  "@p2pHostStopped": {
+    "description": "Status title when this device is not sharing over Wi-Fi."
+  },
+  "p2pHostListening": "{address} इत्यत्र प्रतीक्षा प्रवर्तते",
+  "@p2pHostListening": {
+    "description": "Status line with the local address and port the host listens on.",
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pHostIdleHint": "गुप्तीकृतसम्बन्धम् उद्घाटयितुम् अधः स्पृश्यताम्।",
+  "@p2pHostIdleHint": {
+    "description": "Hint shown while the host server is stopped."
+  },
+  "p2pPairingPinLabel": "युग्मनसङ्केतः",
+  "@p2pPairingPinLabel": {
+    "description": "Label for the PIN the other device must type to pair."
+  },
+  "p2pSelectScope": "समकालनव्याप्तिः चीयताम्",
+  "@p2pSelectScope": {
+    "description": "Heading above the list of data types to share."
+  },
+  "p2pStartHost": "आतिथेयसेवा आरभ्यताम्",
+  "@p2pStartHost": {
+    "description": "Button that starts sharing over Wi-Fi."
+  },
+  "p2pStopHost": "आतिथेयसेवा स्थग्यताम्",
+  "@p2pStopHost": {
+    "description": "Button that stops sharing over Wi-Fi."
+  },
+  "p2pConnectToHost": "आतिथेययन्त्रेण सम्बन्धः",
+  "@p2pConnectToHost": {
+    "description": "Heading of the card where the user types the host's details."
+  },
+  "p2pHostIpLabel": "आतिथेययन्त्रस्य IP-सङ्केतः",
+  "@p2pHostIpLabel": {
+    "description": "Label of the host IP address field."
+  },
+  "p2pHostIpHint": "यथा 192.168.1.105",
+  "@p2pHostIpHint": {
+    "description": "Example shown in the empty host IP address field."
+  },
+  "p2pPinHint": "षडङ्कसङ्केतः",
+  "@p2pPinHint": {
+    "description": "Hint shown in the empty pairing PIN field."
+  },
+  "p2pRequestedScope": "अपेक्षिता समकालनव्याप्तिः",
+  "@p2pRequestedScope": {
+    "description": "Heading above the list of data types to receive."
+  },
+  "p2pStatusConnecting": "{address} इत्यनेन सम्बन्धः क्रियते…",
+  "@p2pStatusConnecting": {
+    "description": "Progress text while connecting to the host.",
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pStatusAuthenticating": "सुरक्षितसत्रं सज्जीक्रियते…",
+  "@p2pStatusAuthenticating": {
+    "description": "Progress text while the encrypted session is being set up."
+  },
+  "daysCount": "{count, plural, =1{1 दिनम्} other{{count} दिनानि}}",
+  "@daysCount": {
+    "description": "A number of days, for example on a slider or a badge.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysShort": "{count} दि",
+  "@daysShort": {
+    "description": "Very short number of days for a compact chip, for example '7d'.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasksCount": "{count, plural, =1{1 कार्यम्} other{{count} कार्याणि}}",
+  "@tasksCount": {
+    "description": "A number of tasks, shown in a small chip.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subtasksCount": "{count, plural, =1{1 उपकार्यम्} other{{count} उपकार्याणि}}",
+  "@subtasksCount": {
+    "description": "A number of subtasks under a task.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subtasksProgress": "{done}/{total} उपकार्याणि",
+  "@subtasksProgress": {
+    "description": "How many subtasks of a task are done.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingAlertsView": "दृश्यताम्",
+  "@pendingAlertsView": {
+    "description": "Button on the pending-tasks sheet that opens a task that is already running."
+  },
+  "masteryTasksInDeck": "सङ्ग्रहस्थानि कार्याणि",
+  "@masteryTasksInDeck": {
+    "description": "Heading above the task list on a Mastery Deck page."
+  },
+  "masteryTargetTime": "लक्ष्यम्: {duration}",
+  "@masteryTargetTime": {
+    "description": "Target time of a task in a Mastery Deck, as HH:MM:SS.",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "carryOverLookBackValue": "{count, plural, =1{1 दिनम् (ह्यः)} other{{count} दिनानि}}",
+  "@carryOverLookBackValue": {
+    "description": "How far back the carry-over looks, shown next to the setting.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carryOverLookBackChip": "{count, plural, =1{1 दि (ह्यः)} other{{count} दि}}",
+  "@carryOverLookBackChip": {
+    "description": "Short preset chip for the carry-over look-back days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "eventTimerSession": "समयगणनसत्रम्",
+  "@eventTimerSession": {
+    "description": "Task history event: a timer was stopped, closing a session."
+  },
+  "eventManualTime": "हस्तचालितसमयः",
+  "@eventManualTime": {
+    "description": "Task history event: time was added by hand."
+  },
+  "eventStatusChange": "स्थितिपरिवर्तनम्",
+  "@eventStatusChange": {
+    "description": "Task history event: the task status changed."
+  },
+  "prerequisitesSelected": "{count} चितानि",
+  "@prerequisitesSelected": {
+    "description": "How many prerequisite tasks are selected.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ocrNoCamera": "अस्मिन् यन्त्रे छायाग्राही न प्राप्तः।",
+  "@ocrNoCamera": {
+    "description": "Shown on the OCR scanner when the device has no camera."
+  },
+  "ocrCameraStartFailed": "छायाग्राही आरब्धुं न अशक्यत।",
+  "@ocrCameraStartFailed": {
+    "description": "Shown on the OCR scanner when the camera fails to start."
+  },
+  "ocrOverlayTaskName": "1. कार्यनाम",
+  "@ocrOverlayTaskName": {
+    "description": "Label on the upper area of the OCR camera frame."
+  },
+  "ocrOverlaySeparator": "रिक्तस्थानम् / # / ---",
+  "@ocrOverlaySeparator": {
+    "description": "Hint showing the marks that separate a task name from its description."
+  },
+  "ocrOverlayDescription": "2. वर्णनम् (अवशिष्टः सर्वः पाठः)",
+  "@ocrOverlayDescription": {
+    "description": "Label on the lower area of the OCR camera frame."
+  },
+  "pendingNotificationBody": "{count, plural, =1{1 कार्यम् अवशिष्टम् ({summary})} other{{count} कार्याणि अवशिष्टानि ({summary})}}",
+  "@pendingNotificationBody": {
+    "description": "Body of the pending-tasks system notification.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "pendingNotificationSummarySplit": "अद्य {today}, पूर्वदिनेभ्यः {previous}",
+  "@pendingNotificationSummarySplit": {
+    "description": "Summary in the pending-tasks notification when some tasks are from earlier days.",
+    "placeholders": {
+      "today": {
+        "type": "int"
+      },
+      "previous": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingNotificationSummaryToday": "{count, plural, =1{अद्य 1 कार्यम् अवशिष्टम्} other{अद्य {count} कार्याणि अवशिष्टानि}}",
+  "@pendingNotificationSummaryToday": {
+    "description": "Summary in the pending-tasks notification when all tasks are from today.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupShareTitle": "AirQR-प्रतिरक्षावितरणम्",
+  "@airQrBackupShareTitle": {
+    "description": "Title of the AirQR dialog that shares a backup."
+  },
+  "airQrSyncDayTitle": "AirQR-समकालनम् ({date})",
+  "@airQrSyncDayTitle": {
+    "description": "Title of the AirQR dialog that shares one day's tasks.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrEstimate": "अनुमितः अवलोकनकालः: {time} ({size})",
+  "@airQrEstimate": {
+    "description": "Estimated time and data size of an AirQR transfer.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrLargeBackupWarning": "अयं दत्तांशकोशः बृहत्, अतः छायाग्राहिसमकालने विलम्बः स्यात्। शीघ्रहस्तान्तरणाय गुप्तीकृता प्रतिरक्षासञ्चिका (.zip) प्रयुज्यताम्।",
+  "@airQrLargeBackupWarning": {
+    "description": "Warning when a backup is too large to send quickly by AirQR."
+  },
+  "airQrBackupReady": "सम्पूर्णा प्रतिरक्षा छायाग्राहिणा प्रेषणाय सज्जा। ग्राहकयन्त्रस्य छायाग्राही स्थिरं धार्यताम्।",
+  "@airQrBackupReady": {
+    "description": "Hint shown while a backup is being sent by AirQR."
+  },
+  "airQrFrameParity": "पूरकखण्डः",
+  "@airQrFrameParity": {
+    "description": "Type of the AirQR frame being shown: an extra recovery frame."
+  },
+  "airQrFrameSystematic": "क्रमिकखण्डः",
+  "@airQrFrameSystematic": {
+    "description": "Type of the AirQR frame being shown: a normal data frame."
+  },
+  "airQrStreamFrames": "AirQR-दृश्यधारा ({count} चित्राणि)",
+  "@airQrStreamFrames": {
+    "description": "Heading of the AirQR share dialog with the number of frames.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrFrameCounter": "चित्रम् {current} / {total} • {type}",
+  "@airQrFrameCounter": {
+    "description": "Which AirQR frame is shown now, and its type.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrPauseStream": "धारा स्थग्यताम्",
+  "@airQrPauseStream": {
+    "description": "Tooltip of the button that pauses the AirQR stream."
+  },
+  "airQrResumeStream": "धारा पुनरारभ्यताम्",
+  "@airQrResumeStream": {
+    "description": "Tooltip of the button that resumes the AirQR stream."
+  },
+  "airQrFpsChip": "प्रतिक्षणं {fps}",
+  "@airQrFpsChip": {
+    "description": "Chip that picks the AirQR frame rate in frames per second.",
+    "placeholders": {
+      "fps": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupPayloadEntries": "सम्पूर्णा प्रतिरक्षा ({count} अंशाः)",
+  "@airQrBackupPayloadEntries": {
+    "description": "Summary of a backup received by AirQR.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrReceivedTasks": "AirQR-कार्याणि प्राप्तानि",
+  "@airQrReceivedTasks": {
+    "description": "Title after scanning AirQR tasks."
+  },
+  "airQrReceivedTimecard": "AirQR-समयपत्रं प्राप्तम्",
+  "@airQrReceivedTimecard": {
+    "description": "Title after scanning an AirQR timecard."
+  },
+  "airQrReceivedBackup": "AirQR-प्रतिरक्षा प्राप्ता",
+  "@airQrReceivedBackup": {
+    "description": "Title after scanning an AirQR backup."
+  },
+  "airQrReceivedUnknown": "AirQR-दत्तांशः प्राप्तः",
+  "@airQrReceivedUnknown": {
+    "description": "Title after scanning AirQR data of an unknown type."
+  },
+  "airQrTasksReady": "{count, plural, =1{1 कार्यम् आवल्यां योजनाय सज्जम्।} other{{count} कार्याणि आवल्यां योजनाय सज्जानि।}}",
+  "@airQrTasksReady": {
+    "description": "Detail after scanning AirQR tasks.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrTimecardReady": "{count, plural, =1{एकवस्तुयुक्तं दैनिकसमयपत्रं योजनाय सज्जम्।} other{{count} वस्तुयुक्तं दैनिकसमयपत्रं योजनाय सज्जम्।}}",
+  "@airQrTimecardReady": {
+    "description": "Detail after scanning an AirQR timecard.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupReceivedDetail": "सम्पूर्णा प्रतिरक्षा छायाग्राहिणा प्राप्ता।",
+  "@airQrBackupReceivedDetail": {
+    "description": "Detail after scanning an AirQR backup."
+  },
+  "backupHideLogs": "वृत्तयः निगूह्यन्ताम्",
+  "@backupHideLogs": {
+    "description": "Button that hides the backup run log."
+  },
+  "backupViewLogs": "वृत्तयः दृश्यन्ताम् ({count})",
+  "@backupViewLogs": {
+    "description": "Button that shows the backup run log, with the number of entries.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupLastRun": "अन्तिमं प्रवर्तनम्: {time} ({trigger})",
+  "@backupLastRun": {
+    "description": "When the last backup ran and whether it was manual or scheduled.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "trigger": {
+        "type": "String"
+      }
+    }
+  },
+  "backupArchiveSize": "सङ्ग्रहपरिमाणम्: {size}",
+  "@backupArchiveSize": {
+    "description": "Size of the last backup file.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "progressAllDone": "सर्वं समापितम्! 🎉",
+  "@progressAllDone": {
+    "description": "Day list header when every task of the day is finished."
+  },
+  "progressAllDoneDetail": "अद्यतनी कार्यसूची समापिता, साधु।",
+  "@progressAllDoneDetail": {
+    "description": "Line under the all-done header on the day list."
+  },
+  "progressCompletedOf": "{completed}/{total} समापितानि",
+  "@progressCompletedOf": {
+    "description": "Day list header: how many of the day's tasks are completed.",
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "recallTitle": "स्मरणविश्वासः",
+  "@recallTitle": {
+    "description": "Title of the dialog shown when a Mastery Deck task is completed."
+  },
+  "recallPrompt": "इदं कार्यं कियता सौकर्येण स्मृतं समापितं वा?",
+  "@recallPrompt": {
+    "description": "Question in the recall confidence dialog."
+  },
+  "recallHard": "कठिनम्",
+  "@recallHard": {
+    "description": "Recall answer: it was hard."
+  },
+  "recallHardDetail": "क्लेशः विस्मृतिः वा। अग्रिमं पुनरावलोकनम् एकेन दिनेन।",
+  "@recallHardDetail": {
+    "description": "Explains the Hard recall answer."
+  },
+  "recallRevision": "पुनरभ्यासः",
+  "@recallRevision": {
+    "description": "Recall answer: it needed some effort."
+  },
+  "recallRevisionDetail": "मध्यमः प्रयत्नः। अग्रिमं पुनरावलोकनं त्रिभिः दिनैः।",
+  "@recallRevisionDetail": {
+    "description": "Explains the Revision recall answer."
+  },
+  "recallEasy": "सुकरम्",
+  "@recallEasy": {
+    "description": "Recall answer: it was easy."
+  },
+  "recallEasyDetail": "अनायासेन! अग्रिमं पुनरावलोकनं {days} दिनैः (स्तरः {level})।",
+  "@recallEasyDetail": {
+    "description": "Explains the Easy recall answer.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "dataHandoffExportSection": "निर्यापणविकल्पाः",
+  "@dataHandoffExportSection": {
+    "description": "Heading above the export actions on the data handoff screen."
+  },
+  "dataHandoffImportSection": "आनयनविकल्पाः",
+  "@dataHandoffImportSection": {
+    "description": "Heading above the import actions on the data handoff screen."
+  },
+  "markdownTargetDate": "लक्ष्यदिनाङ्कः: {date}",
+  "@markdownTargetDate": {
+    "description": "The date that pasted Markdown tasks will be added to.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "markdownImportHint": "- [ ] कार्यनाम\n  - [ ] उपकार्यनाम\n  > टिप्पणी",
+  "@markdownImportHint": {
+    "description": "Example Markdown shown in the empty paste box. Keep the '- [ ]' and '>' marks."
+  },
+  "markdownNoItems": "`- [ ]` `- [x]` वा सूच्यंशाः न प्राप्ताः।",
+  "@markdownNoItems": {
+    "description": "Shown when the pasted Markdown has no checklist items."
+  },
+  "markdownPastDateLocked": "व्यतीतदिनानि कीलितानि। आनयनाय अद्यतनः आगामी वा दिनाङ्कः चीयताम्।",
+  "@markdownPastDateLocked": {
+    "description": "Shown when the Markdown import target date is in the past."
+  },
+  "helpTaskMgmtTitle": "दैनिकावल्यः दिनकीलनं च",
+  "@helpTaskMgmtTitle": {
+    "description": "Help topic title: daily lists and the day lock."
+  },
+  "helpTaskMgmtIntro": "SreerajP ToDo कार्याणि दिनशः दृढं व्यवस्थापयति। दैनिकावली, दिनकीलनरक्षणम्, अन्तिमस्थितिकीलनानि च उत्पादकतावृत्तानां प्रामाणिकतां कथं रक्षन्तीति ज्ञायताम्।",
+  "@helpTaskMgmtIntro": {
+    "description": "Help: task management intro paragraph."
+  },
+  "helpTaskMgmtDayLockTitle": "दिनकीलनसिद्धान्तः",
+  "@helpTaskMgmtDayLockTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtDayLock1": "अद्यतनात् पूर्वदिनाङ्कितानि कार्याणि स्थिरं केवलपठनीयानि; तानि परिवर्तयितुं लोपयितुं वा न शक्यन्ते।",
+  "@helpTaskMgmtDayLock1": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtDayLock2": "एवं पुरातनदत्तांशः यथार्थं घटितस्य अविकृतं प्रामाणिकं प्रतिबिम्बं तिष्ठति।",
+  "@helpTaskMgmtDayLock2": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtDayLock3": "ह्यस्तनम् असमापितं कार्यं कर्तव्यं चेत्, अतीतस्य सम्पादनस्य स्थाने तद् अद्यतनावल्यां प्रतिलिख्यताम्।",
+  "@helpTaskMgmtDayLock3": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtStatusTitle": "कार्यस्थितयः अन्तिमकीलनानि च",
+  "@helpTaskMgmtStatusTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtStatus1": "कार्याणि एताः स्थितीः क्रमेण प्राप्नुवन्ति: अवशिष्टम्, प्रवर्तमानम्, समापितम्, त्यक्तम्।",
+  "@helpTaskMgmtStatus1": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtStatus2": "समापितं त्यक्तं च अन्तिमस्थिती। अन्तिमस्थितिं प्राप्ते कार्ये नूतनः समयखण्डः आरब्धुं न शक्यते।",
+  "@helpTaskMgmtStatus2": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtStatus3": "प्रवर्तमानं कार्यं समापितं त्यक्तं वा इति चिह्निते प्रचलन् समयखण्डः स्वयमेव विरमति।",
+  "@helpTaskMgmtStatus3": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtUndoTitle": "प्रमादजपरिवर्तनानि प्रत्यावर्तनं च",
+  "@helpTaskMgmtUndoTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtUndo1": "कार्यस्थितौ परिवर्तितायां प्रत्यावर्तनबटनयुक्ता पञ्चक्षणस्थायिनी सूचना अधः दृश्यते।",
+  "@helpTaskMgmtUndo1": {
+    "description": "Help: undo bullet."
+  },
+  "helpTaskMgmtUndo2": "अन्तिमं स्थितिपरिवर्तनं शीघ्रं प्रत्यावर्तयितुम् उपरितनपट्टिकायां स्थिरं प्रत्यावर्तनबटनम् अपि अस्ति।",
+  "@helpTaskMgmtUndo2": {
+    "description": "Help: undo bullet."
+  },
+  "helpTaskMgmtUnicodeTitle": "यूनिकोड-NFC-सामान्यीकरणं शीर्षकानन्यता च",
+  "@helpTaskMgmtUnicodeTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtUnicode1": "सर्वाणि कार्यशीर्षकाणि दत्तांशकोशे लेखनात् पूर्वं NFC-रूपेण सामान्यीक्रियन्ते।",
+  "@helpTaskMgmtUnicode1": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtUnicode2": "एकस्मिन् दिने द्वयोः कार्ययोः समानं शीर्षकं न भवितुम् अर्हति (अक्षरावस्थां रिक्तस्थानानि च अगणयित्वा)।",
+  "@helpTaskMgmtUnicode2": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtUnicode3": "बहुभाषासमर्थनाय प्रत्येकं वस्तुनः लेखनदिशा (RTL/LTR) स्वयमेव ज्ञायते (आङ्ग्लम्, मलयाळम्, हिन्दी इत्यादयः)।",
+  "@helpTaskMgmtUnicode3": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtTip": "उपदेशः: अतीतदिनानाम् उत्पादकताम् अवलोकयितुम् आगामिदिनानि योजयितुं वा दिनाङ्कचयनं प्रयुज्यताम्, अथवा दैनिकावल्यां दिनान्तरं सार्यताम्।",
+  "@helpTaskMgmtTip": {
+    "description": "Help: task management footer tip."
+  },
+  "helpRecurringTitle": "पुनरावृत्तिकार्याणि सामूहिकप्रतिलेखनं च",
+  "@helpRecurringTitle": {
+    "description": "Help topic title: recurring tasks and bulk copy."
+  },
+  "helpRecurringIntro": "मानक-RFC-5545-पुनरावृत्तिनियमैः, दिनान्तरेषु कार्याणां सामूहिकप्रतिलेखनेन वा, दैनिकचर्याः साप्ताहिकसभाः अभ्यासाश्च स्वचालिताः कृत्वा समयः रक्ष्यताम्।",
+  "@helpRecurringIntro": {
+    "description": "Help: recurring tasks intro paragraph."
+  },
+  "helpRecurringRulesTitle": "पुनरावृत्तिनियमाः (RRule)",
+  "@helpRecurringRulesTitle": {
+    "description": "Help: recurring tasks section title."
+  },
+  "helpRecurringRules1": "नम्यावृत्तिभिः पुनरावृत्तिनियमाः सृज्यन्ताम्: प्रतिदिनम्, प्रतिसप्ताहं (चितवासराः), प्रतिमासम्, इच्छानुसारम् अन्तरालाः वा।",
+  "@helpRecurringRules1": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringRules2": "दिने दृष्टे तस्य दिनस्य पुनरावृत्तिकार्याणि पूर्वनिश्चितप्राथमिकताभिः लक्ष्यसमयैश्च सह स्वयमेव सृज्यन्ते।",
+  "@helpRecurringRules2": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringRules3": "एकस्य दिनस्य पुनरावृत्तिकार्यस्य सम्पादनं समापनं वा आगामीनि अतीतानि वा न प्रभावयति।",
+  "@helpRecurringRules3": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringCopyTitle": "अतीतकार्याणां सामूहिकप्रतिलेखनम्",
+  "@helpRecurringCopyTitle": {
+    "description": "Help: recurring tasks section title."
+  },
+  "helpRecurringCopy1": "दैनिकावल्याः सूच्यां \"कार्याणि प्रतिलिख्यन्ताम्\" इति स्पृष्ट्वा प्रतिलेखनसहायकः उद्घाट्यताम्।",
+  "@helpRecurringCopy1": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringCopy2": "ह्यस्तनानि चितातीतदिनस्य वा सर्वाणि असमापितकार्याणि शीघ्रं चित्वा अद्यतनावल्यां प्रतिलिख्यन्ताम्।",
+  "@helpRecurringCopy2": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringCopy3": "प्रतिलिखितानि कार्याणि “अवशिष्टम्” इति स्थित्या समयखण्डैः विना नवीनतया आरभन्ते।",
+  "@helpRecurringCopy3": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringTip": "उपदेशः: नियताभ्यासेभ्यः (प्रातर्व्यायामः, पुनरावलोकनानि इत्यादिभ्यः) पुनरावृत्तिकार्याणि, आकस्मिकावशिष्टेभ्यः सामूहिकप्रतिलेखनं च प्रयुज्यताम्।",
+  "@helpRecurringTip": {
+    "description": "Help: recurring tasks footer tip."
+  },
+  "helpTimeTrackingTitle": "समयगणनं समयखण्डाश्च",
+  "@helpTimeTrackingTitle": {
+    "description": "Help topic title: time tracking and segments."
+  },
+  "helpTimeTrackingIntro": "SreerajP ToDo इत्यस्मिन् प्रत्येककार्याय यथार्थतः व्ययितं कालं मापयन् अन्तर्निर्मितः समयगणकः अस्ति। प्रत्येकं कार्यं समयखण्डाः इति आरम्भान्तान्तरालैः कालं लिखति।",
+  "@helpTimeTrackingIntro": {
+    "description": "Help: time tracking intro paragraph."
+  },
+  "helpTimeTrackingSegmentsTitle": "समयखण्डानां संरचना",
+  "@helpTimeTrackingSegmentsTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingSegments1": "यदा यदा समयगणकः आरभ्यते विरम्यते च, तदा तदा यथातथारम्भकालान्तकालयुक्तः समयखण्डः लिख्यते।",
+  "@helpTimeTrackingSegments1": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSegments2": "एकस्मिन् कार्ये बहवः खण्डाः भवितुम् अर्हन्ति (यथा प्रातःसत्रम्, अपराह्णसत्रम्)। सर्वेषां खण्डानां योगः एव कुलसमयः।",
+  "@helpTimeTrackingSegments2": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSegments3": "सर्वत्र कालावधिः सर्वदा HH:MM:SS रूपेण दर्श्यते।",
+  "@helpTimeTrackingSegments3": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSingleTitle": "एकसमयगणकनियमः",
+  "@helpTimeTrackingSingleTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingSingle1": "कस्मिन्नपि काले सर्वस्मिन् अनुप्रयोगे अधिकतमम् एकः एव उद्घाटितः समयखण्डः (प्रचलन् समयगणकः) भवितुम् अर्हति।",
+  "@helpTimeTrackingSingle1": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingSingle2": "नूतने कार्ये समयगणके आरब्धे अन्यस्मिन् कार्ये प्रचलन् समयगणकः स्वयमेव विरमति।",
+  "@helpTimeTrackingSingle2": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingSingle3": "अयम् एकसमयगणकनियमः विरुद्धवृत्तानि अतिवर्धितगणनाश्च निवारयति।",
+  "@helpTimeTrackingSingle3": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingAutoTitle": "स्वयंविरामः पृष्ठभूमिस्थगनं च",
+  "@helpTimeTrackingAutoTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingAuto1": "विन्यासः → समयगणनम् इत्यत्र समयगणकाः अर्धरात्रे इष्टहोरायां वा स्वयमेव विरमेयुः इति व्यवस्थापयितुं शक्यते।",
+  "@helpTimeTrackingAuto1": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingAuto2": "अन्यानुप्रयोगेषु गमने गणनां स्थगयितुं \"अनुप्रयोगत्यागे स्वयंस्थगनम्\" सक्रियीकर्तुं शक्यते।",
+  "@helpTimeTrackingAuto2": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingAuto3": "निर्धार्यसीमायाः (यथा 10 क्षणाः 30 क्षणाः वा) न्यूनाः प्रमादजसमयगणकस्पर्शाः स्वयमेव त्यक्तुं शक्यन्ते।",
+  "@helpTimeTrackingAuto3": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingTip": "उपदेशः: कस्यचिदपि कार्यपत्रस्य घटिकाचिह्नं समयचिह्नं वा स्पृश्यताम्, गणनं सद्यः आरभते। विरामाय पुनः स्पृश्यताम्।",
+  "@helpTimeTrackingTip": {
+    "description": "Help: time tracking footer tip."
+  },
+  "helpFocusTitle": "ध्यानक्रमः पोमोडोरो च",
+  "@helpFocusTitle": {
+    "description": "Help topic title: focus mode and Pomodoro."
+  },
+  "helpFocusIntro": "ध्यानक्रमः गभीरकार्यसत्रेभ्यः विक्षेपरहितं पूर्णपटलं ददाति, इच्छानुसारं परिवर्तनीयैः पोमोडोरो-अन्तरालैः लक्ष्यकालस्य अवरोहगणनया च सह।",
+  "@helpFocusIntro": {
+    "description": "Help: focus intro paragraph."
+  },
+  "helpFocusScreenTitle": "पूर्णपटलध्यानक्रमः",
+  "@helpFocusScreenTitle": {
+    "description": "Help: focus section title."
+  },
+  "helpFocusScreen1": "कस्यचिदपि कार्यस्य विवरणसूच्याः ध्यानक्रमम् उद्घाट्य निर्मले विक्षेपरहिते पटले निमज्ज्यताम्।",
+  "@helpFocusScreen1": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusScreen2": "ध्यानक्रमे बृहत् समयगणकम् (व्यतीतकालः अवरोहगणना वा), लक्ष्यप्रगतिवलयः, शीघ्रस्थगनपुनरारम्भनियन्त्रणानि च दृश्यन्ते।",
+  "@helpFocusScreen2": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusScreen3": "ध्यानसमयगणके प्रचलति पटलजागरणविधिः पटलं सक्रियं धारयति।",
+  "@helpFocusScreen3": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusPomodoroTitle": "पोमोडोरो-विधिः",
+  "@helpFocusPomodoroTitle": {
+    "description": "Help: focus section title."
+  },
+  "helpFocusPomodoro1": "विन्यासः → समयगणनम् → पोमोडोरो इत्यत्र ध्यानकार्यावधिः (यथा 25 निमेषाः) विरामान्तरालाः (यथा 5 निमेषाः) च इच्छानुसारं परिवर्त्यन्ताम्।",
+  "@helpFocusPomodoro1": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusPomodoro2": "कार्यान्तरालानां विरामकालानां च अन्तः ध्वनिना कम्पनेन च सूच्यते।",
+  "@helpFocusPomodoro2": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusPomodoro3": "सर्वाणि ध्यानसत्राणि मूलकार्यस्य अधः सामान्यसमयखण्डरूपेण लिख्यन्ते।",
+  "@helpFocusPomodoro3": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusTip": "उपदेशः: कार्यसर्जने सम्पादने वा लक्ष्यकालः निर्दिश्यते चेत् अवशिष्टः ध्यानकालः स्वयमेव गण्यते।",
+  "@helpFocusTip": {
+    "description": "Help: focus footer tip."
+  },
+  "helpMasteryTitle": "ज्ञानकोशः स्मरणपत्राणि च",
+  "@helpMasteryTitle": {
+    "description": "Help topic title: Mastery Deck and flashcards."
+  },
+  "helpMasteryIntro": "ज्ञानकोशः दैनिकाधिगमान् मुख्यविचारान् अध्ययनटिप्पणीः च सान्तरपुनरावृत्त्या प्रवर्तमानायां स्मरणपत्रव्यवस्थायां परिणमयति। शास्त्रीयरीत्या नियतैः पुनरावलोकनान्तरालैः अधीतं चिरं स्मर्यताम्।",
+  "@helpMasteryIntro": {
+    "description": "Help: Mastery Deck intro paragraph."
+  },
+  "helpMasteryReviewTitle": "सान्तरपुनरावलोकनम्",
+  "@helpMasteryReviewTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryReview1": "पत्राणि कियत् सम्यक् स्मर्यन्ते इति अनुसृत्य पुनरावलोकनाय नियम्यन्ते (सुकरम्, साधु, कठिनम्, पुनः)।",
+  "@helpMasteryReview1": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryReview2": "\"सुकरम्\" इति अङ्कितानां पत्राणां पुनरावलोकनान्तरालः घातक्रमेण वर्धते (यथा 1 दिनम् → 3 दिनानि → 7 दिनानि → 16 दिनानि)।",
+  "@helpMasteryReview2": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryReview3": "\"कठिनम्\" \"पुनः\" वा इति अङ्कितानां पत्राणाम् अन्तरालः पुनःपुनः दृढीकरणाय ह्रस्वीक्रियते पुनःसज्जीक्रियते वा।",
+  "@helpMasteryReview3": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryDecksTitle": "कोशाः व्यवस्था च",
+  "@helpMasteryDecksTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryDecks1": "विषयानुसारं योजनानुसारं भाषानुसारं वा स्मरणपत्राणि स्वकोशेषु वर्गीक्रियन्ताम्।",
+  "@helpMasteryDecks1": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryDecks2": "प्रत्येकस्मिन् पत्रे प्रश्नः (अग्रभागः) उत्तरं व्याख्या वा (पृष्ठभागः) च स्तः, वैकल्पिकचिह्नैः सह।",
+  "@helpMasteryDecks2": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryDecks3": "कोशेषु अद्य देयानां सङ्ख्या, कुलपत्राणि, समग्रप्रावीण्यप्रतिशतं च तत्कालं दृश्यन्ते।",
+  "@helpMasteryDecks3": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryLevelsTitle": "प्रावीण्यस्तराः",
+  "@helpMasteryLevelsTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryLevels1": "पत्राणि पञ्च प्रावीण्यस्तरान् क्रमेण प्राप्नुवन्ति: अधीयमानम्, नवीनम्, समर्थम्, प्रवीणम्, सिद्धम्।",
+  "@helpMasteryLevels1": {
+    "description": "Help: mastery levels bullet."
+  },
+  "helpMasteryLevels2": "अविच्छिन्नदिनानि नियतपुनरावलोकनं च दैनिकसंलग्नतां अभ्यासनिर्माणं च पुरस्कुर्वन्ति।",
+  "@helpMasteryLevels2": {
+    "description": "Help: mastery levels bullet."
+  },
+  "helpMasteryTip": "उपदेशः: Air QR-द्वारा स्थानीय-Wi-Fi-समकालनेन वा स्वकोशाः अन्ययन्त्रैः सह निर्याप्य वितरितुं शक्यन्ते।",
+  "@helpMasteryTip": {
+    "description": "Help: Mastery Deck footer tip."
+  },
+  "helpWifiTitle": "स्थानीय-Wi-Fi-P2P-यन्त्रसमकालनम्",
+  "@helpWifiTitle": {
+    "description": "Help topic title: local Wi-Fi sync."
+  },
+  "helpWifiIntro": "एकस्मिन् स्थानीय-Wi-Fi-जाले स्थितयोः द्वयोः यन्त्रयोः मध्ये कार्याणि समयवृत्तानि स्मरणपत्राणि च साक्षात् हस्तान्तर्य समकाल्यन्ताम् — मेघसेवकैः अन्तर्जालप्रयोगेण च विना।",
+  "@helpWifiIntro": {
+    "description": "Help: Wi-Fi sync intro paragraph."
+  },
+  "helpWifiHowTitle": "स्थानीय-Wi-Fi-समकालनं कथं प्रवर्तते",
+  "@helpWifiHowTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiHow1": "उभे यन्त्रे एकस्मिन् एव स्थानीय-Wi-Fi-जाले संयुक्ते भवेताम् (अथवा एकम् अन्यस्य हॉटस्पॉट्-जाले)।",
+  "@helpWifiHow1": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiHow2": "एकं यन्त्रं प्रेषकम् आतिथेयं वा भवति (तात्कालिकं युग्मनसङ्केतं QR-सङ्केतं वा जनयति), अपरं ग्राहकं भवति।",
+  "@helpWifiHow2": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiHow3": "दत्तांशः स्थानीयजालेन यन्त्रयोः मध्ये साक्षात् हस्तान्तर्यते; बाह्यसेवकाः अन्तर्जालं च सर्वथा परिह्रियन्ते।",
+  "@helpWifiHow3": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiEncryptionTitle": "आद्यन्तगुप्तीकरणम्",
+  "@helpWifiEncryptionTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiEncryption1": "स्थानीयसमकालनसम्बन्धाः एकवारयुग्मनप्रमाणैः गुप्तीकृतं मार्गं निश्चिन्वन्ति।",
+  "@helpWifiEncryption1": {
+    "description": "Help: encryption bullet."
+  },
+  "helpWifiEncryption2": "तस्मिन् एव Wi-Fi-जाले स्थितानि अन्ययन्त्राणि हस्तान्तर्यमाणं दत्तांशं द्रष्टुं विकर्तुं वा न शक्नुवन्ति।",
+  "@helpWifiEncryption2": {
+    "description": "Help: encryption bullet."
+  },
+  "helpWifiModesTitle": "समकालनविधयः विरोधाश्च",
+  "@helpWifiModesTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiModes1": "उभयदिक्चतुरसंयोजनम्: विद्यमानवृत्तानां हानिं विना उभयोः यन्त्रयोः कार्याणि समयखण्डाश्च संयोजयति।",
+  "@helpWifiModes1": {
+    "description": "Help: sync modes bullet."
+  },
+  "helpWifiModes2": "सर्वप्रतिस्थापनम्: स्थिरीकरणानन्तरं लक्ष्ययन्त्रस्य दत्तांशः मूलयन्त्रस्य यथातथप्रतिकृत्या सम्पूर्णतया प्रतिस्थाप्यते।",
+  "@helpWifiModes2": {
+    "description": "Help: sync modes bullet."
+  },
+  "helpWifiTip": "उपदेशः: यदि Wi-Fi-मार्गकः यन्त्राणां परस्परसम्पर्कं निरुणद्धि (client isolation), तर्हि एकस्मिन् दूरवाण्यां हॉटस्पॉट् सक्रियीकृत्य अपरा तत्र संयोज्यताम्।",
+  "@helpWifiTip": {
+    "description": "Help: Wi-Fi sync footer tip."
+  },
+  "helpQrTitle": "Air QR दत्तांशहस्तान्तरणं च",
+  "@helpQrTitle": {
+    "description": "Help topic title: Air QR and data handoff."
+  },
+  "helpQrIntro": "Wi-Fi-तन्तु-अन्तर्जालैः विना कार्याणि समयसारांशाः स्मरणपत्राणि च यन्त्रान्तरेषु नीयन्ताम्। Air QR चलैः QR-सङ्केतैः दत्तांशम् अन्ययन्त्रस्य छायाग्राहिणि साक्षात् प्रेषयति।",
+  "@helpQrIntro": {
+    "description": "Help: Air QR intro paragraph."
+  },
+  "helpQrBeamTitle": "Air QR दृश्यप्रेषणम्",
+  "@helpQrBeamTitle": {
+    "description": "Help: Air QR section title."
+  },
+  "helpQrBeam1": "कार्याणि कोशान् वा चित्वा \"Air QR वितरणम्\" इति स्पृश्यताम्, पटले QR-धारा प्रकटीभवति।",
+  "@helpQrBeam1": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam2": "ग्राहकयन्त्रे \"Air QR अवलोकनम्\" उद्घाट्य छायाग्राही प्रेषकपटलम् अभिमुखीक्रियताम्।",
+  "@helpQrBeam2": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam3": "छायाग्राही सर्वान् दत्तांशखण्डान् तत्कालं संयोजयति, आनयनात् पूर्वं परीक्षाङ्कान् सत्यापयति।",
+  "@helpQrBeam3": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam4": "अवलोकनकाले एव छायाग्राह्यनुमतिः याच्यते; किमपि चित्रं दृश्यं वा कदापि न रक्ष्यते।",
+  "@helpQrBeam4": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrHandoffTitle": "दत्तांशहस्तान्तरणम् (JSON & Markdown)",
+  "@helpQrHandoffTitle": {
+    "description": "Help: Air QR section title."
+  },
+  "helpQrHandoff1": "विद्युत्पत्रेभ्यः प्रतिवेदनेभ्यः वा दैनिकसिद्धीनां Markdown-सारांशाः सृज्यन्ताम्।",
+  "@helpQrHandoff1": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrHandoff2": "विविधमञ्चप्रतिरक्षायै लिपिभ्यश्च चितकार्याणां JSON-रूपं निर्याप्यताम् आनीयतां च।",
+  "@helpQrHandoff2": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrHandoff3": "सङ्गणके दूरवाण्यां वा JSON साक्षात् स्थापयित्वा एकस्पर्शेन आनीयताम्।",
+  "@helpQrHandoff3": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrTip": "उपदेशः: लघुकार्यं स्मरणपत्रकोशं वा सङ्गणकपटलात् दूरवाणीं क्षणेषु नेतुं Air QR विशेषेण उपयुक्तम्।",
+  "@helpQrTip": {
+    "description": "Help: Air QR footer tip."
+  },
+  "helpPrivacyTitle": "सुरक्षा, अभियोगकीलं, गुप्तीकरणं च",
+  "@helpPrivacyTitle": {
+    "description": "Help topic title: security, app lock and encryption."
+  },
+  "helpPrivacyIntro": "SreerajP ToDo मूलतः गोपनीयताप्रधानया असंयुक्तसंरचनया निर्मितम्। भवतः वैयक्तिकदत्तांशः दृढं गुप्तीकृतः बहुस्तरीयसुरक्षया रक्षितश्च।",
+  "@helpPrivacyIntro": {
+    "description": "Help: security intro paragraph."
+  },
+  "helpPrivacyDbTitle": "SQLCipher AES-256 दत्तांशकोशगुप्तीकरणम्",
+  "@helpPrivacyDbTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyDb1": "प्रवर्तमानः SQLite-दत्तांशकोशः 256-बिट्-AES (SQLCipher) द्वारा सम्पूर्णतया गुप्तीकृतः।",
+  "@helpPrivacyDb1": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyDb2": "दत्तांशकोशस्य मुख्यगुप्तकुञ्चिका सुरक्षितं निष्पाद्य यन्त्रस्य रक्षितयन्त्रांशकोशे (Android Keystore / OS keychain) रक्ष्यते।",
+  "@helpPrivacyDb2": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyDb3": "यदि कश्चित् यन्त्रकोशात् दत्तांशकोशसञ्चिकां प्रतिलिखेत्, तथापि कुञ्चिकां विना सा पठितुं न शक्यते।",
+  "@helpPrivacyDb3": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyLockTitle": "जैविक-अभियोगसङ्केतकीलनम्",
+  "@helpPrivacyLockTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyLock1": "यन्त्रस्य अङ्गुलिमुद्रया, मुखपरिचयेन, स्वकीयाभियोगसङ्केतेन वा अनुप्रयोगप्रवेशः रक्ष्यताम्।",
+  "@helpPrivacyLock1": {
+    "description": "Help: app lock bullet."
+  },
+  "helpPrivacyLock2": "अन्यत्र गमने अनुप्रयोगं रक्षितुं स्वयंकीलनकालः (सद्यः, 1 निमेषः, 5 निमेषाः) व्यवस्थाप्यताम्।",
+  "@helpPrivacyLock2": {
+    "description": "Help: app lock bullet."
+  },
+  "helpPrivacyShotTitle": "पटलचित्ररक्षणम्",
+  "@helpPrivacyShotTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyShot1": "विन्यासः → सुरक्षा इत्यत्र पटलचित्ररक्षणं सक्रियीक्रियताम्, पटलचित्राणि पटलध्वनिमुद्रणानि च निरुध्यन्ते।",
+  "@helpPrivacyShot1": {
+    "description": "Help: screenshot guard bullet."
+  },
+  "helpPrivacyShot2": "सम्पूर्णदृश्यगोपनीयतायै Android-इत्यस्य सद्यःप्रयुक्तानुप्रयोगावल्याम् अनुप्रयोगपटलस्य पूर्वदृश्यम् अपि पटलचित्ररक्षणं निगूहति।",
+  "@helpPrivacyShot2": {
+    "description": "Help: screenshot guard bullet."
+  },
+  "helpPrivacyNetTitle": "अन्तर्जालरहितत्वप्रतिज्ञा",
+  "@helpPrivacyNetTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyNet1": "अनुप्रयोगेण याचिता एकैव जालानुमतिः INTERNET; सा केवलं स्थानीयजाले स्वयन्त्रैः सह Wi-Fi-समकालनाय प्रयुज्यते। अन्तर्जालेन किमपि कदापि न प्रेष्यते।",
+  "@helpPrivacyNet1": {
+    "description": "Help: network guarantee bullet. The app declares INTERNET only for local Wi-Fi sync."
+  },
+  "helpPrivacyNet2": "न दूरमापनम्, न तृतीयपक्षीयमेघसाधनानि, न विघातानुसरणम्, न च विज्ञापनानि।",
+  "@helpPrivacyNet2": {
+    "description": "Help: network guarantee bullet."
+  },
+  "helpPrivacyTip": "उपदेशः: यन्त्रांशाधारितपरमगुप्तरक्षणाय दूरवाण्यां यन्त्रकीलनम् (अङ्गुलिमुद्रा/सङ्केतः) सदा सक्रियं धार्यताम्।",
+  "@helpPrivacyTip": {
+    "description": "Help: security footer tip."
+  },
+  "helpBackupTitle": "गुप्तीकृतप्रतिरक्षा पुनःस्थापनं च",
+  "@helpBackupTitle": {
+    "description": "Help topic title: encrypted backup and restore."
+  },
+  "helpBackupIntro": "प्रतिरक्षा कार्याणि समयवृत्तानि पुनरावृत्तिनियमाः विन्यासाश्च यस्मिन् सन्ति तादृशम् एकं गुप्तीकृतसङ्ग्रहं (.todobak / ZIP) सृजति। नूतनदूरवाणीं प्रति दत्तांशनयनाय, कारखानापुनःसज्जीकरणानन्तरं पुनःप्राप्त्यै, कालिकासंयुक्तप्रतिकृतिभ्यः वा सा प्रयुज्यताम्।",
+  "@helpBackupIntro": {
+    "description": "Help: backup intro paragraph."
+  },
+  "helpBackupContentsTitle": "प्रतिरक्षायां किं किम् अस्ति",
+  "@helpBackupContentsTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupContents1": "सर्वाणि कार्याणि, वर्णनानि, स्थितयः, पुरातनसमयखण्डाश्च।",
+  "@helpBackupContents1": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents2": "पुनरावृत्तिकार्यनियमाः सर्जनक्रमाश्च।",
+  "@helpBackupContents2": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents3": "ज्ञानकोशपत्राणि, पुनरावलोकनान्तरालाः, प्रावीण्यस्तराश्च।",
+  "@helpBackupContents3": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents4": "भवतः वैयक्तिकविन्यासाः (रूपविन्यासः, वर्णाः, अक्षररूपम्, कार्यपूर्वनिर्धारणानि)।",
+  "@helpBackupContents4": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupPassTitle": "गुप्तपदगुप्तीकरणसुरक्षा",
+  "@helpBackupPassTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupPass1": "भवता चितेन गुप्तपदेन AES-256-मानकेन प्रतिरक्षासञ्चिकाः दृढं गुप्तीक्रियन्ते।",
+  "@helpBackupPass1": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupPass2": "अनुप्रयोगः प्रतिरक्षागुप्तपदं कुत्रापि न रक्षति। तत् स्मर्तव्यं गुप्तपदप्रबन्धके रक्षितव्यं वा।",
+  "@helpBackupPass2": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupPass3": "गुप्तपदे नष्टे केनापि प्रतिरक्षा अगुप्तीकर्तुं पुनःप्राप्तुं वा न शक्यते।",
+  "@helpBackupPass3": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupRestoreTitle": "प्रतिरक्षातः पुनःस्थापनम्",
+  "@helpBackupRestoreTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupRestore1": "पुनःस्थापनं वर्तमानं सर्वं प्रतिस्थाप्य प्रतिरक्षासञ्चिकातः यथातथप्रतिकृतिं पुनर्निर्माति।",
+  "@helpBackupRestore1": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupRestore2": "पुनःस्थापनात् पूर्वम् अनुप्रयोगः सङ्ग्रहस्य परीक्षाङ्कं सत्यापयति, गुप्तपदेन अगुप्तीकरोति, दत्तांशसंरचनासंस्करणं च परीक्षते।",
+  "@helpBackupRestore2": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupRestore3": "विद्यमानदत्तांशम् अप्रतिस्थाप्य द्वयोः यन्त्रयोः कार्याणि संयोजयितुम् इष्टं चेत्, तत्स्थाने \"स्थानीय-Wi-Fi-समकालनम्\" प्रयुज्यताम्।",
+  "@helpBackupRestore3": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupTip": "उपदेशः: प्रतिरक्षासर्जनानन्तरं सञ्चिका बाह्य-USB-यन्त्रे, SD-पत्रे, स्वकीयमेघकोशे वा इत्यादिषु सुरक्षितस्थानेषु रक्ष्यताम्।",
+  "@helpBackupTip": {
+    "description": "Help: backup footer tip."
+  },
+  "helpFaqTitle": "प्रश्नोत्तराणि समस्यापरिहारश्च",
+  "@helpFaqTitle": {
+    "description": "Help topic title: FAQs."
+  },
+  "helpFaqIntro": "दिनकीलन-समयगणननियम-असंयुक्तसुरक्षाविषयकाणां सामान्यप्रश्नानाम् उत्तराणि, SreerajP ToDo इत्यस्य सम्यक् प्रयोगाय उपदेशाश्च अत्र लभ्यन्ते।",
+  "@helpFaqIntro": {
+    "description": "Help: FAQ intro paragraph."
+  },
+  "helpFaqGeneralTitle": "सामान्यं कार्यपद्धतिश्च",
+  "@helpFaqGeneralTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqEditPastQ": "ह्यस्तनं कार्यं किमर्थं सम्पादयितुं लोपयितुं वा न शक्यते?",
+  "@helpFaqEditPastQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqEditPastA": "SreerajP ToDo दिनकीलननियमं पालयति: सत्यानि अविकार्याणि च उत्पादकतावृत्तानि रक्षितुं व्यतीतदिनाङ्काः स्थिरं केवलपठनीयाः। असमापितम् अतीतकार्यं कर्तुं \"कार्याणि प्रतिलिख्यन्ताम्\" इति स्पृष्ट्वा तद् अद्य प्रतिलिख्यताम्।",
+  "@helpFaqEditPastA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqTimerDoneQ": "समापिते कार्ये समयगणकः किमर्थम् आरब्धुं न शक्यते?",
+  "@helpFaqTimerDoneQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqTimerDoneA": "समापितं त्यक्तं च अन्तिमस्थिती। कार्ये समापिते तस्य समयवृत्तं मुद्रितं भवति। अधिककालं लेखितुम् इष्टं चेत् कार्यं पुनः उद्घाट्यताम् (स्थितिः अवशिष्टं प्रवर्तमानं वा इति परिवर्त्यताम्)।",
+  "@helpFaqTimerDoneA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqUndoQ": "प्रमादेन परिवर्तिता स्थितिः कथं प्रत्यावर्त्यते?",
+  "@helpFaqUndoQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqUndoA": "स्थितौ परिवर्तितायां \"प्रत्यावर्त्यताम्\" इति बटनयुक्ता पञ्चक्षणस्थायिनी सूचना दृश्यते। उपरितनपट्टिकायां स्थिरं प्रत्यावर्तनचिह्नम् अपि स्प्रष्टुं शक्यते।",
+  "@helpFaqUndoA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqTimeTitle": "समयगणनं समयगणकाश्च",
+  "@helpFaqTimeTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqTwoTimersQ": "द्वयोः कार्ययोः युगपत् समयगणकौ चालयितुं शक्यते वा?",
+  "@helpFaqTwoTimersQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqTwoTimersA": "न। गणनाप्रामाणिकतायै अनुप्रयोगः एकसमयगणकनियमं पालयति। कस्मिंश्चित् कार्ये समयगणके आरब्धे अन्यस्य प्रचलन् समयगणकः स्वयमेव स्थगितः विरतो वा भवति।",
+  "@helpFaqTwoTimersA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqForgotStopQ": "रात्रौ समयगणकविरामः विस्मृतः चेत् किं भवति?",
+  "@helpFaqForgotStopQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqForgotStopA": "विन्यासः → समयगणनम् → स्वयंविरामः इत्यत्र \"अर्धरात्रे स्वयंविरामः\" सक्रियीक्रियताम्, ततः उद्घाटिताः समयगणकाः अग्रिमप्रभातं न प्रविश्य दिनान्ते स्वयमेव पिधीयन्ते।",
+  "@helpFaqForgotStopA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqShortTapsQ": "अतिलघवः समयगणकस्पर्शाः किमर्थं न रक्ष्यन्ते?",
+  "@helpFaqShortTapsQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqShortTapsA": "समयखण्डान् निर्मलान् धारयितुं विन्यासः → समयगणनम् → न्यूनतमावधिः इत्यत्र 10 30 वा क्षणेभ्यः न्यूनाः प्रमादजस्पर्शाः त्यक्तुं शक्यन्ते।",
+  "@helpFaqShortTapsA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqPrivacyTitle": "गोपनीयता असंयुक्ततायाः प्रतिज्ञा च",
+  "@helpFaqPrivacyTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqUploadQ": "कश्चन दत्तांशः मेघसेवकेषु विश्लेषणसेवासु वा आरोप्यते वा?",
+  "@helpFaqUploadQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqUploadA": "कोऽपि दत्तांशः न आरोप्यते। SreerajP ToDo सर्वथा असंयुक्तं प्रवर्तते। तस्य एकैव जालानुमतिः INTERNET केवलं स्थानीयजाले स्वयन्त्रैः सह Wi-Fi-समकालनाय प्रयुज्यते। सर्वाणि दत्तांशकोशपट्टानि वृत्तानि च AES-256-गुप्तीकृते कोशे भवतः यन्त्रे एव तिष्ठन्ति।",
+  "@helpFaqUploadA": {
+    "description": "Help: FAQ answer. The app declares INTERNET only for local Wi-Fi sync."
+  },
+  "helpFaqLostPassQ": "प्रतिरक्षागुप्तपदं विस्मृतं चेत् किं भवति?",
+  "@helpFaqLostPassQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqLostPassA": "प्रतिरक्षाः यन्त्रे एव AES-256-द्वारा दृढं गुप्तीक्रियन्ते, मेघसेवकः मुख्यकुञ्चिका वा नास्ति, अतः नष्टं प्रतिरक्षागुप्तपदं पुनः प्राप्तुं न शक्यते। गुप्तपदं सदा सुरक्षितं रक्ष्यताम्।",
+  "@helpFaqLostPassA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqSyncTitle": "समकालनं यन्त्रान्तरणं च",
+  "@helpFaqSyncTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqNewPhoneQ": "सर्वाणि कार्याणि नूतनदूरवाणीं कथं नीयन्ते?",
+  "@helpFaqNewPhoneQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqNewPhoneA": "द्वौ सुगमौ उपायौ: (1) गृहस्थ-Wi-Fi-द्वारा साक्षात् हस्तान्तरणाय \"स्थानीय-Wi-Fi-P2P-समकालनम्\" प्रयुज्यताम्, अथवा (2) विन्यासः → प्रतिरक्षा इत्यत्र गुप्तीकृतप्रतिरक्षा-ZIP-सञ्चिकां सृष्ट्वा नूतनदूरवाण्यां पुनःस्थाप्यताम्।",
+  "@helpFaqNewPhoneA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqDiscoverQ": "स्थानीय-Wi-Fi-समकालनम् अपरं यन्त्रं किमर्थं न अन्विष्यति?",
+  "@helpFaqDiscoverQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqDiscoverA": "उभे यन्त्रे एकस्मिन् एव Wi-Fi-जाले स्तः इति निश्चीयताम्। मार्गके \"Client Isolation\" सक्रियं चेत्, एकस्यां दूरवाण्यां हॉटस्पॉट् सक्रियीकृत्य अपरा तत्र संयोज्यताम्।",
+  "@helpFaqDiscoverA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqFooter": "अधिकविवरणम् अपेक्षितं वा? साहाय्यं मार्गदर्शिकाश्च इत्यत्र प्रत्येकविषयमार्गदर्शिकाः दृश्यन्ताम्, अथवा विन्यासः → अनुमतयः इत्यत्र अनुमतयः परीक्ष्यन्ताम्।",
+  "@helpFaqFooter": {
+    "description": "Help: FAQ footer."
+  },
+  "helpHomeTaskSection": "कार्यप्रबन्धनं कार्यपद्धतिश्च",
+  "@helpHomeTaskSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeTaskMgmtSubtitle": "दैनिककालरेखा, दिनकीलनम्, अन्तिमस्थितिकीलनानि च वृत्तानि कथं रक्षन्ति।",
+  "@helpHomeTaskMgmtSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeRecurringSubtitle": "स्वचालितपुनरावृत्तिनियमानां (प्रतिदिनं, प्रतिसप्ताहं, प्रतिमासम्) व्यवस्थापनम् अतीतकार्याणां सामूहिकप्रतिलेखनं च।",
+  "@helpHomeRecurringSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeTimeSection": "समयगणनं ध्यानं च",
+  "@helpHomeTimeSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeTimeTrackingSubtitle": "बहुखण्डसमयलेखनं, लक्ष्यकालः, एकसमयगणकनियमश्च कथं प्रवर्तन्ते।",
+  "@helpHomeTimeTrackingSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeFocusSubtitle": "विक्षेपरहितध्यानपटलस्य, पोमोडोरो-अवरोहगणनायाः, स्वयंविरामरक्षायाश्च प्रयोगः।",
+  "@helpHomeFocusSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeMasterySection": "ज्ञानकोशः सान्तरपुनरावृत्तिश्च",
+  "@helpHomeMasterySection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeMasterySubtitle": "पत्रकोशाः, सान्तरपुनरावलोकनान्तरालाः, प्रावीण्याङ्कनं च कथं प्रवर्तन्ते।",
+  "@helpHomeMasterySubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeSyncSection": "समकालनम् असंयुक्तहस्तान्तरणं च",
+  "@helpHomeSyncSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeWifiSubtitle": "मेघं विना आद्यन्तगुप्तीकरणेन सह स्थानीय-Wi-Fi-द्वारा यन्त्रयोः साक्षात् समकालनम्।",
+  "@helpHomeWifiSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeQrTitle": "Air QR अवलोककः दत्तांशहस्तान्तरणं च",
+  "@helpHomeQrTitle": {
+    "description": "Help home: topic card title for Air QR."
+  },
+  "helpHomeQrSubtitle": "चल-QR-धाराभिः प्रतिलिपिफलकेन च कार्याणां कोशानां च असंयुक्तहस्तान्तरणम्।",
+  "@helpHomeQrSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomePrivacySection": "गोपनीयता, सुरक्षा, प्रतिरक्षाश्च",
+  "@helpHomePrivacySection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomePrivacySubtitle": "SQLCipher AES-256 दत्तांशकोशगुप्तीकरणं, जैविकप्रमाणीकरणं, पटलचित्ररक्षणं च।",
+  "@helpHomePrivacySubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeBackupSubtitle": "गुप्तपदरक्षितानां ZIP-प्रतिरक्षासञ्चिकानां सर्जनं, सुरक्षाचर्याः, सम्पूर्णपुनःस्थापनपदानि च।",
+  "@helpHomeBackupSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeFaqSection": "बहुशः पृष्टाः प्रश्नाः",
+  "@helpHomeFaqSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeFaqTitle": "प्रश्नोत्तराणि समस्यापरिहारमार्गदर्शिका च",
+  "@helpHomeFaqTitle": {
+    "description": "Help home: topic card title for FAQs."
+  },
+  "helpHomeFaqSubtitle": "दिनकीलन-असंयुक्तप्रवर्तन-दत्तांशकोशसुरक्षाविषयकाणां सामान्यप्रश्नानां साक्षाद् उत्तराणि।",
+  "@helpHomeFaqSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeHeaderTitle": "साहाय्यकेन्द्रं ज्ञानकोशश्च",
+  "@helpHomeHeaderTitle": {
+    "description": "Help home: header card title."
+  },
+  "helpHomeHeaderSubtitle": "SreerajP ToDo इत्यस्य सर्वेषां विशेषांशानां विस्तृतमार्गदर्शिकाः नियमाः समाधानानि च दृश्यन्ताम्।",
+  "@helpHomeHeaderSubtitle": {
+    "description": "Help home: header card subtitle."
+  },
+  "featDailyName": "दैनिककार्याणि कार्यपद्धतिश्च",
+  "@featDailyName": {
+    "description": "Features: category name."
+  },
+  "featDailySubtitle": "शीघ्रयोजना, दिनकीलनरक्षणं, यूनिकोड-सामान्यीकरणं, प्रत्यावर्तनं च",
+  "@featDailySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featUnicodeTitle": "यूनिकोड-प्राधान्यं बहुलिपिसामान्यीकरणं च",
+  "@featUnicodeTitle": {
+    "description": "Features: feature title."
+  },
+  "featUnicodeDesc": "यथार्थानन्यतायै सर्वाणि कार्यशीर्षकाणि NFC-रूपेण सामान्यीकरोति; आङ्ग्ल-मलयाळ-हिन्दी-आदीनां लेखनदिशां स्वयमेव जानाति।",
+  "@featUnicodeDesc": {
+    "description": "Features: feature description."
+  },
+  "featUnicodeH1": "NFC यूनिकोड",
+  "@featUnicodeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featUnicodeH2": "बहुलिपिपाठः",
+  "@featUnicodeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featUnicodeH3": "RTL LTR दिशे",
+  "@featUnicodeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockTitle": "दिनकीलनरक्षणम्",
+  "@featDayLockTitle": {
+    "description": "Features: feature title."
+  },
+  "featDayLockDesc": "पुरातनवृत्तप्रामाणिकतां रक्षितुं व्यतीतदिनानि पश्चात्परिवर्तनात् दृढं कील्यन्ते।",
+  "@featDayLockDesc": {
+    "description": "Features: feature description."
+  },
+  "featDayLockH1": "इतिवृत्तकीलनम्",
+  "@featDayLockH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockH2": "अविकार्यम् अतीतम्",
+  "@featDayLockH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockH3": "केवलपठनीयवृत्तानि",
+  "@featDayLockH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarTitle": "दैनिकावली पञ्चाङ्गसञ्चारश्च",
+  "@featCalendarTitle": {
+    "description": "Features: feature title."
+  },
+  "featCalendarDesc": "दृश्यपञ्चाङ्गचयनेन, अद्यपर्यन्तं शीघ्रगमनेन, दिनाङ्कसारणसञ्चारेण च शीघ्रा दैनिककार्ययोजना।",
+  "@featCalendarDesc": {
+    "description": "Features: feature description."
+  },
+  "featCalendarH1": "पञ्चाङ्गचयनम्",
+  "@featCalendarH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarH2": "अद्यगमनम्",
+  "@featCalendarH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarH3": "शीघ्रसञ्चारः",
+  "@featCalendarH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoTitle": "सद्यःप्रत्यावर्तनं प्रत्यावर्त्यक्रियाश्च",
+  "@featUndoTitle": {
+    "description": "Features: feature title."
+  },
+  "featUndoDesc": "कार्यसमापन-त्याग-स्थितिपरिवर्तनेभ्यः पञ्चक्षणप्रत्यावर्तनसूचना उपरितनपट्टिकायां स्थिरं प्रत्यावर्तनबटनं च।",
+  "@featUndoDesc": {
+    "description": "Features: feature description."
+  },
+  "featUndoH1": "पञ्चक्षणप्रत्यावर्तनम्",
+  "@featUndoH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoH2": "स्थिरबटनम्",
+  "@featUndoH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoH3": "सुरक्षितपरिवर्तनानि",
+  "@featUndoH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchTitle": "पूर्णपाठान्वेषणं परिशोधकाश्च",
+  "@featSearchTitle": {
+    "description": "Features: feature title."
+  },
+  "featSearchDesc": "स्थिति-प्राथमिकता-दिनाङ्कपरिधिभिः सर्वेषु कार्येषु वर्णनेषु पुरातनवृत्तेषु च सद्यः अन्वेषणम्।",
+  "@featSearchDesc": {
+    "description": "Features: feature description."
+  },
+  "featSearchH1": "पूर्णपाठान्वेषणम्",
+  "@featSearchH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchH2": "स्थितिपरिशोधकाः",
+  "@featSearchH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchH3": "दिनाङ्कपरिधयः",
+  "@featSearchH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTimeSubtitle": "घटिकासमयगणकाः, एकसमयगणकनियमः, पोमोडोरो-ध्यानं च",
+  "@featTimeSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featSegmentsTitle": "बहुखण्डसमयगणनम्",
+  "@featSegmentsTitle": {
+    "description": "Features: feature title."
+  },
+  "featSegmentsDesc": "प्रतिक्षणं तत्कालयाथार्थ्येन लक्ष्यप्रगत्या च बहुसत्रेषु कस्मिंश्चित् कार्ये व्ययितः यथार्थकालः मीयताम्।",
+  "@featSegmentsDesc": {
+    "description": "Features: feature description."
+  },
+  "featSegmentsH1": "बहवः खण्डाः",
+  "@featSegmentsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSegmentsH2": "घटिकासमयगणकः",
+  "@featSegmentsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSegmentsH3": "HH:MM:SS रूपम्",
+  "@featSegmentsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleDesc": "गणनाप्रामाणिकतां रक्षितुं कस्मिन्नपि क्षणे सर्वस्मिन् अनुप्रयोगे अधिकतमम् एकः एव समयगणकः प्रचलेत् इति निश्चिनोति।",
+  "@featSingleDesc": {
+    "description": "Features: feature description."
+  },
+  "featSingleH1": "एकः सक्रियः समयगणकः",
+  "@featSingleH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleH2": "पूर्वतनस्य स्वयंस्थगनम्",
+  "@featSingleH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleH3": "यथार्थगणनाः",
+  "@featSingleH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featFocusDesc": "इच्छानुसारकार्यविरामावरोहगणकैः सह विक्षेपरहितं पूर्णपटलध्यानम्।",
+  "@featFocusDesc": {
+    "description": "Features: feature description."
+  },
+  "featFocusH1": "पोमोडोरो-समयगणकः",
+  "@featFocusH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featFocusH2": "पूर्णपटलध्यानम्",
+  "@featFocusH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCustomIntervals": "इच्छानुसारान्तरालाः",
+  "@featCustomIntervals": {
+    "description": "Features: short highlight chip (used twice)."
+  },
+  "featStreamTitle": "तत्कालसमयगणकधारा",
+  "@featStreamTitle": {
+    "description": "Features: feature title."
+  },
+  "featStreamDesc": "अल्पविद्युत्कोशव्ययेन कदापि अविलम्बेन च प्रतिक्षणं तत्कालसमयगणकनवीकरणानि।",
+  "@featStreamDesc": {
+    "description": "Features: feature description."
+  },
+  "featStreamH1": "तत्कालधारा",
+  "@featStreamH1": {
+    "description": "Features: short highlight chip (live update stream)."
+  },
+  "featStreamH2": "विलम्बः नास्ति",
+  "@featStreamH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featStreamH3": "विद्युत्कोशमितव्ययः",
+  "@featStreamH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalTitle": "अन्तिमस्थितिसमयकीलनम्",
+  "@featTerminalTitle": {
+    "description": "Features: feature title."
+  },
+  "featTerminalDesc": "समापितानि त्यक्तानि च कार्याणि प्रचलतः समयगणकान् स्वयमेव विरमयन्ति नूतनखण्डयोजनं च निवारयन्ति।",
+  "@featTerminalDesc": {
+    "description": "Features: feature description."
+  },
+  "featTerminalH1": "समाप्तौ स्वयंविरामः",
+  "@featTerminalH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalH2": "अन्तिमकीलनम्",
+  "@featTerminalH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalH3": "रक्षितवृत्तानि",
+  "@featTerminalH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualName": "दैनिकानुष्ठानम्",
+  "@featRitualName": {
+    "description": "Features: category name."
+  },
+  "featRitualSubtitle": "दिनस्य शान्तः मार्गदर्शितः आरम्भः समापनं च",
+  "@featRitualSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featDayOpenTitle": "मार्गदर्शितदिनारम्भः",
+  "@featDayOpenTitle": {
+    "description": "Features: feature title."
+  },
+  "featDayOpenDesc": "श्वस्यताम्, एकं चिन्तनपत्रं पठ्यताम्, पूर्वावशिष्टं व्यवस्थाप्यताम्, ततः दिनम् आरभ्यताम्। पूर्वनिर्धारणेन निष्क्रियम्; प्रत्येकं पदं त्यक्तुं शक्यते।",
+  "@featDayOpenDesc": {
+    "description": "Features: feature description."
+  },
+  "featDayOpenH1": "प्राणायामसमयगणकः",
+  "@featDayOpenH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayOpenH2": "अग्रेनयनम्",
+  "@featDayOpenH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayOpenH3": "अद्यतनानि त्रीणि",
+  "@featDayOpenH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckTitle": "अनुष्ठानपत्रावली",
+  "@featRitualDeckTitle": {
+    "description": "Features: feature title."
+  },
+  "featRitualDeckDesc": "आङ्ग्ल-मलयाळभाषयोः पञ्चाशत् चिन्तनपत्राणि, प्रत्येकस्मिन् एकः प्रश्नः एकं स्थिरीकरणवचनं च, स्वकीयसान्तरपुनरावृत्त्या पुनः दृश्यन्ते।",
+  "@featRitualDeckDesc": {
+    "description": "Features: feature description."
+  },
+  "featRitualDeckH1": "50 पत्राणि",
+  "@featRitualDeckH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckH2": "द्विभाषिकम्",
+  "@featRitualDeckH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckH3": "काले प्राप्ते पुनरागच्छति",
+  "@featRitualDeckH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningTitle": "सायंसमापनम्",
+  "@featEveningTitle": {
+    "description": "Features: feature title."
+  },
+  "featEveningDesc": "दिनं यथा सावधानम् आरब्धं तथैव समाप्येत इति दिने एकवारं, पश्चात्, दैनिकावली सायंविमर्शं ददाति।",
+  "@featEveningDesc": {
+    "description": "Features: feature description."
+  },
+  "featEveningH1": "दिने एकवारम्",
+  "@featEveningH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningH2": "वैकल्पिकम्",
+  "@featEveningH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningH3": "भवता चिता होरा",
+  "@featEveningH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featMasterySubtitle": "स्मरणपत्राणि, सान्तरपुनरावृत्त्या धारणा, पुनरावर्तिनः अभ्यासाश्च",
+  "@featMasterySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featSrsTitle": "सान्तरपुनरावृत्तिस्मरणपत्राणि",
+  "@featSrsTitle": {
+    "description": "Features: feature title."
+  },
+  "featSrsDesc": "दैनिकाधिगमान् अध्ययनटिप्पणीश्च उत्तमसान्तरपुनरावलोकनक्रमेण स्मरणपत्रेषु परिणमयतु।",
+  "@featSrsDesc": {
+    "description": "Features: feature description."
+  },
+  "featSrsH1": "सान्तरपुनरावृत्तिः",
+  "@featSrsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSrsH2": "धारणान्तरालाः",
+  "@featSrsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSrsH3": "विश्वासाङ्कनम्",
+  "@featSrsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksTitle": "कोशाः प्रावीण्यस्तराश्च",
+  "@featDecksTitle": {
+    "description": "Features: feature title."
+  },
+  "featDecksDesc": "स्मरणपत्राणि स्वकोशेषु व्यवस्थाप्य नवीनात् सिद्धपर्यन्तं प्रावीण्यप्रगतिः अनुस्रियताम्।",
+  "@featDecksDesc": {
+    "description": "Features: feature description."
+  },
+  "featDecksH1": "स्वकोशाः",
+  "@featDecksH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksH2": "प्रावीण्याङ्कनम्",
+  "@featDecksH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksH3": "अविच्छेदानुसरणम्",
+  "@featDecksH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRruleTitle": "पुनरावृत्तिकार्याणि RRule-यन्त्रं च",
+  "@featRruleTitle": {
+    "description": "Features: feature title."
+  },
+  "featRruleDesc": "मानक-RFC-5545-RRule-यन्त्रेण प्रतिदिनं, प्रतिसप्ताहं, प्रतिमासम्, अन्तरालानुसारं वा कार्यसर्जनं स्वचालितं क्रियताम्।",
+  "@featRruleDesc": {
+    "description": "Features: feature description."
+  },
+  "featRruleH1": "RRule-मानकम्",
+  "@featRruleH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featRruleH3": "स्वचालितसर्जनम्",
+  "@featRruleH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyTitle": "कार्याणां सामूहिकप्रतिलेखनम्",
+  "@featCopyTitle": {
+    "description": "Features: feature title."
+  },
+  "featCopyDesc": "अतीतदिनानाम् असमापितानि चितानि वा कार्याणि एकस्पर्शेन अद्यतनावल्यां सुकरं प्रतिलिख्यन्ताम्।",
+  "@featCopyDesc": {
+    "description": "Features: feature description."
+  },
+  "featCopyH1": "एकस्पर्शप्रतिलेखनम्",
+  "@featCopyH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyH2": "बहुचयनम्",
+  "@featCopyH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyH3": "असमापितानाम् अग्रेनयनम्",
+  "@featCopyH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSyncName": "असंयुक्तसमकालनं Air QR-हस्तान्तरणं च",
+  "@featSyncName": {
+    "description": "Features: category name."
+  },
+  "featSyncSubtitle": "स्थानीय-Wi-Fi-P2P-समकालनम्, Air QR दृश्यप्रेषणं, दत्तांशहस्तान्तरणं च",
+  "@featSyncSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featWifiTitle": "गुप्तीकृतस्थानीय-Wi-Fi-P2P-समकालनम्",
+  "@featWifiTitle": {
+    "description": "Features: feature title."
+  },
+  "featWifiDesc": "मेघसेवकैः विना आद्यन्तगुप्तीकरणेन सह स्थानीय-Wi-Fi-द्वारा यन्त्रयोः साक्षात् समकालनम्।",
+  "@featWifiDesc": {
+    "description": "Features: feature description."
+  },
+  "featWifiH1": "100% स्थानीय-Wi-Fi",
+  "@featWifiH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featWifiH2": "मेघः नास्ति",
+  "@featWifiH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featWifiH3": "आद्यन्तगुप्तीकृतम्",
+  "@featWifiH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrTitle": "Air QR कार्यप्रेषणम् अवलोककश्च",
+  "@featQrTitle": {
+    "description": "Features: feature title."
+  },
+  "featQrDesc": "चल-QR-धाराभिः कार्याणि समयवृत्तानि कोशाश्च यन्त्रान्तरेषु हस्तान्तर्यन्ताम्।",
+  "@featQrDesc": {
+    "description": "Features: feature description."
+  },
+  "featQrH1": "दृश्य-QR-धारा",
+  "@featQrH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrH2": "छायाग्राह्यवलोककः",
+  "@featQrH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrH3": "जालं नापेक्ष्यते",
+  "@featQrH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffTitle": "असंयुक्तदत्तांशहस्तान्तरणम्",
+  "@featHandoffTitle": {
+    "description": "Features: feature title."
+  },
+  "featHandoffDesc": "प्रतिलिपिफलकेन स्थानीयसञ्चिकाभिः वा कार्यसमूहाः, JSON, Markdown-सारांशाश्च निर्याप्यन्ताम् आनीयन्तां च।",
+  "@featHandoffDesc": {
+    "description": "Features: feature description."
+  },
+  "featHandoffH1": "JSON Markdown च",
+  "@featHandoffH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffH2": "प्रतिलिपिफलकहस्तान्तरणम्",
+  "@featHandoffH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffH3": "सुवहदत्तांशः",
+  "@featHandoffH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineTitle": "100% असंयुक्तप्रवर्तनप्रतिज्ञा",
+  "@featOfflineTitle": {
+    "description": "Features: feature title."
+  },
+  "featOfflineDesc": "मेघसाधनैः विश्लेषणैश्च विना सम्पूर्णगोपनीयता। भवता आरब्धं स्थानीयजाले स्वयन्त्रैः सह Wi-Fi-समकालनम् एव एकः जालप्रयोगः।",
+  "@featOfflineDesc": {
+    "description": "Features: feature description. The app uses the network only for local Wi-Fi sync."
+  },
+  "featOfflineH1": "अन्तर्जालं नास्ति",
+  "@featOfflineH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineH2": "विश्लेषणं नास्ति",
+  "@featOfflineH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineH3": "केवलं स्थानीयजालम्",
+  "@featOfflineH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featPrivacyName": "गोपनीयता, सुरक्षा, कोशश्च",
+  "@featPrivacyName": {
+    "description": "Features: category name."
+  },
+  "featPrivacySubtitle": "SQLCipher AES-256 दत्तांशकोशः, अभियोगकीलं, गुप्तीकृतप्रतिरक्षाश्च",
+  "@featPrivacySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featDbDesc": "सर्वाणि कार्याणि समयवृत्तानि विन्यासाश्च यन्त्रांशाधारितेन SQLCipher-गुप्तीकरणेन कोशे गुप्तीक्रियन्ते।",
+  "@featDbDesc": {
+    "description": "Features: feature description."
+  },
+  "featDbH1": "SQLCipher AES-256 सुरक्षा",
+  "@featDbH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDbH2": "यन्त्रजनिता कुञ्चिका",
+  "@featDbH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDbH3": "कोशे गुप्तीकृतम्",
+  "@featDbH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockDesc": "अङ्गुलिमुद्रया, मुखपरिचयेन, स्वाभियोगसङ्केतेन वा कार्याणि विन्यासाश्च कील्यन्ताम्।",
+  "@featLockDesc": {
+    "description": "Features: feature description."
+  },
+  "featLockH1": "अङ्गुलिमुद्रा मुखं च",
+  "@featLockH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockH2": "विकल्पसङ्केतः",
+  "@featLockH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockH3": "स्वयंकीलनकालः",
+  "@featLockH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotDesc": "पटलग्रहणं निवारयति Android-सद्यःप्रयुक्तावल्याम् अनुप्रयोगपूर्वदृश्यं च निगूहति।",
+  "@featShotDesc": {
+    "description": "Features: feature description."
+  },
+  "featShotH1": "पटलचित्रनिरोधः",
+  "@featShotH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotH2": "सद्यःप्रयुक्तावलीरक्षा",
+  "@featShotH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotH3": "गोपनीयतारक्षणम्",
+  "@featShotH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupTitle": "गुप्तपदरक्षिताः गुप्तीकृतप्रतिरक्षाः",
+  "@featBackupTitle": {
+    "description": "Features: feature title."
+  },
+  "featBackupDesc": "AES-256-उपयोक्तृगुप्तपदरक्षिताः गुप्तीकृत-ZIP-प्रतिरक्षाः निर्याप्यन्तां पुनःस्थाप्यन्तां च।",
+  "@featBackupDesc": {
+    "description": "Features: feature description."
+  },
+  "featBackupH1": "AES-256 ZIP-सञ्चिका",
+  "@featBackupH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupH2": "उपयोक्तृगुप्तपदम्",
+  "@featBackupH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupH3": "सुरक्षिताः सुवहाः प्रतिरक्षाः",
+  "@featBackupH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCustomName": "स्वानुकूलनं विश्लेषणं च",
+  "@featCustomName": {
+    "description": "Features: category name."
+  },
+  "featCustomSubtitle": "रूपविन्यासाः, मलयाळाक्षररूपाणि, आलेखाः, पूर्वनिर्धारणानि च",
+  "@featCustomSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featThemeTitle": "दीप्त-श्याम-रूपाणि वर्णपटाश्च",
+  "@featThemeTitle": {
+    "description": "Features: feature title."
+  },
+  "featThemeDesc": "अष्टभिः चितदीप्तवर्णैः सह दीप्त-श्याम-OLED-रूपविन्यासाः।",
+  "@featThemeDesc": {
+    "description": "Features: feature description."
+  },
+  "featThemeH1": "दीप्तश्यामरूपे",
+  "@featThemeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featThemeH2": "दीप्तवर्णाः",
+  "@featThemeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featThemeH3": "OLED-रूपम्",
+  "@featThemeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeTitle": "अक्षररूपम् अक्षरपरिमाणं च",
+  "@featTypeTitle": {
+    "description": "Features: feature title."
+  },
+  "featTypeDesc": "Manjari, Anek Malayalam, Noto Sans, तन्त्राक्षराणि वा चीयन्ताम्, अक्षरपरिमाणं च परिवर्त्यताम्।",
+  "@featTypeDesc": {
+    "description": "Features: feature description. Keep font names."
+  },
+  "featTypeH1": "मलयाळाक्षररूपाणि",
+  "@featTypeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeH2": "परिमाणपरिवर्तनम्",
+  "@featTypeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeH3": "सुपठाक्षराणि",
+  "@featTypeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsTitle": "उत्पादकतासाङ्ख्यिकी आलेखाश्च",
+  "@featStatsTitle": {
+    "description": "Features: feature title."
+  },
+  "featStatsDesc": "समापनानुपातं, समयवितरणं, दैनिकप्रवृत्तीः च दर्शयन्तः संवादात्मकाः आलेखाः सारण्यश्च।",
+  "@featStatsDesc": {
+    "description": "Features: feature description."
+  },
+  "featStatsH1": "fl_chart-आलेखाः",
+  "@featStatsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsH2": "समयवितरणम्",
+  "@featStatsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsH3": "समापनप्रवृत्तयः",
+  "@featStatsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsTitle": "कार्यपूर्वनिर्धारणानि समयप्रदर्शनं च",
+  "@featDefaultsTitle": {
+    "description": "Features: feature title."
+  },
+  "featDefaultsDesc": "पूर्वनिर्धारितप्राथमिकता, लक्ष्यकालः, सप्ताहारम्भदिनं, कार्यदिनानि, समयरूपाणि च व्यवस्थाप्यन्ताम्।",
+  "@featDefaultsDesc": {
+    "description": "Features: feature description."
+  },
+  "featDefaultsH1": "स्वपूर्वनिर्धारणानि",
+  "@featDefaultsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsH2": "नम्यरूपाणि",
+  "@featDefaultsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsH3": "अनुकूलकार्यपद्धतिः",
+  "@featDefaultsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featHeaderTitle": "SreerajP ToDo विशेषांशाः",
+  "@featHeaderTitle": {
+    "description": "Features: header card title."
+  },
+  "featHeaderSubtitle": "भवदर्थं निर्मितानि सर्वाणि उत्पादकतासाधनानि, समयगणकान्, असंयुक्तरक्षणानि च पश्यतु।",
+  "@featHeaderSubtitle": {
+    "description": "Features: header card subtitle."
+  }
 }

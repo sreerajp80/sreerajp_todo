@@ -2,9 +2,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sreerajp_todo/core/platform/app_lock_channel.dart';
+import 'package:sreerajp_todo/data/platform/app_lock_channel.dart';
 import 'package:sreerajp_todo/core/security/app_lock_service.dart';
-import 'package:sreerajp_todo/core/utils/app_lock_rules.dart';
+import 'package:sreerajp_todo/core/rules/app_lock_rules.dart';
 
 /// SharedPreferences key for how the app is locked.
 const String kLockModeKey = 'security_lock_mode';

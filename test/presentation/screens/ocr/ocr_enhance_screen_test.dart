@@ -27,10 +27,12 @@ class _FakeDownscaler implements OcrCaptureDownscaler {
 /// the screen has something to show.
 class _FakeEnhancer implements OcrEnhancer {
   final List<String> sourcePaths = [];
+  final List<OcrEnhanceParams> params = [];
 
   @override
   Future<OcrEnhanceResult> enhance(OcrEnhanceParams params) async {
     sourcePaths.add(params.sourcePath);
+    this.params.add(params);
 
     final image = img.Image(width: 20, height: 10);
     img.fill(image, color: img.ColorRgb8(255, 255, 255));
@@ -46,13 +48,19 @@ class _FakeEnhancer implements OcrEnhancer {
   }
 }
 
+/// Counts how many times recognition was asked for.
 class _FakeOcrService implements OcrService {
+  int callCount = 0;
+
   @override
   Future<String> extractTextFromImage(
     String imagePath, {
     String language = 'eng',
     int? requestId,
-  }) async => 'hello';
+  }) async {
+    callCount++;
+    return 'hello world';
+  }
 
   @override
   Future<void> cancelRequests(List<int> requestIds) async {}
@@ -106,12 +114,21 @@ void main() {
     return path;
   }
 
+  String writeScreenshot(String name) {
+    final image = img.Image(width: 40, height: 20);
+    img.fill(image, color: img.ColorRgb8(255, 255, 255));
+    final path = '${tempDir.path}/$name.png';
+    File(path).writeAsBytesSync(img.encodePng(image));
+    return path;
+  }
+
   Future<void> pumpScreen(
     WidgetTester tester, {
     required String capturePath,
     required String masterPath,
     required OcrEnhancer enhancer,
     required ImageEditService editService,
+    OcrService? ocrService,
   }) async {
     // A roomy surface. Widget tests draw text in a fixed-width placeholder
     // font, so every button label measures far wider than it does on a device
@@ -130,7 +147,7 @@ void main() {
           supportedLocales: AppLocalizations.supportedLocales,
           home: OcrEnhanceScreen(
             imagePath: capturePath,
-            ocrService: _FakeOcrService(),
+            ocrService: ocrService ?? _FakeOcrService(),
             ocrEnhancer: enhancer,
             imageEditService: editService,
             captureDownscaler: _FakeDownscaler(masterPath),
@@ -220,5 +237,170 @@ void main() {
     // Rotating twice must not stack filters: every run starts from the master.
     expect(enhancer.sourcePaths.length, greaterThanOrEqualTo(3));
     expect(enhancer.sourcePaths.toSet(), {masterPath});
+  });
+  ButtonStyleButton useTextButton(WidgetTester tester) =>
+      tester.widget<ButtonStyleButton>(
+        find.byKey(const Key('ocr-enhance-use-text-btn')),
+      );
+
+  testWidgets('does not read text on open or after edits', (tester) async {
+    final ocr = _FakeOcrService();
+
+    await pumpScreen(
+      tester,
+      capturePath: writeCapture('capture'),
+      masterPath: writeCapture('master'),
+      enhancer: _FakeEnhancer(),
+      editService: _RecordingImageEditService(),
+      ocrService: ocr,
+    );
+
+    await tester.tap(find.byKey(const Key('ocr-rotate-right-btn')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('ocr-invert-btn')));
+    await tester.pumpAndSettle();
+
+    expect(ocr.callCount, 0);
+    expect(useTextButton(tester).onPressed, isNull);
+  });
+
+  testWidgets('extract button reads the text and enables Use Text', (
+    tester,
+  ) async {
+    final ocr = _FakeOcrService();
+
+    await pumpScreen(
+      tester,
+      capturePath: writeCapture('capture'),
+      masterPath: writeCapture('master'),
+      enhancer: _FakeEnhancer(),
+      editService: _RecordingImageEditService(),
+      ocrService: ocr,
+    );
+
+    final extractButton = tester.widget<IconButton>(
+      find.byKey(const Key('ocr-enhance-extract-btn')),
+    );
+    expect(extractButton.tooltip, isNotEmpty);
+
+    await tester.tap(find.byKey(const Key('ocr-enhance-extract-btn')));
+    await tester.pumpAndSettle();
+
+    expect(ocr.callCount, 1);
+    expect(find.byKey(const Key('ocr-live-text-content')), findsOneWidget);
+    expect(useTextButton(tester).onPressed, isNotNull);
+  });
+
+  testWidgets('an edit after extracting clears the text', (tester) async {
+    final ocr = _FakeOcrService();
+
+    await pumpScreen(
+      tester,
+      capturePath: writeCapture('capture'),
+      masterPath: writeCapture('master'),
+      enhancer: _FakeEnhancer(),
+      editService: _RecordingImageEditService(),
+      ocrService: ocr,
+    );
+
+    await tester.tap(find.byKey(const Key('ocr-enhance-extract-btn')));
+    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('ocr-live-text-content')), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('ocr-rotate-left-btn')));
+    await tester.pumpAndSettle();
+
+    expect(find.byKey(const Key('ocr-live-text-content')), findsNothing);
+    expect(useTextButton(tester).onPressed, isNull);
+    expect(ocr.callCount, 1);
+  });
+
+  testWidgets('a PNG screenshot starts on the Screenshot filter', (
+    tester,
+  ) async {
+    final enhancer = _FakeEnhancer();
+
+    await pumpScreen(
+      tester,
+      capturePath: writeScreenshot('screenshot'),
+      masterPath: writeCapture('master'),
+      enhancer: enhancer,
+      editService: _RecordingImageEditService(),
+    );
+
+    expect(enhancer.params.first.filter, OcrEnhanceFilter.screen);
+  });
+
+  testWidgets('a JPEG camera capture starts on the Original filter', (
+    tester,
+  ) async {
+    final enhancer = _FakeEnhancer();
+
+    await pumpScreen(
+      tester,
+      capturePath: writeCapture('capture'),
+      masterPath: writeCapture('master'),
+      enhancer: enhancer,
+      editService: _RecordingImageEditService(),
+    );
+
+    expect(enhancer.params.first.filter, OcrEnhanceFilter.original);
+  });
+
+  testWidgets('the new filter chips pass their filter to the enhancer', (
+    tester,
+  ) async {
+    final enhancer = _FakeEnhancer();
+
+    await pumpScreen(
+      tester,
+      capturePath: writeCapture('capture'),
+      masterPath: writeCapture('master'),
+      enhancer: enhancer,
+      editService: _RecordingImageEditService(),
+    );
+
+    await tester.tap(find.byKey(const Key('ocr-filter-tab-btn')));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('ocr-filter-adaptive-chip')));
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle();
+    expect(enhancer.params.last.filter, OcrEnhanceFilter.adaptiveBw);
+
+    await tester.tap(find.byKey(const Key('ocr-filter-screen-chip')));
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle();
+    expect(enhancer.params.last.filter, OcrEnhanceFilter.screen);
+  });
+
+  testWidgets('the sharpness slider is passed on and reset clears it', (
+    tester,
+  ) async {
+    final enhancer = _FakeEnhancer();
+
+    await pumpScreen(
+      tester,
+      capturePath: writeCapture('capture'),
+      masterPath: writeCapture('master'),
+      enhancer: enhancer,
+      editService: _RecordingImageEditService(),
+    );
+
+    await tester.tap(find.byKey(const Key('ocr-adjust-tab-btn')));
+    await tester.pumpAndSettle();
+
+    final slider = tester.widget<Slider>(
+      find.byKey(const Key('ocr-sharpness-slider')),
+    );
+    expect(slider.min, 0);
+    slider.onChanged!(60);
+    await tester.pump(const Duration(milliseconds: 300));
+    await tester.pumpAndSettle();
+    expect(enhancer.params.last.sharpness, 60);
+
+    await tester.tap(find.byKey(const Key('ocr-adjust-reset-btn')));
+    await tester.pumpAndSettle();
+    expect(enhancer.params.last.sharpness, 0);
   });
 }

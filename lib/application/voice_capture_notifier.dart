@@ -3,7 +3,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/voice_capture_state.dart';
-import 'package:sreerajp_todo/core/platform/speech_channel.dart';
+import 'package:sreerajp_todo/data/platform/speech_channel.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/voice/voice_command_parser.dart';
 

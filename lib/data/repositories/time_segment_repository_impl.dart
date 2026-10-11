@@ -6,10 +6,10 @@ import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_history_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:uuid/uuid.dart';
 
@@ -262,7 +262,7 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
     _checkTerminalStatus(todo.status);
 
     if (segment.endTime == null) {
-      throw ArgumentError('Manual segments must have an end time.');
+      throw const ValidationException('Manual segments must have an end time.');
     }
 
     final db = await _databaseService.database;
@@ -336,7 +336,7 @@ class TimeSegmentRepositoryImpl implements TimeSegmentRepository {
     }
 
     if (!newEnd.isAfter(newStart)) {
-      throw ArgumentError('Start time must be before end time.');
+      throw const ValidationException('Start time must be before end time.');
     }
 
     // Check overlap with other segments of the same todo, excluding self.

@@ -7,7 +7,7 @@ import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/statistics_notifier.dart';
 import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/widgets/daily_bar_chart.dart';
 import 'package:sreerajp_todo/presentation/screens/statistics/widgets/daily_stats_table.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_format_rules.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/widgets/settings_note_card.dart';
 import 'package:sreerajp_todo/presentation/shared/date_time_labels.dart';

@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/domain/entities/air_qr_progress.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/air_qr_preview_sheet.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 /// Why the camera scanner cannot run.
 enum _ScanProblem { none, permissionDenied, cameraFailed, unavailable }
@@ -122,8 +123,12 @@ class _AirQrScanScreenState extends ConsumerState<AirQrScanScreen>
             ? _ScanProblem.permissionDenied
             : _ScanProblem.cameraFailed;
       });
-    } catch (e) {
-      debugPrint('AirQrScanScreen: camera start failed ($e)');
+    } catch (e, st) {
+      AppLogger.error(
+        'AirQrScanScreen: camera start failed',
+        error: e,
+        stackTrace: st,
+      );
       if (mounted) setState(() => _problem = _ScanProblem.cameraFailed);
     }
   }
@@ -168,7 +173,9 @@ class _AirQrScanScreenState extends ConsumerState<AirQrScanScreen>
             _stopStream();
             if (mounted) setState(() => _problem = _ScanProblem.unavailable);
           } else {
-            debugPrint('AirQrScanScreen: frame decode failed ($e)');
+            AppLogger.debug(
+              'AirQrScanScreen: frame decode failed (${e.runtimeType})',
+            );
           }
         })
         .whenComplete(() => _decoding = false);

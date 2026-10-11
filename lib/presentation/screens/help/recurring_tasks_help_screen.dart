@@ -1,56 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/presentation/screens/help/widgets/help_widgets.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 class RecurringTasksHelpScreen extends StatelessWidget {
   const RecurringTasksHelpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: const Text('Recurring Tasks & Bulk Copy')),
+      appBar: AppBar(title: Text(l10n.helpRecurringTitle)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          children: const [
-            HelpIntro(
-              'Save time by automating repetitive daily routines, weekly meetings, and habit tasks '
-              'using standard RFC-5545 recurrence rules or bulk copying tasks across days.',
-            ),
-            SizedBox(height: 24),
+          children: [
+            HelpIntro(l10n.helpRecurringIntro),
+            const SizedBox(height: 24),
             HelpSection(
               icon: Icons.repeat_rounded,
-              title: 'Recurrence Rules (RRule)',
+              title: l10n.helpRecurringRulesTitle,
               children: [
-                HelpBullet(
-                  'Create recurring rules with flexible frequencies: Daily, Weekly (selected weekdays), Monthly, or Custom intervals.',
-                ),
-                HelpBullet(
-                  'When you view a day, the app automatically generates that day\'s recurring task instances with preset priorities and target durations.',
-                ),
-                HelpBullet(
-                  'Editing or completing a single day’s recurring instance does not affect future or past instances.',
-                ),
+                HelpBullet(l10n.helpRecurringRules1),
+                HelpBullet(l10n.helpRecurringRules2),
+                HelpBullet(l10n.helpRecurringRules3),
               ],
             ),
             HelpSection(
               icon: Icons.copy_all_rounded,
-              title: 'Bulk Copying Past Tasks',
+              title: l10n.helpRecurringCopyTitle,
               children: [
-                HelpBullet(
-                  'From the daily list menu, tap "Copy Tasks" to open the copy assistant.',
-                ),
-                HelpBullet(
-                  'Quickly select all unfinished tasks from yesterday or a custom past date and clone them into today’s list.',
-                ),
-                HelpBullet(
-                  'Copied tasks start fresh with status Pending and zero elapsed time segments.',
-                ),
+                HelpBullet(l10n.helpRecurringCopy1),
+                HelpBullet(l10n.helpRecurringCopy2),
+                HelpBullet(l10n.helpRecurringCopy3),
               ],
             ),
-            SizedBox(height: 8),
-            HelpFooter(
-              'Tip: Use Recurring Tasks for regular habits (like morning workouts or reviews), and Bulk Copy for ad-hoc carried-over items.',
-            ),
+            const SizedBox(height: 8),
+            HelpFooter(l10n.helpRecurringTip),
           ],
         ),
       ),

@@ -1129,10 +1129,15 @@
   "ocrEnhanceUseText": "ടെക്സ്റ്റ് ഉപയോഗിക്കുക",
   "ocrEnhanceCrop": "ക്രോപ്പ്",
   "ocrEnhanceInvert": "ഇൻവേർട്ട്",
+  "ocrFilterScreen": "സ്ക്രീൻഷോട്ട്",
+  "ocrFilterAdaptive": "നിഴൽ നീക്കം",
+  "ocrSharpnessLabel": "മൂർച്ച",
   "ocrEnhanceLiveText": "കണ്ടെത്തിയ ടെക്സ്റ്റ്",
   "ocrEnhanceLiveTextNone": "ഇതുവരെ ഒന്നും വായിച്ചില്ല. ക്രോപ്പ്, ഫിൽട്ടർ, അല്ലെങ്കിൽ മറ്റൊരു ഭാഷ പരീക്ഷിക്കുക.",
   "ocrEnhanceWordCount": "{count} വാക്കുകൾ",
   "ocrEnhanceScanning": "വായിക്കുന്നു...",
+  "ocrExtractTextTooltip": "ടെക്സ്റ്റ് വേർതിരിക്കുക",
+  "ocrEnhanceExtractHint": "എഡിറ്റിംഗ് പൂർത്തിയാക്കി, ടെക്സ്റ്റ് വായിക്കാൻ സ്കാൻ ബട്ടൺ അമർത്തുക.",
   "ocrLanguageTooltip": "തിരിച്ചറിയൽ ഭാഷ",
   "ocrLanguageAll": "ഇംഗ്ലീഷ് + മലയാളം",
   "ocrLanguageMalayalam": "മലയാളം",
@@ -1251,5 +1256,1839 @@
   "airQrScanStreamFailed": "AirQR സ്ട്രീം ചേർത്തെടുക്കാനായില്ല. വീണ്ടും ശ്രമിക്കുക.",
   "airQrScanPermissionDenied": "AirQR കോഡുകൾ സ്കാൻ ചെയ്യാൻ ക്യാമറ അനുമതി ആവശ്യമാണ്. സിസ്റ്റം ക്രമീകരണങ്ങളിൽ ക്യാമറ അനുമതി നൽകുക.",
   "airQrScanCameraError": "ക്യാമറ ആരംഭിക്കാനായില്ല.",
-  "airQrScanUnavailable": "QR സ്കാനിംഗ് ആൻഡ്രോയിഡിൽ മാത്രമേ ലഭ്യമാകൂ."
+  "airQrScanUnavailable": "QR സ്കാനിംഗ് ആൻഡ്രോയിഡിൽ മാത്രമേ ലഭ്യമാകൂ.",
+  "ok": "ശരി",
+  "@ok": {
+    "description": "Generic OK button that closes a dialog."
+  },
+  "errorNotLocalNetwork": "വൈ-ഫൈ സിങ്ക് നിങ്ങളുടെ പ്രാദേശിക നെറ്റ്‌വർക്കിലെ ഉപകരണങ്ങളുമായി മാത്രമേ പ്രവർത്തിക്കൂ.",
+  "@errorNotLocalNetwork": {
+    "description": "Error shown when Wi-Fi sync is pointed at an address outside the local network."
+  },
+  "errorInvalidInput": "നൽകിയ ചില വിവരങ്ങൾ സാധുവല്ല.",
+  "@errorInvalidInput": {
+    "description": "Generic error shown when the user's input breaks a rule."
+  },
+  "p2pSummaryTasks": "ടാസ്കുകൾ",
+  "@p2pSummaryTasks": {
+    "description": "Row label in the Wi-Fi sync summary dialog for tasks."
+  },
+  "p2pSummaryAdded": "+{count} ചേർത്തു",
+  "@p2pSummaryAdded": {
+    "description": "Number of items added by a Wi-Fi sync, in the summary dialog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pSummarySkipped": "({count} ഒഴിവാക്കി)",
+  "@p2pSummarySkipped": {
+    "description": "Number of items skipped by a Wi-Fi sync, in the summary dialog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pDayLockSkipped": "{count, plural, other{കഴിഞ്ഞ ദിവസങ്ങൾ പൂട്ടിയതിനാൽ അവയിലെ {count} ഇനങ്ങൾ ഒഴിവാക്കി.}}",
+  "@p2pDayLockSkipped": {
+    "description": "Warning in the Wi-Fi sync summary when items for locked past days were not merged.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pTabHost": "ഹോസ്റ്റ് (പങ്കിടുക)",
+  "@p2pTabHost": {
+    "description": "Tab label: this device shares its data. Keep short."
+  },
+  "p2pTabPeer": "പിയർ (സ്വീകരിക്കുക)",
+  "@p2pTabPeer": {
+    "description": "Tab label: this device receives data. Keep short."
+  },
+  "p2pHostActive": "ഹോസ്റ്റ് സെർവർ സജീവം",
+  "@p2pHostActive": {
+    "description": "Status title when this device is sharing over Wi-Fi."
+  },
+  "p2pHostStopped": "ഹോസ്റ്റ് സെർവർ നിർത്തി",
+  "@p2pHostStopped": {
+    "description": "Status title when this device is not sharing over Wi-Fi."
+  },
+  "p2pHostListening": "{address} എന്നതിൽ കാത്തിരിക്കുന്നു",
+  "@p2pHostListening": {
+    "description": "Status line with the local address and port the host listens on.",
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pHostIdleHint": "എൻക്രിപ്റ്റ് ചെയ്ത കണക്ഷൻ തുറക്കാൻ താഴെ ടാപ്പ് ചെയ്യുക.",
+  "@p2pHostIdleHint": {
+    "description": "Hint shown while the host server is stopped."
+  },
+  "p2pPairingPinLabel": "പെയറിംഗ് പിൻ",
+  "@p2pPairingPinLabel": {
+    "description": "Label for the PIN the other device must type to pair."
+  },
+  "p2pSelectScope": "സിങ്ക് പരിധി തിരഞ്ഞെടുക്കുക",
+  "@p2pSelectScope": {
+    "description": "Heading above the list of data types to share."
+  },
+  "p2pStartHost": "ഹോസ്റ്റ് സെർവർ ആരംഭിക്കുക",
+  "@p2pStartHost": {
+    "description": "Button that starts sharing over Wi-Fi."
+  },
+  "p2pStopHost": "ഹോസ്റ്റ് സെർവർ നിർത്തുക",
+  "@p2pStopHost": {
+    "description": "Button that stops sharing over Wi-Fi."
+  },
+  "p2pConnectToHost": "ഹോസ്റ്റ് ഉപകരണവുമായി ബന്ധിപ്പിക്കുക",
+  "@p2pConnectToHost": {
+    "description": "Heading of the card where the user types the host's details."
+  },
+  "p2pHostIpLabel": "ഹോസ്റ്റ് IP വിലാസം",
+  "@p2pHostIpLabel": {
+    "description": "Label of the host IP address field."
+  },
+  "p2pHostIpHint": "ഉദാ: 192.168.1.105",
+  "@p2pHostIpHint": {
+    "description": "Example shown in the empty host IP address field."
+  },
+  "p2pPinHint": "6 അക്ക പിൻ",
+  "@p2pPinHint": {
+    "description": "Hint shown in the empty pairing PIN field."
+  },
+  "p2pRequestedScope": "ആവശ്യപ്പെടുന്ന സിങ്ക് പരിധി",
+  "@p2pRequestedScope": {
+    "description": "Heading above the list of data types to receive."
+  },
+  "p2pStatusConnecting": "{address} എന്നതുമായി ബന്ധിപ്പിക്കുന്നു…",
+  "@p2pStatusConnecting": {
+    "description": "Progress text while connecting to the host.",
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pStatusAuthenticating": "സുരക്ഷിത സെഷൻ ഒരുക്കുന്നു…",
+  "@p2pStatusAuthenticating": {
+    "description": "Progress text while the encrypted session is being set up."
+  },
+  "daysCount": "{count, plural, other{{count} ദിവസം}}",
+  "@daysCount": {
+    "description": "A number of days, for example on a slider or a badge.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysShort": "{count} ദി",
+  "@daysShort": {
+    "description": "Very short number of days for a compact chip, for example '7d'.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasksCount": "{count, plural, other{{count} ടാസ്കുകൾ}}",
+  "@tasksCount": {
+    "description": "A number of tasks, shown in a small chip.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subtasksCount": "{count, plural, other{{count} സബ് ടാസ്കുകൾ}}",
+  "@subtasksCount": {
+    "description": "A number of subtasks under a task.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subtasksProgress": "{done}/{total} സബ് ടാസ്കുകൾ",
+  "@subtasksProgress": {
+    "description": "How many subtasks of a task are done.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingAlertsView": "കാണുക",
+  "@pendingAlertsView": {
+    "description": "Button on the pending-tasks sheet that opens a task that is already running."
+  },
+  "masteryTasksInDeck": "ഡെക്കിലെ ടാസ്കുകൾ",
+  "@masteryTasksInDeck": {
+    "description": "Heading above the task list on a Mastery Deck page."
+  },
+  "masteryTargetTime": "ലക്ഷ്യം: {duration}",
+  "@masteryTargetTime": {
+    "description": "Target time of a task in a Mastery Deck, as HH:MM:SS.",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "carryOverLookBackValue": "{count, plural, =1{1 ദിവസം (ഇന്നലെ)} other{{count} ദിവസം}}",
+  "@carryOverLookBackValue": {
+    "description": "How far back the carry-over looks, shown next to the setting.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carryOverLookBackChip": "{count, plural, =1{1 ദി (ഇന്നലെ)} other{{count} ദി}}",
+  "@carryOverLookBackChip": {
+    "description": "Short preset chip for the carry-over look-back days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "eventTimerSession": "ടൈമർ സെഷൻ",
+  "@eventTimerSession": {
+    "description": "Task history event: a timer was stopped, closing a session."
+  },
+  "eventManualTime": "നേരിട്ട് ചേർത്ത സമയം",
+  "@eventManualTime": {
+    "description": "Task history event: time was added by hand."
+  },
+  "eventStatusChange": "നില മാറ്റം",
+  "@eventStatusChange": {
+    "description": "Task history event: the task status changed."
+  },
+  "prerequisitesSelected": "{count} തിരഞ്ഞെടുത്തു",
+  "@prerequisitesSelected": {
+    "description": "How many prerequisite tasks are selected.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ocrNoCamera": "ഈ ഉപകരണത്തിൽ ക്യാമറയൊന്നും കണ്ടെത്തിയില്ല.",
+  "@ocrNoCamera": {
+    "description": "Shown on the OCR scanner when the device has no camera."
+  },
+  "ocrCameraStartFailed": "ക്യാമറ ആരംഭിക്കാനായില്ല.",
+  "@ocrCameraStartFailed": {
+    "description": "Shown on the OCR scanner when the camera fails to start."
+  },
+  "ocrOverlayTaskName": "1. ടാസ്കിന്റെ പേര്",
+  "@ocrOverlayTaskName": {
+    "description": "Label on the upper area of the OCR camera frame."
+  },
+  "ocrOverlaySeparator": "സ്പേസ് / # / ---",
+  "@ocrOverlaySeparator": {
+    "description": "Hint showing the marks that separate a task name from its description."
+  },
+  "ocrOverlayDescription": "2. വിവരണം (ബാക്കി എല്ലാ എഴുത്തും)",
+  "@ocrOverlayDescription": {
+    "description": "Label on the lower area of the OCR camera frame."
+  },
+  "pendingNotificationBody": "{count, plural, other{{count} ടാസ്കുകൾ ബാക്കിയുണ്ട് ({summary})}}",
+  "@pendingNotificationBody": {
+    "description": "Body of the pending-tasks system notification.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "pendingNotificationSummarySplit": "ഇന്ന് {today}, മുൻദിവസങ്ങളിൽ നിന്ന് {previous}",
+  "@pendingNotificationSummarySplit": {
+    "description": "Summary in the pending-tasks notification when some tasks are from earlier days.",
+    "placeholders": {
+      "today": {
+        "type": "int"
+      },
+      "previous": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingNotificationSummaryToday": "{count, plural, other{ഇന്ന് {count} ടാസ്കുകൾ ബാക്കി}}",
+  "@pendingNotificationSummaryToday": {
+    "description": "Summary in the pending-tasks notification when all tasks are from today.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupShareTitle": "AirQR ബാക്കപ്പ് പങ്കിടൽ",
+  "@airQrBackupShareTitle": {
+    "description": "Title of the AirQR dialog that shares a backup."
+  },
+  "airQrSyncDayTitle": "AirQR സിങ്ക് ({date})",
+  "@airQrSyncDayTitle": {
+    "description": "Title of the AirQR dialog that shares one day's tasks.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrEstimate": "സ്കാൻ ചെയ്യാൻ ഏകദേശ സമയം: {time} ({size})",
+  "@airQrEstimate": {
+    "description": "Estimated time and data size of an AirQR transfer.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrLargeBackupWarning": "ഇതൊരു വലിയ ഡാറ്റാബേസാണ്, അതിനാൽ ക്യാമറ സിങ്കിന് സമയമെടുത്തേക്കാം. വേഗത്തിൽ കൈമാറാൻ എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പ് ഫയൽ (.zip) ഉപയോഗിക്കുക.",
+  "@airQrLargeBackupWarning": {
+    "description": "Warning when a backup is too large to send quickly by AirQR."
+  },
+  "airQrBackupReady": "മുഴുവൻ ആപ്പ് ബാക്കപ്പ് ക്യാമറ വഴി അയയ്ക്കാൻ തയ്യാർ. സ്വീകരിക്കുന്ന ഫോണിന്റെ ക്യാമറ അനങ്ങാതെ പിടിക്കുക.",
+  "@airQrBackupReady": {
+    "description": "Hint shown while a backup is being sent by AirQR."
+  },
+  "airQrFrameParity": "ഫൗണ്ടൻ പാരിറ്റി",
+  "@airQrFrameParity": {
+    "description": "Type of the AirQR frame being shown: an extra recovery frame."
+  },
+  "airQrFrameSystematic": "ക്രമ ബ്ലോക്ക്",
+  "@airQrFrameSystematic": {
+    "description": "Type of the AirQR frame being shown: a normal data frame."
+  },
+  "airQrStreamFrames": "AirQR ഓപ്റ്റിക്കൽ സ്ട്രീം ({count} ഫ്രെയിമുകൾ)",
+  "@airQrStreamFrames": {
+    "description": "Heading of the AirQR share dialog with the number of frames.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrFrameCounter": "ഫ്രെയിം {current} / {total} • {type}",
+  "@airQrFrameCounter": {
+    "description": "Which AirQR frame is shown now, and its type.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrPauseStream": "സ്ട്രീം നിർത്തിവയ്ക്കുക",
+  "@airQrPauseStream": {
+    "description": "Tooltip of the button that pauses the AirQR stream."
+  },
+  "airQrResumeStream": "സ്ട്രീം പുനരാരംഭിക്കുക",
+  "@airQrResumeStream": {
+    "description": "Tooltip of the button that resumes the AirQR stream."
+  },
+  "airQrFpsChip": "{fps}/സെ",
+  "@airQrFpsChip": {
+    "description": "Chip that picks the AirQR frame rate in frames per second.",
+    "placeholders": {
+      "fps": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupPayloadEntries": "മുഴുവൻ ആപ്പ് ബാക്കപ്പ് ({count} ഇനങ്ങൾ)",
+  "@airQrBackupPayloadEntries": {
+    "description": "Summary of a backup received by AirQR.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrReceivedTasks": "AirQR ടാസ്കുകൾ ലഭിച്ചു",
+  "@airQrReceivedTasks": {
+    "description": "Title after scanning AirQR tasks."
+  },
+  "airQrReceivedTimecard": "AirQR ടൈംകാർഡ് ലഭിച്ചു",
+  "@airQrReceivedTimecard": {
+    "description": "Title after scanning an AirQR timecard."
+  },
+  "airQrReceivedBackup": "AirQR ബാക്കപ്പ് ലഭിച്ചു",
+  "@airQrReceivedBackup": {
+    "description": "Title after scanning an AirQR backup."
+  },
+  "airQrReceivedUnknown": "AirQR വിവരങ്ങൾ ലഭിച്ചു",
+  "@airQrReceivedUnknown": {
+    "description": "Title after scanning AirQR data of an unknown type."
+  },
+  "airQrTasksReady": "{count, plural, other{{count} ടാസ്കുകൾ നിങ്ങളുടെ പട്ടികയിൽ ചേർക്കാൻ തയ്യാർ.}}",
+  "@airQrTasksReady": {
+    "description": "Detail after scanning AirQR tasks.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrTimecardReady": "{count, plural, other{{count} ഇനങ്ങളുള്ള ദിവസ ടൈംകാർഡ് ചേർക്കാൻ തയ്യാർ.}}",
+  "@airQrTimecardReady": {
+    "description": "Detail after scanning an AirQR timecard.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupReceivedDetail": "മുഴുവൻ ആപ്പ് ബാക്കപ്പ് ക്യാമറ വഴി ലഭിച്ചു.",
+  "@airQrBackupReceivedDetail": {
+    "description": "Detail after scanning an AirQR backup."
+  },
+  "backupHideLogs": "ലോഗുകൾ മറയ്ക്കുക",
+  "@backupHideLogs": {
+    "description": "Button that hides the backup run log."
+  },
+  "backupViewLogs": "ലോഗുകൾ കാണുക ({count})",
+  "@backupViewLogs": {
+    "description": "Button that shows the backup run log, with the number of entries.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupLastRun": "അവസാനം നടന്നത്: {time} ({trigger})",
+  "@backupLastRun": {
+    "description": "When the last backup ran and whether it was manual or scheduled.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "trigger": {
+        "type": "String"
+      }
+    }
+  },
+  "backupArchiveSize": "ആർക്കൈവ് വലുപ്പം: {size}",
+  "@backupArchiveSize": {
+    "description": "Size of the last backup file.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "progressAllDone": "എല്ലാം പൂർത്തിയായി! 🎉",
+  "@progressAllDone": {
+    "description": "Day list header when every task of the day is finished."
+  },
+  "progressAllDoneDetail": "ഇന്നത്തെ പട്ടിക പൂർത്തിയാക്കി, അഭിനന്ദനങ്ങൾ.",
+  "@progressAllDoneDetail": {
+    "description": "Line under the all-done header on the day list."
+  },
+  "progressCompletedOf": "{total}-ൽ {completed} പൂർത്തിയായി",
+  "@progressCompletedOf": {
+    "description": "Day list header: how many of the day's tasks are completed.",
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "recallTitle": "ഓർമ്മയുടെ ഉറപ്പ്",
+  "@recallTitle": {
+    "description": "Title of the dialog shown when a Mastery Deck task is completed."
+  },
+  "recallPrompt": "ഈ ടാസ്ക് എത്ര എളുപ്പത്തിൽ ഓർത്തെടുത്തു അല്ലെങ്കിൽ പൂർത്തിയാക്കി?",
+  "@recallPrompt": {
+    "description": "Question in the recall confidence dialog."
+  },
+  "recallHard": "കഠിനം",
+  "@recallHard": {
+    "description": "Recall answer: it was hard."
+  },
+  "recallHardDetail": "ബുദ്ധിമുട്ടി അല്ലെങ്കിൽ മറന്നു. അടുത്ത അവലോകനം 1 ദിവസത്തിൽ.",
+  "@recallHardDetail": {
+    "description": "Explains the Hard recall answer."
+  },
+  "recallRevision": "പുനരവലോകനം",
+  "@recallRevision": {
+    "description": "Recall answer: it needed some effort."
+  },
+  "recallRevisionDetail": "മിതമായ ശ്രമം. അടുത്ത അവലോകനം 3 ദിവസത്തിൽ.",
+  "@recallRevisionDetail": {
+    "description": "Explains the Revision recall answer."
+  },
+  "recallEasy": "എളുപ്പം",
+  "@recallEasy": {
+    "description": "Recall answer: it was easy."
+  },
+  "recallEasyDetail": "അനായാസം! അടുത്ത അവലോകനം {days} ദിവസത്തിൽ (നില {level}).",
+  "@recallEasyDetail": {
+    "description": "Explains the Easy recall answer.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "dataHandoffExportSection": "കയറ്റുമതി ചെയ്യാനുള്ള വഴികൾ",
+  "@dataHandoffExportSection": {
+    "description": "Heading above the export actions on the data handoff screen."
+  },
+  "dataHandoffImportSection": "ഇറക്കുമതി ചെയ്യാനുള്ള വഴികൾ",
+  "@dataHandoffImportSection": {
+    "description": "Heading above the import actions on the data handoff screen."
+  },
+  "markdownTargetDate": "ലക്ഷ്യ തീയതി: {date}",
+  "@markdownTargetDate": {
+    "description": "The date that pasted Markdown tasks will be added to.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "markdownImportHint": "- [ ] ടാസ്കിന്റെ പേര്\n  - [ ] സബ് ടാസ്കിന്റെ പേര്\n  > കുറിപ്പ്",
+  "@markdownImportHint": {
+    "description": "Example Markdown shown in the empty paste box. Keep the '- [ ]' and '>' marks."
+  },
+  "markdownNoItems": "`- [ ]` അല്ലെങ്കിൽ `- [x]` ചെക്ക്‌ലിസ്റ്റ് ഇനങ്ങളൊന്നും കണ്ടെത്തിയില്ല.",
+  "@markdownNoItems": {
+    "description": "Shown when the pasted Markdown has no checklist items."
+  },
+  "markdownPastDateLocked": "കഴിഞ്ഞ ദിവസങ്ങൾ പൂട്ടിയിരിക്കുന്നു. ഇറക്കുമതി ചെയ്യാൻ ഇന്നോ പിന്നീടുള്ള തീയതിയോ തിരഞ്ഞെടുക്കുക.",
+  "@markdownPastDateLocked": {
+    "description": "Shown when the Markdown import target date is in the past."
+  },
+  "helpTaskMgmtTitle": "ദിവസ പട്ടികകളും ഡേ ലോക്കും",
+  "@helpTaskMgmtTitle": {
+    "description": "Help topic title: daily lists and the day lock."
+  },
+  "helpTaskMgmtIntro": "SreerajP ToDo നിങ്ങളുടെ ടാസ്കുകൾ ദിവസം തോറും കർശനമായി ക്രമീകരിക്കുന്നു. ദിവസ പട്ടിക, ഡേ ലോക്ക് സംരക്ഷണം, അന്തിമ നില ലോക്കുകൾ എന്നിവ നിങ്ങളുടെ ഉൽപ്പാദനക്ഷമതാ രേഖകളുടെ കൃത്യത എങ്ങനെ കാക്കുന്നുവെന്ന് അറിയുക.",
+  "@helpTaskMgmtIntro": {
+    "description": "Help: task management intro paragraph."
+  },
+  "helpTaskMgmtDayLockTitle": "ഡേ ലോക്ക് തത്വം",
+  "@helpTaskMgmtDayLockTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtDayLock1": "ഇന്നത്തേതിന് മുമ്പുള്ള തീയതിയിലെ ടാസ്കുകൾ സ്ഥിരമായി വായിക്കാൻ മാത്രമുള്ളതാണ്; അവ മാറ്റാനോ ഇല്ലാതാക്കാനോ കഴിയില്ല.",
+  "@helpTaskMgmtDayLock1": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtDayLock2": "അങ്ങനെ പഴയ വിവരങ്ങൾ യഥാർത്ഥത്തിൽ നടന്നതിന്റെ മാറ്റമില്ലാത്ത, സത്യസന്ധമായ പ്രതിഫലനമായി നിലനിൽക്കുന്നു.",
+  "@helpTaskMgmtDayLock2": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtDayLock3": "ഇന്നലത്തെ പൂർത്തിയാകാത്ത ടാസ്കിൽ ജോലി ചെയ്യണമെങ്കിൽ, കഴിഞ്ഞതിനെ തിരുത്തുന്നതിന് പകരം അത് ഇന്നത്തെ പട്ടികയിലേക്ക് പകർത്തുക.",
+  "@helpTaskMgmtDayLock3": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtStatusTitle": "ടാസ്ക് നിലകളും അന്തിമ ലോക്കുകളും",
+  "@helpTaskMgmtStatusTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtStatus1": "ടാസ്കുകൾ ഈ നിലകളിലൂടെ കടന്നുപോകുന്നു: ബാക്കി, പ്രവർത്തനത്തിൽ, പൂർത്തിയായി, ഉപേക്ഷിച്ചു.",
+  "@helpTaskMgmtStatus1": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtStatus2": "പൂർത്തിയായി, ഉപേക്ഷിച്ചു എന്നിവ അന്തിമ നിലകളാണ്. ഒരു ടാസ്ക് അന്തിമ നിലയിലെത്തിയാൽ അതിൽ പുതിയ സമയ ഭാഗങ്ങൾ തുടങ്ങാനാവില്ല.",
+  "@helpTaskMgmtStatus2": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtStatus3": "പ്രവർത്തനത്തിലുള്ള ടാസ്ക് പൂർത്തിയായി അല്ലെങ്കിൽ ഉപേക്ഷിച്ചു എന്ന് അടയാളപ്പെടുത്തിയാൽ ഓടുന്ന സമയ ഭാഗം സ്വയം നിർത്തും.",
+  "@helpTaskMgmtStatus3": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtUndoTitle": "അബദ്ധ മാറ്റങ്ങളും പഴയപടിയാക്കലും",
+  "@helpTaskMgmtUndoTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtUndo1": "ടാസ്കിന്റെ നില മാറ്റുമ്പോഴെല്ലാം, പഴയപടിയാക്കാനുള്ള ബട്ടണോടെ 5 സെക്കൻഡ് നീളുന്ന ഒരു അറിയിപ്പ് താഴെ കാണിക്കും.",
+  "@helpTaskMgmtUndo1": {
+    "description": "Help: undo bullet."
+  },
+  "helpTaskMgmtUndo2": "അവസാന നില മാറ്റം വേഗത്തിൽ തിരിച്ചാക്കാൻ മുകളിലെ ബാറിൽ സ്ഥിരമായ ഒരു പഴയപടി ബട്ടണും ഉണ്ട്.",
+  "@helpTaskMgmtUndo2": {
+    "description": "Help: undo bullet."
+  },
+  "helpTaskMgmtUnicodeTitle": "യൂണികോഡ് NFC ഏകീകരണവും തലക്കെട്ടിന്റെ അനന്യതയും",
+  "@helpTaskMgmtUnicodeTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtUnicode1": "എല്ലാ ടാസ്ക് തലക്കെട്ടുകളും ഡാറ്റാബേസിൽ എഴുതുന്നതിന് മുമ്പ് NFC രൂപത്തിലേക്ക് ഏകീകരിക്കുന്നു.",
+  "@helpTaskMgmtUnicode1": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtUnicode2": "ഒരേ ദിവസത്തിലെ രണ്ട് ടാസ്കുകൾക്ക് ഒരേ തലക്കെട്ട് പാടില്ല (വലിയ-ചെറിയ അക്ഷര വ്യത്യാസവും ഇടകളും പരിഗണിക്കാതെ).",
+  "@helpTaskMgmtUnicode2": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtUnicode3": "പല ഭാഷകളും സുഗമമായി പിന്തുണയ്ക്കാൻ ഓരോ ഇനത്തിന്റെയും എഴുത്തിന്റെ ദിശ (RTL/LTR) സ്വയം കണ്ടെത്തുന്നു (ഇംഗ്ലീഷ്, മലയാളം, ഹിന്ദി മുതലായവ).",
+  "@helpTaskMgmtUnicode3": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtTip": "നുറുങ്ങ്: കഴിഞ്ഞ ദിവസങ്ങളിലെ പ്രവർത്തനം നോക്കാനോ വരും ദിവസങ്ങൾ ആസൂത്രണം ചെയ്യാനോ തീയതി തിരഞ്ഞെടുക്കൽ ഉപയോഗിക്കുക, അല്ലെങ്കിൽ ദിവസ പട്ടികയിൽ ദിവസങ്ങൾക്കിടയിൽ സ്വൈപ്പ് ചെയ്യുക.",
+  "@helpTaskMgmtTip": {
+    "description": "Help: task management footer tip."
+  },
+  "helpRecurringTitle": "ആവർത്തന ടാസ്കുകളും കൂട്ട പകർത്തലും",
+  "@helpRecurringTitle": {
+    "description": "Help topic title: recurring tasks and bulk copy."
+  },
+  "helpRecurringIntro": "സാധാരണ RFC-5545 ആവർത്തന നിയമങ്ങൾ ഉപയോഗിച്ചോ ദിവസങ്ങൾക്കിടയിൽ ടാസ്കുകൾ കൂട്ടമായി പകർത്തിയോ, ദിനചര്യകളും ആഴ്ചതോറുമുള്ള യോഗങ്ങളും ശീലങ്ങളും സ്വയമാക്കി സമയം ലാഭിക്കുക.",
+  "@helpRecurringIntro": {
+    "description": "Help: recurring tasks intro paragraph."
+  },
+  "helpRecurringRulesTitle": "ആവർത്തന നിയമങ്ങൾ (RRule)",
+  "@helpRecurringRulesTitle": {
+    "description": "Help: recurring tasks section title."
+  },
+  "helpRecurringRules1": "അയവുള്ള ആവൃത്തികളോടെ ആവർത്തന നിയമങ്ങൾ ഉണ്ടാക്കുക: ദിവസേന, ആഴ്ചതോറും (തിരഞ്ഞെടുത്ത ദിവസങ്ങൾ), മാസംതോറും, അല്ലെങ്കിൽ ഇഷ്ടമുള്ള ഇടവേളകൾ.",
+  "@helpRecurringRules1": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringRules2": "ഒരു ദിവസം തുറക്കുമ്പോൾ, മുൻകൂട്ടി നിശ്ചയിച്ച മുൻഗണനകളും ലക്ഷ്യ സമയങ്ങളും ചേർത്ത് ആ ദിവസത്തെ ആവർത്തന ടാസ്കുകൾ ആപ്പ് സ്വയം സൃഷ്ടിക്കുന്നു.",
+  "@helpRecurringRules2": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringRules3": "ഒരു ദിവസത്തെ ആവർത്തന ടാസ്ക് തിരുത്തുകയോ പൂർത്തിയാക്കുകയോ ചെയ്താൽ മുമ്പോ പിമ്പോ ഉള്ളവയെ ബാധിക്കില്ല.",
+  "@helpRecurringRules3": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringCopyTitle": "കഴിഞ്ഞ ടാസ്കുകൾ കൂട്ടമായി പകർത്തൽ",
+  "@helpRecurringCopyTitle": {
+    "description": "Help: recurring tasks section title."
+  },
+  "helpRecurringCopy1": "ദിവസ പട്ടികയുടെ മെനുവിൽ \"ടാസ്കുകൾ പകർത്തുക\" ടാപ്പ് ചെയ്ത് പകർത്തൽ സഹായി തുറക്കുക.",
+  "@helpRecurringCopy1": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringCopy2": "ഇന്നലത്തെയോ തിരഞ്ഞെടുത്ത കഴിഞ്ഞ തീയതിയിലെയോ പൂർത്തിയാകാത്ത എല്ലാ ടാസ്കുകളും വേഗത്തിൽ തിരഞ്ഞെടുത്ത് ഇന്നത്തെ പട്ടികയിലേക്ക് പകർത്തുക.",
+  "@helpRecurringCopy2": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringCopy3": "പകർത്തിയ ടാസ്കുകൾ “ബാക്കി” നിലയിലും സമയ ഭാഗങ്ങൾ ഒന്നുമില്ലാതെയും പുതുതായി തുടങ്ങുന്നു.",
+  "@helpRecurringCopy3": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringTip": "നുറുങ്ങ്: പതിവ് ശീലങ്ങൾക്ക് (രാവിലത്തെ വ്യായാമം, അവലോകനങ്ങൾ പോലുള്ളവ) ആവർത്തന ടാസ്കുകളും, ഇടയ്ക്ക് ബാക്കിയാകുന്നവയ്ക്ക് കൂട്ട പകർത്തലും ഉപയോഗിക്കുക.",
+  "@helpRecurringTip": {
+    "description": "Help: recurring tasks footer tip."
+  },
+  "helpTimeTrackingTitle": "സമയ ട്രാക്കിംഗും സമയ ഭാഗങ്ങളും",
+  "@helpTimeTrackingTitle": {
+    "description": "Help topic title: time tracking and segments."
+  },
+  "helpTimeTrackingIntro": "SreerajP ToDo-യിൽ ഓരോ ടാസ്കിനും ചെലവഴിച്ച യഥാർത്ഥ സമയം അളക്കുന്ന ഒരു ടൈമർ ഉണ്ട്. ഓരോ ടാസ്കും സമയ ഭാഗങ്ങൾ എന്ന് വിളിക്കുന്ന തുടക്ക-ഒടുക്ക ഇടവേളകളായി സമയം രേഖപ്പെടുത്തുന്നു.",
+  "@helpTimeTrackingIntro": {
+    "description": "Help: time tracking intro paragraph."
+  },
+  "helpTimeTrackingSegmentsTitle": "സമയ ഭാഗങ്ങളുടെ ഘടന",
+  "@helpTimeTrackingSegmentsTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingSegments1": "ടൈമർ തുടങ്ങി നിർത്തുമ്പോഴെല്ലാം, കൃത്യമായ തുടക്ക സമയവും ഒടുക്ക സമയവുമുള്ള ഒരു സമയ ഭാഗം രേഖപ്പെടുത്തുന്നു.",
+  "@helpTimeTrackingSegments1": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSegments2": "ഒരു ടാസ്കിൽ പല ഭാഗങ്ങൾ ഉണ്ടാകാം (ഉദാ: രാവിലത്തെ ജോലി, ഉച്ചകഴിഞ്ഞുള്ള ജോലി). ആകെ സമയം എല്ലാ ഭാഗങ്ങളുടെയും തുകയാണ്.",
+  "@helpTimeTrackingSegments2": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSegments3": "ആപ്പിലുടനീളം ദൈർഘ്യം എപ്പോഴും HH:MM:SS രൂപത്തിൽ കാണിക്കുന്നു.",
+  "@helpTimeTrackingSegments3": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSingleTitle": "ഒരു സമയം ഒരു ടൈമർ നിയമം",
+  "@helpTimeTrackingSingleTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingSingle1": "ഏത് സമയത്തും ആപ്പിൽ ആകെ ഒരു തുറന്ന സമയ ഭാഗം (ഓടുന്ന ടൈമർ) മാത്രമേ ഉണ്ടാകൂ.",
+  "@helpTimeTrackingSingle1": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingSingle2": "പുതിയ ടാസ്കിൽ ടൈമർ തുടങ്ങിയാൽ മറ്റൊരു ടാസ്കിൽ ഓടുന്ന ടൈമർ സ്വയം നിർത്തും.",
+  "@helpTimeTrackingSingle2": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingSingle3": "ഈ ഒറ്റ ടൈമർ ഉറപ്പ് പരസ്പരവിരുദ്ധ രേഖകളും പെരുപ്പിച്ച കണക്കുകളും തടയുന്നു.",
+  "@helpTimeTrackingSingle3": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingAutoTitle": "സ്വയം നിർത്തലും പശ്ചാത്തലത്തിൽ നിർത്തിവയ്ക്കലും",
+  "@helpTimeTrackingAutoTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingAuto1": "ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് എന്നതിൽ, ടൈമറുകൾ അർദ്ധരാത്രിയിലോ ഇഷ്ടമുള്ള മണിക്കൂറിലോ സ്വയം നിർത്താൻ സജ്ജമാക്കാം.",
+  "@helpTimeTrackingAuto1": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingAuto2": "മറ്റ് ആപ്പുകളിലേക്ക് മാറുമ്പോൾ ട്രാക്കിംഗ് നിർത്തിവയ്ക്കാൻ \"ആപ്പ് വിടുമ്പോൾ സ്വയം നിർത്തിവയ്ക്കുക\" ഓണാക്കാം.",
+  "@helpTimeTrackingAuto2": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingAuto3": "നിശ്ചയിക്കാവുന്ന പരിധിയിൽ (ഉദാ: 10 സെക്കൻഡ് അല്ലെങ്കിൽ 30 സെക്കൻഡ്) താഴെയുള്ള അബദ്ധ ടൈമർ ടാപ്പുകൾ സ്വയം ഒഴിവാക്കാം.",
+  "@helpTimeTrackingAuto3": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingTip": "നുറുങ്ങ്: ഏത് ടാസ്ക് കാർഡിലെയും സ്റ്റോപ്പ്‌വാച്ച് ചിഹ്നത്തിലോ സമയ ബാഡ്ജിലോ ടാപ്പ് ചെയ്താൽ ഉടൻ ട്രാക്കിംഗ് തുടങ്ങും. നിർത്താൻ വീണ്ടും ടാപ്പ് ചെയ്യുക.",
+  "@helpTimeTrackingTip": {
+    "description": "Help: time tracking footer tip."
+  },
+  "helpFocusTitle": "ഫോക്കസ് മോഡും പൊമോഡോറോയും",
+  "@helpFocusTitle": {
+    "description": "Help topic title: focus mode and Pomodoro."
+  },
+  "helpFocusIntro": "ആഴത്തിലുള്ള ജോലിക്കായി ശ്രദ്ധ തെറ്റിക്കാത്ത ഒരു മുഴുവൻ സ്ക്രീൻ ഇടം ഫോക്കസ് മോഡ് നൽകുന്നു; ഒപ്പം ഇഷ്ടാനുസരണം മാറ്റാവുന്ന പൊമോഡോറോ ഇടവേളകളും ലക്ഷ്യ സമയത്തിന്റെ കൗണ്ട്ഡൗണും.",
+  "@helpFocusIntro": {
+    "description": "Help: focus intro paragraph."
+  },
+  "helpFocusScreenTitle": "മുഴുവൻ സ്ക്രീൻ ഫോക്കസ് മോഡ്",
+  "@helpFocusScreenTitle": {
+    "description": "Help: focus section title."
+  },
+  "helpFocusScreen1": "ഏത് ടാസ്കിന്റെയും വിശദാംശ മെനുവിൽ നിന്ന് ഫോക്കസ് മോഡ് തുറന്ന് ശ്രദ്ധ തെറ്റിക്കാത്ത വൃത്തിയുള്ള സ്ക്രീനിൽ മുഴുകുക.",
+  "@helpFocusScreen1": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusScreen2": "ഫോക്കസ് മോഡിൽ വലിയ ടൈമർ (കഴിഞ്ഞ സമയം അല്ലെങ്കിൽ കൗണ്ട്ഡൗൺ), ലക്ഷ്യ പുരോഗതി വളയം, വേഗത്തിൽ നിർത്തിവയ്ക്കാനും തുടരാനുമുള്ള നിയന്ത്രണങ്ങൾ എന്നിവ കാണാം.",
+  "@helpFocusScreen2": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusScreen3": "ഫോക്കസ് ടൈമർ ഓടുമ്പോൾ സ്ക്രീൻ ഉണർന്നിരിക്കാനുള്ള ക്രമീകരണം ഡിസ്‌പ്ലേ സജീവമായി നിലനിർത്തുന്നു.",
+  "@helpFocusScreen3": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusPomodoroTitle": "പൊമോഡോറോ രീതി",
+  "@helpFocusPomodoroTitle": {
+    "description": "Help: focus section title."
+  },
+  "helpFocusPomodoro1": "ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് → പൊമോഡോറോ എന്നതിൽ ജോലി സമയവും (ഉദാ: 25 മിനിറ്റ്) ഇടവേളകളും (ഉദാ: 5 മിനിറ്റ്) ഇഷ്ടാനുസരണം മാറ്റുക.",
+  "@helpFocusPomodoro1": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusPomodoro2": "ജോലി ഇടവേളകളുടെയും വിശ്രമ സമയത്തിന്റെയും അവസാനം ശബ്ദവും കമ്പനവും വഴി അറിയിക്കുന്നു.",
+  "@helpFocusPomodoro2": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusPomodoro3": "എല്ലാ ഫോക്കസ് സെഷനുകളും അതത് ടാസ്കിന് കീഴിൽ സാധാരണ സമയ ഭാഗങ്ങളായി രേഖപ്പെടുത്തുന്നു.",
+  "@helpFocusPomodoro3": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusTip": "നുറുങ്ങ്: ടാസ്ക് ഉണ്ടാക്കുമ്പോഴോ തിരുത്തുമ്പോഴോ ലക്ഷ്യ സമയം നൽകിയാൽ ബാക്കിയുള്ള ഫോക്കസ് സമയം സ്വയം കണക്കാക്കും.",
+  "@helpFocusTip": {
+    "description": "Help: focus footer tip."
+  },
+  "helpMasteryTitle": "മാസ്റ്ററി ഡെക്കും ഫ്ലാഷ്കാർഡുകളും",
+  "@helpMasteryTitle": {
+    "description": "Help topic title: Mastery Deck and flashcards."
+  },
+  "helpMasteryIntro": "മാസ്റ്ററി ഡെക്ക് നിങ്ങളുടെ ദിവസേനയുള്ള പഠനങ്ങളെയും പ്രധാന ആശയങ്ങളെയും പഠനക്കുറിപ്പുകളെയും ഇടവിട്ടുള്ള ആവർത്തനത്തിലൂടെ പ്രവർത്തിക്കുന്ന ഫ്ലാഷ്കാർഡ് സംവിധാനമാക്കുന്നു. ശാസ്ത്രീയമായി ക്രമീകരിച്ച അവലോകന ഇടവേളകളിലൂടെ പഠിച്ചത് ദീർഘകാലം ഓർമ്മയിൽ നിർത്തുക.",
+  "@helpMasteryIntro": {
+    "description": "Help: Mastery Deck intro paragraph."
+  },
+  "helpMasteryReviewTitle": "ഇടവിട്ടുള്ള ആവർത്തന അവലോകനം",
+  "@helpMasteryReviewTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryReview1": "എത്ര നന്നായി ഓർക്കുന്നു എന്നതനുസരിച്ച് കാർഡുകളുടെ അവലോകനം ക്രമീകരിക്കുന്നു (എളുപ്പം, നല്ലത്, കഠിനം, വീണ്ടും).",
+  "@helpMasteryReview1": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryReview2": "\"എളുപ്പം\" എന്ന് രേഖപ്പെടുത്തിയ കാർഡുകളുടെ അവലോകന ഇടവേള ക്രമാതീതമായി കൂടുന്നു (ഉദാ: 1 ദിവസം → 3 ദിവസം → 7 ദിവസം → 16 ദിവസം).",
+  "@helpMasteryReview2": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryReview3": "\"കഠിനം\" അല്ലെങ്കിൽ \"വീണ്ടും\" എന്ന് രേഖപ്പെടുത്തിയ കാർഡുകളുടെ ഇടവേള പലപ്പോഴും ആവർത്തിക്കാനായി കുറയ്ക്കുകയോ പുനഃസജ്ജമാക്കുകയോ ചെയ്യുന്നു.",
+  "@helpMasteryReview3": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryDecksTitle": "ഡെക്കുകളും ക്രമീകരണവും",
+  "@helpMasteryDecksTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryDecks1": "വിഷയം, പദ്ധതി, ഭാഷ എന്നിവ അനുസരിച്ച് ഫ്ലാഷ്കാർഡുകൾ സ്വന്തം ഡെക്കുകളിലായി ഗ്രൂപ്പ് ചെയ്യുക.",
+  "@helpMasteryDecks1": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryDecks2": "ഓരോ കാർഡിനും ഒരു ചോദ്യവും (മുൻവശം) ഉത്തരവും/വിശദീകരണവും (പിൻവശം) ഉണ്ട്; അടയാളങ്ങൾ ഐച്ഛികം.",
+  "@helpMasteryDecks2": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryDecks3": "ഇന്ന് അവലോകനം ചെയ്യേണ്ടവയുടെ എണ്ണം, ആകെ കാർഡുകൾ, മൊത്തം പ്രാവീണ്യ ശതമാനം എന്നിവ ഡെക്കുകളിൽ തത്സമയം കാണാം.",
+  "@helpMasteryDecks3": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryLevelsTitle": "പ്രാവീണ്യ നിലകൾ",
+  "@helpMasteryLevelsTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryLevels1": "കാർഡുകൾ 5 പ്രാവീണ്യ നിലകളിലൂടെ മുന്നേറുന്നു: പഠിക്കുന്നു, തുടക്കക്കാരൻ, കഴിവുള്ളത്, പ്രാവീണ്യമുള്ളത്, പൂർണ്ണമായി സ്വായത്തമാക്കിയത്.",
+  "@helpMasteryLevels1": {
+    "description": "Help: mastery levels bullet."
+  },
+  "helpMasteryLevels2": "തുടർച്ചയായ ദിവസങ്ങളും സ്ഥിരമായ അവലോകനവും ദിവസേനയുള്ള പങ്കാളിത്തത്തിനും ശീല രൂപീകരണത്തിനും പ്രതിഫലം നൽകുന്നു.",
+  "@helpMasteryLevels2": {
+    "description": "Help: mastery levels bullet."
+  },
+  "helpMasteryTip": "നുറുങ്ങ്: Air QR അല്ലെങ്കിൽ ലോക്കൽ വൈ-ഫൈ സിങ്ക് ഉപയോഗിച്ച് നിങ്ങളുടെ ഡെക്കുകൾ മറ്റ് ഉപകരണങ്ങളുമായി കയറ്റുമതി ചെയ്ത് പങ്കിടാം.",
+  "@helpMasteryTip": {
+    "description": "Help: Mastery Deck footer tip."
+  },
+  "helpWifiTitle": "ലോക്കൽ വൈ-ഫൈ P2P ഉപകരണ സിങ്ക്",
+  "@helpWifiTitle": {
+    "description": "Help topic title: local Wi-Fi sync."
+  },
+  "helpWifiIntro": "ഒരേ ലോക്കൽ വൈ-ഫൈ നെറ്റ്‌വർക്കിലുള്ള രണ്ട് ഉപകരണങ്ങൾക്കിടയിൽ നിങ്ങളുടെ ടാസ്കുകളും സമയ രേഖകളും ഫ്ലാഷ്കാർഡുകളും നേരിട്ട് കൈമാറി സിങ്ക് ചെയ്യുക — ക്ലൗഡ് സെർവറുകളോ ഇന്റർനെറ്റ് ഉപയോഗമോ ഇല്ലാതെ.",
+  "@helpWifiIntro": {
+    "description": "Help: Wi-Fi sync intro paragraph."
+  },
+  "helpWifiHowTitle": "ലോക്കൽ വൈ-ഫൈ സിങ്ക് എങ്ങനെ പ്രവർത്തിക്കുന്നു",
+  "@helpWifiHowTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiHow1": "രണ്ട് ഉപകരണങ്ങളും ഒരേ ലോക്കൽ വൈ-ഫൈ നെറ്റ്‌വർക്കിൽ ബന്ധിപ്പിച്ചിരിക്കണം (അല്ലെങ്കിൽ ഒന്ന് മറ്റൊന്നിന്റെ ഹോട്ട്‌സ്‌പോട്ടിൽ).",
+  "@helpWifiHow1": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiHow2": "ഒരു ഉപകരണം അയയ്ക്കുന്നയാൾ/ഹോസ്റ്റ് ആയി പ്രവർത്തിക്കുന്നു (താൽക്കാലിക പെയറിംഗ് കോഡ് / QR കോഡ് ഉണ്ടാക്കുന്നു), മറ്റേത് സ്വീകരിക്കുന്നയാളായി.",
+  "@helpWifiHow2": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiHow3": "വിവരങ്ങൾ നിങ്ങളുടെ ലോക്കൽ നെറ്റ്‌വർക്കിലൂടെ ഉപകരണങ്ങൾക്കിടയിൽ നേരിട്ട് കൈമാറുന്നു; പുറത്തുള്ള സെർവറുകളോ ഇന്റർനെറ്റോ പൂർണ്ണമായും ഒഴിവാകുന്നു.",
+  "@helpWifiHow3": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiEncryptionTitle": "ആദ്യാവസാന എൻക്രിപ്ഷൻ",
+  "@helpWifiEncryptionTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiEncryption1": "ഒറ്റത്തവണ പെയറിംഗ് വിവരങ്ങൾ ഉപയോഗിച്ച് ലോക്കൽ സിങ്ക് കണക്ഷനുകൾ ഒരു എൻക്രിപ്റ്റ് ചെയ്ത ചാനൽ ഉറപ്പിക്കുന്നു.",
+  "@helpWifiEncryption1": {
+    "description": "Help: encryption bullet."
+  },
+  "helpWifiEncryption2": "ഒരേ വൈ-ഫൈ നെറ്റ്‌വർക്കിലെ മറ്റ് ഉപകരണങ്ങൾക്ക് കൈമാറുന്ന വിവരങ്ങൾ കാണാനോ മാറ്റാനോ കഴിയില്ല.",
+  "@helpWifiEncryption2": {
+    "description": "Help: encryption bullet."
+  },
+  "helpWifiModesTitle": "സിങ്ക് രീതികളും പൊരുത്തക്കേടുകളും",
+  "@helpWifiModesTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiModes1": "ഇരുവശ സ്മാർട്ട് ലയനം: നിലവിലുള്ള രേഖകൾ നഷ്ടപ്പെടാതെ രണ്ട് ഉപകരണങ്ങളിലെയും ടാസ്കുകളും സമയ ഭാഗങ്ങളും ഒന്നിപ്പിക്കുന്നു.",
+  "@helpWifiModes1": {
+    "description": "Help: sync modes bullet."
+  },
+  "helpWifiModes2": "എല്ലാം മാറ്റിസ്ഥാപിക്കുക: സ്ഥിരീകരണത്തിന് ശേഷം, ലക്ഷ്യ ഉപകരണത്തിലെ വിവരങ്ങൾ മുഴുവനായി ഉറവിട ഉപകരണത്തിന്റെ കൃത്യമായ പകർപ്പ് കൊണ്ട് മാറ്റുന്നു.",
+  "@helpWifiModes2": {
+    "description": "Help: sync modes bullet."
+  },
+  "helpWifiTip": "നുറുങ്ങ്: നിങ്ങളുടെ വൈ-ഫൈ റൂട്ടർ ഉപകരണങ്ങൾ തമ്മിലുള്ള ബന്ധം തടയുന്നുവെങ്കിൽ (client isolation), ഒരു ഫോണിൽ മൊബൈൽ ഹോട്ട്‌സ്‌പോട്ട് ഓണാക്കി മറ്റേ ഫോൺ അതിലേക്ക് ബന്ധിപ്പിക്കുക.",
+  "@helpWifiTip": {
+    "description": "Help: Wi-Fi sync footer tip."
+  },
+  "helpQrTitle": "Air QR-ഉം ഡാറ്റ കൈമാറ്റവും",
+  "@helpQrTitle": {
+    "description": "Help topic title: Air QR and data handoff."
+  },
+  "helpQrIntro": "വൈ-ഫൈയോ കേബിളുകളോ ഇന്റർനെറ്റോ ഇല്ലാതെ ടാസ്കുകളും സമയ സംഗ്രഹങ്ങളും ഫ്ലാഷ്കാർഡുകളും ഉപകരണങ്ങൾക്കിടയിൽ മാറ്റുക. ചലിക്കുന്ന QR കോഡുകൾ വഴി Air QR വിവരങ്ങൾ മറ്റൊരു ഉപകരണത്തിന്റെ ക്യാമറയിലേക്ക് നേരിട്ട് എത്തിക്കുന്നു.",
+  "@helpQrIntro": {
+    "description": "Help: Air QR intro paragraph."
+  },
+  "helpQrBeamTitle": "Air QR ദൃശ്യ പ്രക്ഷേപണം",
+  "@helpQrBeamTitle": {
+    "description": "Help: Air QR section title."
+  },
+  "helpQrBeam1": "ടാസ്കുകളോ ഡെക്കുകളോ തിരഞ്ഞെടുത്ത് \"Air QR പങ്കിടുക\" ടാപ്പ് ചെയ്താൽ സ്ക്രീനിൽ QR സ്ട്രീം തെളിയും.",
+  "@helpQrBeam1": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam2": "സ്വീകരിക്കുന്ന ഉപകരണത്തിൽ \"Air QR സ്കാൻ\" തുറന്ന് ക്യാമറ അയയ്ക്കുന്ന സ്ക്രീനിലേക്ക് തിരിക്കുക.",
+  "@helpQrBeam2": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam3": "ക്യാമറ എല്ലാ വിവര ഭാഗങ്ങളും തത്സമയം കൂട്ടിച്ചേർക്കുന്നു; ഇറക്കുമതിക്ക് മുമ്പ് ചെക്ക്സം പരിശോധിക്കുന്നു.",
+  "@helpQrBeam3": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam4": "സ്കാൻ ചെയ്യുമ്പോൾ മാത്രമേ ക്യാമറ അനുമതി ചോദിക്കൂ; ഒരു ഫോട്ടോയോ വീഡിയോയോ ഒരിക്കലും സൂക്ഷിക്കില്ല.",
+  "@helpQrBeam4": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrHandoffTitle": "ഡാറ്റ കൈമാറ്റം (JSON & Markdown)",
+  "@helpQrHandoffTitle": {
+    "description": "Help: Air QR section title."
+  },
+  "helpQrHandoff1": "ഇമെയിലിനോ റിപ്പോർട്ടുകൾക്കോ വേണ്ടി ദിവസേനയുള്ള നേട്ടങ്ങളുടെ Markdown സംഗ്രഹങ്ങൾ ഉണ്ടാക്കുക.",
+  "@helpQrHandoff1": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrHandoff2": "വിവിധ പ്ലാറ്റ്ഫോമുകളിലെ ബാക്കപ്പിനും സ്ക്രിപ്റ്റുകൾക്കുമായി തിരഞ്ഞെടുത്ത ടാസ്കുകളുടെ JSON രൂപം കയറ്റുമതിയും ഇറക്കുമതിയും ചെയ്യുക.",
+  "@helpQrHandoff2": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrHandoff3": "ഡെസ്ക്ടോപ്പിലോ മൊബൈലിലോ JSON നേരിട്ട് ആപ്പിൽ ഒട്ടിച്ച് ഒറ്റ ടാപ്പിൽ ഇറക്കുമതി ചെയ്യുക.",
+  "@helpQrHandoff3": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrTip": "നുറുങ്ങ്: ഒരു ടാസ്കോ ഫ്ലാഷ്കാർഡ് ഡെക്കോ ഡെസ്ക്ടോപ്പ് സ്ക്രീനിൽ നിന്ന് ഫോണിലേക്ക് നിമിഷങ്ങൾക്കുള്ളിൽ മാറ്റാൻ Air QR ഏറെ സഹായകമാണ്.",
+  "@helpQrTip": {
+    "description": "Help: Air QR footer tip."
+  },
+  "helpPrivacyTitle": "സുരക്ഷ, ആപ്പ് പൂട്ട്, എൻക്രിപ്ഷൻ",
+  "@helpPrivacyTitle": {
+    "description": "Help topic title: security, app lock and encryption."
+  },
+  "helpPrivacyIntro": "സ്വകാര്യതയ്ക്ക് മുൻഗണന നൽകുന്ന, ഓഫ്‌ലൈൻ ഘടനയോടെയാണ് SreerajP ToDo അടിമുടി നിർമ്മിച്ചിരിക്കുന്നത്. നിങ്ങളുടെ വ്യക്തിപരമായ വിവരങ്ങൾ ശക്തമായി എൻക്രിപ്റ്റ് ചെയ്ത് പല തലങ്ങളിലുള്ള സുരക്ഷയാൽ സംരക്ഷിച്ചിരിക്കുന്നു.",
+  "@helpPrivacyIntro": {
+    "description": "Help: security intro paragraph."
+  },
+  "helpPrivacyDbTitle": "SQLCipher AES-256 ഡാറ്റാബേസ് എൻക്രിപ്ഷൻ",
+  "@helpPrivacyDbTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyDb1": "പ്രവർത്തനത്തിലുള്ള SQLite ഡാറ്റാബേസ് 256-ബിറ്റ് AES (SQLCipher) ഉപയോഗിച്ച് പൂർണ്ണമായി എൻക്രിപ്റ്റ് ചെയ്തിരിക്കുന്നു.",
+  "@helpPrivacyDb1": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyDb2": "ഡാറ്റാബേസിന്റെ പ്രധാന എൻക്രിപ്ഷൻ കീ സുരക്ഷിതമായി ഉണ്ടാക്കി ഉപകരണത്തിന്റെ സംരക്ഷിത ഹാർഡ്‌വെയർ സംഭരണത്തിൽ (Android Keystore / OS keychain) സൂക്ഷിക്കുന്നു.",
+  "@helpPrivacyDb2": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyDb3": "ആരെങ്കിലും നിങ്ങളുടെ ഉപകരണത്തിൽ നിന്ന് ഡാറ്റാബേസ് ഫയൽ പകർത്തിയാലും കീ ഇല്ലാതെ അത് വായിക്കാനാവില്ല.",
+  "@helpPrivacyDb3": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyLockTitle": "ബയോമെട്രിക്, ആപ്പ് പിൻ പൂട്ട്",
+  "@helpPrivacyLockTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyLock1": "ഉപകരണത്തിലെ വിരലടയാളം, മുഖം തിരിച്ചറിയൽ, അല്ലെങ്കിൽ സ്വന്തം ആപ്പ് പിൻ ഉപയോഗിച്ച് ആപ്പിലേക്കുള്ള പ്രവേശനം സംരക്ഷിക്കുക.",
+  "@helpPrivacyLock1": {
+    "description": "Help: app lock bullet."
+  },
+  "helpPrivacyLock2": "മറ്റൊന്നിലേക്ക് മാറുമ്പോൾ ആപ്പ് സുരക്ഷിതമാക്കാൻ സ്വയം പൂട്ടുന്ന സമയം (ഉടൻ, 1 മിനിറ്റ്, 5 മിനിറ്റ്) സജ്ജമാക്കുക.",
+  "@helpPrivacyLock2": {
+    "description": "Help: app lock bullet."
+  },
+  "helpPrivacyShotTitle": "സ്ക്രീൻഷോട്ട് സംരക്ഷണം",
+  "@helpPrivacyShotTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyShot1": "ക്രമീകരണങ്ങൾ → സുരക്ഷ എന്നതിൽ സ്ക്രീൻഷോട്ട് സംരക്ഷണം ഓണാക്കിയാൽ സ്ക്രീൻഷോട്ടുകളും സ്ക്രീൻ റെക്കോർഡിംഗും തടയും.",
+  "@helpPrivacyShot1": {
+    "description": "Help: screenshot guard bullet."
+  },
+  "helpPrivacyShot2": "പൂർണ്ണ സ്വകാര്യതയ്ക്കായി Android-ലെ സമീപകാല ആപ്പുകളുടെ പട്ടികയിൽ ആപ്പ് സ്ക്രീനിന്റെ പ്രിവ്യൂവും സ്ക്രീൻഷോട്ട് സംരക്ഷണം മറയ്ക്കുന്നു.",
+  "@helpPrivacyShot2": {
+    "description": "Help: screenshot guard bullet."
+  },
+  "helpPrivacyNetTitle": "ഇന്റർനെറ്റ് ഇല്ലെന്ന ഉറപ്പ്",
+  "@helpPrivacyNetTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyNet1": "ആപ്പ് ചോദിക്കുന്ന ഒരേയൊരു നെറ്റ്‌വർക്ക് അനുമതി INTERNET ആണ്; അത് ലോക്കൽ നെറ്റ്‌വർക്കിലെ നിങ്ങളുടെ സ്വന്തം ഉപകരണങ്ങളുമായുള്ള വൈ-ഫൈ സിങ്കിന് മാത്രം. ഒന്നും ഒരിക്കലും ഇന്റർനെറ്റ് വഴി അയയ്ക്കില്ല.",
+  "@helpPrivacyNet1": {
+    "description": "Help: network guarantee bullet. The app declares INTERNET only for local Wi-Fi sync."
+  },
+  "helpPrivacyNet2": "ടെലിമെട്രിയില്ല, മൂന്നാം കക്ഷി ക്ലൗഡ് SDK-കളില്ല, ക്രാഷ് ട്രാക്കിംഗില്ല, പരസ്യങ്ങളുമില്ല.",
+  "@helpPrivacyNet2": {
+    "description": "Help: network guarantee bullet."
+  },
+  "helpPrivacyTip": "നുറുങ്ങ്: ഹാർഡ്‌വെയർ പിന്തുണയുള്ള പരമാവധി സംരക്ഷണത്തിനായി ഫോണിലെ ഉപകരണ പൂട്ട് (വിരലടയാളം/പിൻ) എപ്പോഴും ഓണാക്കി വയ്ക്കുക.",
+  "@helpPrivacyTip": {
+    "description": "Help: security footer tip."
+  },
+  "helpBackupTitle": "എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പും പുനഃസ്ഥാപനവും",
+  "@helpBackupTitle": {
+    "description": "Help topic title: encrypted backup and restore."
+  },
+  "helpBackupIntro": "നിങ്ങളുടെ ടാസ്കുകൾ, സമയ രേഖകൾ, ആവർത്തന നിയമങ്ങൾ, ക്രമീകരണങ്ങൾ എന്നിവ അടങ്ങിയ ഒരൊറ്റ എൻക്രിപ്റ്റ് ചെയ്ത ആർക്കൈവ് (.todobak / ZIP) ബാക്കപ്പ് ഉണ്ടാക്കുന്നു. പുതിയ ഫോണിലേക്ക് വിവരങ്ങൾ മാറ്റാനോ ഫാക്ടറി റീസെറ്റിന് ശേഷം വീണ്ടെടുക്കാനോ ഇടയ്ക്കിടെ ഓഫ്‌ലൈൻ പകർപ്പുകൾ സൂക്ഷിക്കാനോ ഇത് ഉപയോഗിക്കുക.",
+  "@helpBackupIntro": {
+    "description": "Help: backup intro paragraph."
+  },
+  "helpBackupContentsTitle": "ബാക്കപ്പിൽ എന്തെല്ലാം ഉണ്ട്",
+  "@helpBackupContentsTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupContents1": "എല്ലാ ടാസ്കുകളും വിവരണങ്ങളും നിലകളും പഴയ സമയ ഭാഗങ്ങളും.",
+  "@helpBackupContents1": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents2": "ആവർത്തന ടാസ്ക് നിയമങ്ങളും സൃഷ്ടിക്കൽ ക്രമങ്ങളും.",
+  "@helpBackupContents2": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents3": "മാസ്റ്ററി ഡെക്ക് കാർഡുകൾ, അവലോകന ഇടവേളകൾ, പ്രാവീണ്യ നിലകൾ.",
+  "@helpBackupContents3": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents4": "നിങ്ങളുടെ സ്വന്തം ക്രമീകരണങ്ങൾ (തീം, നിറങ്ങൾ, അക്ഷരരൂപം, ടാസ്ക് സ്വതവേ മൂല്യങ്ങൾ).",
+  "@helpBackupContents4": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupPassTitle": "പാസ്ഫ്രെയ്സ് എൻക്രിപ്ഷൻ സുരക്ഷ",
+  "@helpBackupPassTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupPass1": "നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന പാസ്ഫ്രെയ്സ് ഉപയോഗിച്ച് AES-256 രീതിയിൽ ബാക്കപ്പുകൾ ശക്തമായി എൻക്രിപ്റ്റ് ചെയ്യുന്നു.",
+  "@helpBackupPass1": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupPass2": "ആപ്പ് നിങ്ങളുടെ ബാക്കപ്പ് പാസ്ഫ്രെയ്സ് എവിടെയും സൂക്ഷിക്കുന്നില്ല. അത് ഓർക്കുകയോ ഒരു പാസ്‌വേഡ് മാനേജറിൽ സൂക്ഷിക്കുകയോ ചെയ്യണം.",
+  "@helpBackupPass2": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupPass3": "പാസ്ഫ്രെയ്സ് നഷ്ടപ്പെട്ടാൽ ആർക്കും ബാക്കപ്പ് തുറക്കാനോ വീണ്ടെടുക്കാനോ കഴിയില്ല.",
+  "@helpBackupPass3": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupRestoreTitle": "ബാക്കപ്പിൽ നിന്ന് പുനഃസ്ഥാപിക്കൽ",
+  "@helpBackupRestoreTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupRestore1": "പുനഃസ്ഥാപിക്കുമ്പോൾ ആപ്പിലുള്ളതെല്ലാം മാറ്റി ബാക്കപ്പ് ഫയലിൽ നിന്ന് കൃത്യമായ പകർപ്പ് പുനർനിർമ്മിക്കുന്നു.",
+  "@helpBackupRestore1": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupRestore2": "പുനഃസ്ഥാപിക്കുന്നതിന് മുമ്പ് ആപ്പ് ആർക്കൈവിന്റെ ചെക്ക്സം പരിശോധിക്കുന്നു, പാസ്ഫ്രെയ്സ് ഉപയോഗിച്ച് തുറക്കുന്നു, വിവര ഘടനയുടെ പതിപ്പ് ഉറപ്പാക്കുന്നു.",
+  "@helpBackupRestore2": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupRestore3": "നിലവിലുള്ള വിവരങ്ങൾ മാറ്റാതെ രണ്ട് ഉപകരണങ്ങളിലെ ടാസ്കുകൾ ലയിപ്പിക്കണമെങ്കിൽ, പകരം \"ലോക്കൽ വൈ-ഫൈ സിങ്ക്\" ഉപയോഗിക്കുക.",
+  "@helpBackupRestore3": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupTip": "നുറുങ്ങ്: ബാക്കപ്പ് ഉണ്ടാക്കിയ ശേഷം ഫയൽ USB ഡ്രൈവ്, SD കാർഡ്, അല്ലെങ്കിൽ നിങ്ങളുടെ സ്വന്തം ക്ലൗഡ് സംഭരണം പോലുള്ള സുരക്ഷിത സ്ഥലത്ത് സൂക്ഷിക്കുക.",
+  "@helpBackupTip": {
+    "description": "Help: backup footer tip."
+  },
+  "helpFaqTitle": "ചോദ്യോത്തരങ്ങളും പ്രശ്നപരിഹാരവും",
+  "@helpFaqTitle": {
+    "description": "Help topic title: FAQs."
+  },
+  "helpFaqIntro": "ഡേ ലോക്ക്, സമയ ട്രാക്കിംഗ് നിയമങ്ങൾ, ഓഫ്‌ലൈൻ സുരക്ഷ എന്നിവയെക്കുറിച്ചുള്ള സാധാരണ ചോദ്യങ്ങൾക്കുള്ള ഉത്തരങ്ങളും SreerajP ToDo നന്നായി ഉപയോഗിക്കാനുള്ള നുറുങ്ങുകളും ഇവിടെ കാണാം.",
+  "@helpFaqIntro": {
+    "description": "Help: FAQ intro paragraph."
+  },
+  "helpFaqGeneralTitle": "പൊതുവായതും പ്രവർത്തനരീതിയും",
+  "@helpFaqGeneralTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqEditPastQ": "ഇന്നലത്തെ ടാസ്ക് എന്തുകൊണ്ട് തിരുത്താനോ ഇല്ലാതാക്കാനോ കഴിയുന്നില്ല?",
+  "@helpFaqEditPastQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqEditPastA": "SreerajP ToDo ഡേ ലോക്ക് നിയമം പാലിക്കുന്നു: സത്യസന്ധവും മാറ്റം വരുത്താനാവാത്തതുമായ രേഖകൾക്കായി കഴിഞ്ഞ തീയതികൾ സ്ഥിരമായി വായിക്കാൻ മാത്രമുള്ളതാണ്. പൂർത്തിയാകാത്ത പഴയ ടാസ്കിൽ ജോലി ചെയ്യാൻ \"ടാസ്കുകൾ പകർത്തുക\" ടാപ്പ് ചെയ്ത് അത് ഇന്നത്തേക്ക് പകർത്തുക.",
+  "@helpFaqEditPastA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqTimerDoneQ": "പൂർത്തിയായ ടാസ്കിൽ എന്തുകൊണ്ട് ടൈമർ തുടങ്ങാനാവുന്നില്ല?",
+  "@helpFaqTimerDoneQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqTimerDoneA": "പൂർത്തിയായി, ഉപേക്ഷിച്ചു എന്നിവ അന്തിമ നിലകളാണ്. ടാസ്ക് പൂർത്തിയായാൽ അതിന്റെ സമയ രേഖ അടയ്ക്കുന്നു. കൂടുതൽ സമയം രേഖപ്പെടുത്തണമെങ്കിൽ ടാസ്ക് വീണ്ടും തുറക്കാം (നില ബാക്കി അല്ലെങ്കിൽ പ്രവർത്തനത്തിൽ എന്നാക്കി മാറ്റുക).",
+  "@helpFaqTimerDoneA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqUndoQ": "അബദ്ധത്തിൽ മാറ്റിയ നില എങ്ങനെ പഴയപടിയാക്കാം?",
+  "@helpFaqUndoQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqUndoA": "നില മാറ്റുമ്പോഴെല്ലാം \"പഴയപടി\" ബട്ടണോടെ 5 സെക്കൻഡ് നീളുന്ന അറിയിപ്പ് കാണിക്കും. മുകളിലെ ബാറിലുള്ള സ്ഥിരമായ പഴയപടി ചിഹ്നവും ടാപ്പ് ചെയ്യാം.",
+  "@helpFaqUndoA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqTimeTitle": "സമയ ട്രാക്കിംഗും ടൈമറുകളും",
+  "@helpFaqTimeTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqTwoTimersQ": "രണ്ട് ടാസ്കുകളിൽ ഒരേ സമയം ടൈമർ ഓടിക്കാമോ?",
+  "@helpFaqTwoTimersQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqTwoTimersA": "ഇല്ല. ട്രാക്കിംഗിന്റെ കൃത്യത നിലനിർത്താൻ ആപ്പ് ഒരു സമയം ഒരു ടൈമർ നിയമം പാലിക്കുന്നു. ഏത് ടാസ്കിൽ ടൈമർ തുടങ്ങിയാലും മറ്റൊരു ടാസ്കിൽ ഓടുന്ന ടൈമർ സ്വയം നിർത്തും.",
+  "@helpFaqTwoTimersA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqForgotStopQ": "രാത്രിയിൽ ടൈമർ നിർത്താൻ മറന്നാൽ എന്ത് സംഭവിക്കും?",
+  "@helpFaqForgotStopQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqForgotStopA": "ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് → സ്വയം നിർത്തൽ എന്നതിൽ \"അർദ്ധരാത്രിയിൽ സ്വയം നിർത്തുക\" ഓണാക്കിയാൽ, തുറന്ന ടൈമറുകൾ അടുത്ത ദിവസത്തേക്ക് നീളാതെ ദിവസാവസാനം സ്വയം അടയും.",
+  "@helpFaqForgotStopA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqShortTapsQ": "വളരെ ചെറിയ ടൈമർ ടാപ്പുകൾ എന്തുകൊണ്ട് സൂക്ഷിക്കുന്നില്ല?",
+  "@helpFaqShortTapsQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqShortTapsA": "സമയ ഭാഗങ്ങൾ വൃത്തിയായി സൂക്ഷിക്കാൻ, ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് → കുറഞ്ഞ ദൈർഘ്യം എന്നതിൽ 10 അല്ലെങ്കിൽ 30 സെക്കൻഡിൽ താഴെയുള്ള അബദ്ധ ടാപ്പുകൾ ഒഴിവാക്കാം.",
+  "@helpFaqShortTapsA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqPrivacyTitle": "സ്വകാര്യതയും ഓഫ്‌ലൈൻ ഉറപ്പും",
+  "@helpFaqPrivacyTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqUploadQ": "ഏതെങ്കിലും വിവരങ്ങൾ ക്ലൗഡ് സെർവറുകളിലേക്കോ അനലിറ്റിക്സിലേക്കോ അയയ്ക്കുന്നുണ്ടോ?",
+  "@helpFaqUploadQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqUploadA": "ഒരു വിവരവും അയയ്ക്കുന്നില്ല. SreerajP ToDo പൂർണ്ണമായും ഓഫ്‌ലൈനായി പ്രവർത്തിക്കുന്നു. അതിന്റെ ഒരേയൊരു നെറ്റ്‌വർക്ക് അനുമതിയായ INTERNET ലോക്കൽ നെറ്റ്‌വർക്കിലെ നിങ്ങളുടെ സ്വന്തം ഉപകരണങ്ങളുമായുള്ള വൈ-ഫൈ സിങ്കിന് മാത്രം ഉപയോഗിക്കുന്നു. എല്ലാ ഡാറ്റാബേസ് പട്ടികകളും രേഖകളും AES-256 എൻക്രിപ്റ്റ് ചെയ്ത സംഭരണത്തിൽ നിങ്ങളുടെ ഉപകരണത്തിൽ തന്നെ തുടരുന്നു.",
+  "@helpFaqUploadA": {
+    "description": "Help: FAQ answer. The app declares INTERNET only for local Wi-Fi sync."
+  },
+  "helpFaqLostPassQ": "ബാക്കപ്പ് പാസ്‌വേഡ് മറന്നാൽ എന്ത് സംഭവിക്കും?",
+  "@helpFaqLostPassQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqLostPassA": "ബാക്കപ്പുകൾ ഉപകരണത്തിൽ തന്നെ AES-256 ഉപയോഗിച്ച് ശക്തമായി എൻക്രിപ്റ്റ് ചെയ്യുന്നതിനാലും ക്ലൗഡ് സെർവറോ പ്രധാന കീയോ ഇല്ലാത്തതിനാലും നഷ്ടപ്പെട്ട ബാക്കപ്പ് പാസ്‌വേഡ് വീണ്ടെടുക്കാനാവില്ല. പാസ്ഫ്രെയ്സ് എപ്പോഴും സുരക്ഷിതമായി സൂക്ഷിക്കുക.",
+  "@helpFaqLostPassA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqSyncTitle": "സിങ്കും ഉപകരണ കൈമാറ്റവും",
+  "@helpFaqSyncTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqNewPhoneQ": "എന്റെ എല്ലാ ടാസ്കുകളും പുതിയ ഫോണിലേക്ക് എങ്ങനെ മാറ്റാം?",
+  "@helpFaqNewPhoneQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqNewPhoneA": "രണ്ട് എളുപ്പ വഴികളുണ്ട്: (1) വീട്ടിലെ വൈ-ഫൈ വഴി നേരിട്ട് കൈമാറാൻ \"ലോക്കൽ വൈ-ഫൈ P2P സിങ്ക്\" ഉപയോഗിക്കുക, അല്ലെങ്കിൽ (2) ക്രമീകരണങ്ങൾ → ബാക്കപ്പ് എന്നതിൽ എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പ് ZIP ഫയൽ ഉണ്ടാക്കി പുതിയ ഫോണിൽ പുനഃസ്ഥാപിക്കുക.",
+  "@helpFaqNewPhoneA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqDiscoverQ": "ലോക്കൽ വൈ-ഫൈ സിങ്ക് എന്തുകൊണ്ട് മറ്റേ ഉപകരണം കണ്ടെത്തുന്നില്ല?",
+  "@helpFaqDiscoverQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqDiscoverA": "രണ്ട് ഉപകരണങ്ങളും ഒരേ വൈ-ഫൈ നെറ്റ്‌വർക്കിലാണെന്ന് ഉറപ്പാക്കുക. റൂട്ടറിൽ \"Client Isolation\" ഓണാണെങ്കിൽ, ഒരു ഫോണിൽ ഹോട്ട്‌സ്‌പോട്ട് ഓണാക്കി മറ്റേത് അതിലേക്ക് ബന്ധിപ്പിക്കുക.",
+  "@helpFaqDiscoverA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqFooter": "കൂടുതൽ വിവരങ്ങൾ വേണോ? സഹായവും മാർഗ്ഗനിർദ്ദേശങ്ങളും എന്നതിലെ ഓരോ വിഷയത്തിന്റെയും ഗൈഡുകൾ നോക്കുക, അല്ലെങ്കിൽ ക്രമീകരണങ്ങൾ → അനുമതികൾ എന്നതിൽ അനുമതികൾ പരിശോധിക്കുക.",
+  "@helpFaqFooter": {
+    "description": "Help: FAQ footer."
+  },
+  "helpHomeTaskSection": "ടാസ്ക് മാനേജ്മെന്റും പ്രവർത്തനരീതിയും",
+  "@helpHomeTaskSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeTaskMgmtSubtitle": "ദിവസ സമയരേഖ, ഡേ ലോക്ക്, അന്തിമ നില ലോക്കുകൾ എന്നിവ നിങ്ങളുടെ രേഖകൾ എങ്ങനെ സംരക്ഷിക്കുന്നു.",
+  "@helpHomeTaskMgmtSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeRecurringSubtitle": "സ്വയം ആവർത്തിക്കുന്ന നിയമങ്ങൾ (ദിവസേന, ആഴ്ചതോറും, മാസംതോറും) ഒരുക്കലും കഴിഞ്ഞ ടാസ്കുകൾ കൂട്ടമായി പകർത്തലും.",
+  "@helpHomeRecurringSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeTimeSection": "സമയ ട്രാക്കിംഗും ഫോക്കസും",
+  "@helpHomeTimeSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeTimeTrackingSubtitle": "പല ഭാഗങ്ങളായുള്ള സമയ രേഖപ്പെടുത്തൽ, ലക്ഷ്യ സമയം, ഒരു സമയം ഒരു ടൈമർ നിയമം എന്നിവ എങ്ങനെ പ്രവർത്തിക്കുന്നു.",
+  "@helpHomeTimeTrackingSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeFocusSubtitle": "ശ്രദ്ധ തെറ്റിക്കാത്ത ഫോക്കസ് സ്ക്രീൻ, പൊമോഡോറോ കൗണ്ട്ഡൗൺ, സ്വയം നിർത്തൽ സുരക്ഷ എന്നിവയുടെ ഉപയോഗം.",
+  "@helpHomeFocusSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeMasterySection": "മാസ്റ്ററി ഡെക്കും ഇടവിട്ടുള്ള ആവർത്തനവും",
+  "@helpHomeMasterySection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeMasterySubtitle": "കാർഡ് ഡെക്കുകൾ, ഇടവിട്ടുള്ള അവലോകന ഇടവേളകൾ, പ്രാവീണ്യ സ്കോർ എന്നിവ എങ്ങനെ പ്രവർത്തിക്കുന്നു.",
+  "@helpHomeMasterySubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeSyncSection": "സിങ്കും ഓഫ്‌ലൈൻ കൈമാറ്റവും",
+  "@helpHomeSyncSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeWifiSubtitle": "ക്ലൗഡ് ഇല്ലാതെ, ആദ്യാവസാന എൻക്രിപ്ഷനോടെ ലോക്കൽ വൈ-ഫൈ വഴി ഉപകരണങ്ങൾക്കിടയിൽ നേരിട്ടുള്ള സിങ്ക്.",
+  "@helpHomeWifiSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeQrTitle": "Air QR സ്കാനറും ഡാറ്റ കൈമാറ്റവും",
+  "@helpHomeQrTitle": {
+    "description": "Help home: topic card title for Air QR."
+  },
+  "helpHomeQrSubtitle": "ചലിക്കുന്ന QR കോഡ് സ്ട്രീമുകളും ക്ലിപ്പ്ബോർഡും വഴി ടാസ്കുകളും ഡെക്കുകളും ഓഫ്‌ലൈനായി കൈമാറൽ.",
+  "@helpHomeQrSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomePrivacySection": "സ്വകാര്യത, സുരക്ഷ, ബാക്കപ്പുകൾ",
+  "@helpHomePrivacySection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomePrivacySubtitle": "SQLCipher AES-256 ഡാറ്റാബേസ് എൻക്രിപ്ഷൻ, ബയോമെട്രിക് പ്രാമാണീകരണം, സ്ക്രീൻഷോട്ട് സംരക്ഷണം.",
+  "@helpHomePrivacySubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeBackupSubtitle": "പാസ്‌വേഡ് സംരക്ഷിത ZIP ബാക്കപ്പ് ഫയലുകൾ ഉണ്ടാക്കൽ, സുരക്ഷാ ശീലങ്ങൾ, പൂർണ്ണ പുനഃസ്ഥാപന ഘട്ടങ്ങൾ.",
+  "@helpHomeBackupSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeFaqSection": "പതിവായി ചോദിക്കുന്ന ചോദ്യങ്ങൾ",
+  "@helpHomeFaqSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeFaqTitle": "ചോദ്യോത്തരങ്ങളും പ്രശ്നപരിഹാര ഗൈഡും",
+  "@helpHomeFaqTitle": {
+    "description": "Help home: topic card title for FAQs."
+  },
+  "helpHomeFaqSubtitle": "ഡേ ലോക്ക്, ഓഫ്‌ലൈൻ പ്രവർത്തനം, ഡാറ്റാബേസ് സുരക്ഷ എന്നിവയെക്കുറിച്ചുള്ള സാധാരണ ചോദ്യങ്ങൾക്ക് നേരിട്ടുള്ള ഉത്തരങ്ങൾ.",
+  "@helpHomeFaqSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeHeaderTitle": "സഹായ കേന്ദ്രവും വിജ്ഞാന ശേഖരവും",
+  "@helpHomeHeaderTitle": {
+    "description": "Help home: header card title."
+  },
+  "helpHomeHeaderSubtitle": "SreerajP ToDo-യുടെ എല്ലാ സവിശേഷതകൾക്കുമുള്ള വിശദമായ ഗൈഡുകളും നിയമങ്ങളും പരിഹാരങ്ങളും കാണുക.",
+  "@helpHomeHeaderSubtitle": {
+    "description": "Help home: header card subtitle."
+  },
+  "featDailyName": "ദിവസ ടാസ്കുകളും പ്രവർത്തനരീതിയും",
+  "@featDailyName": {
+    "description": "Features: category name."
+  },
+  "featDailySubtitle": "വേഗത്തിലുള്ള ആസൂത്രണം, ഡേ ലോക്ക് സംരക്ഷണം, യൂണികോഡ് ഏകീകരണം, പഴയപടിയാക്കൽ",
+  "@featDailySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featUnicodeTitle": "യൂണികോഡ് മുൻഗണനയും ബഹുലിപി ഏകീകരണവും",
+  "@featUnicodeTitle": {
+    "description": "Features: feature title."
+  },
+  "featUnicodeDesc": "കൃത്യമായ അനന്യതയ്ക്കായി എല്ലാ ടാസ്ക് തലക്കെട്ടുകളും NFC രൂപത്തിലാക്കുന്നു; ഇംഗ്ലീഷ്, മലയാളം, ഹിന്ദി തുടങ്ങിയവയുടെ എഴുത്ത് ദിശ സ്വയം കണ്ടെത്തുന്നു.",
+  "@featUnicodeDesc": {
+    "description": "Features: feature description."
+  },
+  "featUnicodeH1": "NFC യൂണികോഡ്",
+  "@featUnicodeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featUnicodeH2": "ബഹുലിപി എഴുത്ത്",
+  "@featUnicodeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featUnicodeH3": "RTL, LTR ദിശകൾ",
+  "@featUnicodeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockTitle": "ഡേ ലോക്ക് സംരക്ഷണം",
+  "@featDayLockTitle": {
+    "description": "Features: feature title."
+  },
+  "featDayLockDesc": "പഴയ രേഖകളുടെ കൃത്യത കാക്കാൻ കഴിഞ്ഞ ദിവസങ്ങൾ പിന്നീട് മാറ്റം വരുത്താനാവാത്ത വിധം കർശനമായി പൂട്ടുന്നു.",
+  "@featDayLockDesc": {
+    "description": "Features: feature description."
+  },
+  "featDayLockH1": "ചരിത്ര പൂട്ട്",
+  "@featDayLockH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockH2": "മാറ്റമില്ലാത്ത ഭൂതകാലം",
+  "@featDayLockH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockH3": "വായിക്കാൻ മാത്രമുള്ള രേഖകൾ",
+  "@featDayLockH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarTitle": "ദിവസ പട്ടികയും കലണ്ടർ നാവിഗേഷനും",
+  "@featCalendarTitle": {
+    "description": "Features: feature title."
+  },
+  "featCalendarDesc": "കലണ്ടർ വഴി തീയതി തിരഞ്ഞെടുക്കൽ, ഇന്നിലേക്ക് പെട്ടെന്ന് മടങ്ങൽ, സ്വൈപ്പ് ചെയ്ത് ദിവസം മാറ്റൽ എന്നിവയോടെ വേഗത്തിലുള്ള ദിവസ ആസൂത്രണം.",
+  "@featCalendarDesc": {
+    "description": "Features: feature description."
+  },
+  "featCalendarH1": "കലണ്ടർ തിരഞ്ഞെടുക്കൽ",
+  "@featCalendarH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarH2": "ഇന്നിലേക്ക് പോകൽ",
+  "@featCalendarH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarH3": "വേഗത്തിലുള്ള നീക്കം",
+  "@featCalendarH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoTitle": "ഉടനടി പഴയപടിയാക്കലും തിരിച്ചാക്കാവുന്ന പ്രവൃത്തികളും",
+  "@featUndoTitle": {
+    "description": "Features: feature title."
+  },
+  "featUndoDesc": "ടാസ്ക് പൂർത്തിയാക്കൽ, ഉപേക്ഷിക്കൽ, നില മാറ്റം എന്നിവയ്ക്ക് 5 സെക്കൻഡ് പഴയപടി അറിയിപ്പും മുകളിലെ ബാറിൽ സ്ഥിരമായ പഴയപടി ബട്ടണും.",
+  "@featUndoDesc": {
+    "description": "Features: feature description."
+  },
+  "featUndoH1": "5 സെക്കൻഡ് പഴയപടി",
+  "@featUndoH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoH2": "സ്ഥിര ബട്ടൺ",
+  "@featUndoH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoH3": "സുരക്ഷിത മാറ്റങ്ങൾ",
+  "@featUndoH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchTitle": "പൂർണ്ണ പാഠ തിരയലും അരിപ്പകളും",
+  "@featSearchTitle": {
+    "description": "Features: feature title."
+  },
+  "featSearchDesc": "നില, മുൻഗണന, തീയതി പരിധി എന്നിവ അനുസരിച്ച് എല്ലാ ടാസ്കുകളിലും വിവരണങ്ങളിലും പഴയ രേഖകളിലും ഉടനടി തിരയൽ.",
+  "@featSearchDesc": {
+    "description": "Features: feature description."
+  },
+  "featSearchH1": "പൂർണ്ണ പാഠ തിരയൽ",
+  "@featSearchH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchH2": "നില അരിപ്പകൾ",
+  "@featSearchH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchH3": "തീയതി പരിധികൾ",
+  "@featSearchH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTimeSubtitle": "സ്റ്റോപ്പ്‌വാച്ച് ടൈമറുകൾ, ഒരു സമയം ഒരു ടൈമർ നിയമം, പൊമോഡോറോ ഫോക്കസ്",
+  "@featTimeSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featSegmentsTitle": "പല ഭാഗങ്ങളായുള്ള സമയ ട്രാക്കിംഗ്",
+  "@featSegmentsTitle": {
+    "description": "Features: feature title."
+  },
+  "featSegmentsDesc": "തത്സമയം സെക്കൻഡ് തോറുമുള്ള കൃത്യതയോടെയും ലക്ഷ്യ പുരോഗതിയോടെയും പല സെഷനുകളിലായി ഏത് ടാസ്കിനും ചെലവഴിച്ച കൃത്യ സമയം അളക്കുക.",
+  "@featSegmentsDesc": {
+    "description": "Features: feature description."
+  },
+  "featSegmentsH1": "പല ഭാഗങ്ങൾ",
+  "@featSegmentsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSegmentsH2": "സ്റ്റോപ്പ്‌വാച്ച് ടൈമർ",
+  "@featSegmentsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSegmentsH3": "HH:MM:SS രൂപം",
+  "@featSegmentsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleDesc": "ട്രാക്കിംഗിന്റെ കൃത്യത കാക്കാൻ ഏത് നിമിഷവും ആപ്പിൽ ആകെ ഒരു ടൈമർ മാത്രമേ ഓടൂ എന്ന് ഉറപ്പാക്കുന്നു.",
+  "@featSingleDesc": {
+    "description": "Features: feature description."
+  },
+  "featSingleH1": "ഒരു സജീവ ടൈമർ",
+  "@featSingleH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleH2": "മുമ്പത്തേത് സ്വയം നിർത്തും",
+  "@featSingleH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleH3": "കൃത്യമായ കണക്കുകൾ",
+  "@featSingleH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featFocusDesc": "ഇഷ്ടാനുസരണമുള്ള ജോലി, ഇടവേള കൗണ്ട്ഡൗൺ ടൈമറുകളോടെ ശ്രദ്ധ തെറ്റിക്കാത്ത മുഴുവൻ സ്ക്രീൻ ഫോക്കസ്.",
+  "@featFocusDesc": {
+    "description": "Features: feature description."
+  },
+  "featFocusH1": "പൊമോഡോറോ ടൈമർ",
+  "@featFocusH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featFocusH2": "മുഴുവൻ സ്ക്രീൻ ഫോക്കസ്",
+  "@featFocusH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCustomIntervals": "ഇഷ്ടാനുസരണ ഇടവേളകൾ",
+  "@featCustomIntervals": {
+    "description": "Features: short highlight chip (used twice)."
+  },
+  "featStreamTitle": "തത്സമയ ടൈമർ പ്രവാഹം",
+  "@featStreamTitle": {
+    "description": "Features: feature title."
+  },
+  "featStreamDesc": "കുറഞ്ഞ ബാറ്ററി മാത്രം ഉപയോഗിക്കുന്ന, ഒരിക്കലും വൈകാത്ത, സെക്കൻഡ് തോറുമുള്ള തത്സമയ ടൈമർ പുതുക്കലുകൾ.",
+  "@featStreamDesc": {
+    "description": "Features: feature description."
+  },
+  "featStreamH1": "തത്സമയ പ്രവാഹം",
+  "@featStreamH1": {
+    "description": "Features: short highlight chip (live update stream)."
+  },
+  "featStreamH2": "ഒട്ടും വൈകലില്ല",
+  "@featStreamH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featStreamH3": "ബാറ്ററി ലാഭം",
+  "@featStreamH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalTitle": "അന്തിമ നില സമയ പൂട്ട്",
+  "@featTerminalTitle": {
+    "description": "Features: feature title."
+  },
+  "featTerminalDesc": "പൂർത്തിയായതും ഉപേക്ഷിച്ചതുമായ ടാസ്കുകൾ ഓടുന്ന ടൈമറുകൾ സ്വയം നിർത്തുകയും പുതിയ സമയ ഭാഗങ്ങൾ തടയുകയും ചെയ്യുന്നു.",
+  "@featTerminalDesc": {
+    "description": "Features: feature description."
+  },
+  "featTerminalH1": "തീരുമ്പോൾ സ്വയം നിർത്തൽ",
+  "@featTerminalH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalH2": "അന്തിമ പൂട്ട്",
+  "@featTerminalH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalH3": "സംരക്ഷിത രേഖകൾ",
+  "@featTerminalH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualName": "അനുഷ്ഠാന മോഡ്",
+  "@featRitualName": {
+    "description": "Features: category name."
+  },
+  "featRitualSubtitle": "ദിവസം ശാന്തമായി തുടങ്ങാനും അവസാനിപ്പിക്കാനുമുള്ള ഒരു വഴികാട്ടി",
+  "@featRitualSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featDayOpenTitle": "വഴികാട്ടിയോടെ ദിവസത്തിന്റെ തുടക്കം",
+  "@featDayOpenTitle": {
+    "description": "Features: feature title."
+  },
+  "featDayOpenDesc": "ശ്വസിക്കുക, ഒരു ചിന്താ കാർഡ് വായിക്കുക, മുമ്പ് ബാക്കിയായത് ഒതുക്കുക, എന്നിട്ട് ദിവസം തുടങ്ങുക. സ്വതവേ ഓഫാണ്; ഓരോ ഘട്ടവും ഒഴിവാക്കാം.",
+  "@featDayOpenDesc": {
+    "description": "Features: feature description."
+  },
+  "featDayOpenH1": "ശ്വസന ടൈമർ",
+  "@featDayOpenH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayOpenH2": "കൊണ്ടുവരൽ",
+  "@featDayOpenH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayOpenH3": "ഇന്നത്തെ മൂന്ന്",
+  "@featDayOpenH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckTitle": "അനുഷ്ഠാന ഡെക്ക്",
+  "@featRitualDeckTitle": {
+    "description": "Features: feature title."
+  },
+  "featRitualDeckDesc": "ഇംഗ്ലീഷിലും മലയാളത്തിലുമായി അമ്പത് ചിന്താ കാർഡുകൾ; ഓരോന്നിലും ഒരു ചോദ്യവും ഒരു ഉദ്ധരണിയും; സ്വന്തം ഇടവിട്ടുള്ള ആവർത്തനത്തിലൂടെ വീണ്ടും വരുന്നു.",
+  "@featRitualDeckDesc": {
+    "description": "Features: feature description."
+  },
+  "featRitualDeckH1": "50 കാർഡുകൾ",
+  "@featRitualDeckH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckH2": "ദ്വിഭാഷ",
+  "@featRitualDeckH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckH3": "സമയമാകുമ്പോൾ തിരികെ വരും",
+  "@featRitualDeckH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningTitle": "സന്ധ്യാ സമാപനം",
+  "@featEveningTitle": {
+    "description": "Features: feature title."
+  },
+  "featEveningDesc": "ദിവസം ശ്രദ്ധയോടെ തുടങ്ങിയതുപോലെ ശ്രദ്ധയോടെ അവസാനിപ്പിക്കാൻ, ദിവസത്തിൽ ഒരിക്കൽ, പിന്നീട്, ദിവസ പട്ടിക സന്ധ്യാ അവലോകനം നൽകുന്നു.",
+  "@featEveningDesc": {
+    "description": "Features: feature description."
+  },
+  "featEveningH1": "ദിവസത്തിൽ ഒരിക്കൽ",
+  "@featEveningH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningH2": "ഐച്ഛികം",
+  "@featEveningH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningH3": "നിങ്ങൾ തിരഞ്ഞെടുത്ത സമയം",
+  "@featEveningH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featMasterySubtitle": "ഫ്ലാഷ്കാർഡുകൾ, ഇടവിട്ടുള്ള ആവർത്തനത്തിലൂടെ ഓർമ്മ, ആവർത്തിക്കുന്ന ശീലങ്ങൾ",
+  "@featMasterySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featSrsTitle": "ഇടവിട്ടുള്ള ആവർത്തന ഫ്ലാഷ്കാർഡുകൾ",
+  "@featSrsTitle": {
+    "description": "Features: feature title."
+  },
+  "featSrsDesc": "ദിവസേനയുള്ള പഠനങ്ങളും കുറിപ്പുകളും മികച്ച ഇടവിട്ടുള്ള അവലോകന ക്രമത്തോടെ ഫ്ലാഷ്കാർഡുകളാക്കുക.",
+  "@featSrsDesc": {
+    "description": "Features: feature description."
+  },
+  "featSrsH1": "ഇടവിട്ടുള്ള ആവർത്തനം",
+  "@featSrsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSrsH2": "ഓർമ്മ ഇടവേളകൾ",
+  "@featSrsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSrsH3": "ഉറപ്പിന്റെ നിരക്ക്",
+  "@featSrsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksTitle": "ഡെക്കുകളും പ്രാവീണ്യ നിലകളും",
+  "@featDecksTitle": {
+    "description": "Features: feature title."
+  },
+  "featDecksDesc": "ഫ്ലാഷ്കാർഡുകൾ സ്വന്തം ഡെക്കുകളിൽ ക്രമീകരിച്ച് തുടക്കക്കാരനിൽ നിന്ന് വിദഗ്ദ്ധനിലേക്കുള്ള പ്രാവീണ്യ പുരോഗതി പിന്തുടരുക.",
+  "@featDecksDesc": {
+    "description": "Features: feature description."
+  },
+  "featDecksH1": "സ്വന്തം ഡെക്കുകൾ",
+  "@featDecksH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksH2": "പ്രാവീണ്യ സ്കോർ",
+  "@featDecksH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksH3": "തുടർച്ച പിന്തുടരൽ",
+  "@featDecksH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRruleTitle": "ആവർത്തന ടാസ്കുകളും RRule സംവിധാനവും",
+  "@featRruleTitle": {
+    "description": "Features: feature title."
+  },
+  "featRruleDesc": "സാധാരണ RFC-5545 RRule സംവിധാനം ഉപയോഗിച്ച് ദിവസേന, ആഴ്ചതോറും, മാസംതോറും അല്ലെങ്കിൽ ഇടവേള അടിസ്ഥാനത്തിൽ ടാസ്ക് സൃഷ്ടി സ്വയമാക്കുക.",
+  "@featRruleDesc": {
+    "description": "Features: feature description."
+  },
+  "featRruleH1": "RRule മാനദണ്ഡം",
+  "@featRruleH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featRruleH3": "സ്വയം സൃഷ്ടി",
+  "@featRruleH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyTitle": "ടാസ്കുകൾ കൂട്ടമായി പകർത്തൽ",
+  "@featCopyTitle": {
+    "description": "Features: feature title."
+  },
+  "featCopyDesc": "കഴിഞ്ഞ ദിവസങ്ങളിലെ പൂർത്തിയാകാത്തതോ തിരഞ്ഞെടുത്തതോ ആയ ടാസ്കുകൾ ഒറ്റ ടാപ്പിൽ ഇന്നത്തെ പട്ടികയിലേക്ക് പകർത്തുക.",
+  "@featCopyDesc": {
+    "description": "Features: feature description."
+  },
+  "featCopyH1": "ഒറ്റ ടാപ്പ് പകർത്തൽ",
+  "@featCopyH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyH2": "പലത് തിരഞ്ഞെടുക്കൽ",
+  "@featCopyH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyH3": "തീരാത്തവ കൊണ്ടുവരൽ",
+  "@featCopyH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSyncName": "ഓഫ്‌ലൈൻ സിങ്കും Air QR കൈമാറ്റവും",
+  "@featSyncName": {
+    "description": "Features: category name."
+  },
+  "featSyncSubtitle": "ലോക്കൽ വൈ-ഫൈ P2P സിങ്ക്, Air QR ദൃശ്യ പ്രക്ഷേപണം, ഡാറ്റ കൈമാറ്റം",
+  "@featSyncSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featWifiTitle": "എൻക്രിപ്റ്റ് ചെയ്ത ലോക്കൽ വൈ-ഫൈ P2P സിങ്ക്",
+  "@featWifiTitle": {
+    "description": "Features: feature title."
+  },
+  "featWifiDesc": "ക്ലൗഡ് സെർവറുകളില്ലാതെ, ആദ്യാവസാന എൻക്രിപ്ഷനോടെ നിങ്ങളുടെ ലോക്കൽ വൈ-ഫൈ വഴി ഉപകരണങ്ങൾക്കിടയിൽ നേരിട്ടുള്ള സിങ്ക്.",
+  "@featWifiDesc": {
+    "description": "Features: feature description."
+  },
+  "featWifiH1": "100% ലോക്കൽ വൈ-ഫൈ",
+  "@featWifiH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featWifiH2": "ക്ലൗഡ് ഇല്ല",
+  "@featWifiH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featWifiH3": "ആദ്യാവസാനം എൻക്രിപ്റ്റ് ചെയ്തത്",
+  "@featWifiH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrTitle": "Air QR ടാസ്ക് പ്രക്ഷേപണവും സ്കാനറും",
+  "@featQrTitle": {
+    "description": "Features: feature title."
+  },
+  "featQrDesc": "ചലിക്കുന്ന QR കോഡ് സ്ട്രീമുകൾ വഴി ടാസ്കുകളും സമയ രേഖകളും ഡെക്കുകളും ഉപകരണങ്ങൾക്കിടയിൽ കൈമാറുക.",
+  "@featQrDesc": {
+    "description": "Features: feature description."
+  },
+  "featQrH1": "ദൃശ്യ QR സ്ട്രീം",
+  "@featQrH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrH2": "ക്യാമറ സ്കാനർ",
+  "@featQrH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrH3": "നെറ്റ്‌വർക്ക് ആവശ്യമില്ല",
+  "@featQrH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffTitle": "ഓഫ്‌ലൈൻ ഡാറ്റ കൈമാറ്റം",
+  "@featHandoffTitle": {
+    "description": "Features: feature title."
+  },
+  "featHandoffDesc": "ക്ലിപ്പ്ബോർഡ് അല്ലെങ്കിൽ ലോക്കൽ ഫയലുകൾ വഴി ടാസ്ക് കൂട്ടങ്ങളും JSON-ഉം Markdown സംഗ്രഹങ്ങളും കയറ്റുമതിയും ഇറക്കുമതിയും ചെയ്യുക.",
+  "@featHandoffDesc": {
+    "description": "Features: feature description."
+  },
+  "featHandoffH1": "JSON, Markdown രൂപങ്ങൾ",
+  "@featHandoffH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffH2": "ക്ലിപ്പ്ബോർഡ് കൈമാറ്റം",
+  "@featHandoffH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffH3": "കൊണ്ടുപോകാവുന്ന വിവരങ്ങൾ",
+  "@featHandoffH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineTitle": "100% ഓഫ്‌ലൈൻ പ്രവർത്തന ഉറപ്പ്",
+  "@featOfflineTitle": {
+    "description": "Features: feature title."
+  },
+  "featOfflineDesc": "ക്ലൗഡ് SDK-കളോ അനലിറ്റിക്സോ ഇല്ലാത്ത പൂർണ്ണ സ്വകാര്യത. നിങ്ങൾ തുടങ്ങുന്ന, ലോക്കൽ നെറ്റ്‌വർക്കിലെ സ്വന്തം ഉപകരണങ്ങളുമായുള്ള വൈ-ഫൈ സിങ്ക് മാത്രമാണ് നെറ്റ്‌വർക്ക് ഉപയോഗം.",
+  "@featOfflineDesc": {
+    "description": "Features: feature description. The app uses the network only for local Wi-Fi sync."
+  },
+  "featOfflineH1": "ഇന്റർനെറ്റ് ഇല്ല",
+  "@featOfflineH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineH2": "അനലിറ്റിക്സ് ഇല്ല",
+  "@featOfflineH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineH3": "ലോക്കൽ നെറ്റ്‌വർക്ക് മാത്രം",
+  "@featOfflineH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featPrivacyName": "സ്വകാര്യത, സുരക്ഷ, സംഭരണം",
+  "@featPrivacyName": {
+    "description": "Features: category name."
+  },
+  "featPrivacySubtitle": "SQLCipher AES-256 ഡാറ്റാബേസ്, ആപ്പ് പൂട്ട്, എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പുകൾ",
+  "@featPrivacySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featDbDesc": "എല്ലാ ടാസ്കുകളും സമയ രേഖകളും ക്രമീകരണങ്ങളും ഹാർഡ്‌വെയർ പിന്തുണയുള്ള SQLCipher ഉപയോഗിച്ച് സംഭരണത്തിൽ എൻക്രിപ്റ്റ് ചെയ്യുന്നു.",
+  "@featDbDesc": {
+    "description": "Features: feature description."
+  },
+  "featDbH1": "SQLCipher AES-256 സുരക്ഷ",
+  "@featDbH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDbH2": "ഉപകരണത്തിൽ നിന്നുള്ള കീ",
+  "@featDbH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDbH3": "സംഭരണത്തിൽ എൻക്രിപ്റ്റ് ചെയ്തത്",
+  "@featDbH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockDesc": "വിരലടയാളം, മുഖം തിരിച്ചറിയൽ, അല്ലെങ്കിൽ സ്വന്തം ആപ്പ് പിൻ ഉപയോഗിച്ച് ടാസ്കുകളും ക്രമീകരണങ്ങളും പൂട്ടുക.",
+  "@featLockDesc": {
+    "description": "Features: feature description."
+  },
+  "featLockH1": "വിരലടയാളവും മുഖവും",
+  "@featLockH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockH2": "ആപ്പ് പിൻ പകരം",
+  "@featLockH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockH3": "സ്വയം പൂട്ടുന്ന സമയം",
+  "@featLockH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotDesc": "സ്ക്രീൻ പിടിക്കൽ തടയുകയും Android-ലെ സമീപകാല ആപ്പുകളുടെ പട്ടികയിൽ ആപ്പ് പ്രിവ്യൂ മറയ്ക്കുകയും ചെയ്യുന്നു.",
+  "@featShotDesc": {
+    "description": "Features: feature description."
+  },
+  "featShotH1": "സ്ക്രീൻഷോട്ട് തടയൽ",
+  "@featShotH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotH2": "സമീപകാല ആപ്പ് മറ",
+  "@featShotH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotH3": "സ്വകാര്യത സംരക്ഷണം",
+  "@featShotH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupTitle": "പാസ്‌വേഡ് സംരക്ഷിത എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പുകൾ",
+  "@featBackupTitle": {
+    "description": "Features: feature title."
+  },
+  "featBackupDesc": "നിങ്ങളുടെ AES-256 പാസ്ഫ്രെയ്സ് കൊണ്ട് സംരക്ഷിച്ച എൻക്രിപ്റ്റ് ചെയ്ത ZIP ബാക്കപ്പുകൾ കയറ്റുമതിയും പുനഃസ്ഥാപനവും ചെയ്യുക.",
+  "@featBackupDesc": {
+    "description": "Features: feature description."
+  },
+  "featBackupH1": "AES-256 ZIP ഫയൽ",
+  "@featBackupH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupH2": "സ്വന്തം പാസ്ഫ്രെയ്സ്",
+  "@featBackupH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupH3": "സുരക്ഷിതമായി കൊണ്ടുപോകാവുന്ന ബാക്കപ്പുകൾ",
+  "@featBackupH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCustomName": "ഇഷ്ടാനുസരണവും വിശകലനവും",
+  "@featCustomName": {
+    "description": "Features: category name."
+  },
+  "featCustomSubtitle": "തീമുകൾ, മലയാളം അക്ഷരരൂപങ്ങൾ, ചാർട്ടുകൾ, സ്വതവേ മൂല്യങ്ങൾ",
+  "@featCustomSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featThemeTitle": "തെളിഞ്ഞ, ഇരുണ്ട രൂപങ്ങളും നിറക്കൂട്ടുകളും",
+  "@featThemeTitle": {
+    "description": "Features: feature title."
+  },
+  "featThemeDesc": "8 തിളക്കമുള്ള നിറ മാതൃകകളോടെ തെളിഞ്ഞ, ഇരുണ്ട, OLED തീമുകൾ.",
+  "@featThemeDesc": {
+    "description": "Features: feature description."
+  },
+  "featThemeH1": "തെളിഞ്ഞ, ഇരുണ്ട തീമുകൾ",
+  "@featThemeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featThemeH2": "തിളക്കമുള്ള നിറങ്ങൾ",
+  "@featThemeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featThemeH3": "OLED രൂപകൽപ്പന",
+  "@featThemeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeTitle": "അക്ഷരരൂപവും വലുപ്പം മാറ്റലും",
+  "@featTypeTitle": {
+    "description": "Features: feature title."
+  },
+  "featTypeDesc": "മഞ്ജരി, അനേക് മലയാളം, നോട്ടോ സാൻസ്, അല്ലെങ്കിൽ സിസ്റ്റം ഫോണ്ടുകൾ തിരഞ്ഞെടുക്കാം; എഴുത്തിന്റെ വലുപ്പം മാറ്റാം.",
+  "@featTypeDesc": {
+    "description": "Features: feature description. Keep font names."
+  },
+  "featTypeH1": "മലയാളം ഫോണ്ടുകൾ",
+  "@featTypeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeH2": "വലുപ്പം മാറ്റൽ",
+  "@featTypeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeH3": "വായിക്കാൻ എളുപ്പമുള്ള അക്ഷരങ്ങൾ",
+  "@featTypeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsTitle": "ഉൽപ്പാദനക്ഷമതാ സ്ഥിതിവിവരക്കണക്കുകളും ചാർട്ടുകളും",
+  "@featStatsTitle": {
+    "description": "Features: feature title."
+  },
+  "featStatsDesc": "പൂർത്തീകരണ നിരക്ക്, സമയ വിതരണം, ദിവസ പ്രവണതകൾ എന്നിവ കാണിക്കുന്ന ചാർട്ടുകളും പട്ടികകളും.",
+  "@featStatsDesc": {
+    "description": "Features: feature description."
+  },
+  "featStatsH1": "fl_chart ഗ്രാഫുകൾ",
+  "@featStatsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsH2": "സമയ വിതരണം",
+  "@featStatsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsH3": "പൂർത്തീകരണ പ്രവണതകൾ",
+  "@featStatsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsTitle": "ടാസ്ക് സ്വതവേ മൂല്യങ്ങളും സമയ പ്രദർശനവും",
+  "@featDefaultsTitle": {
+    "description": "Features: feature title."
+  },
+  "featDefaultsDesc": "സ്വതവേയുള്ള മുൻഗണന, ലക്ഷ്യ സമയം, ആഴ്ചയുടെ ആദ്യ ദിവസം, ജോലിദിവസങ്ങൾ, സമയ രൂപങ്ങൾ എന്നിവ ക്രമീകരിക്കുക.",
+  "@featDefaultsDesc": {
+    "description": "Features: feature description."
+  },
+  "featDefaultsH1": "സ്വന്തം സ്വതവേ മൂല്യങ്ങൾ",
+  "@featDefaultsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsH2": "അയവുള്ള രൂപങ്ങൾ",
+  "@featDefaultsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsH3": "നിങ്ങൾക്കിണങ്ങിയ പ്രവർത്തനരീതി",
+  "@featDefaultsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featHeaderTitle": "SreerajP ToDo സവിശേഷതകൾ",
+  "@featHeaderTitle": {
+    "description": "Features: header card title."
+  },
+  "featHeaderSubtitle": "നിങ്ങൾക്കായി ഒരുക്കിയ എല്ലാ ഉൽപ്പാദനക്ഷമതാ ഉപകരണങ്ങളും ടൈമറുകളും ഓഫ്‌ലൈൻ സുരക്ഷകളും കാണുക.",
+  "@featHeaderSubtitle": {
+    "description": "Features: header card subtitle."
+  }
 }

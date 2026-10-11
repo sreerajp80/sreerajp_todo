@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
 
 const String kPendingAlertsEnabledKey = 'pending_alerts_enabled';
 const String kPendingAlertsDayStartKey = 'pending_alerts_day_start_enabled';

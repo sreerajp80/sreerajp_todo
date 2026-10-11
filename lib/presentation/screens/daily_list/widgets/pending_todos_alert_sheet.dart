@@ -4,11 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/pending_alert_notifier.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
 
 /// Modal bottom sheet presenting today's and previous days' pending todos.
 class PendingTodosAlertSheet extends ConsumerStatefulWidget {
@@ -110,7 +111,7 @@ class _PendingTodosAlertSheetState
         ..clearSnackBars()
         ..showSnackBar(
           SnackBar(
-            content: Text(e.toString()),
+            content: Text(mapErrorToMessage(context.l10n, e)),
             duration: const Duration(seconds: 3),
           ),
         );
@@ -422,7 +423,9 @@ class _PendingTodosAlertSheetState
             isWorking ? Icons.visibility_rounded : Icons.play_arrow_rounded,
             size: 18,
           ),
-          label: Text(isWorking ? 'View' : l10n.pendingAlertsStartTimer),
+          label: Text(
+            isWorking ? l10n.pendingAlertsView : l10n.pendingAlertsStartTimer,
+          ),
         ),
         onTap: () {
           Navigator.of(context).pop();

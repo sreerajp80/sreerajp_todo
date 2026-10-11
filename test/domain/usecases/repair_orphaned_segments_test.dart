@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
 import 'package:sreerajp_todo/data/repositories/time_segment_repository_impl.dart';
 import 'package:sreerajp_todo/domain/usecases/repair_orphaned_segments.dart';
 

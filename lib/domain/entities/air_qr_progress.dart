@@ -1,9 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 enum AirQrStatus { idle, receiving, completed, error }
 
 /// Represents real-time progress state for receiving an optical AirQR stream.
-@immutable
 class AirQrProgress {
   final String? streamId;
   final int totalBlocks;

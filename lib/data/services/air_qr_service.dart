@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/foundation.dart';
 import 'package:sreerajp_todo/domain/entities/air_qr_frame.dart';
 import 'package:sreerajp_todo/domain/entities/air_qr_progress.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 /// Offline Optical Fountain & Systematic Stream Decoder & Encoder Engine.
 class AirQrService {
@@ -218,7 +218,7 @@ class AirQrService {
       final String result = utf8.decode(fullBytes, allowMalformed: true);
       return result;
     } catch (e) {
-      if (kDebugMode) debugPrint('Payload reassembly error: $e');
+      AppLogger.debug('Payload reassembly error (${e.runtimeType})');
       return null;
     }
   }

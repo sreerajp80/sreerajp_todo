@@ -2,6 +2,10 @@
 
 This document provides an architectural analysis and feature specification for advanced productivity capabilities and offline data management engines in SreerajP ToDo. Read this before planning or implementing advanced features, offline sync, or data import/export improvements.
 
+**Date:** 2026-08-27
+
+**Scope:** Point-in-time feature proposal, roadmap and status check. Add a new dated entry instead of rewriting old ones. For what is implemented today, see [features.md](features.md).
+
 Read [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), and [architecture.md](architecture.md) first to review baseline architecture and hard rules.
 
 ---

@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_health_dashboard.dart';
 import 'package:sreerajp_todo/presentation/screens/backup/widgets/backup_list_tile.dart';
@@ -165,7 +165,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   }
 
   String _messageForError(Object error) {
-    if (error is ArgumentError) {
+    if (error is ValidationException) {
       return context.l10n.backupPassphraseMinLength;
     }
     if (error is BackupVersionTooNewException) {
@@ -189,6 +189,8 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     messenger.showSnackBar(
       SnackBar(
         content: Text(message),
+        persist: false,
+        showCloseIcon: retry != null,
         action: retry == null
             ? null
             : SnackBarAction(
@@ -212,7 +214,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   void _showAirQrDialog(List<TodoEntity> todos) {
     showAirQrShareDialog(
       context,
-      title: 'AirQR Backup Share',
+      title: context.l10n.airQrBackupShareTitle,
       todos: todos,
       date: todayAsIso(),
     );

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,10 +8,13 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sreerajp_todo/app.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
+import 'package:sreerajp_todo/presentation/shared/widgets/safe_error_fallback.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  _installErrorHandlers();
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     sqfliteFfiInit();
@@ -54,4 +58,32 @@ void main() async {
       child: TodoApp(initialLocation: startAt),
     ),
   );
+}
+
+/// Global error boundaries (engineering standard §11.1). They only log; the
+/// safe release UI comes from [ErrorWidget.builder].
+void _installErrorHandlers() {
+  // Errors while building, laying out or painting widgets.
+  FlutterError.onError = (FlutterErrorDetails details) {
+    AppLogger.error(
+      'Flutter framework error',
+      error: details.exception,
+      stackTrace: details.stack,
+    );
+    if (!kReleaseMode) {
+      FlutterError.dumpErrorToConsole(details);
+    }
+  };
+
+  // Uncaught async errors (futures, timers, platform channels).
+  PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+    AppLogger.error('Uncaught async error', error: error, stackTrace: stack);
+    return true;
+  };
+
+  // In release, show a neutral box instead of the raw error widget.
+  if (kReleaseMode) {
+    ErrorWidget.builder = (FlutterErrorDetails details) =>
+        const SafeErrorFallback();
+  }
 }

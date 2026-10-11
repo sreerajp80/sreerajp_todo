@@ -6,6 +6,7 @@ import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sreerajp_todo/domain/services/ocr_capture_downscaler.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 /// Arguments for [bakeAndEncodeCaptureIsolate].
 @immutable
@@ -96,7 +97,7 @@ class NativeOcrCaptureDownscaler implements OcrCaptureDownscaler {
     } catch (e) {
       // Fall back to applying the rotation ourselves. An unrotated photo is a
       // recoverable annoyance; a double-rotated one is a bug the user sees.
-      debugPrint('OcrCaptureDownscaler: EXIF probe failed ($e)');
+      AppLogger.warning('OcrCaptureDownscaler: EXIF probe failed', error: e);
       applies = false;
     }
 
@@ -113,7 +114,9 @@ class NativeOcrCaptureDownscaler implements OcrCaptureDownscaler {
       // single pixel, so it costs nothing even on a 50 MP file.
       final info = img.findDecoderForData(bytes)?.startDecode(bytes);
       if (info == null || info.width <= 0 || info.height <= 0) {
-        debugPrint('OcrCaptureDownscaler: unreadable header, using original');
+        AppLogger.warning(
+          'OcrCaptureDownscaler: unreadable header, using original',
+        );
         return imagePath;
       }
 
@@ -159,7 +162,9 @@ class NativeOcrCaptureDownscaler implements OcrCaptureDownscaler {
       codec.dispose();
 
       if (rgba == null) {
-        debugPrint('OcrCaptureDownscaler: pixel read failed, using original');
+        AppLogger.warning(
+          'OcrCaptureDownscaler: pixel read failed, using original',
+        );
         return imagePath;
       }
 
@@ -186,7 +191,7 @@ class NativeOcrCaptureDownscaler implements OcrCaptureDownscaler {
     } catch (e) {
       // Preparation is an optimisation, never a hard requirement. A slower
       // correct path beats a crash on the one photo the user wanted.
-      debugPrint('OcrCaptureDownscaler: downscale failed ($e)');
+      AppLogger.warning('OcrCaptureDownscaler: downscale failed', error: e);
       return imagePath;
     }
   }

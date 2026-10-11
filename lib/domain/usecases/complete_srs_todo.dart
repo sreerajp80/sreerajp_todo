@@ -1,8 +1,9 @@
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
-import 'package:sreerajp_todo/data/models/recall_confidence.dart';
-import 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/recall_confidence.dart';
+import 'package:sreerajp_todo/domain/entities/spaced_repetition_item_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/spaced_repetition_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
@@ -25,7 +26,7 @@ class CompleteSrsTodo {
   Future<TodoStatus> call(String todoId, RecallConfidence confidence) async {
     final todo = await _todoRepository.getTodoById(todoId);
     if (todo == null) {
-      throw StateError('Todo not found: $todoId');
+      throw const TodoNotFoundException();
     }
 
     final oldStatus = todo.status;

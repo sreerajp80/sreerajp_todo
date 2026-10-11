@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
 import 'package:sreerajp_todo/presentation/shared/utils/tracked_duration_format.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
 
 class EveningReflectionModal extends ConsumerStatefulWidget {
   const EveningReflectionModal({
@@ -300,7 +301,9 @@ class _EveningReflectionModalState
       if (mounted) {
         ScaffoldMessenger.of(context)
           ..clearSnackBars()
-          ..showSnackBar(SnackBar(content: Text(e.toString())));
+          ..showSnackBar(
+            SnackBar(content: Text(mapErrorToMessage(context.l10n, e))),
+          );
       }
     } finally {
       if (mounted) {

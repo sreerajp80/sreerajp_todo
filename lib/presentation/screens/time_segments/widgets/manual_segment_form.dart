@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
-import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
+import 'package:sreerajp_todo/core/rules/time_tracking_rules.dart';
 import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
 import 'package:uuid/uuid.dart';
 

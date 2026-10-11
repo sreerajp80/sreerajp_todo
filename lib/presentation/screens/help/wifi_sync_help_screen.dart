@@ -1,65 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/presentation/screens/help/widgets/help_widgets.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 class WifiSyncHelpScreen extends StatelessWidget {
   const WifiSyncHelpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
-      appBar: AppBar(title: const Text('Local Wi-Fi P2P Device Sync')),
+      appBar: AppBar(title: Text(l10n.helpWifiTitle)),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 32),
-          children: const [
-            HelpIntro(
-              'Transfer and synchronize your tasks, time records, and mastery flashcards directly between two devices '
-              'on the same local Wi-Fi network — with zero cloud servers and zero internet traffic.',
-            ),
-            SizedBox(height: 24),
+          children: [
+            HelpIntro(l10n.helpWifiIntro),
+            const SizedBox(height: 24),
             HelpSection(
               icon: Icons.wifi_tethering_rounded,
-              title: 'How Local Wi-Fi Sync Works',
+              title: l10n.helpWifiHowTitle,
               children: [
-                HelpBullet(
-                  'Both devices must be connected to the same local Wi-Fi network (or one device connected to the other’s hotspot).',
-                ),
-                HelpBullet(
-                  'One device acts as the Sender/Host (generating a temporary pairing code / QR code), and the other acts as the Receiver.',
-                ),
-                HelpBullet(
-                  'Data is transferred directly socket-to-socket over your local LAN, completely bypassing external servers or the internet.',
-                ),
+                HelpBullet(l10n.helpWifiHow1),
+                HelpBullet(l10n.helpWifiHow2),
+                HelpBullet(l10n.helpWifiHow3),
               ],
             ),
             HelpSection(
               icon: Icons.lock_outline_rounded,
-              title: 'End-to-End Encryption',
+              title: l10n.helpWifiEncryptionTitle,
               children: [
-                HelpBullet(
-                  'Local sync connections negotiate an encrypted channel using one-time pairing credentials.',
-                ),
-                HelpBullet(
-                  'Other devices on the same Wi-Fi network cannot inspect or tamper with the transferred payload.',
-                ),
+                HelpBullet(l10n.helpWifiEncryption1),
+                HelpBullet(l10n.helpWifiEncryption2),
               ],
             ),
             HelpSection(
               icon: Icons.merge_type_rounded,
-              title: 'Sync Modes & Conflicts',
+              title: l10n.helpWifiModesTitle,
               children: [
-                HelpBullet(
-                  'Two-Way Smart Merge: Combines tasks and segments from both devices without losing existing records.',
-                ),
-                HelpBullet(
-                  'Replace All: Replaces the target device’s data completely with an exact clone of the source device (after confirmation).',
-                ),
+                HelpBullet(l10n.helpWifiModes1),
+                HelpBullet(l10n.helpWifiModes2),
               ],
             ),
-            SizedBox(height: 8),
-            HelpFooter(
-              'Tip: If your Wi-Fi router blocks client-to-client traffic (client isolation), simply turn on a mobile hotspot on one phone and connect the other phone to it.',
-            ),
+            const SizedBox(height: 8),
+            HelpFooter(l10n.helpWifiTip),
           ],
         ),
       ),

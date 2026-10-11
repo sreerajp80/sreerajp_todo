@@ -1,4 +1,4 @@
-import 'package:sreerajp_todo/core/utils/app_lock_rules.dart';
+import 'package:sreerajp_todo/core/rules/app_lock_rules.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 /// Shared labels for the security settings values, so the settings pages and

@@ -75,7 +75,7 @@ Read [AGENTS.md](../AGENTS.md), [CLAUDE.md](../CLAUDE.md), and [architecture.md]
 ### In Transit
 
 - Internet use: None. The app never sends data over the internet. It has zero networking dependencies, zero cloud SDKs and zero telemetry.
-- Local network use: Wi-Fi sync only, and only when the user starts it. `P2pWifiSyncService` opens a TCP socket between the user's own devices on the same Wi-Fi or hotspot. It refuses to connect to, or accept a connection from, any address that fails `isLocalNetworkAddress()` (`lib/core/utils/network_address_utils.dart`). Only private (`10/8`, `172.16/12`, `192.168/16`), link-local (`169.254/16`) and loopback (`127/8`) IPv4 addresses pass. Host names are never resolved.
+- Local network use: Wi-Fi sync only, and only when the user starts it. `P2pWifiSyncService` opens a TCP socket between the user's own devices on the same Wi-Fi or hotspot. It refuses to connect to, or accept a connection from, any address that fails `isLocalNetworkAddress()` (`lib/core/network/network_address_utils.dart`). Only private (`10/8`, `172.16/12`, `192.168/16`), link-local (`169.254/16`) and loopback (`127/8`) IPv4 addresses pass. Host names are never resolved.
 - Transport protections: The sync payload is encrypted with a session key derived from the pairing PIN and a random salt.
 
 ---
@@ -134,8 +134,9 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 
 ### Logging Controls
 
-- Logger implementation: `debugPrint()` only (gated by debug mode).
-- Verbose logging gate: Debug builds only. Release builds produce no diagnostic output.
+- Logger implementation: `AppLogger` (`lib/core/logging/app_logger.dart`), console only through `dart:developer`. `print()` and `debugPrint()` are not used.
+- Verbose logging gate: `trace` and `debug` are silent in release builds. `info` and above still reach the console.
+- Error objects: `AppLogger` records only the error type, never the error message, because a message can hold a task title.
 - Redaction strategy: Never pass user content to any logging function. Log operation names and error categories only.
 - `print()` is banned via `avoid_print` lint rule.
 

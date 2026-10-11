@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rrule/rrule.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 
 class RrulePreview extends StatelessWidget {

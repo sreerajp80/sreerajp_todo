@@ -27,16 +27,18 @@ Read it before making any change. See the docs table below for full detail.
 
 | Document | Read when |
 |----------|-----------|
+| [docs/PROJECT_PROFILE.md](docs/PROJECT_PROFILE.md) | Before writing code — identity, platforms, stores, languages, About options |
 | [docs/architecture.md](docs/architecture.md) | Changing structure, screens, state, services, models, repositories |
 | [docs/security.md](docs/security.md) | Touching permissions, logging, storage, crypto, manifest, backup encryption |
 | [docs/release_process.md](docs/release_process.md) | Building a release, versioning, release checklist, signing |
-| [docs/flutter_build_flavors_guide.md](docs/flutter_build_flavors_guide.md) | Build config, signing, flavors, Gradle, ProGuard |
-| [docs/flutter_project_engineering_standard.md](docs/flutter_project_engineering_standard.md) | Any code change — layers, naming, testing, DoD |
+| [docs/guidelines/flutter_build_flavors_guide.md](docs/guidelines/flutter_build_flavors_guide.md) | Build config, signing, flavors, Gradle, ProGuard |
+| [docs/guidelines/flutter_project_engineering_standard.md](docs/guidelines/flutter_project_engineering_standard.md) | Any code change — layers, naming, testing, DoD |
 | [docs/workflow_rules.md](docs/workflow_rules.md) | Planning changes, approval gates, logging changes |
 | [docs/dependencies.md](docs/dependencies.md) | Audited dependency inventory, prohibited package categories |
 | [docs/project_structure.md](docs/project_structure.md) | Directory tree layout and layer responsibilities |
 | [docs/features.md](docs/features.md) | Complete feature specification and UX requirements |
 | [docs/GUIDELINES_MANIFEST.md](docs/GUIDELINES_MANIFEST.md) | The shared Flutter guidelines index |
+| [docs/guidelines/AI_AGENT_START_HERE.md](docs/guidelines/AI_AGENT_START_HERE.md) | Read order for AI agents, adoption steps, store-readiness checklist |
 
 ---
 
@@ -59,7 +61,7 @@ Read it before making any change. See the docs table below for full detail.
 
 - **Layer layout:** 5-layer architecture under `lib/`: Presentation (`lib/presentation/`), Application (`lib/application/`), Domain (`lib/domain/`), Data (`lib/data/`), Core (`lib/core/`).
 - **Layer boundaries:**
-  - `core/` is pure Dart with zero Flutter framework imports.
+  - `core/` is pure Dart with zero Flutter framework imports. The one exception is `core/config/config_service.dart`, which reads the asset bundle at the fixed path required by `docs/guidelines/guideline.md` §1. Platform channels live in `data/platform/`; `BuildContext` extensions and l10n delegates live in `presentation/shared/`.
   - `domain/` depends on `core/` only and never imports `sqflite` or data classes.
   - `data/` implements domain repository interfaces and encapsulates DAOs, migrations, and storage.
   - `presentation/` never imports `data/` directly.
@@ -187,6 +189,7 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 AGENTS.md            # AI agent / LLM project rules (this file)
 CLAUDE.md            # Claude Code native project rules (synced with AGENTS.md)
 docs/                # Living & point-in-time project documentation suite
+.github/workflows/   # CI: format, analyze, test, Android + Windows release builds
 plans/               # Dated workflow implementation plans
 change_log/          # Timestamped feature change logs
 lib/                 # Flutter application source code (5 layers)
@@ -248,3 +251,5 @@ Create `plans/` and `change_log/` if they do not exist.
 14. Make network calls from Dart, except sockets in `P2pWifiSyncService` to addresses that pass `isLocalNetworkAddress()`.
 15. Use `compute()` or `Isolate.spawn()` for `sqflite` queries.
 16. Cache the full autocomplete title list in memory.
+17. Use `print()` or `debugPrint()` in committed code — log through `AppLogger` (`lib/core/logging/app_logger.dart`), and never log raw exception text or user content.
+18. Show raw exception text to the user — map errors with `mapErrorToMessage` (`lib/presentation/shared/error_message_mapper.dart`).

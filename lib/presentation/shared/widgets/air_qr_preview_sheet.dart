@@ -45,7 +45,7 @@ class AirQrPreviewSheet extends StatelessWidget {
               const Icon(Icons.qr_code_2, color: Colors.blue, size: 28),
               const SizedBox(width: 10),
               Text(
-                _getTitle(),
+                _getTitle(l10n),
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -54,7 +54,7 @@ class AirQrPreviewSheet extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            _getSubtitle(),
+            _getSubtitle(l10n),
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
@@ -104,7 +104,7 @@ class AirQrPreviewSheet extends StatelessWidget {
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Full App Backup Payload (${payload.rawJson.length} keys)',
+                        l10n.airQrBackupPayloadEntries(payload.rawJson.length),
                         style: theme.textTheme.bodyMedium,
                       ),
                     ),
@@ -144,29 +144,23 @@ class AirQrPreviewSheet extends StatelessWidget {
     );
   }
 
-  String _getTitle() {
-    switch (payload.type) {
-      case AirQrPayloadType.tasks:
-        return 'AirQR Tasks Received';
-      case AirQrPayloadType.timecard:
-        return 'AirQR Timecard Received';
-      case AirQrPayloadType.backup:
-        return 'AirQR Backup Received';
-      case AirQrPayloadType.unknown:
-        return 'AirQR Payload Received';
-    }
+  String _getTitle(AppLocalizations l10n) {
+    return switch (payload.type) {
+      AirQrPayloadType.tasks => l10n.airQrReceivedTasks,
+      AirQrPayloadType.timecard => l10n.airQrReceivedTimecard,
+      AirQrPayloadType.backup => l10n.airQrReceivedBackup,
+      AirQrPayloadType.unknown => l10n.airQrReceivedUnknown,
+    };
   }
 
-  String _getSubtitle() {
-    switch (payload.type) {
-      case AirQrPayloadType.tasks:
-        return '${payload.todos.length} tasks ready to merge into your list.';
-      case AirQrPayloadType.timecard:
-        return 'Daily timecard with ${payload.todos.length} items ready to merge.';
-      case AirQrPayloadType.backup:
-        return 'Full app database backup received via optical air-gap.';
-      case AirQrPayloadType.unknown:
-        return 'Scanned payload format is not supported.';
-    }
+  String _getSubtitle(AppLocalizations l10n) {
+    return switch (payload.type) {
+      AirQrPayloadType.tasks => l10n.airQrTasksReady(payload.todos.length),
+      AirQrPayloadType.timecard => l10n.airQrTimecardReady(
+        payload.todos.length,
+      ),
+      AirQrPayloadType.backup => l10n.airQrBackupReceivedDetail,
+      AirQrPayloadType.unknown => l10n.airQrPayloadFormatError,
+    };
   }
 }

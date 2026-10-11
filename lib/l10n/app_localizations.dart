@@ -6754,6 +6754,24 @@ abstract class AppLocalizations {
   /// **'Invert'**
   String get ocrEnhanceInvert;
 
+  /// OCR filter chip for screen captures: grayscale, dark mode flipped, and enlarged so small UI text reads well.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot'**
+  String get ocrFilterScreen;
+
+  /// OCR filter chip that makes a black-and-white page from a photo with shadows or uneven light.
+  ///
+  /// In en, this message translates to:
+  /// **'Shadow fix'**
+  String get ocrFilterAdaptive;
+
+  /// Label of the OCR fine-tune slider that sharpens soft letter edges.
+  ///
+  /// In en, this message translates to:
+  /// **'Sharpness'**
+  String get ocrSharpnessLabel;
+
   /// Header of the panel showing the text found in the photo so far.
   ///
   /// In en, this message translates to:
@@ -6777,6 +6795,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Reading...'**
   String get ocrEnhanceScanning;
+
+  /// Tooltip of the icon-only button that reads the text from the edited photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Extract text'**
+  String get ocrExtractTextTooltip;
+
+  /// Shown in the recognised text panel before the user has tapped the extract text button.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish editing, then tap the scan button to read the text.'**
+  String get ocrEnhanceExtractHint;
 
   /// Tooltip for the OCR language picker.
   ///
@@ -7293,6 +7323,2484 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'QR scanning is available on Android only.'**
   String get airQrScanUnavailable;
+
+  /// Generic OK button that closes a dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// Error shown when Wi-Fi sync is pointed at an address outside the local network.
+  ///
+  /// In en, this message translates to:
+  /// **'Wi-Fi sync works only with devices on your local network.'**
+  String get errorNotLocalNetwork;
+
+  /// Generic error shown when the user's input breaks a rule.
+  ///
+  /// In en, this message translates to:
+  /// **'Some of the values entered are not valid.'**
+  String get errorInvalidInput;
+
+  /// Row label in the Wi-Fi sync summary dialog for tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks'**
+  String get p2pSummaryTasks;
+
+  /// Number of items added by a Wi-Fi sync, in the summary dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} added'**
+  String p2pSummaryAdded(int count);
+
+  /// Number of items skipped by a Wi-Fi sync, in the summary dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'({count} skipped)'**
+  String p2pSummarySkipped(int count);
+
+  /// Warning in the Wi-Fi sync summary when items for locked past days were not merged.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item from a past day was skipped because past days are locked.} other{{count} items from past days were skipped because past days are locked.}}'**
+  String p2pDayLockSkipped(int count);
+
+  /// Tab label: this device shares its data. Keep short.
+  ///
+  /// In en, this message translates to:
+  /// **'Host (Share)'**
+  String get p2pTabHost;
+
+  /// Tab label: this device receives data. Keep short.
+  ///
+  /// In en, this message translates to:
+  /// **'Peer (Receive)'**
+  String get p2pTabPeer;
+
+  /// Status title when this device is sharing over Wi-Fi.
+  ///
+  /// In en, this message translates to:
+  /// **'Host server active'**
+  String get p2pHostActive;
+
+  /// Status title when this device is not sharing over Wi-Fi.
+  ///
+  /// In en, this message translates to:
+  /// **'Host server stopped'**
+  String get p2pHostStopped;
+
+  /// Status line with the local address and port the host listens on.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening on {address}'**
+  String p2pHostListening(String address);
+
+  /// Hint shown while the host server is stopped.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap below to open an encrypted connection.'**
+  String get p2pHostIdleHint;
+
+  /// Label for the PIN the other device must type to pair.
+  ///
+  /// In en, this message translates to:
+  /// **'Pairing PIN'**
+  String get p2pPairingPinLabel;
+
+  /// Heading above the list of data types to share.
+  ///
+  /// In en, this message translates to:
+  /// **'Select sync scope'**
+  String get p2pSelectScope;
+
+  /// Button that starts sharing over Wi-Fi.
+  ///
+  /// In en, this message translates to:
+  /// **'Start host server'**
+  String get p2pStartHost;
+
+  /// Button that stops sharing over Wi-Fi.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop host server'**
+  String get p2pStopHost;
+
+  /// Heading of the card where the user types the host's details.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect to host device'**
+  String get p2pConnectToHost;
+
+  /// Label of the host IP address field.
+  ///
+  /// In en, this message translates to:
+  /// **'Host IP address'**
+  String get p2pHostIpLabel;
+
+  /// Example shown in the empty host IP address field.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. 192.168.1.105'**
+  String get p2pHostIpHint;
+
+  /// Hint shown in the empty pairing PIN field.
+  ///
+  /// In en, this message translates to:
+  /// **'6-digit PIN'**
+  String get p2pPinHint;
+
+  /// Heading above the list of data types to receive.
+  ///
+  /// In en, this message translates to:
+  /// **'Requested sync scope'**
+  String get p2pRequestedScope;
+
+  /// Progress text while connecting to the host.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting to {address}…'**
+  String p2pStatusConnecting(String address);
+
+  /// Progress text while the encrypted session is being set up.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up a secure session…'**
+  String get p2pStatusAuthenticating;
+
+  /// A number of days, for example on a slider or a badge.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day} other{{count} days}}'**
+  String daysCount(int count);
+
+  /// Very short number of days for a compact chip, for example '7d'.
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d'**
+  String daysShort(int count);
+
+  /// A number of tasks, shown in a small chip.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 task} other{{count} tasks}}'**
+  String tasksCount(int count);
+
+  /// A number of subtasks under a task.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 subtask} other{{count} subtasks}}'**
+  String subtasksCount(int count);
+
+  /// How many subtasks of a task are done.
+  ///
+  /// In en, this message translates to:
+  /// **'{done}/{total} subtasks'**
+  String subtasksProgress(int done, int total);
+
+  /// Button on the pending-tasks sheet that opens a task that is already running.
+  ///
+  /// In en, this message translates to:
+  /// **'View'**
+  String get pendingAlertsView;
+
+  /// Heading above the task list on a Mastery Deck page.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks in deck'**
+  String get masteryTasksInDeck;
+
+  /// Target time of a task in a Mastery Deck, as HH:MM:SS.
+  ///
+  /// In en, this message translates to:
+  /// **'Target: {duration}'**
+  String masteryTargetTime(String duration);
+
+  /// How far back the carry-over looks, shown next to the setting.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 day (yesterday)} other{{count} days}}'**
+  String carryOverLookBackValue(int count);
+
+  /// Short preset chip for the carry-over look-back days.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1d (yesterday)} other{{count}d}}'**
+  String carryOverLookBackChip(int count);
+
+  /// Task history event: a timer was stopped, closing a session.
+  ///
+  /// In en, this message translates to:
+  /// **'Timer session'**
+  String get eventTimerSession;
+
+  /// Task history event: time was added by hand.
+  ///
+  /// In en, this message translates to:
+  /// **'Manual time'**
+  String get eventManualTime;
+
+  /// Task history event: the task status changed.
+  ///
+  /// In en, this message translates to:
+  /// **'Status change'**
+  String get eventStatusChange;
+
+  /// How many prerequisite tasks are selected.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String prerequisitesSelected(int count);
+
+  /// Shown on the OCR scanner when the device has no camera.
+  ///
+  /// In en, this message translates to:
+  /// **'No camera found on this device.'**
+  String get ocrNoCamera;
+
+  /// Shown on the OCR scanner when the camera fails to start.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera could not be started.'**
+  String get ocrCameraStartFailed;
+
+  /// Label on the upper area of the OCR camera frame.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Task name'**
+  String get ocrOverlayTaskName;
+
+  /// Hint showing the marks that separate a task name from its description.
+  ///
+  /// In en, this message translates to:
+  /// **'space / # / ---'**
+  String get ocrOverlaySeparator;
+
+  /// Label on the lower area of the OCR camera frame.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Description (all remaining text)'**
+  String get ocrOverlayDescription;
+
+  /// Body of the pending-tasks system notification.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{You have 1 pending task waiting ({summary})} other{You have {count} pending tasks waiting ({summary})}}'**
+  String pendingNotificationBody(int count, String summary);
+
+  /// Summary in the pending-tasks notification when some tasks are from earlier days.
+  ///
+  /// In en, this message translates to:
+  /// **'{today} today, {previous} from previous days'**
+  String pendingNotificationSummarySplit(int today, int previous);
+
+  /// Summary in the pending-tasks notification when all tasks are from today.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 task remaining today} other{{count} tasks remaining today}}'**
+  String pendingNotificationSummaryToday(int count);
+
+  /// Title of the AirQR dialog that shares a backup.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR backup share'**
+  String get airQrBackupShareTitle;
+
+  /// Title of the AirQR dialog that shares one day's tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR sync ({date})'**
+  String airQrSyncDayTitle(String date);
+
+  /// Estimated time and data size of an AirQR transfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Estimated scan time: {time} ({size})'**
+  String airQrEstimate(String time, String size);
+
+  /// Warning when a backup is too large to send quickly by AirQR.
+  ///
+  /// In en, this message translates to:
+  /// **'This is a large database, so camera sync may take a while. For a faster transfer, use an encrypted backup file (.zip).'**
+  String get airQrLargeBackupWarning;
+
+  /// Hint shown while a backup is being sent by AirQR.
+  ///
+  /// In en, this message translates to:
+  /// **'Full app backup ready to send by camera. Hold the receiving phone\'s camera steady.'**
+  String get airQrBackupReady;
+
+  /// Type of the AirQR frame being shown: an extra recovery frame.
+  ///
+  /// In en, this message translates to:
+  /// **'Fountain parity'**
+  String get airQrFrameParity;
+
+  /// Type of the AirQR frame being shown: a normal data frame.
+  ///
+  /// In en, this message translates to:
+  /// **'Systematic block'**
+  String get airQrFrameSystematic;
+
+  /// Heading of the AirQR share dialog with the number of frames.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR optical stream ({count} frames)'**
+  String airQrStreamFrames(int count);
+
+  /// Which AirQR frame is shown now, and its type.
+  ///
+  /// In en, this message translates to:
+  /// **'Frame {current} / {total} • {type}'**
+  String airQrFrameCounter(int current, int total, String type);
+
+  /// Tooltip of the button that pauses the AirQR stream.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause stream'**
+  String get airQrPauseStream;
+
+  /// Tooltip of the button that resumes the AirQR stream.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume stream'**
+  String get airQrResumeStream;
+
+  /// Chip that picks the AirQR frame rate in frames per second.
+  ///
+  /// In en, this message translates to:
+  /// **'{fps} FPS'**
+  String airQrFpsChip(int fps);
+
+  /// Summary of a backup received by AirQR.
+  ///
+  /// In en, this message translates to:
+  /// **'Full app backup ({count} entries)'**
+  String airQrBackupPayloadEntries(int count);
+
+  /// Title after scanning AirQR tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR tasks received'**
+  String get airQrReceivedTasks;
+
+  /// Title after scanning an AirQR timecard.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR timecard received'**
+  String get airQrReceivedTimecard;
+
+  /// Title after scanning an AirQR backup.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR backup received'**
+  String get airQrReceivedBackup;
+
+  /// Title after scanning AirQR data of an unknown type.
+  ///
+  /// In en, this message translates to:
+  /// **'AirQR data received'**
+  String get airQrReceivedUnknown;
+
+  /// Detail after scanning AirQR tasks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 task ready to merge into your list.} other{{count} tasks ready to merge into your list.}}'**
+  String airQrTasksReady(int count);
+
+  /// Detail after scanning an AirQR timecard.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{Daily timecard with 1 item ready to merge.} other{Daily timecard with {count} items ready to merge.}}'**
+  String airQrTimecardReady(int count);
+
+  /// Detail after scanning an AirQR backup.
+  ///
+  /// In en, this message translates to:
+  /// **'Full app backup received through the camera.'**
+  String get airQrBackupReceivedDetail;
+
+  /// Button that hides the backup run log.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide logs'**
+  String get backupHideLogs;
+
+  /// Button that shows the backup run log, with the number of entries.
+  ///
+  /// In en, this message translates to:
+  /// **'View logs ({count})'**
+  String backupViewLogs(int count);
+
+  /// When the last backup ran and whether it was manual or scheduled.
+  ///
+  /// In en, this message translates to:
+  /// **'Last run: {time} ({trigger})'**
+  String backupLastRun(String time, String trigger);
+
+  /// Size of the last backup file.
+  ///
+  /// In en, this message translates to:
+  /// **'Archive size: {size}'**
+  String backupArchiveSize(String size);
+
+  /// Day list header when every task of the day is finished.
+  ///
+  /// In en, this message translates to:
+  /// **'All caught up! 🎉'**
+  String get progressAllDone;
+
+  /// Line under the all-done header on the day list.
+  ///
+  /// In en, this message translates to:
+  /// **'Great job finishing today\'s agenda.'**
+  String get progressAllDoneDetail;
+
+  /// Day list header: how many of the day's tasks are completed.
+  ///
+  /// In en, this message translates to:
+  /// **'{completed} of {total} completed'**
+  String progressCompletedOf(int completed, int total);
+
+  /// Title of the dialog shown when a Mastery Deck task is completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Recall confidence'**
+  String get recallTitle;
+
+  /// Question in the recall confidence dialog.
+  ///
+  /// In en, this message translates to:
+  /// **'How easily did you recall or complete this task?'**
+  String get recallPrompt;
+
+  /// Recall answer: it was hard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get recallHard;
+
+  /// Explains the Hard recall answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Struggled or forgot. Next review in 1 day.'**
+  String get recallHardDetail;
+
+  /// Recall answer: it needed some effort.
+  ///
+  /// In en, this message translates to:
+  /// **'Revision'**
+  String get recallRevision;
+
+  /// Explains the Revision recall answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Moderate effort. Next review in 3 days.'**
+  String get recallRevisionDetail;
+
+  /// Recall answer: it was easy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get recallEasy;
+
+  /// Explains the Easy recall answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Effortless! Next review in {days} days (level {level}).'**
+  String recallEasyDetail(int days, int level);
+
+  /// Heading above the export actions on the data handoff screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Export options'**
+  String get dataHandoffExportSection;
+
+  /// Heading above the import actions on the data handoff screen.
+  ///
+  /// In en, this message translates to:
+  /// **'Import options'**
+  String get dataHandoffImportSection;
+
+  /// The date that pasted Markdown tasks will be added to.
+  ///
+  /// In en, this message translates to:
+  /// **'Target date: {date}'**
+  String markdownTargetDate(String date);
+
+  /// Example Markdown shown in the empty paste box. Keep the '- [ ]' and '>' marks.
+  ///
+  /// In en, this message translates to:
+  /// **'- [ ] Task title\n  - [ ] Subtask title\n  > Note'**
+  String get markdownImportHint;
+
+  /// Shown when the pasted Markdown has no checklist items.
+  ///
+  /// In en, this message translates to:
+  /// **'No `- [ ]` or `- [x]` checklist items found.'**
+  String get markdownNoItems;
+
+  /// Shown when the Markdown import target date is in the past.
+  ///
+  /// In en, this message translates to:
+  /// **'Past days are locked. Choose today or a later date to import.'**
+  String get markdownPastDateLocked;
+
+  /// Help topic title: daily lists and the day lock.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Lists & Day Lock'**
+  String get helpTaskMgmtTitle;
+
+  /// Help: task management intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'SreerajP ToDo organizes your tasks strictly on a day-by-day basis. Learn how the daily list, day lock protection, and terminal status locks maintain the integrity of your productivity logs.'**
+  String get helpTaskMgmtIntro;
+
+  /// Help: task management section title.
+  ///
+  /// In en, this message translates to:
+  /// **'The Day Lock Principle'**
+  String get helpTaskMgmtDayLockTitle;
+
+  /// Help: day lock bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks dated prior to today are permanently read-only and cannot be modified or deleted.'**
+  String get helpTaskMgmtDayLock1;
+
+  /// Help: day lock bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'This ensures historical data remains an authentic, unedited reflection of what actually occurred.'**
+  String get helpTaskMgmtDayLock2;
+
+  /// Help: day lock bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'If you need to work on an incomplete task from yesterday, copy it to today’s list rather than editing the past.'**
+  String get helpTaskMgmtDayLock3;
+
+  /// Help: task management section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Task Statuses & Terminal Locks'**
+  String get helpTaskMgmtStatusTitle;
+
+  /// Help: task status bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Tasks progress through statuses: Pending, Working, Completed, and Dropped.'**
+  String get helpTaskMgmtStatus1;
+
+  /// Help: task status bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed and Dropped are terminal statuses. Once a task reaches a terminal status, no new time segments can be started on it.'**
+  String get helpTaskMgmtStatus2;
+
+  /// Help: task status bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Marking an in-progress task as Completed or Dropped automatically stops any active running time segment.'**
+  String get helpTaskMgmtStatus3;
+
+  /// Help: task management section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Accidental Changes & Undo Action'**
+  String get helpTaskMgmtUndoTitle;
+
+  /// Help: undo bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Whenever a task status is changed, a 5-second SnackBar appears with an Undo button.'**
+  String get helpTaskMgmtUndo1;
+
+  /// Help: undo bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'A persistent Undo button is also available in the app bar to quickly reverse your last status transition.'**
+  String get helpTaskMgmtUndo2;
+
+  /// Help: task management section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Unicode NFC Normalization & Title Uniqueness'**
+  String get helpTaskMgmtUnicodeTitle;
+
+  /// Help: Unicode bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'All task titles are NFC-normalized before being written to the database.'**
+  String get helpTaskMgmtUnicode1;
+
+  /// Help: Unicode bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'No two tasks on the same day can share identical titles (ignoring case and whitespace).'**
+  String get helpTaskMgmtUnicode2;
+
+  /// Help: Unicode bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Text direction (RTL/LTR) is dynamically detected per item for seamless multilingual support (English, Malayalam, Hindi, etc.).'**
+  String get helpTaskMgmtUnicode3;
+
+  /// Help: task management footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Use the date picker or swipe between days on the daily list to review past productivity or plan future days.'**
+  String get helpTaskMgmtTip;
+
+  /// Help topic title: recurring tasks and bulk copy.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring Tasks & Bulk Copy'**
+  String get helpRecurringTitle;
+
+  /// Help: recurring tasks intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'Save time by automating repetitive daily routines, weekly meetings, and habit tasks using standard RFC-5545 recurrence rules or bulk copying tasks across days.'**
+  String get helpRecurringIntro;
+
+  /// Help: recurring tasks section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurrence Rules (RRule)'**
+  String get helpRecurringRulesTitle;
+
+  /// Help: recurrence rules bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Create recurring rules with flexible frequencies: Daily, Weekly (selected weekdays), Monthly, or Custom intervals.'**
+  String get helpRecurringRules1;
+
+  /// Help: recurrence rules bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'When you view a day, the app automatically generates that day\'s recurring task instances with preset priorities and target durations.'**
+  String get helpRecurringRules2;
+
+  /// Help: recurrence rules bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Editing or completing a single day’s recurring instance does not affect future or past instances.'**
+  String get helpRecurringRules3;
+
+  /// Help: recurring tasks section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk Copying Past Tasks'**
+  String get helpRecurringCopyTitle;
+
+  /// Help: bulk copy bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'From the daily list menu, tap \"Copy Tasks\" to open the copy assistant.'**
+  String get helpRecurringCopy1;
+
+  /// Help: bulk copy bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Quickly select all unfinished tasks from yesterday or a custom past date and clone them into today’s list.'**
+  String get helpRecurringCopy2;
+
+  /// Help: bulk copy bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied tasks start fresh with status Pending and zero elapsed time segments.'**
+  String get helpRecurringCopy3;
+
+  /// Help: recurring tasks footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Use Recurring Tasks for regular habits (like morning workouts or reviews), and Bulk Copy for ad-hoc carried-over items.'**
+  String get helpRecurringTip;
+
+  /// Help topic title: time tracking and segments.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Tracking & Segments'**
+  String get helpTimeTrackingTitle;
+
+  /// Help: time tracking intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'SreerajP ToDo includes a built-in time tracker that measures the real duration spent on each task. Each task records time through individual start and end intervals called Time Segments.'**
+  String get helpTimeTrackingIntro;
+
+  /// Help: time tracking section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Segments Architecture'**
+  String get helpTimeTrackingSegmentsTitle;
+
+  /// Help: time segments bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Each time you start and stop the timer, a Time Segment is recorded with an exact start timestamp and end timestamp.'**
+  String get helpTimeTrackingSegments1;
+
+  /// Help: time segments bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'A task can contain multiple segments (e.g. morning work session, afternoon session). The total time is the sum of all segments.'**
+  String get helpTimeTrackingSegments2;
+
+  /// Help: time segments bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Durations are always displayed in standard HH:MM:SS format across the entire app.'**
+  String get helpTimeTrackingSegments3;
+
+  /// Help: time tracking section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Single Running Timer Rule'**
+  String get helpTimeTrackingSingleTitle;
+
+  /// Help: single timer bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'At most one open time segment (running timer) can exist across the entire app at any time.'**
+  String get helpTimeTrackingSingle1;
+
+  /// Help: single timer bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting a timer on a new task automatically stops any currently running timer on another task.'**
+  String get helpTimeTrackingSingle2;
+
+  /// Help: single timer bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'This single-active-timer guarantee prevents conflicting logs and inflated tracking numbers.'**
+  String get helpTimeTrackingSingle3;
+
+  /// Help: time tracking section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-Stop & Background Pausing'**
+  String get helpTimeTrackingAutoTitle;
+
+  /// Help: auto-stop bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Settings → Time Tracking, you can configure timers to automatically stop at midnight or at a custom hour.'**
+  String get helpTimeTrackingAuto1;
+
+  /// Help: auto-stop bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'You can enable \"Auto-pause when leaving the app\" to pause tracking if you switch to other apps.'**
+  String get helpTimeTrackingAuto2;
+
+  /// Help: auto-stop bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Short accidental timer taps under a configurable threshold (e.g. 10s or 30s) can be automatically discarded.'**
+  String get helpTimeTrackingAuto3;
+
+  /// Help: time tracking footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Tap the stopwatch icon or time badge on any task card to start tracking instantly. Tap it again to stop.'**
+  String get helpTimeTrackingTip;
+
+  /// Help topic title: focus mode and Pomodoro.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus Mode & Pomodoro'**
+  String get helpFocusTitle;
+
+  /// Help: focus intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus Mode provides a distraction-free full-screen environment for deep work sessions, coupled with customizable Pomodoro intervals and target duration countdowns.'**
+  String get helpFocusIntro;
+
+  /// Help: focus section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-Screen Focus Mode'**
+  String get helpFocusScreenTitle;
+
+  /// Help: focus screen bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Focus Mode from any task details menu to immerse in a clean, distraction-free screen.'**
+  String get helpFocusScreen1;
+
+  /// Help: focus screen bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus Mode displays a large elapsed or countdown timer, target progress ring, and quick pause/resume controls.'**
+  String get helpFocusScreen2;
+
+  /// Help: focus screen bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep-screen-awake mode keeps your display active while your focus timer is running.'**
+  String get helpFocusScreen3;
+
+  /// Help: focus section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Pomodoro Technique'**
+  String get helpFocusPomodoroTitle;
+
+  /// Help: Pomodoro bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Customize your focus work duration (e.g. 25 minutes) and break intervals (e.g. 5 minutes) under Settings → Time Tracking → Pomodoro.'**
+  String get helpFocusPomodoro1;
+
+  /// Help: Pomodoro bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Audio and haptic vibrations signal the end of work intervals and break periods.'**
+  String get helpFocusPomodoro2;
+
+  /// Help: Pomodoro bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'All focus sessions seamlessly record standard Time Segments under the parent task.'**
+  String get helpFocusPomodoro3;
+
+  /// Help: focus footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Target durations can be configured when creating or editing a task to automatically calculate your remaining focus time.'**
+  String get helpFocusTip;
+
+  /// Help topic title: Mastery Deck and flashcards.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Deck & Flashcards'**
+  String get helpMasteryTitle;
+
+  /// Help: Mastery Deck intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Deck turns your daily learnings, key concepts, and study notes into an active spaced repetition flashcard system. Retain what you learn long-term with scientifically scheduled review intervals.'**
+  String get helpMasteryIntro;
+
+  /// Help: Mastery Deck section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Spaced Repetition Review'**
+  String get helpMasteryReviewTitle;
+
+  /// Help: review bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards are scheduled for review based on how well you remember them (Easy, Good, Hard, Again).'**
+  String get helpMasteryReview1;
+
+  /// Help: review bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards rated \"Easy\" increase their review intervals exponentially (e.g. 1 day → 3 days → 7 days → 16 days).'**
+  String get helpMasteryReview2;
+
+  /// Help: review bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards rated \"Hard\" or \"Again\" reset or shorten their intervals for frequent reinforcement.'**
+  String get helpMasteryReview3;
+
+  /// Help: Mastery Deck section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Decks & Organization'**
+  String get helpMasteryDecksTitle;
+
+  /// Help: decks bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Group flashcards by subject, project, or language into custom Decks.'**
+  String get helpMasteryDecks1;
+
+  /// Help: decks bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Each card has a Question (Front) and Answer/Explanation (Back), with optional tags.'**
+  String get helpMasteryDecks2;
+
+  /// Help: decks bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Decks show live metrics including Due Today count, Total Cards, and Overall Mastery Percentage.'**
+  String get helpMasteryDecks3;
+
+  /// Help: Mastery Deck section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Levels'**
+  String get helpMasteryLevelsTitle;
+
+  /// Help: mastery levels bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Cards progress through 5 mastery levels: Learning, Novice, Competent, Proficient, and Mastered.'**
+  String get helpMasteryLevels1;
+
+  /// Help: mastery levels bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Streaks and review consistency reward daily engagement and habit formation.'**
+  String get helpMasteryLevels2;
+
+  /// Help: Mastery Deck footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: You can export and share your custom decks with other devices using Air QR beams or Local Wi-Fi Sync.'**
+  String get helpMasteryTip;
+
+  /// Help topic title: local Wi-Fi sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Wi-Fi P2P Device Sync'**
+  String get helpWifiTitle;
+
+  /// Help: Wi-Fi sync intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer and synchronize your tasks, time records, and mastery flashcards directly between two devices on the same local Wi-Fi network — with zero cloud servers and zero internet traffic.'**
+  String get helpWifiIntro;
+
+  /// Help: Wi-Fi sync section title.
+  ///
+  /// In en, this message translates to:
+  /// **'How Local Wi-Fi Sync Works'**
+  String get helpWifiHowTitle;
+
+  /// Help: how sync works bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Both devices must be connected to the same local Wi-Fi network (or one device connected to the other’s hotspot).'**
+  String get helpWifiHow1;
+
+  /// Help: how sync works bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'One device acts as the Sender/Host (generating a temporary pairing code / QR code), and the other acts as the Receiver.'**
+  String get helpWifiHow2;
+
+  /// Help: how sync works bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Data is transferred directly socket-to-socket over your local LAN, completely bypassing external servers or the internet.'**
+  String get helpWifiHow3;
+
+  /// Help: Wi-Fi sync section title.
+  ///
+  /// In en, this message translates to:
+  /// **'End-to-End Encryption'**
+  String get helpWifiEncryptionTitle;
+
+  /// Help: encryption bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Local sync connections negotiate an encrypted channel using one-time pairing credentials.'**
+  String get helpWifiEncryption1;
+
+  /// Help: encryption bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Other devices on the same Wi-Fi network cannot inspect or tamper with the transferred payload.'**
+  String get helpWifiEncryption2;
+
+  /// Help: Wi-Fi sync section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync Modes & Conflicts'**
+  String get helpWifiModesTitle;
+
+  /// Help: sync modes bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Two-Way Smart Merge: Combines tasks and segments from both devices without losing existing records.'**
+  String get helpWifiModes1;
+
+  /// Help: sync modes bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace All: Replaces the target device’s data completely with an exact clone of the source device (after confirmation).'**
+  String get helpWifiModes2;
+
+  /// Help: Wi-Fi sync footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: If your Wi-Fi router blocks client-to-client traffic (client isolation), simply turn on a mobile hotspot on one phone and connect the other phone to it.'**
+  String get helpWifiTip;
+
+  /// Help topic title: Air QR and data handoff.
+  ///
+  /// In en, this message translates to:
+  /// **'Air QR & Data Handoff'**
+  String get helpQrTitle;
+
+  /// Help: Air QR intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'Move tasks, time tracking summaries, and flashcards across devices without Wi-Fi, cables, or internet. Air QR uses high-density animated visual QR codes to beam data directly into the camera of another device.'**
+  String get helpQrIntro;
+
+  /// Help: Air QR section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Air QR Visual Beam'**
+  String get helpQrBeamTitle;
+
+  /// Help: Air QR bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Select tasks or decks and tap \"Air QR Share\" to produce a visual QR stream on screen.'**
+  String get helpQrBeam1;
+
+  /// Help: Air QR bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'On the receiving device, open \"Air QR Scan\" and point the camera at the sending screen.'**
+  String get helpQrBeam2;
+
+  /// Help: Air QR bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'The camera reassembles all data chunks in real time, validating checksums before applying imports.'**
+  String get helpQrBeam3;
+
+  /// Help: Air QR bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission is requested only while scanning and no photo or video is ever saved to disk.'**
+  String get helpQrBeam4;
+
+  /// Help: Air QR section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Handoff (JSON & Markdown)'**
+  String get helpQrHandoffTitle;
+
+  /// Help: data handoff bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate formatted Markdown summaries of your daily accomplishments for email or reports.'**
+  String get helpQrHandoff1;
+
+  /// Help: data handoff bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Export and import raw JSON representations of specific tasks for cross-platform backup and scripts.'**
+  String get helpQrHandoff2;
+
+  /// Help: data handoff bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste JSON bundles directly into the app on desktop or mobile for instant 1-tap import.'**
+  String get helpQrHandoff3;
+
+  /// Help: Air QR footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Air QR is especially handy for moving a quick task or flashcard deck from your desktop screen to your phone in seconds.'**
+  String get helpQrTip;
+
+  /// Help topic title: security, app lock and encryption.
+  ///
+  /// In en, this message translates to:
+  /// **'Security, App Lock & Encryption'**
+  String get helpPrivacyTitle;
+
+  /// Help: security intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'SreerajP ToDo is built from the ground up with a privacy-first, zero-trust offline architecture. Your personal productivity data is strongly encrypted and protected by multiple layers of security.'**
+  String get helpPrivacyIntro;
+
+  /// Help: security section title.
+  ///
+  /// In en, this message translates to:
+  /// **'SQLCipher AES-256 Database Encryption'**
+  String get helpPrivacyDbTitle;
+
+  /// Help: database encryption bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'The live SQLite database is fully encrypted with 256-bit AES cipher (SQLCipher).'**
+  String get helpPrivacyDb1;
+
+  /// Help: database encryption bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'The database master encryption key is derived securely and stored in device-protected hardware storage (Android Keystore / OS keychain).'**
+  String get helpPrivacyDb2;
+
+  /// Help: database encryption bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Even if someone copies the raw database file from your device storage, it cannot be read without the key.'**
+  String get helpPrivacyDb3;
+
+  /// Help: security section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Biometric & App PIN Lock'**
+  String get helpPrivacyLockTitle;
+
+  /// Help: app lock bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Protect access to the app using your device’s fingerprint, face unlock, or a custom App PIN.'**
+  String get helpPrivacyLock1;
+
+  /// Help: app lock bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure auto-lock timers (Immediately, 1 minute, 5 minutes) to secure the app when switching away.'**
+  String get helpPrivacyLock2;
+
+  /// Help: security section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot Guard Defense'**
+  String get helpPrivacyShotTitle;
+
+  /// Help: screenshot guard bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Settings → Security, enable Screenshot Guard to block screenshots and screen recordings.'**
+  String get helpPrivacyShot1;
+
+  /// Help: screenshot guard bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot Guard also hides the app screen preview in Android’s Recent Apps switcher for complete visual privacy.'**
+  String get helpPrivacyShot2;
+
+  /// Help: security section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero Network Guarantee'**
+  String get helpPrivacyNetTitle;
+
+  /// Help: network guarantee bullet. The app declares INTERNET only for local Wi-Fi sync.
+  ///
+  /// In en, this message translates to:
+  /// **'The only network permission the app declares is INTERNET, and it is used only for Wi-Fi sync with your own devices on the local network. Nothing is ever sent over the internet.'**
+  String get helpPrivacyNet1;
+
+  /// Help: network guarantee bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero telemetry, zero third-party cloud SDKs, zero crash tracking, and zero advertising.'**
+  String get helpPrivacyNet2;
+
+  /// Help: security footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Keep your device lock (fingerprint/PIN) active on your phone for maximum hardware-backed cryptographic protection.'**
+  String get helpPrivacyTip;
+
+  /// Help topic title: encrypted backup and restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted Backup & Restore'**
+  String get helpBackupTitle;
+
+  /// Help: backup intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'A backup creates a single encrypted archive (.todobak / ZIP) containing your tasks, time records, recurrence rules, and settings. Use it to transfer data to a new phone, recover after a factory reset, or keep periodic offline archives.'**
+  String get helpBackupIntro;
+
+  /// Help: backup section title.
+  ///
+  /// In en, this message translates to:
+  /// **'What the Backup Contains'**
+  String get helpBackupContentsTitle;
+
+  /// Help: backup contents bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'All tasks, descriptions, statuses, and historical time segments.'**
+  String get helpBackupContents1;
+
+  /// Help: backup contents bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring task rules and generation schedules.'**
+  String get helpBackupContents2;
+
+  /// Help: backup contents bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Deck cards, review intervals, and mastery levels.'**
+  String get helpBackupContents3;
+
+  /// Help: backup contents bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personalized settings (Theme mode, accent colors, typography, task defaults).'**
+  String get helpBackupContents4;
+
+  /// Help: backup section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Password Encryption Safety'**
+  String get helpBackupPassTitle;
+
+  /// Help: passphrase bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Backup archives are strongly encrypted with a passphrase you choose using AES-256 standard encryption.'**
+  String get helpBackupPass1;
+
+  /// Help: passphrase bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'The app does NOT store your backup passphrase anywhere. You must remember or store it in a password manager.'**
+  String get helpBackupPass2;
+
+  /// Help: passphrase bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'If you lose the passphrase, the backup cannot be decrypted or recovered by anyone.'**
+  String get helpBackupPass3;
+
+  /// Help: backup section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring from a Backup'**
+  String get helpBackupRestoreTitle;
+
+  /// Help: restore bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Restoring replaces what is currently in the app and rebuilds an exact copy from the backup file.'**
+  String get helpBackupRestore1;
+
+  /// Help: restore bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'Before restoring, the app verifies the archive checksum, decrypts with your passphrase, and validates data schema version.'**
+  String get helpBackupRestore2;
+
+  /// Help: restore bullet.
+  ///
+  /// In en, this message translates to:
+  /// **'If you want to merge tasks between two devices without replacing existing data, use \"Local Wi-Fi Sync\" instead.'**
+  String get helpBackupRestore3;
+
+  /// Help: backup footer tip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: After creating a backup, save the file to a secure location such as an external USB drive, SD card, or your personal cloud storage.'**
+  String get helpBackupTip;
+
+  /// Help topic title: FAQs.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs & Troubleshooting'**
+  String get helpFaqTitle;
+
+  /// Help: FAQ intro paragraph.
+  ///
+  /// In en, this message translates to:
+  /// **'Find answers to common questions about day lock, time tracking rules, offline security, and tips for getting the most out of SreerajP ToDo.'**
+  String get helpFaqIntro;
+
+  /// Help: FAQ section title.
+  ///
+  /// In en, this message translates to:
+  /// **'General & Workflow'**
+  String get helpFaqGeneralTitle;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'Why can’t I edit or delete a task from yesterday?'**
+  String get helpFaqEditPastQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'SreerajP ToDo enforces the Day Lock rule: past dates are permanently read-only to preserve honest, tamper-proof productivity records. To work on an unfinished past task, tap \"Copy Tasks\" and copy it to today.'**
+  String get helpFaqEditPastA;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'Why can’t I start a timer on a completed task?'**
+  String get helpFaqTimerDoneQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed and Dropped are terminal statuses. Once a task is completed, its time record is sealed. You can reopen the task (change status back to Pending or Working) if you wish to record more time.'**
+  String get helpFaqTimerDoneA;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I undo an accidental status change?'**
+  String get helpFaqUndoQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Whenever you update a status, a 5-second SnackBar appears with an \"Undo\" button. You can also tap the persistent Undo icon in the top app bar.'**
+  String get helpFaqUndoA;
+
+  /// Help: FAQ section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Tracking & Timers'**
+  String get helpFaqTimeTitle;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I run timers on two tasks simultaneously?'**
+  String get helpFaqTwoTimersQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'No. To maintain tracking integrity, the app enforces the Single Running Timer rule. Starting a timer on any task automatically pauses/stops any running timer on another task.'**
+  String get helpFaqTwoTimersA;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'What happens if I forget to stop my timer at night?'**
+  String get helpFaqForgotStopQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'You can enable \"Auto-stop at midnight\" under Settings → Time Tracking → Auto-stop so open timers are automatically closed at day’s end without overflowing into the next morning.'**
+  String get helpFaqForgotStopA;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'Why are very short timer taps not saved?'**
+  String get helpFaqShortTapsQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Under Settings → Time Tracking → Minimum length, you can discard accidental taps under 10 or 30 seconds to keep your time segments clean.'**
+  String get helpFaqShortTapsA;
+
+  /// Help: FAQ section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Offline Guarantee'**
+  String get helpFaqPrivacyTitle;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'Is any data uploaded to cloud servers or analytics?'**
+  String get helpFaqUploadQ;
+
+  /// Help: FAQ answer. The app declares INTERNET only for local Wi-Fi sync.
+  ///
+  /// In en, this message translates to:
+  /// **'No data is uploaded. SreerajP ToDo works fully offline. Its only network permission, INTERNET, is used just for Wi-Fi sync with your own devices on the local network. All database tables and logs stay on your device in AES-256 encrypted storage.'**
+  String get helpFaqUploadA;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'What happens if I forget my backup password?'**
+  String get helpFaqLostPassQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Because backups are strongly encrypted on-device with AES-256 and there is no cloud server or master key, a lost backup password cannot be recovered. Always store your passphrase securely.'**
+  String get helpFaqLostPassA;
+
+  /// Help: FAQ section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync & Device Transfer'**
+  String get helpFaqSyncTitle;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I transfer all my tasks to a new phone?'**
+  String get helpFaqNewPhoneQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'You have two easy options: (1) Use \"Local Wi-Fi P2P Sync\" to transfer directly over your home Wi-Fi, or (2) Create an encrypted Backup ZIP file under Settings → Backup and restore it on the new phone.'**
+  String get helpFaqNewPhoneA;
+
+  /// Help: FAQ question.
+  ///
+  /// In en, this message translates to:
+  /// **'Why is Local Wi-Fi Sync not discovering the other device?'**
+  String get helpFaqDiscoverQ;
+
+  /// Help: FAQ answer.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure both devices are on the exact same Wi-Fi network. If your router has \"Client Isolation\" turned on, enable a portable Wi-Fi hotspot on one phone and connect the other to it.'**
+  String get helpFaqDiscoverA;
+
+  /// Help: FAQ footer.
+  ///
+  /// In en, this message translates to:
+  /// **'Need further details? Explore the individual topic guides under Help & User Guides or review your permissions under Settings → Permissions.'**
+  String get helpFaqFooter;
+
+  /// Help home: section heading (shown in capitals).
+  ///
+  /// In en, this message translates to:
+  /// **'Task Management & Workflow'**
+  String get helpHomeTaskSection;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How the daily timeline, day-lock immutability, and terminal status locks protect your records.'**
+  String get helpHomeTaskMgmtSubtitle;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up automated recurrence rules (daily, weekly, monthly) and bulk copying past tasks.'**
+  String get helpHomeRecurringSubtitle;
+
+  /// Help home: section heading (shown in capitals).
+  ///
+  /// In en, this message translates to:
+  /// **'Time Tracking & Focus'**
+  String get helpHomeTimeSection;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How multi-segment logging, target durations, and the single running timer rule work.'**
+  String get helpHomeTimeTrackingSubtitle;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Using the distraction-free focus screen, Pomodoro countdowns, and auto-stop safeguards.'**
+  String get helpHomeFocusSubtitle;
+
+  /// Help home: section heading (shown in capitals).
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery Deck & Spaced Repetition'**
+  String get helpHomeMasterySection;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How card decks, spaced repetition review intervals, and mastery scoring operate.'**
+  String get helpHomeMasterySubtitle;
+
+  /// Help home: section heading (shown in capitals).
+  ///
+  /// In en, this message translates to:
+  /// **'Sync & Offline Transfer'**
+  String get helpHomeSyncSection;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct device-to-device synchronization over local Wi-Fi with end-to-end encryption and zero cloud.'**
+  String get helpHomeWifiSubtitle;
+
+  /// Help home: topic card title for Air QR.
+  ///
+  /// In en, this message translates to:
+  /// **'Air QR Scanner & Data Handoff'**
+  String get helpHomeQrTitle;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Transferring tasks and decks offline via visual animated QR code streams and clipboard handoff.'**
+  String get helpHomeQrSubtitle;
+
+  /// Help home: section heading (shown in capitals).
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy, Security & Backups'**
+  String get helpHomePrivacySection;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SQLCipher AES-256 database encryption, biometric authentication, and screenshot guard.'**
+  String get helpHomePrivacySubtitle;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Creating password-protected ZIP backup files, safety practices, and full restore steps.'**
+  String get helpHomeBackupSubtitle;
+
+  /// Help home: section heading (shown in capitals).
+  ///
+  /// In en, this message translates to:
+  /// **'Frequently Asked Questions'**
+  String get helpHomeFaqSection;
+
+  /// Help home: topic card title for FAQs.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQs & Troubleshooting Guide'**
+  String get helpHomeFaqTitle;
+
+  /// Help home: topic card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct answers to common questions about day lock, offline operation, and database safety.'**
+  String get helpHomeFaqSubtitle;
+
+  /// Help home: header card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Help Center & Knowledge Base'**
+  String get helpHomeHeaderTitle;
+
+  /// Help home: header card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse in-depth guides, rules, and solutions for all features of SreerajP ToDo.'**
+  String get helpHomeHeaderSubtitle;
+
+  /// Features: category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Tasks & Workflow'**
+  String get featDailyName;
+
+  /// Features: category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast planning, day lock protection, Unicode normalization, and undo'**
+  String get featDailySubtitle;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Unicode First & Multi-Script Normalization'**
+  String get featUnicodeTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'NFC normalizes all task titles for exact uniqueness and detects text direction dynamically for English, Malayalam, Hindi, and more.'**
+  String get featUnicodeDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'NFC Unicode'**
+  String get featUnicodeH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-script text'**
+  String get featUnicodeH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'RTL & LTR'**
+  String get featUnicodeH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Day Lock Safeguard'**
+  String get featDayLockTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Strict day-level immutability locks past days against retroactive modifications to preserve historical record integrity.'**
+  String get featDayLockDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Historical lock'**
+  String get featDayLockH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Immutable past'**
+  String get featDayLockH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only records'**
+  String get featDayLockH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily List & Calendar Navigation'**
+  String get featCalendarTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast day-by-day task planning with visual calendar picker, quick-jump to Today, and date swipe navigation.'**
+  String get featCalendarDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar picker'**
+  String get featCalendarH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Today jump'**
+  String get featCalendarH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast navigation'**
+  String get featCalendarH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant Undo & Reversible Actions'**
+  String get featUndoTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'5-second undo toast with persistent app bar undo button for task completions, drops, and status updates.'**
+  String get featUndoDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'5-second undo'**
+  String get featUndoH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Persistent button'**
+  String get featUndoH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe transitions'**
+  String get featUndoH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-Text Search & Filters'**
+  String get featSearchTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Instant search across all your tasks, descriptions, and historical logs by status, priority, and date ranges.'**
+  String get featSearchDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-text search'**
+  String get featSearchH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Status filters'**
+  String get featSearchH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Date ranges'**
+  String get featSearchH3;
+
+  /// Features: category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopwatch timers, single running timer rule, and Pomodoro focus'**
+  String get featTimeSubtitle;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Multi-Segment Time Tracking'**
+  String get featSegmentsTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Measure exact time spent on any task across multiple sessions with live second-by-second precision and target progress.'**
+  String get featSegmentsDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Multiple segments'**
+  String get featSegmentsH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Stopwatch timer'**
+  String get featSegmentsH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'HH:MM:SS format'**
+  String get featSegmentsH3;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Guarantees at most one active running timer at any given moment across the entire app to maintain tracking integrity.'**
+  String get featSingleDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'One active timer'**
+  String get featSingleH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-pause previous'**
+  String get featSingleH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Accurate metrics'**
+  String get featSingleH3;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Distraction-free full-screen focus screen with custom work and break countdown timers.'**
+  String get featFocusDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Pomodoro timer'**
+  String get featFocusH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Full-screen focus'**
+  String get featFocusH2;
+
+  /// Features: short highlight chip (used twice).
+  ///
+  /// In en, this message translates to:
+  /// **'Custom intervals'**
+  String get featCustomIntervals;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Live Dynamic Timer Stream'**
+  String get featStreamTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Second-by-second live timer updates with optimized rendering that consumes minimal battery and never lags.'**
+  String get featStreamDesc;
+
+  /// Features: short highlight chip (live update stream).
+  ///
+  /// In en, this message translates to:
+  /// **'StreamProvider'**
+  String get featStreamH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero UI lag'**
+  String get featStreamH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery efficient'**
+  String get featStreamH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal Status Time Lock'**
+  String get featTerminalTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed and dropped tasks automatically stop active timers and prevent new segment additions.'**
+  String get featTerminalDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-stop on finish'**
+  String get featTerminalH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal lock'**
+  String get featTerminalH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected logs'**
+  String get featTerminalH3;
+
+  /// Features: category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual Mode'**
+  String get featRitualName;
+
+  /// Features: category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'A quiet, guided way to open and close the day'**
+  String get featRitualSubtitle;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Guided Day Open'**
+  String get featDayOpenTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathe, read one reflection card, settle what is left over from before, then begin the day. Off by default, and every step can be skipped.'**
+  String get featDayOpenDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Breathing timer'**
+  String get featDayOpenH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry over'**
+  String get featDayOpenH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s three'**
+  String get featDayOpenH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ritual Deck'**
+  String get featRitualDeckTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Fifty reflection cards in English and Malayalam, each with a question and a grounding quote, resurfaced by their own spaced repetition.'**
+  String get featRitualDeckDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'50 cards'**
+  String get featRitualDeckH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Bilingual'**
+  String get featRitualDeckH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Comes back when due'**
+  String get featRitualDeckH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening Close'**
+  String get featEveningTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Once a day, later on, the day list offers the evening reflection so the day is closed as deliberately as it was opened.'**
+  String get featEveningDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Once a day'**
+  String get featEveningH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional'**
+  String get featEveningH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Your chosen hour'**
+  String get featEveningH3;
+
+  /// Features: category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcards, spaced repetition retention, and recurring habits'**
+  String get featMasterySubtitle;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Spaced Repetition Flashcards'**
+  String get featSrsTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Convert daily learnings and study notes into flashcards with optimized spaced repetition review scheduling.'**
+  String get featSrsDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Spaced repetition'**
+  String get featSrsH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Retention intervals'**
+  String get featSrsH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Confidence rating'**
+  String get featSrsH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Decks & Mastery Levels'**
+  String get featDecksTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Organize flashcards into custom decks and track your mastery score progression from Novice to Master.'**
+  String get featDecksDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom decks'**
+  String get featDecksH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery scoring'**
+  String get featDecksH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Streak tracking'**
+  String get featDecksH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring Tasks & RRule Engine'**
+  String get featRruleTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Automate daily, weekly, monthly, or interval-based task generation with the standard RFC-5545 RRule engine.'**
+  String get featRruleDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'RRule standard'**
+  String get featRruleH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Automated generation'**
+  String get featRruleH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Bulk Task Copying'**
+  String get featCopyTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Easily copy unfinished or selected tasks from past days into today\'s list with 1 tap.'**
+  String get featCopyDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'1-tap copying'**
+  String get featCopyH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Select multiple'**
+  String get featCopyH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Carry over unfinished'**
+  String get featCopyH3;
+
+  /// Features: category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Sync & Air QR Transfer'**
+  String get featSyncName;
+
+  /// Features: category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Local Wi-Fi P2P sync, Air QR visual beam, and data handoff'**
+  String get featSyncSubtitle;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted Local Wi-Fi P2P Sync'**
+  String get featWifiTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Direct device-to-device synchronization over your local Wi-Fi with end-to-end encryption and zero cloud servers.'**
+  String get featWifiDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Local Wi-Fi'**
+  String get featWifiH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero cloud'**
+  String get featWifiH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'End-to-end encrypted'**
+  String get featWifiH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Air QR Task Beam & Scanner'**
+  String get featQrTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Transfer individual tasks, time logs, and decks between devices via visual animated QR code streams.'**
+  String get featQrDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Visual QR stream'**
+  String get featQrH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera scanner'**
+  String get featQrH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero network needed'**
+  String get featQrH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline Data Handoff'**
+  String get featHandoffTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Export and import formatted task bundles, JSON, and Markdown summaries via clipboard or local files.'**
+  String get featHandoffDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'JSON & Markdown'**
+  String get featHandoffH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Clipboard handoff'**
+  String get featHandoffH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Portable data'**
+  String get featHandoffH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'100% Offline Operational Guarantee'**
+  String get featOfflineTitle;
+
+  /// Features: feature description. The app uses the network only for local Wi-Fi sync.
+  ///
+  /// In en, this message translates to:
+  /// **'Absolute privacy with zero cloud SDKs and zero analytics. The only network use is Wi-Fi sync that you start, with your own devices on the local network.'**
+  String get featOfflineDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero network'**
+  String get featOfflineH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Zero analytics'**
+  String get featOfflineH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Local network only'**
+  String get featOfflineH3;
+
+  /// Features: category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy, Security & Storage'**
+  String get featPrivacyName;
+
+  /// Features: category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'SQLCipher AES-256 database, app lock, and encrypted backups'**
+  String get featPrivacySubtitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'All tasks, time records, and settings are encrypted at rest with hardware-backed SQLCipher encryption.'**
+  String get featDbDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'SQLCipher AES-256'**
+  String get featDbH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Device-derived key'**
+  String get featDbH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Encrypted at rest'**
+  String get featDbH3;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Lock your tasks and settings with fingerprint, face unlock, or a custom app PIN.'**
+  String get featLockDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Fingerprint & Face unlock'**
+  String get featLockH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'App PIN fallback'**
+  String get featLockH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-lock timer'**
+  String get featLockH3;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Prevents screen captures and hides app window previews in the Android recent apps switcher.'**
+  String get featShotDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Screenshot blocking'**
+  String get featShotH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent apps shield'**
+  String get featShotH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy protection'**
+  String get featShotH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Password-Protected Encrypted Backups'**
+  String get featBackupTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Export and restore encrypted ZIP backup archives protected with AES-256 user passphrases.'**
+  String get featBackupDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'AES-256 ZIP'**
+  String get featBackupH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'User passphrase'**
+  String get featBackupH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe portable backups'**
+  String get featBackupH3;
+
+  /// Features: category name.
+  ///
+  /// In en, this message translates to:
+  /// **'Customization & Analytics'**
+  String get featCustomName;
+
+  /// Features: category subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Themes, Malayalam typography, charts, and defaults'**
+  String get featCustomSubtitle;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Light, Dark & Accent Palettes'**
+  String get featThemeTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Support for light, dark, and OLED themes with 8 vibrant curated accent color presets.'**
+  String get featThemeDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Light & Dark themes'**
+  String get featThemeH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Vibrant accents'**
+  String get featThemeH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'OLED styling'**
+  String get featThemeH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Typography & Text Scaling'**
+  String get featTypeTitle;
+
+  /// Features: feature description. Keep font names.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from Manjari, Anek Malayalam, Noto Sans, or system fonts with dynamic text scaling.'**
+  String get featTypeDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Malayalam fonts'**
+  String get featTypeH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Dynamic scaling'**
+  String get featTypeH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Readable typography'**
+  String get featTypeH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Productivity Statistics & Charts'**
+  String get featStatsTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Interactive charts and tables showing completion ratios, time distribution, and daily trends.'**
+  String get featStatsDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'fl_chart graphs'**
+  String get featStatsH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Time distribution'**
+  String get featStatsH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Completion trends'**
+  String get featStatsH3;
+
+  /// Features: feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Task Defaults & Time Display'**
+  String get featDefaultsTitle;
+
+  /// Features: feature description.
+  ///
+  /// In en, this message translates to:
+  /// **'Configure default priorities, target durations, week start day, working days, and time formats.'**
+  String get featDefaultsDesc;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom defaults'**
+  String get featDefaultsH1;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Flexible formats'**
+  String get featDefaultsH2;
+
+  /// Features: short highlight chip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tailored workflow'**
+  String get featDefaultsH3;
+
+  /// Features: header card title.
+  ///
+  /// In en, this message translates to:
+  /// **'SreerajP ToDo Features'**
+  String get featHeaderTitle;
+
+  /// Features: header card subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore every productivity tool, time tracker, and offline safeguard designed for you.'**
+  String get featHeaderSubtitle;
 }
 
 class _AppLocalizationsDelegate

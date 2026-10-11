@@ -1,4 +1,5 @@
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/core/errors/exceptions.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 
@@ -13,7 +14,7 @@ class MarkTodoDropped {
   Future<TodoStatus> call(String todoId) async {
     final todo = await _todoRepository.getTodoById(todoId);
     if (todo == null) {
-      throw StateError('Todo not found: $todoId');
+      throw const TodoNotFoundException();
     }
 
     final oldStatus = todo.status;

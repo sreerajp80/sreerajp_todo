@@ -9,7 +9,7 @@ Build a dashboard with two tabs (Daily Overview, Per-Item Overview) showing prod
 - `fl_chart` package installed.
 - Read `CLAUDE.md` — statistics rules, dropped ≠ completed in stats, pagination, no compute/isolate.
 - Read `docs/architecture.md` — data flow (§6), provider types (§5), performance constraints (§14).
-- Read `docs/flutter_project_engineering_standard.md` — UI/UX baseline (§6 — screen states: loading, empty, success, error), testing standard (§9), coding standards (§8), Definition of Done (§14).
+- Read `docs/guidelines/flutter_project_engineering_standard.md` — UI/UX baseline (§6 — screen states: loading, empty, success, error), testing standard (§9), coding standards (§8), Definition of Done (§14).
 
 ## Key Design Decisions
 - Stats computed **on-the-fly** via SQL — no separate stats table.

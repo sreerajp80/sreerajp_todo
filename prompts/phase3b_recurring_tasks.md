@@ -8,7 +8,7 @@ Allow users to define recurrence rules (daily, weekly, monthly, yearly — full 
 - Phase 3 complete (core todo CRUD, daily list screen, use-case pattern established).
 - Read `CLAUDE.md` — non-negotiable rules, architecture constraints.
 - Read `docs/architecture.md` — data flow (§6), use-case pattern, navigation (§9).
-- Read `docs/flutter_project_engineering_standard.md` — testing standard (§9), coding standards (§8), Definition of Done (§14).
+- Read `docs/guidelines/flutter_project_engineering_standard.md` — testing standard (§9), coding standards (§8), Definition of Done (§14).
 
 ## Architecture Reminder
 - Generated recurring tasks behave identically to manually created tasks.

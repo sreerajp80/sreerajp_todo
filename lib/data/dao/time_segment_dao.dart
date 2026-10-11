@@ -2,7 +2,7 @@ import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/dao/todo_search_index_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
 
 class TimeSegmentDao {
   TimeSegmentDao(this._databaseService);

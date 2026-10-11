@@ -1,7 +1,7 @@
-import 'package:sreerajp_todo/data/backup/backup_file_info.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/backup_file_info.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 
 String dateOffsetIso(int offsetDays) {
   final date = DateTime.now().add(Duration(days: offsetDays));

@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sreerajp_todo/data/models/statistics_models.dart';
+import 'package:sreerajp_todo/domain/entities/statistics_models.dart';
 
 part 'statistics_state.freezed.dart';
 

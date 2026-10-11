@@ -13,9 +13,9 @@ Create a runnable Flutter skeleton with navigation, theming, folder structure, a
 
 ## Pre-Requisites
 - Read `CLAUDE.md` in the project root — it is the single source of truth.
-- Read `flutter_todo_app_plan.md` for full architectural context.
+- Read `docs/sreerajp_todo_idea.md` for full architectural context.
 - Read `docs/architecture.md` — layer boundaries, folder structure, ownership rules.
-- Read `docs/flutter_project_engineering_standard.md` — coding standards (§8), lint config (§8.1), structure rules (§3), AI assistant instructions (§13), Definition of Done (§14).
+- Read `docs/guidelines/flutter_project_engineering_standard.md` — coding standards (§8), lint config (§8.1), structure rules (§3), AI assistant instructions (§13), Definition of Done (§14).
 
 ## Tasks
 

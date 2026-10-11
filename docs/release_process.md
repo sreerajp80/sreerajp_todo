@@ -68,7 +68,25 @@ Two Android build flavors are defined: `dev` and `prod`.
 | `prod` + `release` | `flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi` | Shareable release APKs |
 | `prod` + `release` | `flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/` | Play Store submission |
 
-Windows builds do not use flavors. For detailed flavor usage, see [flutter_build_flavors_guide.md](flutter_build_flavors_guide.md).
+A release-like QA build of the `dev` flavor:
+
+```powershell
+flutter build apk --flavor dev --release --split-per-abi
+```
+
+Which artifact to use:
+
+- **Split APKs** (`--split-per-abi`) for direct install. The output files are
+  `app-armeabi-v7a-<flavor>-release.apk`, `app-arm64-v8a-<flavor>-release.apk` and
+  `app-x86_64-<flavor>-release.apk`.
+- **App Bundle** (`.aab`) for Google Play. Play serves device-specific downloads from it.
+- `--target-platform` only controls compile targets. It does not make a normal APK
+  ABI-specific. Use `--split-per-abi` (or Gradle `abiFilters`) for a true per-ABI APK.
+- If split APK builds fail, check that custom APK naming logic in
+  `android/app/build.gradle.kts` does not give every split the same file name.
+
+Windows builds do not use flavors. For the general flavor reference, see
+[guidelines/flutter_build_flavors_guide.md](guidelines/flutter_build_flavors_guide.md).
 
 ---
 
@@ -166,8 +184,8 @@ Complete these items before every release.
 
 ### Play Store Readiness (Mandatory Gate)
 
-- [ ] Full §9A gate completed for this release.
-- [ ] Language splitting disabled in App Bundle (`bundle.language.enableSplit = false`, §9A.3).
+- [ ] Full §10 gate completed for this release.
+- [ ] Language splitting disabled in App Bundle (`bundle.language.enableSplit = false`, §10.3).
 - [ ] `targetSdkVersion` meets Play's current target API level policy (re-checked, not assumed).
 - [ ] `versionCode` strictly greater than every previously uploaded build.
 - [ ] App Bundle built; Play App Signing enabled; native debug symbols uploaded.
@@ -219,7 +237,7 @@ Complete these items before every release.
 10. Launch the app and perform a full smoke test: create todo, start/stop timer, change status, view statistics, export/import backup.
 11. Verify the app functions normally with zero network access.
 12. Turn Wi-Fi back on (no mobile data) and run one Wi-Fi sync between two devices, plus one OCR scan and one QR scan.
-13. Complete the Google Play readiness gate (§9A) before uploading to Play.
+13. Complete the Google Play readiness gate (§10) before uploading to Play.
 14. Tag the release in git: `git tag v2.1.0`.
 
 ### Release Artifacts
@@ -258,11 +276,11 @@ Complete these items before every release.
 
 ---
 
-## 9A. Google Play Store Readiness (Mandatory Gate)
+## 10. Google Play Store Readiness (Mandatory Gate)
 
 Every app is built to be publishable on Google Play. This gate MUST pass **before the first upload** and MUST be re-checked before every production release. Items marked *(one-time)* are set up once and only re-verified afterwards.
 
-### 9A.1 Application identity and versioning
+### 10.1 Application identity and versioning
 
 | Item | Requirement |
 |---|---|
@@ -272,7 +290,7 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 | App name | Set in `android/app/src/main/AndroidManifest.xml` via a localized `@string/app_name`, matching the store listing. |
 | Package visibility | If the app queries other packages, declare `<queries>` — Play rejects silent package enumeration. |
 
-### 9A.2 API level, ABI, and compatibility
+### 10.2 API level, ABI, and compatibility
 
 - `targetSdkVersion` MUST meet Play's current target API level policy (currently targeting SDK 35).
 - `compileSdkVersion` ≥ `targetSdkVersion` (targeting SDK 35).
@@ -281,7 +299,7 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 - 16 KB page-size compliance is required for Android 15+ devices.
 - Edge-to-edge behavior verified when targeting SDK 35+.
 
-### 9A.3 Signing and upload
+### 10.3 Signing and upload
 
 - Ship an **Android App Bundle (`.aab`)**, not an APK, to Play.
 - **Language splitting MUST be disabled** (`bundle { language { enableSplit = false } }` in `android/app/build.gradle.kts`). Without this, Play downloads only the phone's system language, breaking the in-app language picker when switching to Malayalam or Sanskrit.
@@ -290,7 +308,7 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 - `flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/` — all three flags, always.
 - Upload the native debug symbols (`build/symbols/android-prod/`) to Play so crash traces de-obfuscate, and archive them alongside the release evidence.
 
-### 9A.4 Manifest, permissions, and policy declarations
+### 10.4 Manifest, permissions, and policy declarations
 
 - Every permission in the merged manifest is justified and used: `CAMERA` (for AirQR sync), `RECORD_AUDIO` (for on-device speech-to-text voice input) and `INTERNET` (for Wi-Fi sync on the local network only). Remove anything inherited from a dependency that the app does not need (`tools:node="remove"`).
 - Sensitive permissions require an in-console declaration: camera and microphone declarations explain offline, user-initiated usage.
@@ -299,7 +317,7 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 - No network permission except `INTERNET` (local Wi-Fi sync). No `ACCESS_NETWORK_STATE`, no `ACCESS_WIFI_STATE`, and no ML Kit, Play Services or `datatransport` entries.
 - Play Data safety form: no data is collected or shared. Wi-Fi sync moves data only between the user's own devices on the local network.
 
-### 9A.5 Store account declarations
+### 10.5 Store account declarations
 
 - **Privacy policy URL** — reachable, public, app-specific. Required for every app, whether or not it collects data.
 - **Data safety form** — completed and matching what the app actually does (100% offline, zero data collected or shared).
@@ -307,7 +325,7 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 - **Target audience and content** — declared.
 - **Ads declaration** — No ads.
 
-### 9A.6 Store listing assets
+### 10.6 Store listing assets
 
 | Asset | Requirement |
 |---|---|
@@ -319,7 +337,7 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 | Full description | ≤ 4000 characters |
 | App title | ≤ 30 characters, no keyword stuffing, no store badges or price in the title |
 
-### 9A.7 Localization of the listing
+### 10.7 Localization of the listing
 
 The app itself ships English, Malayalam, and Sanskrit (`docs/guidelines/flutter_project_engineering_standard.md §8`).
 
@@ -327,7 +345,7 @@ The app itself ships English, Malayalam, and Sanskrit (`docs/guidelines/flutter_
 - **Sanskrit is not an available Play listing language.** It is shipped *inside* the app only; do not attempt to add it as a store locale, and do not drop it from the app because the store cannot list it.
 - Screenshots MUST show real app UI in the language of that listing — not English screenshots under the Malayalam listing.
 
-### 9A.8 Pre-launch verification
+### 10.8 Pre-launch verification
 
 - Upload to **internal testing** first; run the Play Console **pre-launch report** and resolve all crashes, ANRs, and flagged accessibility and security items.
 - Verify the app installs, launches, and completes its primary flow from a Play-served build (not just a locally installed APK), in all three languages.
@@ -336,7 +354,7 @@ The app itself ships English, Malayalam, and Sanskrit (`docs/guidelines/flutter_
 
 ---
 
-## 10. Distribution Channels
+## 11. Distribution Channels
 
 | Channel | Artifact | Audience | Notes |
 |---------|----------|----------|-------|
@@ -347,7 +365,7 @@ No public store distribution in v1.0.
 
 ---
 
-## 11. Rollback And Hotfix Process
+## 12. Rollback And Hotfix Process
 
 - Rollback trigger: Critical bug discovered after release (data loss, encryption failure, crash on launch).
 - Rollback method: Revert to previous git tag, rebuild, and reinstall.
@@ -358,7 +376,7 @@ No public store distribution in v1.0.
 
 ---
 
-## 12. Release Evidence
+## 13. Release Evidence
 
 - CI run: Not applicable (no CI in v1.0; manual build process).
 - Test report: `flutter test` output in terminal.
@@ -367,7 +385,7 @@ No public store distribution in v1.0.
 
 ---
 
-## 13. Post-Release Checks
+## 14. Post-Release Checks
 
 - [ ] App launches and functions on both platforms with network disabled.
 - [ ] Backup export/import works end-to-end.

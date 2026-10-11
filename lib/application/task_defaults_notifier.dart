@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/core/constants/todo_sort_option.dart';
-import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
-import 'package:sreerajp_todo/data/models/todo_priority.dart';
+import 'package:sreerajp_todo/core/rules/task_default_rules.dart';
+import 'package:sreerajp_todo/domain/entities/todo_priority.dart';
 
 /// SharedPreferences key for the status a new task starts in.
 const String kDefaultNewTaskStatusKey = 'defaults_new_task_status';

@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 
 /// Available document filter presets for image enhancement.
 enum OcrEnhanceFilter {
@@ -13,10 +13,17 @@ enum OcrEnhanceFilter {
 
   /// Enhanced contrast and clarity for faint or washed-out documents.
   enhance,
+
+  /// Tuned for screen captures: grayscale, dark mode flipped to dark text on
+  /// light, and the image enlarged so small UI text is tall enough to read.
+  screen,
+
+  /// Local black-and-white threshold for photos with shadows or uneven light.
+  /// Each pixel is judged against its own surroundings, not the whole page.
+  adaptiveBw,
 }
 
 /// Parameters for document image enhancement.
-@immutable
 class OcrEnhanceParams {
   const OcrEnhanceParams({
     required this.sourcePath,
@@ -26,6 +33,7 @@ class OcrEnhanceParams {
     this.contrast = 0,
     this.filter = OcrEnhanceFilter.original,
     this.invert = false,
+    this.sharpness = 0,
     this.generatePreview = true,
     this.previewMaxDimension = 1200,
   });
@@ -55,6 +63,10 @@ class OcrEnhanceParams {
   /// and dropped. Inverting such an image is what makes that text readable.
   final bool invert;
 
+  /// Extra sharpening from 0 to 100 (0 = none). Firms up soft letter edges
+  /// from a slightly blurred photo or anti-aliased screen text.
+  final int sharpness;
+
   /// Whether to generate fast preview thumbnail bytes for the UI.
   final bool generatePreview;
 
@@ -69,6 +81,7 @@ class OcrEnhanceParams {
     int? contrast,
     OcrEnhanceFilter? filter,
     bool? invert,
+    int? sharpness,
     bool? generatePreview,
     int? previewMaxDimension,
   }) {
@@ -80,6 +93,7 @@ class OcrEnhanceParams {
       contrast: contrast ?? this.contrast,
       filter: filter ?? this.filter,
       invert: invert ?? this.invert,
+      sharpness: sharpness ?? this.sharpness,
       generatePreview: generatePreview ?? this.generatePreview,
       previewMaxDimension: previewMaxDimension ?? this.previewMaxDimension,
     );
@@ -87,7 +101,6 @@ class OcrEnhanceParams {
 }
 
 /// Result of document image enhancement.
-@immutable
 class OcrEnhanceResult {
   const OcrEnhanceResult({
     required this.targetPath,

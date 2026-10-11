@@ -4,19 +4,18 @@ import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/statistics_notifier.dart';
-import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
+import 'package:sreerajp_todo/domain/repositories/statistics_repository.dart';
 
 import '../helpers/test_fixtures.dart';
-import '../presentation/undo_snackbar_test.dart'
+import '../presentation/shared/widgets/undo_snackbar_test.dart'
     show FakeTimeSegmentRepository, InMemoryTodoRepository;
 
-class _MockStatisticsQueryService extends Mock
-    implements StatisticsQueryService {}
+class _MockStatisticsRepository extends Mock implements StatisticsRepository {}
 
 /// Statistics are refreshed by the same callback; keep them off the database.
 class _IdleStatisticsNotifier extends StatisticsNotifier {
   _IdleStatisticsNotifier()
-    : super(_MockStatisticsQueryService(), workingDays: () => const {});
+    : super(_MockStatisticsRepository(), workingDays: () => const {});
 
   @override
   Future<void> refresh({bool force = false}) async {}

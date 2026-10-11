@@ -10,9 +10,9 @@ import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/task_defaults_notifier.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/core/constants/todo_sort_option.dart';
-import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/domain/usecases/copy_todos.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/day_list_filters.dart';
@@ -24,7 +24,7 @@ import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/recall_con
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/daily_progress_header.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/delete_task_choice_dialog.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/todo_list_tile.dart';
-import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/core/rules/task_default_rules.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_empty_state.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
@@ -1073,7 +1073,7 @@ class _DailyListScreenState extends ConsumerState<DailyListScreen> {
               case _AppBarMoreOption.airQrShare:
                 showAirQrShareDialog(
                   context,
-                  title: 'AirQR Sync (${widget.date})',
+                  title: context.l10n.airQrSyncDayTitle(widget.date),
                   todos: state.todos,
                   date: widget.date,
                 );

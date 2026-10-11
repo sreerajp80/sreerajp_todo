@@ -3,8 +3,8 @@ import 'package:sreerajp_todo/application/statistics_state.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
-import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
-import 'package:sreerajp_todo/data/models/statistics_models.dart';
+import 'package:sreerajp_todo/domain/entities/statistics_models.dart';
+import 'package:sreerajp_todo/domain/repositories/statistics_repository.dart';
 
 /// Non-localized marker stored in [StatisticsState.error] to signal that a load
 /// failed. The UI never displays this value; it localises its own message when
@@ -12,12 +12,12 @@ import 'package:sreerajp_todo/data/models/statistics_models.dart';
 const String _kErrorSentinel = 'error';
 
 class StatisticsNotifier extends StateNotifier<StatisticsState> {
-  StatisticsNotifier(this._statisticsQueryService, {required this.workingDays})
+  StatisticsNotifier(this._statisticsRepository, {required this.workingDays})
     : super(const StatisticsState()) {
     refresh();
   }
 
-  final StatisticsQueryService _statisticsQueryService;
+  final StatisticsRepository _statisticsRepository;
 
   /// The weekdays the user counts as working days, read fresh on every load so
   /// a change on the settings page shows up on the next refresh.
@@ -61,17 +61,17 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
 
     try {
       final offset = page * kStatisticsPageSize;
-      final dailyStats = await _statisticsQueryService.getCountsPerDay(
+      final dailyStats = await _statisticsRepository.getCountsPerDay(
         limit: kStatisticsPageSize,
         offset: offset,
         startDate: filter.startDate,
         endDate: filter.endDate,
       );
-      final dayCount = await _statisticsQueryService.getDayCount(
+      final dayCount = await _statisticsRepository.getDayCount(
         startDate: filter.startDate,
         endDate: filter.endDate,
       );
-      final summaryStats = await _statisticsQueryService.getSummaryStats(
+      final summaryStats = await _statisticsRepository.getSummaryStats(
         startDate: filter.startDate,
         endDate: filter.endDate,
         workingDays: workingDays(),
@@ -119,12 +119,12 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
 
     try {
       final offset = page * kStatisticsPageSize;
-      final perItemStats = await _statisticsQueryService.getPerItemStats(
+      final perItemStats = await _statisticsRepository.getPerItemStats(
         limit: kStatisticsPageSize,
         offset: offset,
         titleQuery: normalizedQuery,
       );
-      final itemCount = await _statisticsQueryService.getPerItemCount(
+      final itemCount = await _statisticsRepository.getPerItemCount(
         titleQuery: normalizedQuery,
       );
       final totalPages = itemCount == 0
@@ -213,7 +213,7 @@ class StatisticsNotifier extends StateNotifier<StatisticsState> {
     }
 
     try {
-      final history = await _statisticsQueryService.getTimeSeriesForTitle(
+      final history = await _statisticsRepository.getTimeSeriesForTitle(
         normalizedTitle,
       );
       _historyCache[normalizedTitle] = _HistoryCacheEntry(history);

@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/domain/services/ocr_service.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 /// On-device OCR implementation backed by native Tesseract 5 (Tesseract4Android)
 /// via MethodChannel, providing accurate Malayalam and English text recognition.
@@ -34,8 +34,12 @@ class NativeOcrService implements OcrService {
       // No native side here, for example on Windows. Tesseract is the only
       // OCR engine, so text reading is simply not available.
       throw const OcrUnavailableException();
-    } catch (e) {
-      debugPrint('NativeOcrService: recognition failed ($e)');
+    } catch (e, st) {
+      AppLogger.error(
+        'NativeOcrService: recognition failed',
+        error: e,
+        stackTrace: st,
+      );
       rethrow;
     }
   }
@@ -50,7 +54,7 @@ class NativeOcrService implements OcrService {
     } on MissingPluginException catch (_) {
       // No native side in host tests; nothing is queued there either.
     } catch (e) {
-      debugPrint('NativeOcrService: cancel failed ($e)');
+      AppLogger.warning('NativeOcrService: cancel failed', error: e);
     }
   }
 }

@@ -1,6 +1,6 @@
 import 'package:sqflite_sqlcipher/sqlite_api.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/backup_log_entity.dart';
+import 'package:sreerajp_todo/domain/entities/backup_log_entity.dart';
 
 class BackupLogsDao {
   BackupLogsDao(this._databaseService);

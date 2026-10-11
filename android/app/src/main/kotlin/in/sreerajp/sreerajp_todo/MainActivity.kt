@@ -1128,6 +1128,10 @@ class MainActivity : FlutterActivity() {
         // vowel signs and ligatures. Telling it the effective DPI fixes that.
         tess.setVariable("user_defined_dpi", "300")
         tess.setVariable("preserve_interword_spaces", "1")
+        // Plain Otsu picks one black/white cut for the whole page, so a shadow or
+        // a coloured panel swallows the text inside it. Adaptive Otsu picks the
+        // cut tile by tile. Older Tesseract builds ignore an unknown variable.
+        tess.setVariable("thresholding_method", "1")
 
         val rawBitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
             ?: throw IllegalArgumentException("Could not decode image file: ${imageFile.name}")
@@ -1200,7 +1204,7 @@ class MainActivity : FlutterActivity() {
  * copy. Bumping this string forces one re-copy. Change it whenever any file in
  * `assets/tessdata/` changes.
  */
-private const val TESSDATA_VERSION = "2026-09-12-mal-best"
+private const val TESSDATA_VERSION = "2026-10-10-eng-mal-best"
 
 /** Name of the marker file recording which model set is on disk. */
 private const val TESSDATA_VERSION_FILE = ".model_version"

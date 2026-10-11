@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/pending_alert_notifier.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

@@ -3780,6 +3780,15 @@ class AppLocalizationsSa extends AppLocalizations {
   String get ocrEnhanceInvert => 'विपर्ययः';
 
   @override
+  String get ocrFilterScreen => 'पटलचित्रम्';
+
+  @override
+  String get ocrFilterAdaptive => 'छायानिवारणम्';
+
+  @override
+  String get ocrSharpnessLabel => 'तीक्ष्णता';
+
+  @override
   String get ocrEnhanceLiveText => 'प्रत्यक्षपाठः';
 
   @override
@@ -3792,6 +3801,13 @@ class AppLocalizationsSa extends AppLocalizations {
 
   @override
   String get ocrEnhanceScanning => 'अन्विष्यते...';
+
+  @override
+  String get ocrExtractTextTooltip => 'पाठम् उद्धर';
+
+  @override
+  String get ocrEnhanceExtractHint =>
+      'सम्पादनं समाप्य पाठं पठितुं परीक्षणकुड्मलं स्पृश।';
 
   @override
   String get ocrLanguageTooltip => 'पाठभाषा';
@@ -4100,4 +4116,1530 @@ class AppLocalizationsSa extends AppLocalizations {
 
   @override
   String get airQrScanUnavailable => 'QR-पठनम् Android-यन्त्रेषु एव उपलभ्यते।';
+
+  @override
+  String get ok => 'अस्तु';
+
+  @override
+  String get errorNotLocalNetwork =>
+      'Wi-Fi-समकालनं केवलं स्थानीयजालस्थैः यन्त्रैः सह प्रवर्तते।';
+
+  @override
+  String get errorInvalidInput => 'प्रविष्टेषु केचन अंशाः अमान्याः।';
+
+  @override
+  String get p2pSummaryTasks => 'कार्याणि';
+
+  @override
+  String p2pSummaryAdded(int count) {
+    return '+$count योजितानि';
+  }
+
+  @override
+  String p2pSummarySkipped(int count) {
+    return '($count त्यक्तानि)';
+  }
+
+  @override
+  String p2pDayLockSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'व्यतीतदिनानि कीलितानि इति हेतोः तेषां $count वस्तूनि त्यक्तानि।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get p2pTabHost => 'आतिथेयम् (वितरणम्)';
+
+  @override
+  String get p2pTabPeer => 'सहयन्त्रम् (ग्रहणम्)';
+
+  @override
+  String get p2pHostActive => 'आतिथेयसेवा सक्रिया';
+
+  @override
+  String get p2pHostStopped => 'आतिथेयसेवा स्थगिता';
+
+  @override
+  String p2pHostListening(String address) {
+    return '$address इत्यत्र प्रतीक्षा प्रवर्तते';
+  }
+
+  @override
+  String get p2pHostIdleHint =>
+      'गुप्तीकृतसम्बन्धम् उद्घाटयितुम् अधः स्पृश्यताम्।';
+
+  @override
+  String get p2pPairingPinLabel => 'युग्मनसङ्केतः';
+
+  @override
+  String get p2pSelectScope => 'समकालनव्याप्तिः चीयताम्';
+
+  @override
+  String get p2pStartHost => 'आतिथेयसेवा आरभ्यताम्';
+
+  @override
+  String get p2pStopHost => 'आतिथेयसेवा स्थग्यताम्';
+
+  @override
+  String get p2pConnectToHost => 'आतिथेययन्त्रेण सम्बन्धः';
+
+  @override
+  String get p2pHostIpLabel => 'आतिथेययन्त्रस्य IP-सङ्केतः';
+
+  @override
+  String get p2pHostIpHint => 'यथा 192.168.1.105';
+
+  @override
+  String get p2pPinHint => 'षडङ्कसङ्केतः';
+
+  @override
+  String get p2pRequestedScope => 'अपेक्षिता समकालनव्याप्तिः';
+
+  @override
+  String p2pStatusConnecting(String address) {
+    return '$address इत्यनेन सम्बन्धः क्रियते…';
+  }
+
+  @override
+  String get p2pStatusAuthenticating => 'सुरक्षितसत्रं सज्जीक्रियते…';
+
+  @override
+  String daysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count दिनानि',
+      one: '1 दिनम्',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String daysShort(int count) {
+    return '$count दि';
+  }
+
+  @override
+  String tasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count कार्याणि',
+      one: '1 कार्यम्',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subtasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count उपकार्याणि',
+      one: '1 उपकार्यम्',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subtasksProgress(int done, int total) {
+    return '$done/$total उपकार्याणि';
+  }
+
+  @override
+  String get pendingAlertsView => 'दृश्यताम्';
+
+  @override
+  String get masteryTasksInDeck => 'सङ्ग्रहस्थानि कार्याणि';
+
+  @override
+  String masteryTargetTime(String duration) {
+    return 'लक्ष्यम्: $duration';
+  }
+
+  @override
+  String carryOverLookBackValue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count दिनानि',
+      one: '1 दिनम् (ह्यः)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String carryOverLookBackChip(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count दि',
+      one: '1 दि (ह्यः)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get eventTimerSession => 'समयगणनसत्रम्';
+
+  @override
+  String get eventManualTime => 'हस्तचालितसमयः';
+
+  @override
+  String get eventStatusChange => 'स्थितिपरिवर्तनम्';
+
+  @override
+  String prerequisitesSelected(int count) {
+    return '$count चितानि';
+  }
+
+  @override
+  String get ocrNoCamera => 'अस्मिन् यन्त्रे छायाग्राही न प्राप्तः।';
+
+  @override
+  String get ocrCameraStartFailed => 'छायाग्राही आरब्धुं न अशक्यत।';
+
+  @override
+  String get ocrOverlayTaskName => '1. कार्यनाम';
+
+  @override
+  String get ocrOverlaySeparator => 'रिक्तस्थानम् / # / ---';
+
+  @override
+  String get ocrOverlayDescription => '2. वर्णनम् (अवशिष्टः सर्वः पाठः)';
+
+  @override
+  String pendingNotificationBody(int count, String summary) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count कार्याणि अवशिष्टानि ($summary)',
+      one: '1 कार्यम् अवशिष्टम् ($summary)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pendingNotificationSummarySplit(int today, int previous) {
+    return 'अद्य $today, पूर्वदिनेभ्यः $previous';
+  }
+
+  @override
+  String pendingNotificationSummaryToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'अद्य $count कार्याणि अवशिष्टानि',
+      one: 'अद्य 1 कार्यम् अवशिष्टम्',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get airQrBackupShareTitle => 'AirQR-प्रतिरक्षावितरणम्';
+
+  @override
+  String airQrSyncDayTitle(String date) {
+    return 'AirQR-समकालनम् ($date)';
+  }
+
+  @override
+  String airQrEstimate(String time, String size) {
+    return 'अनुमितः अवलोकनकालः: $time ($size)';
+  }
+
+  @override
+  String get airQrLargeBackupWarning =>
+      'अयं दत्तांशकोशः बृहत्, अतः छायाग्राहिसमकालने विलम्बः स्यात्। शीघ्रहस्तान्तरणाय गुप्तीकृता प्रतिरक्षासञ्चिका (.zip) प्रयुज्यताम्।';
+
+  @override
+  String get airQrBackupReady =>
+      'सम्पूर्णा प्रतिरक्षा छायाग्राहिणा प्रेषणाय सज्जा। ग्राहकयन्त्रस्य छायाग्राही स्थिरं धार्यताम्।';
+
+  @override
+  String get airQrFrameParity => 'पूरकखण्डः';
+
+  @override
+  String get airQrFrameSystematic => 'क्रमिकखण्डः';
+
+  @override
+  String airQrStreamFrames(int count) {
+    return 'AirQR-दृश्यधारा ($count चित्राणि)';
+  }
+
+  @override
+  String airQrFrameCounter(int current, int total, String type) {
+    return 'चित्रम् $current / $total • $type';
+  }
+
+  @override
+  String get airQrPauseStream => 'धारा स्थग्यताम्';
+
+  @override
+  String get airQrResumeStream => 'धारा पुनरारभ्यताम्';
+
+  @override
+  String airQrFpsChip(int fps) {
+    return 'प्रतिक्षणं $fps';
+  }
+
+  @override
+  String airQrBackupPayloadEntries(int count) {
+    return 'सम्पूर्णा प्रतिरक्षा ($count अंशाः)';
+  }
+
+  @override
+  String get airQrReceivedTasks => 'AirQR-कार्याणि प्राप्तानि';
+
+  @override
+  String get airQrReceivedTimecard => 'AirQR-समयपत्रं प्राप्तम्';
+
+  @override
+  String get airQrReceivedBackup => 'AirQR-प्रतिरक्षा प्राप्ता';
+
+  @override
+  String get airQrReceivedUnknown => 'AirQR-दत्तांशः प्राप्तः';
+
+  @override
+  String airQrTasksReady(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count कार्याणि आवल्यां योजनाय सज्जानि।',
+      one: '1 कार्यम् आवल्यां योजनाय सज्जम्।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String airQrTimecardReady(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count वस्तुयुक्तं दैनिकसमयपत्रं योजनाय सज्जम्।',
+      one: 'एकवस्तुयुक्तं दैनिकसमयपत्रं योजनाय सज्जम्।',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get airQrBackupReceivedDetail =>
+      'सम्पूर्णा प्रतिरक्षा छायाग्राहिणा प्राप्ता।';
+
+  @override
+  String get backupHideLogs => 'वृत्तयः निगूह्यन्ताम्';
+
+  @override
+  String backupViewLogs(int count) {
+    return 'वृत्तयः दृश्यन्ताम् ($count)';
+  }
+
+  @override
+  String backupLastRun(String time, String trigger) {
+    return 'अन्तिमं प्रवर्तनम्: $time ($trigger)';
+  }
+
+  @override
+  String backupArchiveSize(String size) {
+    return 'सङ्ग्रहपरिमाणम्: $size';
+  }
+
+  @override
+  String get progressAllDone => 'सर्वं समापितम्! 🎉';
+
+  @override
+  String get progressAllDoneDetail => 'अद्यतनी कार्यसूची समापिता, साधु।';
+
+  @override
+  String progressCompletedOf(int completed, int total) {
+    return '$completed/$total समापितानि';
+  }
+
+  @override
+  String get recallTitle => 'स्मरणविश्वासः';
+
+  @override
+  String get recallPrompt => 'इदं कार्यं कियता सौकर्येण स्मृतं समापितं वा?';
+
+  @override
+  String get recallHard => 'कठिनम्';
+
+  @override
+  String get recallHardDetail =>
+      'क्लेशः विस्मृतिः वा। अग्रिमं पुनरावलोकनम् एकेन दिनेन।';
+
+  @override
+  String get recallRevision => 'पुनरभ्यासः';
+
+  @override
+  String get recallRevisionDetail =>
+      'मध्यमः प्रयत्नः। अग्रिमं पुनरावलोकनं त्रिभिः दिनैः।';
+
+  @override
+  String get recallEasy => 'सुकरम्';
+
+  @override
+  String recallEasyDetail(int days, int level) {
+    return 'अनायासेन! अग्रिमं पुनरावलोकनं $days दिनैः (स्तरः $level)।';
+  }
+
+  @override
+  String get dataHandoffExportSection => 'निर्यापणविकल्पाः';
+
+  @override
+  String get dataHandoffImportSection => 'आनयनविकल्पाः';
+
+  @override
+  String markdownTargetDate(String date) {
+    return 'लक्ष्यदिनाङ्कः: $date';
+  }
+
+  @override
+  String get markdownImportHint =>
+      '- [ ] कार्यनाम\n  - [ ] उपकार्यनाम\n  > टिप्पणी';
+
+  @override
+  String get markdownNoItems => '`- [ ]` `- [x]` वा सूच्यंशाः न प्राप्ताः।';
+
+  @override
+  String get markdownPastDateLocked =>
+      'व्यतीतदिनानि कीलितानि। आनयनाय अद्यतनः आगामी वा दिनाङ्कः चीयताम्।';
+
+  @override
+  String get helpTaskMgmtTitle => 'दैनिकावल्यः दिनकीलनं च';
+
+  @override
+  String get helpTaskMgmtIntro =>
+      'SreerajP ToDo कार्याणि दिनशः दृढं व्यवस्थापयति। दैनिकावली, दिनकीलनरक्षणम्, अन्तिमस्थितिकीलनानि च उत्पादकतावृत्तानां प्रामाणिकतां कथं रक्षन्तीति ज्ञायताम्।';
+
+  @override
+  String get helpTaskMgmtDayLockTitle => 'दिनकीलनसिद्धान्तः';
+
+  @override
+  String get helpTaskMgmtDayLock1 =>
+      'अद्यतनात् पूर्वदिनाङ्कितानि कार्याणि स्थिरं केवलपठनीयानि; तानि परिवर्तयितुं लोपयितुं वा न शक्यन्ते।';
+
+  @override
+  String get helpTaskMgmtDayLock2 =>
+      'एवं पुरातनदत्तांशः यथार्थं घटितस्य अविकृतं प्रामाणिकं प्रतिबिम्बं तिष्ठति।';
+
+  @override
+  String get helpTaskMgmtDayLock3 =>
+      'ह्यस्तनम् असमापितं कार्यं कर्तव्यं चेत्, अतीतस्य सम्पादनस्य स्थाने तद् अद्यतनावल्यां प्रतिलिख्यताम्।';
+
+  @override
+  String get helpTaskMgmtStatusTitle => 'कार्यस्थितयः अन्तिमकीलनानि च';
+
+  @override
+  String get helpTaskMgmtStatus1 =>
+      'कार्याणि एताः स्थितीः क्रमेण प्राप्नुवन्ति: अवशिष्टम्, प्रवर्तमानम्, समापितम्, त्यक्तम्।';
+
+  @override
+  String get helpTaskMgmtStatus2 =>
+      'समापितं त्यक्तं च अन्तिमस्थिती। अन्तिमस्थितिं प्राप्ते कार्ये नूतनः समयखण्डः आरब्धुं न शक्यते।';
+
+  @override
+  String get helpTaskMgmtStatus3 =>
+      'प्रवर्तमानं कार्यं समापितं त्यक्तं वा इति चिह्निते प्रचलन् समयखण्डः स्वयमेव विरमति।';
+
+  @override
+  String get helpTaskMgmtUndoTitle => 'प्रमादजपरिवर्तनानि प्रत्यावर्तनं च';
+
+  @override
+  String get helpTaskMgmtUndo1 =>
+      'कार्यस्थितौ परिवर्तितायां प्रत्यावर्तनबटनयुक्ता पञ्चक्षणस्थायिनी सूचना अधः दृश्यते।';
+
+  @override
+  String get helpTaskMgmtUndo2 =>
+      'अन्तिमं स्थितिपरिवर्तनं शीघ्रं प्रत्यावर्तयितुम् उपरितनपट्टिकायां स्थिरं प्रत्यावर्तनबटनम् अपि अस्ति।';
+
+  @override
+  String get helpTaskMgmtUnicodeTitle =>
+      'यूनिकोड-NFC-सामान्यीकरणं शीर्षकानन्यता च';
+
+  @override
+  String get helpTaskMgmtUnicode1 =>
+      'सर्वाणि कार्यशीर्षकाणि दत्तांशकोशे लेखनात् पूर्वं NFC-रूपेण सामान्यीक्रियन्ते।';
+
+  @override
+  String get helpTaskMgmtUnicode2 =>
+      'एकस्मिन् दिने द्वयोः कार्ययोः समानं शीर्षकं न भवितुम् अर्हति (अक्षरावस्थां रिक्तस्थानानि च अगणयित्वा)।';
+
+  @override
+  String get helpTaskMgmtUnicode3 =>
+      'बहुभाषासमर्थनाय प्रत्येकं वस्तुनः लेखनदिशा (RTL/LTR) स्वयमेव ज्ञायते (आङ्ग्लम्, मलयाळम्, हिन्दी इत्यादयः)।';
+
+  @override
+  String get helpTaskMgmtTip =>
+      'उपदेशः: अतीतदिनानाम् उत्पादकताम् अवलोकयितुम् आगामिदिनानि योजयितुं वा दिनाङ्कचयनं प्रयुज्यताम्, अथवा दैनिकावल्यां दिनान्तरं सार्यताम्।';
+
+  @override
+  String get helpRecurringTitle => 'पुनरावृत्तिकार्याणि सामूहिकप्रतिलेखनं च';
+
+  @override
+  String get helpRecurringIntro =>
+      'मानक-RFC-5545-पुनरावृत्तिनियमैः, दिनान्तरेषु कार्याणां सामूहिकप्रतिलेखनेन वा, दैनिकचर्याः साप्ताहिकसभाः अभ्यासाश्च स्वचालिताः कृत्वा समयः रक्ष्यताम्।';
+
+  @override
+  String get helpRecurringRulesTitle => 'पुनरावृत्तिनियमाः (RRule)';
+
+  @override
+  String get helpRecurringRules1 =>
+      'नम्यावृत्तिभिः पुनरावृत्तिनियमाः सृज्यन्ताम्: प्रतिदिनम्, प्रतिसप्ताहं (चितवासराः), प्रतिमासम्, इच्छानुसारम् अन्तरालाः वा।';
+
+  @override
+  String get helpRecurringRules2 =>
+      'दिने दृष्टे तस्य दिनस्य पुनरावृत्तिकार्याणि पूर्वनिश्चितप्राथमिकताभिः लक्ष्यसमयैश्च सह स्वयमेव सृज्यन्ते।';
+
+  @override
+  String get helpRecurringRules3 =>
+      'एकस्य दिनस्य पुनरावृत्तिकार्यस्य सम्पादनं समापनं वा आगामीनि अतीतानि वा न प्रभावयति।';
+
+  @override
+  String get helpRecurringCopyTitle => 'अतीतकार्याणां सामूहिकप्रतिलेखनम्';
+
+  @override
+  String get helpRecurringCopy1 =>
+      'दैनिकावल्याः सूच्यां \"कार्याणि प्रतिलिख्यन्ताम्\" इति स्पृष्ट्वा प्रतिलेखनसहायकः उद्घाट्यताम्।';
+
+  @override
+  String get helpRecurringCopy2 =>
+      'ह्यस्तनानि चितातीतदिनस्य वा सर्वाणि असमापितकार्याणि शीघ्रं चित्वा अद्यतनावल्यां प्रतिलिख्यन्ताम्।';
+
+  @override
+  String get helpRecurringCopy3 =>
+      'प्रतिलिखितानि कार्याणि “अवशिष्टम्” इति स्थित्या समयखण्डैः विना नवीनतया आरभन्ते।';
+
+  @override
+  String get helpRecurringTip =>
+      'उपदेशः: नियताभ्यासेभ्यः (प्रातर्व्यायामः, पुनरावलोकनानि इत्यादिभ्यः) पुनरावृत्तिकार्याणि, आकस्मिकावशिष्टेभ्यः सामूहिकप्रतिलेखनं च प्रयुज्यताम्।';
+
+  @override
+  String get helpTimeTrackingTitle => 'समयगणनं समयखण्डाश्च';
+
+  @override
+  String get helpTimeTrackingIntro =>
+      'SreerajP ToDo इत्यस्मिन् प्रत्येककार्याय यथार्थतः व्ययितं कालं मापयन् अन्तर्निर्मितः समयगणकः अस्ति। प्रत्येकं कार्यं समयखण्डाः इति आरम्भान्तान्तरालैः कालं लिखति।';
+
+  @override
+  String get helpTimeTrackingSegmentsTitle => 'समयखण्डानां संरचना';
+
+  @override
+  String get helpTimeTrackingSegments1 =>
+      'यदा यदा समयगणकः आरभ्यते विरम्यते च, तदा तदा यथातथारम्भकालान्तकालयुक्तः समयखण्डः लिख्यते।';
+
+  @override
+  String get helpTimeTrackingSegments2 =>
+      'एकस्मिन् कार्ये बहवः खण्डाः भवितुम् अर्हन्ति (यथा प्रातःसत्रम्, अपराह्णसत्रम्)। सर्वेषां खण्डानां योगः एव कुलसमयः।';
+
+  @override
+  String get helpTimeTrackingSegments3 =>
+      'सर्वत्र कालावधिः सर्वदा HH:MM:SS रूपेण दर्श्यते।';
+
+  @override
+  String get helpTimeTrackingSingleTitle => 'एकसमयगणकनियमः';
+
+  @override
+  String get helpTimeTrackingSingle1 =>
+      'कस्मिन्नपि काले सर्वस्मिन् अनुप्रयोगे अधिकतमम् एकः एव उद्घाटितः समयखण्डः (प्रचलन् समयगणकः) भवितुम् अर्हति।';
+
+  @override
+  String get helpTimeTrackingSingle2 =>
+      'नूतने कार्ये समयगणके आरब्धे अन्यस्मिन् कार्ये प्रचलन् समयगणकः स्वयमेव विरमति।';
+
+  @override
+  String get helpTimeTrackingSingle3 =>
+      'अयम् एकसमयगणकनियमः विरुद्धवृत्तानि अतिवर्धितगणनाश्च निवारयति।';
+
+  @override
+  String get helpTimeTrackingAutoTitle => 'स्वयंविरामः पृष्ठभूमिस्थगनं च';
+
+  @override
+  String get helpTimeTrackingAuto1 =>
+      'विन्यासः → समयगणनम् इत्यत्र समयगणकाः अर्धरात्रे इष्टहोरायां वा स्वयमेव विरमेयुः इति व्यवस्थापयितुं शक्यते।';
+
+  @override
+  String get helpTimeTrackingAuto2 =>
+      'अन्यानुप्रयोगेषु गमने गणनां स्थगयितुं \"अनुप्रयोगत्यागे स्वयंस्थगनम्\" सक्रियीकर्तुं शक्यते।';
+
+  @override
+  String get helpTimeTrackingAuto3 =>
+      'निर्धार्यसीमायाः (यथा 10 क्षणाः 30 क्षणाः वा) न्यूनाः प्रमादजसमयगणकस्पर्शाः स्वयमेव त्यक्तुं शक्यन्ते।';
+
+  @override
+  String get helpTimeTrackingTip =>
+      'उपदेशः: कस्यचिदपि कार्यपत्रस्य घटिकाचिह्नं समयचिह्नं वा स्पृश्यताम्, गणनं सद्यः आरभते। विरामाय पुनः स्पृश्यताम्।';
+
+  @override
+  String get helpFocusTitle => 'ध्यानक्रमः पोमोडोरो च';
+
+  @override
+  String get helpFocusIntro =>
+      'ध्यानक्रमः गभीरकार्यसत्रेभ्यः विक्षेपरहितं पूर्णपटलं ददाति, इच्छानुसारं परिवर्तनीयैः पोमोडोरो-अन्तरालैः लक्ष्यकालस्य अवरोहगणनया च सह।';
+
+  @override
+  String get helpFocusScreenTitle => 'पूर्णपटलध्यानक्रमः';
+
+  @override
+  String get helpFocusScreen1 =>
+      'कस्यचिदपि कार्यस्य विवरणसूच्याः ध्यानक्रमम् उद्घाट्य निर्मले विक्षेपरहिते पटले निमज्ज्यताम्।';
+
+  @override
+  String get helpFocusScreen2 =>
+      'ध्यानक्रमे बृहत् समयगणकम् (व्यतीतकालः अवरोहगणना वा), लक्ष्यप्रगतिवलयः, शीघ्रस्थगनपुनरारम्भनियन्त्रणानि च दृश्यन्ते।';
+
+  @override
+  String get helpFocusScreen3 =>
+      'ध्यानसमयगणके प्रचलति पटलजागरणविधिः पटलं सक्रियं धारयति।';
+
+  @override
+  String get helpFocusPomodoroTitle => 'पोमोडोरो-विधिः';
+
+  @override
+  String get helpFocusPomodoro1 =>
+      'विन्यासः → समयगणनम् → पोमोडोरो इत्यत्र ध्यानकार्यावधिः (यथा 25 निमेषाः) विरामान्तरालाः (यथा 5 निमेषाः) च इच्छानुसारं परिवर्त्यन्ताम्।';
+
+  @override
+  String get helpFocusPomodoro2 =>
+      'कार्यान्तरालानां विरामकालानां च अन्तः ध्वनिना कम्पनेन च सूच्यते।';
+
+  @override
+  String get helpFocusPomodoro3 =>
+      'सर्वाणि ध्यानसत्राणि मूलकार्यस्य अधः सामान्यसमयखण्डरूपेण लिख्यन्ते।';
+
+  @override
+  String get helpFocusTip =>
+      'उपदेशः: कार्यसर्जने सम्पादने वा लक्ष्यकालः निर्दिश्यते चेत् अवशिष्टः ध्यानकालः स्वयमेव गण्यते।';
+
+  @override
+  String get helpMasteryTitle => 'ज्ञानकोशः स्मरणपत्राणि च';
+
+  @override
+  String get helpMasteryIntro =>
+      'ज्ञानकोशः दैनिकाधिगमान् मुख्यविचारान् अध्ययनटिप्पणीः च सान्तरपुनरावृत्त्या प्रवर्तमानायां स्मरणपत्रव्यवस्थायां परिणमयति। शास्त्रीयरीत्या नियतैः पुनरावलोकनान्तरालैः अधीतं चिरं स्मर्यताम्।';
+
+  @override
+  String get helpMasteryReviewTitle => 'सान्तरपुनरावलोकनम्';
+
+  @override
+  String get helpMasteryReview1 =>
+      'पत्राणि कियत् सम्यक् स्मर्यन्ते इति अनुसृत्य पुनरावलोकनाय नियम्यन्ते (सुकरम्, साधु, कठिनम्, पुनः)।';
+
+  @override
+  String get helpMasteryReview2 =>
+      '\"सुकरम्\" इति अङ्कितानां पत्राणां पुनरावलोकनान्तरालः घातक्रमेण वर्धते (यथा 1 दिनम् → 3 दिनानि → 7 दिनानि → 16 दिनानि)।';
+
+  @override
+  String get helpMasteryReview3 =>
+      '\"कठिनम्\" \"पुनः\" वा इति अङ्कितानां पत्राणाम् अन्तरालः पुनःपुनः दृढीकरणाय ह्रस्वीक्रियते पुनःसज्जीक्रियते वा।';
+
+  @override
+  String get helpMasteryDecksTitle => 'कोशाः व्यवस्था च';
+
+  @override
+  String get helpMasteryDecks1 =>
+      'विषयानुसारं योजनानुसारं भाषानुसारं वा स्मरणपत्राणि स्वकोशेषु वर्गीक्रियन्ताम्।';
+
+  @override
+  String get helpMasteryDecks2 =>
+      'प्रत्येकस्मिन् पत्रे प्रश्नः (अग्रभागः) उत्तरं व्याख्या वा (पृष्ठभागः) च स्तः, वैकल्पिकचिह्नैः सह।';
+
+  @override
+  String get helpMasteryDecks3 =>
+      'कोशेषु अद्य देयानां सङ्ख्या, कुलपत्राणि, समग्रप्रावीण्यप्रतिशतं च तत्कालं दृश्यन्ते।';
+
+  @override
+  String get helpMasteryLevelsTitle => 'प्रावीण्यस्तराः';
+
+  @override
+  String get helpMasteryLevels1 =>
+      'पत्राणि पञ्च प्रावीण्यस्तरान् क्रमेण प्राप्नुवन्ति: अधीयमानम्, नवीनम्, समर्थम्, प्रवीणम्, सिद्धम्।';
+
+  @override
+  String get helpMasteryLevels2 =>
+      'अविच्छिन्नदिनानि नियतपुनरावलोकनं च दैनिकसंलग्नतां अभ्यासनिर्माणं च पुरस्कुर्वन्ति।';
+
+  @override
+  String get helpMasteryTip =>
+      'उपदेशः: Air QR-द्वारा स्थानीय-Wi-Fi-समकालनेन वा स्वकोशाः अन्ययन्त्रैः सह निर्याप्य वितरितुं शक्यन्ते।';
+
+  @override
+  String get helpWifiTitle => 'स्थानीय-Wi-Fi-P2P-यन्त्रसमकालनम्';
+
+  @override
+  String get helpWifiIntro =>
+      'एकस्मिन् स्थानीय-Wi-Fi-जाले स्थितयोः द्वयोः यन्त्रयोः मध्ये कार्याणि समयवृत्तानि स्मरणपत्राणि च साक्षात् हस्तान्तर्य समकाल्यन्ताम् — मेघसेवकैः अन्तर्जालप्रयोगेण च विना।';
+
+  @override
+  String get helpWifiHowTitle => 'स्थानीय-Wi-Fi-समकालनं कथं प्रवर्तते';
+
+  @override
+  String get helpWifiHow1 =>
+      'उभे यन्त्रे एकस्मिन् एव स्थानीय-Wi-Fi-जाले संयुक्ते भवेताम् (अथवा एकम् अन्यस्य हॉटस्पॉट्-जाले)।';
+
+  @override
+  String get helpWifiHow2 =>
+      'एकं यन्त्रं प्रेषकम् आतिथेयं वा भवति (तात्कालिकं युग्मनसङ्केतं QR-सङ्केतं वा जनयति), अपरं ग्राहकं भवति।';
+
+  @override
+  String get helpWifiHow3 =>
+      'दत्तांशः स्थानीयजालेन यन्त्रयोः मध्ये साक्षात् हस्तान्तर्यते; बाह्यसेवकाः अन्तर्जालं च सर्वथा परिह्रियन्ते।';
+
+  @override
+  String get helpWifiEncryptionTitle => 'आद्यन्तगुप्तीकरणम्';
+
+  @override
+  String get helpWifiEncryption1 =>
+      'स्थानीयसमकालनसम्बन्धाः एकवारयुग्मनप्रमाणैः गुप्तीकृतं मार्गं निश्चिन्वन्ति।';
+
+  @override
+  String get helpWifiEncryption2 =>
+      'तस्मिन् एव Wi-Fi-जाले स्थितानि अन्ययन्त्राणि हस्तान्तर्यमाणं दत्तांशं द्रष्टुं विकर्तुं वा न शक्नुवन्ति।';
+
+  @override
+  String get helpWifiModesTitle => 'समकालनविधयः विरोधाश्च';
+
+  @override
+  String get helpWifiModes1 =>
+      'उभयदिक्चतुरसंयोजनम्: विद्यमानवृत्तानां हानिं विना उभयोः यन्त्रयोः कार्याणि समयखण्डाश्च संयोजयति।';
+
+  @override
+  String get helpWifiModes2 =>
+      'सर्वप्रतिस्थापनम्: स्थिरीकरणानन्तरं लक्ष्ययन्त्रस्य दत्तांशः मूलयन्त्रस्य यथातथप्रतिकृत्या सम्पूर्णतया प्रतिस्थाप्यते।';
+
+  @override
+  String get helpWifiTip =>
+      'उपदेशः: यदि Wi-Fi-मार्गकः यन्त्राणां परस्परसम्पर्कं निरुणद्धि (client isolation), तर्हि एकस्मिन् दूरवाण्यां हॉटस्पॉट् सक्रियीकृत्य अपरा तत्र संयोज्यताम्।';
+
+  @override
+  String get helpQrTitle => 'Air QR दत्तांशहस्तान्तरणं च';
+
+  @override
+  String get helpQrIntro =>
+      'Wi-Fi-तन्तु-अन्तर्जालैः विना कार्याणि समयसारांशाः स्मरणपत्राणि च यन्त्रान्तरेषु नीयन्ताम्। Air QR चलैः QR-सङ्केतैः दत्तांशम् अन्ययन्त्रस्य छायाग्राहिणि साक्षात् प्रेषयति।';
+
+  @override
+  String get helpQrBeamTitle => 'Air QR दृश्यप्रेषणम्';
+
+  @override
+  String get helpQrBeam1 =>
+      'कार्याणि कोशान् वा चित्वा \"Air QR वितरणम्\" इति स्पृश्यताम्, पटले QR-धारा प्रकटीभवति।';
+
+  @override
+  String get helpQrBeam2 =>
+      'ग्राहकयन्त्रे \"Air QR अवलोकनम्\" उद्घाट्य छायाग्राही प्रेषकपटलम् अभिमुखीक्रियताम्।';
+
+  @override
+  String get helpQrBeam3 =>
+      'छायाग्राही सर्वान् दत्तांशखण्डान् तत्कालं संयोजयति, आनयनात् पूर्वं परीक्षाङ्कान् सत्यापयति।';
+
+  @override
+  String get helpQrBeam4 =>
+      'अवलोकनकाले एव छायाग्राह्यनुमतिः याच्यते; किमपि चित्रं दृश्यं वा कदापि न रक्ष्यते।';
+
+  @override
+  String get helpQrHandoffTitle => 'दत्तांशहस्तान्तरणम् (JSON & Markdown)';
+
+  @override
+  String get helpQrHandoff1 =>
+      'विद्युत्पत्रेभ्यः प्रतिवेदनेभ्यः वा दैनिकसिद्धीनां Markdown-सारांशाः सृज्यन्ताम्।';
+
+  @override
+  String get helpQrHandoff2 =>
+      'विविधमञ्चप्रतिरक्षायै लिपिभ्यश्च चितकार्याणां JSON-रूपं निर्याप्यताम् आनीयतां च।';
+
+  @override
+  String get helpQrHandoff3 =>
+      'सङ्गणके दूरवाण्यां वा JSON साक्षात् स्थापयित्वा एकस्पर्शेन आनीयताम्।';
+
+  @override
+  String get helpQrTip =>
+      'उपदेशः: लघुकार्यं स्मरणपत्रकोशं वा सङ्गणकपटलात् दूरवाणीं क्षणेषु नेतुं Air QR विशेषेण उपयुक्तम्।';
+
+  @override
+  String get helpPrivacyTitle => 'सुरक्षा, अभियोगकीलं, गुप्तीकरणं च';
+
+  @override
+  String get helpPrivacyIntro =>
+      'SreerajP ToDo मूलतः गोपनीयताप्रधानया असंयुक्तसंरचनया निर्मितम्। भवतः वैयक्तिकदत्तांशः दृढं गुप्तीकृतः बहुस्तरीयसुरक्षया रक्षितश्च।';
+
+  @override
+  String get helpPrivacyDbTitle => 'SQLCipher AES-256 दत्तांशकोशगुप्तीकरणम्';
+
+  @override
+  String get helpPrivacyDb1 =>
+      'प्रवर्तमानः SQLite-दत्तांशकोशः 256-बिट्-AES (SQLCipher) द्वारा सम्पूर्णतया गुप्तीकृतः।';
+
+  @override
+  String get helpPrivacyDb2 =>
+      'दत्तांशकोशस्य मुख्यगुप्तकुञ्चिका सुरक्षितं निष्पाद्य यन्त्रस्य रक्षितयन्त्रांशकोशे (Android Keystore / OS keychain) रक्ष्यते।';
+
+  @override
+  String get helpPrivacyDb3 =>
+      'यदि कश्चित् यन्त्रकोशात् दत्तांशकोशसञ्चिकां प्रतिलिखेत्, तथापि कुञ्चिकां विना सा पठितुं न शक्यते।';
+
+  @override
+  String get helpPrivacyLockTitle => 'जैविक-अभियोगसङ्केतकीलनम्';
+
+  @override
+  String get helpPrivacyLock1 =>
+      'यन्त्रस्य अङ्गुलिमुद्रया, मुखपरिचयेन, स्वकीयाभियोगसङ्केतेन वा अनुप्रयोगप्रवेशः रक्ष्यताम्।';
+
+  @override
+  String get helpPrivacyLock2 =>
+      'अन्यत्र गमने अनुप्रयोगं रक्षितुं स्वयंकीलनकालः (सद्यः, 1 निमेषः, 5 निमेषाः) व्यवस्थाप्यताम्।';
+
+  @override
+  String get helpPrivacyShotTitle => 'पटलचित्ररक्षणम्';
+
+  @override
+  String get helpPrivacyShot1 =>
+      'विन्यासः → सुरक्षा इत्यत्र पटलचित्ररक्षणं सक्रियीक्रियताम्, पटलचित्राणि पटलध्वनिमुद्रणानि च निरुध्यन्ते।';
+
+  @override
+  String get helpPrivacyShot2 =>
+      'सम्पूर्णदृश्यगोपनीयतायै Android-इत्यस्य सद्यःप्रयुक्तानुप्रयोगावल्याम् अनुप्रयोगपटलस्य पूर्वदृश्यम् अपि पटलचित्ररक्षणं निगूहति।';
+
+  @override
+  String get helpPrivacyNetTitle => 'अन्तर्जालरहितत्वप्रतिज्ञा';
+
+  @override
+  String get helpPrivacyNet1 =>
+      'अनुप्रयोगेण याचिता एकैव जालानुमतिः INTERNET; सा केवलं स्थानीयजाले स्वयन्त्रैः सह Wi-Fi-समकालनाय प्रयुज्यते। अन्तर्जालेन किमपि कदापि न प्रेष्यते।';
+
+  @override
+  String get helpPrivacyNet2 =>
+      'न दूरमापनम्, न तृतीयपक्षीयमेघसाधनानि, न विघातानुसरणम्, न च विज्ञापनानि।';
+
+  @override
+  String get helpPrivacyTip =>
+      'उपदेशः: यन्त्रांशाधारितपरमगुप्तरक्षणाय दूरवाण्यां यन्त्रकीलनम् (अङ्गुलिमुद्रा/सङ्केतः) सदा सक्रियं धार्यताम्।';
+
+  @override
+  String get helpBackupTitle => 'गुप्तीकृतप्रतिरक्षा पुनःस्थापनं च';
+
+  @override
+  String get helpBackupIntro =>
+      'प्रतिरक्षा कार्याणि समयवृत्तानि पुनरावृत्तिनियमाः विन्यासाश्च यस्मिन् सन्ति तादृशम् एकं गुप्तीकृतसङ्ग्रहं (.todobak / ZIP) सृजति। नूतनदूरवाणीं प्रति दत्तांशनयनाय, कारखानापुनःसज्जीकरणानन्तरं पुनःप्राप्त्यै, कालिकासंयुक्तप्रतिकृतिभ्यः वा सा प्रयुज्यताम्।';
+
+  @override
+  String get helpBackupContentsTitle => 'प्रतिरक्षायां किं किम् अस्ति';
+
+  @override
+  String get helpBackupContents1 =>
+      'सर्वाणि कार्याणि, वर्णनानि, स्थितयः, पुरातनसमयखण्डाश्च।';
+
+  @override
+  String get helpBackupContents2 => 'पुनरावृत्तिकार्यनियमाः सर्जनक्रमाश्च।';
+
+  @override
+  String get helpBackupContents3 =>
+      'ज्ञानकोशपत्राणि, पुनरावलोकनान्तरालाः, प्रावीण्यस्तराश्च।';
+
+  @override
+  String get helpBackupContents4 =>
+      'भवतः वैयक्तिकविन्यासाः (रूपविन्यासः, वर्णाः, अक्षररूपम्, कार्यपूर्वनिर्धारणानि)।';
+
+  @override
+  String get helpBackupPassTitle => 'गुप्तपदगुप्तीकरणसुरक्षा';
+
+  @override
+  String get helpBackupPass1 =>
+      'भवता चितेन गुप्तपदेन AES-256-मानकेन प्रतिरक्षासञ्चिकाः दृढं गुप्तीक्रियन्ते।';
+
+  @override
+  String get helpBackupPass2 =>
+      'अनुप्रयोगः प्रतिरक्षागुप्तपदं कुत्रापि न रक्षति। तत् स्मर्तव्यं गुप्तपदप्रबन्धके रक्षितव्यं वा।';
+
+  @override
+  String get helpBackupPass3 =>
+      'गुप्तपदे नष्टे केनापि प्रतिरक्षा अगुप्तीकर्तुं पुनःप्राप्तुं वा न शक्यते।';
+
+  @override
+  String get helpBackupRestoreTitle => 'प्रतिरक्षातः पुनःस्थापनम्';
+
+  @override
+  String get helpBackupRestore1 =>
+      'पुनःस्थापनं वर्तमानं सर्वं प्रतिस्थाप्य प्रतिरक्षासञ्चिकातः यथातथप्रतिकृतिं पुनर्निर्माति।';
+
+  @override
+  String get helpBackupRestore2 =>
+      'पुनःस्थापनात् पूर्वम् अनुप्रयोगः सङ्ग्रहस्य परीक्षाङ्कं सत्यापयति, गुप्तपदेन अगुप्तीकरोति, दत्तांशसंरचनासंस्करणं च परीक्षते।';
+
+  @override
+  String get helpBackupRestore3 =>
+      'विद्यमानदत्तांशम् अप्रतिस्थाप्य द्वयोः यन्त्रयोः कार्याणि संयोजयितुम् इष्टं चेत्, तत्स्थाने \"स्थानीय-Wi-Fi-समकालनम्\" प्रयुज्यताम्।';
+
+  @override
+  String get helpBackupTip =>
+      'उपदेशः: प्रतिरक्षासर्जनानन्तरं सञ्चिका बाह्य-USB-यन्त्रे, SD-पत्रे, स्वकीयमेघकोशे वा इत्यादिषु सुरक्षितस्थानेषु रक्ष्यताम्।';
+
+  @override
+  String get helpFaqTitle => 'प्रश्नोत्तराणि समस्यापरिहारश्च';
+
+  @override
+  String get helpFaqIntro =>
+      'दिनकीलन-समयगणननियम-असंयुक्तसुरक्षाविषयकाणां सामान्यप्रश्नानाम् उत्तराणि, SreerajP ToDo इत्यस्य सम्यक् प्रयोगाय उपदेशाश्च अत्र लभ्यन्ते।';
+
+  @override
+  String get helpFaqGeneralTitle => 'सामान्यं कार्यपद्धतिश्च';
+
+  @override
+  String get helpFaqEditPastQ =>
+      'ह्यस्तनं कार्यं किमर्थं सम्पादयितुं लोपयितुं वा न शक्यते?';
+
+  @override
+  String get helpFaqEditPastA =>
+      'SreerajP ToDo दिनकीलननियमं पालयति: सत्यानि अविकार्याणि च उत्पादकतावृत्तानि रक्षितुं व्यतीतदिनाङ्काः स्थिरं केवलपठनीयाः। असमापितम् अतीतकार्यं कर्तुं \"कार्याणि प्रतिलिख्यन्ताम्\" इति स्पृष्ट्वा तद् अद्य प्रतिलिख्यताम्।';
+
+  @override
+  String get helpFaqTimerDoneQ =>
+      'समापिते कार्ये समयगणकः किमर्थम् आरब्धुं न शक्यते?';
+
+  @override
+  String get helpFaqTimerDoneA =>
+      'समापितं त्यक्तं च अन्तिमस्थिती। कार्ये समापिते तस्य समयवृत्तं मुद्रितं भवति। अधिककालं लेखितुम् इष्टं चेत् कार्यं पुनः उद्घाट्यताम् (स्थितिः अवशिष्टं प्रवर्तमानं वा इति परिवर्त्यताम्)।';
+
+  @override
+  String get helpFaqUndoQ => 'प्रमादेन परिवर्तिता स्थितिः कथं प्रत्यावर्त्यते?';
+
+  @override
+  String get helpFaqUndoA =>
+      'स्थितौ परिवर्तितायां \"प्रत्यावर्त्यताम्\" इति बटनयुक्ता पञ्चक्षणस्थायिनी सूचना दृश्यते। उपरितनपट्टिकायां स्थिरं प्रत्यावर्तनचिह्नम् अपि स्प्रष्टुं शक्यते।';
+
+  @override
+  String get helpFaqTimeTitle => 'समयगणनं समयगणकाश्च';
+
+  @override
+  String get helpFaqTwoTimersQ =>
+      'द्वयोः कार्ययोः युगपत् समयगणकौ चालयितुं शक्यते वा?';
+
+  @override
+  String get helpFaqTwoTimersA =>
+      'न। गणनाप्रामाणिकतायै अनुप्रयोगः एकसमयगणकनियमं पालयति। कस्मिंश्चित् कार्ये समयगणके आरब्धे अन्यस्य प्रचलन् समयगणकः स्वयमेव स्थगितः विरतो वा भवति।';
+
+  @override
+  String get helpFaqForgotStopQ =>
+      'रात्रौ समयगणकविरामः विस्मृतः चेत् किं भवति?';
+
+  @override
+  String get helpFaqForgotStopA =>
+      'विन्यासः → समयगणनम् → स्वयंविरामः इत्यत्र \"अर्धरात्रे स्वयंविरामः\" सक्रियीक्रियताम्, ततः उद्घाटिताः समयगणकाः अग्रिमप्रभातं न प्रविश्य दिनान्ते स्वयमेव पिधीयन्ते।';
+
+  @override
+  String get helpFaqShortTapsQ =>
+      'अतिलघवः समयगणकस्पर्शाः किमर्थं न रक्ष्यन्ते?';
+
+  @override
+  String get helpFaqShortTapsA =>
+      'समयखण्डान् निर्मलान् धारयितुं विन्यासः → समयगणनम् → न्यूनतमावधिः इत्यत्र 10 30 वा क्षणेभ्यः न्यूनाः प्रमादजस्पर्शाः त्यक्तुं शक्यन्ते।';
+
+  @override
+  String get helpFaqPrivacyTitle => 'गोपनीयता असंयुक्ततायाः प्रतिज्ञा च';
+
+  @override
+  String get helpFaqUploadQ =>
+      'कश्चन दत्तांशः मेघसेवकेषु विश्लेषणसेवासु वा आरोप्यते वा?';
+
+  @override
+  String get helpFaqUploadA =>
+      'कोऽपि दत्तांशः न आरोप्यते। SreerajP ToDo सर्वथा असंयुक्तं प्रवर्तते। तस्य एकैव जालानुमतिः INTERNET केवलं स्थानीयजाले स्वयन्त्रैः सह Wi-Fi-समकालनाय प्रयुज्यते। सर्वाणि दत्तांशकोशपट्टानि वृत्तानि च AES-256-गुप्तीकृते कोशे भवतः यन्त्रे एव तिष्ठन्ति।';
+
+  @override
+  String get helpFaqLostPassQ => 'प्रतिरक्षागुप्तपदं विस्मृतं चेत् किं भवति?';
+
+  @override
+  String get helpFaqLostPassA =>
+      'प्रतिरक्षाः यन्त्रे एव AES-256-द्वारा दृढं गुप्तीक्रियन्ते, मेघसेवकः मुख्यकुञ्चिका वा नास्ति, अतः नष्टं प्रतिरक्षागुप्तपदं पुनः प्राप्तुं न शक्यते। गुप्तपदं सदा सुरक्षितं रक्ष्यताम्।';
+
+  @override
+  String get helpFaqSyncTitle => 'समकालनं यन्त्रान्तरणं च';
+
+  @override
+  String get helpFaqNewPhoneQ => 'सर्वाणि कार्याणि नूतनदूरवाणीं कथं नीयन्ते?';
+
+  @override
+  String get helpFaqNewPhoneA =>
+      'द्वौ सुगमौ उपायौ: (1) गृहस्थ-Wi-Fi-द्वारा साक्षात् हस्तान्तरणाय \"स्थानीय-Wi-Fi-P2P-समकालनम्\" प्रयुज्यताम्, अथवा (2) विन्यासः → प्रतिरक्षा इत्यत्र गुप्तीकृतप्रतिरक्षा-ZIP-सञ्चिकां सृष्ट्वा नूतनदूरवाण्यां पुनःस्थाप्यताम्।';
+
+  @override
+  String get helpFaqDiscoverQ =>
+      'स्थानीय-Wi-Fi-समकालनम् अपरं यन्त्रं किमर्थं न अन्विष्यति?';
+
+  @override
+  String get helpFaqDiscoverA =>
+      'उभे यन्त्रे एकस्मिन् एव Wi-Fi-जाले स्तः इति निश्चीयताम्। मार्गके \"Client Isolation\" सक्रियं चेत्, एकस्यां दूरवाण्यां हॉटस्पॉट् सक्रियीकृत्य अपरा तत्र संयोज्यताम्।';
+
+  @override
+  String get helpFaqFooter =>
+      'अधिकविवरणम् अपेक्षितं वा? साहाय्यं मार्गदर्शिकाश्च इत्यत्र प्रत्येकविषयमार्गदर्शिकाः दृश्यन्ताम्, अथवा विन्यासः → अनुमतयः इत्यत्र अनुमतयः परीक्ष्यन्ताम्।';
+
+  @override
+  String get helpHomeTaskSection => 'कार्यप्रबन्धनं कार्यपद्धतिश्च';
+
+  @override
+  String get helpHomeTaskMgmtSubtitle =>
+      'दैनिककालरेखा, दिनकीलनम्, अन्तिमस्थितिकीलनानि च वृत्तानि कथं रक्षन्ति।';
+
+  @override
+  String get helpHomeRecurringSubtitle =>
+      'स्वचालितपुनरावृत्तिनियमानां (प्रतिदिनं, प्रतिसप्ताहं, प्रतिमासम्) व्यवस्थापनम् अतीतकार्याणां सामूहिकप्रतिलेखनं च।';
+
+  @override
+  String get helpHomeTimeSection => 'समयगणनं ध्यानं च';
+
+  @override
+  String get helpHomeTimeTrackingSubtitle =>
+      'बहुखण्डसमयलेखनं, लक्ष्यकालः, एकसमयगणकनियमश्च कथं प्रवर्तन्ते।';
+
+  @override
+  String get helpHomeFocusSubtitle =>
+      'विक्षेपरहितध्यानपटलस्य, पोमोडोरो-अवरोहगणनायाः, स्वयंविरामरक्षायाश्च प्रयोगः।';
+
+  @override
+  String get helpHomeMasterySection => 'ज्ञानकोशः सान्तरपुनरावृत्तिश्च';
+
+  @override
+  String get helpHomeMasterySubtitle =>
+      'पत्रकोशाः, सान्तरपुनरावलोकनान्तरालाः, प्रावीण्याङ्कनं च कथं प्रवर्तन्ते।';
+
+  @override
+  String get helpHomeSyncSection => 'समकालनम् असंयुक्तहस्तान्तरणं च';
+
+  @override
+  String get helpHomeWifiSubtitle =>
+      'मेघं विना आद्यन्तगुप्तीकरणेन सह स्थानीय-Wi-Fi-द्वारा यन्त्रयोः साक्षात् समकालनम्।';
+
+  @override
+  String get helpHomeQrTitle => 'Air QR अवलोककः दत्तांशहस्तान्तरणं च';
+
+  @override
+  String get helpHomeQrSubtitle =>
+      'चल-QR-धाराभिः प्रतिलिपिफलकेन च कार्याणां कोशानां च असंयुक्तहस्तान्तरणम्।';
+
+  @override
+  String get helpHomePrivacySection => 'गोपनीयता, सुरक्षा, प्रतिरक्षाश्च';
+
+  @override
+  String get helpHomePrivacySubtitle =>
+      'SQLCipher AES-256 दत्तांशकोशगुप्तीकरणं, जैविकप्रमाणीकरणं, पटलचित्ररक्षणं च।';
+
+  @override
+  String get helpHomeBackupSubtitle =>
+      'गुप्तपदरक्षितानां ZIP-प्रतिरक्षासञ्चिकानां सर्जनं, सुरक्षाचर्याः, सम्पूर्णपुनःस्थापनपदानि च।';
+
+  @override
+  String get helpHomeFaqSection => 'बहुशः पृष्टाः प्रश्नाः';
+
+  @override
+  String get helpHomeFaqTitle => 'प्रश्नोत्तराणि समस्यापरिहारमार्गदर्शिका च';
+
+  @override
+  String get helpHomeFaqSubtitle =>
+      'दिनकीलन-असंयुक्तप्रवर्तन-दत्तांशकोशसुरक्षाविषयकाणां सामान्यप्रश्नानां साक्षाद् उत्तराणि।';
+
+  @override
+  String get helpHomeHeaderTitle => 'साहाय्यकेन्द्रं ज्ञानकोशश्च';
+
+  @override
+  String get helpHomeHeaderSubtitle =>
+      'SreerajP ToDo इत्यस्य सर्वेषां विशेषांशानां विस्तृतमार्गदर्शिकाः नियमाः समाधानानि च दृश्यन्ताम्।';
+
+  @override
+  String get featDailyName => 'दैनिककार्याणि कार्यपद्धतिश्च';
+
+  @override
+  String get featDailySubtitle =>
+      'शीघ्रयोजना, दिनकीलनरक्षणं, यूनिकोड-सामान्यीकरणं, प्रत्यावर्तनं च';
+
+  @override
+  String get featUnicodeTitle => 'यूनिकोड-प्राधान्यं बहुलिपिसामान्यीकरणं च';
+
+  @override
+  String get featUnicodeDesc =>
+      'यथार्थानन्यतायै सर्वाणि कार्यशीर्षकाणि NFC-रूपेण सामान्यीकरोति; आङ्ग्ल-मलयाळ-हिन्दी-आदीनां लेखनदिशां स्वयमेव जानाति।';
+
+  @override
+  String get featUnicodeH1 => 'NFC यूनिकोड';
+
+  @override
+  String get featUnicodeH2 => 'बहुलिपिपाठः';
+
+  @override
+  String get featUnicodeH3 => 'RTL LTR दिशे';
+
+  @override
+  String get featDayLockTitle => 'दिनकीलनरक्षणम्';
+
+  @override
+  String get featDayLockDesc =>
+      'पुरातनवृत्तप्रामाणिकतां रक्षितुं व्यतीतदिनानि पश्चात्परिवर्तनात् दृढं कील्यन्ते।';
+
+  @override
+  String get featDayLockH1 => 'इतिवृत्तकीलनम्';
+
+  @override
+  String get featDayLockH2 => 'अविकार्यम् अतीतम्';
+
+  @override
+  String get featDayLockH3 => 'केवलपठनीयवृत्तानि';
+
+  @override
+  String get featCalendarTitle => 'दैनिकावली पञ्चाङ्गसञ्चारश्च';
+
+  @override
+  String get featCalendarDesc =>
+      'दृश्यपञ्चाङ्गचयनेन, अद्यपर्यन्तं शीघ्रगमनेन, दिनाङ्कसारणसञ्चारेण च शीघ्रा दैनिककार्ययोजना।';
+
+  @override
+  String get featCalendarH1 => 'पञ्चाङ्गचयनम्';
+
+  @override
+  String get featCalendarH2 => 'अद्यगमनम्';
+
+  @override
+  String get featCalendarH3 => 'शीघ्रसञ्चारः';
+
+  @override
+  String get featUndoTitle => 'सद्यःप्रत्यावर्तनं प्रत्यावर्त्यक्रियाश्च';
+
+  @override
+  String get featUndoDesc =>
+      'कार्यसमापन-त्याग-स्थितिपरिवर्तनेभ्यः पञ्चक्षणप्रत्यावर्तनसूचना उपरितनपट्टिकायां स्थिरं प्रत्यावर्तनबटनं च।';
+
+  @override
+  String get featUndoH1 => 'पञ्चक्षणप्रत्यावर्तनम्';
+
+  @override
+  String get featUndoH2 => 'स्थिरबटनम्';
+
+  @override
+  String get featUndoH3 => 'सुरक्षितपरिवर्तनानि';
+
+  @override
+  String get featSearchTitle => 'पूर्णपाठान्वेषणं परिशोधकाश्च';
+
+  @override
+  String get featSearchDesc =>
+      'स्थिति-प्राथमिकता-दिनाङ्कपरिधिभिः सर्वेषु कार्येषु वर्णनेषु पुरातनवृत्तेषु च सद्यः अन्वेषणम्।';
+
+  @override
+  String get featSearchH1 => 'पूर्णपाठान्वेषणम्';
+
+  @override
+  String get featSearchH2 => 'स्थितिपरिशोधकाः';
+
+  @override
+  String get featSearchH3 => 'दिनाङ्कपरिधयः';
+
+  @override
+  String get featTimeSubtitle =>
+      'घटिकासमयगणकाः, एकसमयगणकनियमः, पोमोडोरो-ध्यानं च';
+
+  @override
+  String get featSegmentsTitle => 'बहुखण्डसमयगणनम्';
+
+  @override
+  String get featSegmentsDesc =>
+      'प्रतिक्षणं तत्कालयाथार्थ्येन लक्ष्यप्रगत्या च बहुसत्रेषु कस्मिंश्चित् कार्ये व्ययितः यथार्थकालः मीयताम्।';
+
+  @override
+  String get featSegmentsH1 => 'बहवः खण्डाः';
+
+  @override
+  String get featSegmentsH2 => 'घटिकासमयगणकः';
+
+  @override
+  String get featSegmentsH3 => 'HH:MM:SS रूपम्';
+
+  @override
+  String get featSingleDesc =>
+      'गणनाप्रामाणिकतां रक्षितुं कस्मिन्नपि क्षणे सर्वस्मिन् अनुप्रयोगे अधिकतमम् एकः एव समयगणकः प्रचलेत् इति निश्चिनोति।';
+
+  @override
+  String get featSingleH1 => 'एकः सक्रियः समयगणकः';
+
+  @override
+  String get featSingleH2 => 'पूर्वतनस्य स्वयंस्थगनम्';
+
+  @override
+  String get featSingleH3 => 'यथार्थगणनाः';
+
+  @override
+  String get featFocusDesc =>
+      'इच्छानुसारकार्यविरामावरोहगणकैः सह विक्षेपरहितं पूर्णपटलध्यानम्।';
+
+  @override
+  String get featFocusH1 => 'पोमोडोरो-समयगणकः';
+
+  @override
+  String get featFocusH2 => 'पूर्णपटलध्यानम्';
+
+  @override
+  String get featCustomIntervals => 'इच्छानुसारान्तरालाः';
+
+  @override
+  String get featStreamTitle => 'तत्कालसमयगणकधारा';
+
+  @override
+  String get featStreamDesc =>
+      'अल्पविद्युत्कोशव्ययेन कदापि अविलम्बेन च प्रतिक्षणं तत्कालसमयगणकनवीकरणानि।';
+
+  @override
+  String get featStreamH1 => 'तत्कालधारा';
+
+  @override
+  String get featStreamH2 => 'विलम्बः नास्ति';
+
+  @override
+  String get featStreamH3 => 'विद्युत्कोशमितव्ययः';
+
+  @override
+  String get featTerminalTitle => 'अन्तिमस्थितिसमयकीलनम्';
+
+  @override
+  String get featTerminalDesc =>
+      'समापितानि त्यक्तानि च कार्याणि प्रचलतः समयगणकान् स्वयमेव विरमयन्ति नूतनखण्डयोजनं च निवारयन्ति।';
+
+  @override
+  String get featTerminalH1 => 'समाप्तौ स्वयंविरामः';
+
+  @override
+  String get featTerminalH2 => 'अन्तिमकीलनम्';
+
+  @override
+  String get featTerminalH3 => 'रक्षितवृत्तानि';
+
+  @override
+  String get featRitualName => 'दैनिकानुष्ठानम्';
+
+  @override
+  String get featRitualSubtitle => 'दिनस्य शान्तः मार्गदर्शितः आरम्भः समापनं च';
+
+  @override
+  String get featDayOpenTitle => 'मार्गदर्शितदिनारम्भः';
+
+  @override
+  String get featDayOpenDesc =>
+      'श्वस्यताम्, एकं चिन्तनपत्रं पठ्यताम्, पूर्वावशिष्टं व्यवस्थाप्यताम्, ततः दिनम् आरभ्यताम्। पूर्वनिर्धारणेन निष्क्रियम्; प्रत्येकं पदं त्यक्तुं शक्यते।';
+
+  @override
+  String get featDayOpenH1 => 'प्राणायामसमयगणकः';
+
+  @override
+  String get featDayOpenH2 => 'अग्रेनयनम्';
+
+  @override
+  String get featDayOpenH3 => 'अद्यतनानि त्रीणि';
+
+  @override
+  String get featRitualDeckTitle => 'अनुष्ठानपत्रावली';
+
+  @override
+  String get featRitualDeckDesc =>
+      'आङ्ग्ल-मलयाळभाषयोः पञ्चाशत् चिन्तनपत्राणि, प्रत्येकस्मिन् एकः प्रश्नः एकं स्थिरीकरणवचनं च, स्वकीयसान्तरपुनरावृत्त्या पुनः दृश्यन्ते।';
+
+  @override
+  String get featRitualDeckH1 => '50 पत्राणि';
+
+  @override
+  String get featRitualDeckH2 => 'द्विभाषिकम्';
+
+  @override
+  String get featRitualDeckH3 => 'काले प्राप्ते पुनरागच्छति';
+
+  @override
+  String get featEveningTitle => 'सायंसमापनम्';
+
+  @override
+  String get featEveningDesc =>
+      'दिनं यथा सावधानम् आरब्धं तथैव समाप्येत इति दिने एकवारं, पश्चात्, दैनिकावली सायंविमर्शं ददाति।';
+
+  @override
+  String get featEveningH1 => 'दिने एकवारम्';
+
+  @override
+  String get featEveningH2 => 'वैकल्पिकम्';
+
+  @override
+  String get featEveningH3 => 'भवता चिता होरा';
+
+  @override
+  String get featMasterySubtitle =>
+      'स्मरणपत्राणि, सान्तरपुनरावृत्त्या धारणा, पुनरावर्तिनः अभ्यासाश्च';
+
+  @override
+  String get featSrsTitle => 'सान्तरपुनरावृत्तिस्मरणपत्राणि';
+
+  @override
+  String get featSrsDesc =>
+      'दैनिकाधिगमान् अध्ययनटिप्पणीश्च उत्तमसान्तरपुनरावलोकनक्रमेण स्मरणपत्रेषु परिणमयतु।';
+
+  @override
+  String get featSrsH1 => 'सान्तरपुनरावृत्तिः';
+
+  @override
+  String get featSrsH2 => 'धारणान्तरालाः';
+
+  @override
+  String get featSrsH3 => 'विश्वासाङ्कनम्';
+
+  @override
+  String get featDecksTitle => 'कोशाः प्रावीण्यस्तराश्च';
+
+  @override
+  String get featDecksDesc =>
+      'स्मरणपत्राणि स्वकोशेषु व्यवस्थाप्य नवीनात् सिद्धपर्यन्तं प्रावीण्यप्रगतिः अनुस्रियताम्।';
+
+  @override
+  String get featDecksH1 => 'स्वकोशाः';
+
+  @override
+  String get featDecksH2 => 'प्रावीण्याङ्कनम्';
+
+  @override
+  String get featDecksH3 => 'अविच्छेदानुसरणम्';
+
+  @override
+  String get featRruleTitle => 'पुनरावृत्तिकार्याणि RRule-यन्त्रं च';
+
+  @override
+  String get featRruleDesc =>
+      'मानक-RFC-5545-RRule-यन्त्रेण प्रतिदिनं, प्रतिसप्ताहं, प्रतिमासम्, अन्तरालानुसारं वा कार्यसर्जनं स्वचालितं क्रियताम्।';
+
+  @override
+  String get featRruleH1 => 'RRule-मानकम्';
+
+  @override
+  String get featRruleH3 => 'स्वचालितसर्जनम्';
+
+  @override
+  String get featCopyTitle => 'कार्याणां सामूहिकप्रतिलेखनम्';
+
+  @override
+  String get featCopyDesc =>
+      'अतीतदिनानाम् असमापितानि चितानि वा कार्याणि एकस्पर्शेन अद्यतनावल्यां सुकरं प्रतिलिख्यन्ताम्।';
+
+  @override
+  String get featCopyH1 => 'एकस्पर्शप्रतिलेखनम्';
+
+  @override
+  String get featCopyH2 => 'बहुचयनम्';
+
+  @override
+  String get featCopyH3 => 'असमापितानाम् अग्रेनयनम्';
+
+  @override
+  String get featSyncName => 'असंयुक्तसमकालनं Air QR-हस्तान्तरणं च';
+
+  @override
+  String get featSyncSubtitle =>
+      'स्थानीय-Wi-Fi-P2P-समकालनम्, Air QR दृश्यप्रेषणं, दत्तांशहस्तान्तरणं च';
+
+  @override
+  String get featWifiTitle => 'गुप्तीकृतस्थानीय-Wi-Fi-P2P-समकालनम्';
+
+  @override
+  String get featWifiDesc =>
+      'मेघसेवकैः विना आद्यन्तगुप्तीकरणेन सह स्थानीय-Wi-Fi-द्वारा यन्त्रयोः साक्षात् समकालनम्।';
+
+  @override
+  String get featWifiH1 => '100% स्थानीय-Wi-Fi';
+
+  @override
+  String get featWifiH2 => 'मेघः नास्ति';
+
+  @override
+  String get featWifiH3 => 'आद्यन्तगुप्तीकृतम्';
+
+  @override
+  String get featQrTitle => 'Air QR कार्यप्रेषणम् अवलोककश्च';
+
+  @override
+  String get featQrDesc =>
+      'चल-QR-धाराभिः कार्याणि समयवृत्तानि कोशाश्च यन्त्रान्तरेषु हस्तान्तर्यन्ताम्।';
+
+  @override
+  String get featQrH1 => 'दृश्य-QR-धारा';
+
+  @override
+  String get featQrH2 => 'छायाग्राह्यवलोककः';
+
+  @override
+  String get featQrH3 => 'जालं नापेक्ष्यते';
+
+  @override
+  String get featHandoffTitle => 'असंयुक्तदत्तांशहस्तान्तरणम्';
+
+  @override
+  String get featHandoffDesc =>
+      'प्रतिलिपिफलकेन स्थानीयसञ्चिकाभिः वा कार्यसमूहाः, JSON, Markdown-सारांशाश्च निर्याप्यन्ताम् आनीयन्तां च।';
+
+  @override
+  String get featHandoffH1 => 'JSON Markdown च';
+
+  @override
+  String get featHandoffH2 => 'प्रतिलिपिफलकहस्तान्तरणम्';
+
+  @override
+  String get featHandoffH3 => 'सुवहदत्तांशः';
+
+  @override
+  String get featOfflineTitle => '100% असंयुक्तप्रवर्तनप्रतिज्ञा';
+
+  @override
+  String get featOfflineDesc =>
+      'मेघसाधनैः विश्लेषणैश्च विना सम्पूर्णगोपनीयता। भवता आरब्धं स्थानीयजाले स्वयन्त्रैः सह Wi-Fi-समकालनम् एव एकः जालप्रयोगः।';
+
+  @override
+  String get featOfflineH1 => 'अन्तर्जालं नास्ति';
+
+  @override
+  String get featOfflineH2 => 'विश्लेषणं नास्ति';
+
+  @override
+  String get featOfflineH3 => 'केवलं स्थानीयजालम्';
+
+  @override
+  String get featPrivacyName => 'गोपनीयता, सुरक्षा, कोशश्च';
+
+  @override
+  String get featPrivacySubtitle =>
+      'SQLCipher AES-256 दत्तांशकोशः, अभियोगकीलं, गुप्तीकृतप्रतिरक्षाश्च';
+
+  @override
+  String get featDbDesc =>
+      'सर्वाणि कार्याणि समयवृत्तानि विन्यासाश्च यन्त्रांशाधारितेन SQLCipher-गुप्तीकरणेन कोशे गुप्तीक्रियन्ते।';
+
+  @override
+  String get featDbH1 => 'SQLCipher AES-256 सुरक्षा';
+
+  @override
+  String get featDbH2 => 'यन्त्रजनिता कुञ्चिका';
+
+  @override
+  String get featDbH3 => 'कोशे गुप्तीकृतम्';
+
+  @override
+  String get featLockDesc =>
+      'अङ्गुलिमुद्रया, मुखपरिचयेन, स्वाभियोगसङ्केतेन वा कार्याणि विन्यासाश्च कील्यन्ताम्।';
+
+  @override
+  String get featLockH1 => 'अङ्गुलिमुद्रा मुखं च';
+
+  @override
+  String get featLockH2 => 'विकल्पसङ्केतः';
+
+  @override
+  String get featLockH3 => 'स्वयंकीलनकालः';
+
+  @override
+  String get featShotDesc =>
+      'पटलग्रहणं निवारयति Android-सद्यःप्रयुक्तावल्याम् अनुप्रयोगपूर्वदृश्यं च निगूहति।';
+
+  @override
+  String get featShotH1 => 'पटलचित्रनिरोधः';
+
+  @override
+  String get featShotH2 => 'सद्यःप्रयुक्तावलीरक्षा';
+
+  @override
+  String get featShotH3 => 'गोपनीयतारक्षणम्';
+
+  @override
+  String get featBackupTitle => 'गुप्तपदरक्षिताः गुप्तीकृतप्रतिरक्षाः';
+
+  @override
+  String get featBackupDesc =>
+      'AES-256-उपयोक्तृगुप्तपदरक्षिताः गुप्तीकृत-ZIP-प्रतिरक्षाः निर्याप्यन्तां पुनःस्थाप्यन्तां च।';
+
+  @override
+  String get featBackupH1 => 'AES-256 ZIP-सञ्चिका';
+
+  @override
+  String get featBackupH2 => 'उपयोक्तृगुप्तपदम्';
+
+  @override
+  String get featBackupH3 => 'सुरक्षिताः सुवहाः प्रतिरक्षाः';
+
+  @override
+  String get featCustomName => 'स्वानुकूलनं विश्लेषणं च';
+
+  @override
+  String get featCustomSubtitle =>
+      'रूपविन्यासाः, मलयाळाक्षररूपाणि, आलेखाः, पूर्वनिर्धारणानि च';
+
+  @override
+  String get featThemeTitle => 'दीप्त-श्याम-रूपाणि वर्णपटाश्च';
+
+  @override
+  String get featThemeDesc =>
+      'अष्टभिः चितदीप्तवर्णैः सह दीप्त-श्याम-OLED-रूपविन्यासाः।';
+
+  @override
+  String get featThemeH1 => 'दीप्तश्यामरूपे';
+
+  @override
+  String get featThemeH2 => 'दीप्तवर्णाः';
+
+  @override
+  String get featThemeH3 => 'OLED-रूपम्';
+
+  @override
+  String get featTypeTitle => 'अक्षररूपम् अक्षरपरिमाणं च';
+
+  @override
+  String get featTypeDesc =>
+      'Manjari, Anek Malayalam, Noto Sans, तन्त्राक्षराणि वा चीयन्ताम्, अक्षरपरिमाणं च परिवर्त्यताम्।';
+
+  @override
+  String get featTypeH1 => 'मलयाळाक्षररूपाणि';
+
+  @override
+  String get featTypeH2 => 'परिमाणपरिवर्तनम्';
+
+  @override
+  String get featTypeH3 => 'सुपठाक्षराणि';
+
+  @override
+  String get featStatsTitle => 'उत्पादकतासाङ्ख्यिकी आलेखाश्च';
+
+  @override
+  String get featStatsDesc =>
+      'समापनानुपातं, समयवितरणं, दैनिकप्रवृत्तीः च दर्शयन्तः संवादात्मकाः आलेखाः सारण्यश्च।';
+
+  @override
+  String get featStatsH1 => 'fl_chart-आलेखाः';
+
+  @override
+  String get featStatsH2 => 'समयवितरणम्';
+
+  @override
+  String get featStatsH3 => 'समापनप्रवृत्तयः';
+
+  @override
+  String get featDefaultsTitle => 'कार्यपूर्वनिर्धारणानि समयप्रदर्शनं च';
+
+  @override
+  String get featDefaultsDesc =>
+      'पूर्वनिर्धारितप्राथमिकता, लक्ष्यकालः, सप्ताहारम्भदिनं, कार्यदिनानि, समयरूपाणि च व्यवस्थाप्यन्ताम्।';
+
+  @override
+  String get featDefaultsH1 => 'स्वपूर्वनिर्धारणानि';
+
+  @override
+  String get featDefaultsH2 => 'नम्यरूपाणि';
+
+  @override
+  String get featDefaultsH3 => 'अनुकूलकार्यपद्धतिः';
+
+  @override
+  String get featHeaderTitle => 'SreerajP ToDo विशेषांशाः';
+
+  @override
+  String get featHeaderSubtitle =>
+      'भवदर्थं निर्मितानि सर्वाणि उत्पादकतासाधनानि, समयगणकान्, असंयुक्तरक्षणानि च पश्यतु।';
 }

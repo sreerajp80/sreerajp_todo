@@ -5,23 +5,25 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/domain/services/image_edit_service.dart';
 import 'package:sreerajp_todo/domain/services/ocr_capture_downscaler.dart';
 import 'package:sreerajp_todo/domain/services/ocr_enhancer.dart';
 import 'package:sreerajp_todo/domain/services/ocr_service.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 enum _EnhanceToolTab { none, filters, adjust }
 
 /// Interactive screen for rotating, cropping, filtering, and adjusting
-/// brightness/contrast of document photos with real-time live OCR text
-/// recognition preview.
+/// brightness/contrast of document photos. Text recognition runs only when the
+/// user taps the extract text button, after all edits are done.
 ///
 /// Pops with the recognised text, or `null` when the user backs out.
 class OcrEnhanceScreen extends ConsumerStatefulWidget {
@@ -67,6 +69,7 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
   int _rotationAngle = 0;
   int _brightness = 0;
   int _contrast = 0;
+  int _sharpness = 0;
   OcrEnhanceFilter _selectedFilter = OcrEnhanceFilter.original;
   bool _invert = false;
   String _selectedLanguage = 'eng+mal';
@@ -75,6 +78,10 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
   bool _isPreparing = true;
   bool _isEnhancing = false;
   bool _isScanning = false;
+
+  /// True once the text has been read for the current edits. Any edit clears
+  /// it, so the user has to extract again before using the text.
+  bool _hasExtracted = false;
   bool _isTextPanelExpanded = true;
   String _recognizedText = '';
   int _wordCount = 0;
@@ -87,9 +94,19 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
   int _ocrRequestCounter = 0;
   final Set<int> _pendingOcrRequests = <int>{};
 
+  /// Labels each enhancement run, so an older run that finishes late cannot
+  /// replace the output of a newer one.
+  int _enhanceGeneration = 0;
+  Future<void>? _pendingEnhancement;
+
   @override
   void initState() {
     super.initState();
+    // Gallery screenshots are PNG; camera captures are JPEG. Start a
+    // screenshot on the filter made for screen text. The user can change it.
+    if (p.extension(widget.imagePath).toLowerCase() == '.png') {
+      _selectedFilter = OcrEnhanceFilter.screen;
+    }
     unawaited(_prepareMaster());
   }
 
@@ -139,7 +156,10 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     try {
       master = await downscaler.downscale(widget.imagePath);
     } catch (e) {
-      debugPrint('OcrEnhanceScreen: capture preparation failed ($e)');
+      AppLogger.warning(
+        'OcrEnhanceScreen: capture preparation failed',
+        error: e,
+      );
       master = widget.imagePath;
     }
 
@@ -155,15 +175,31 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     _scheduleEnhancement(immediate: true);
   }
 
+  /// Drops any text read for earlier edits. Called on every edit, because
+  /// that text no longer matches the image.
+  void _clearRecognizedText() {
+    _cancelPendingOcr();
+    _ocrRequestCounter++;
+    _recognizedText = '';
+    _wordCount = 0;
+    _isScanning = false;
+    _hasExtracted = false;
+  }
+
   void _scheduleEnhancement({bool immediate = false}) {
     _debounceTimer?.cancel();
+    if (mounted) setState(_clearRecognizedText);
     if (immediate) {
-      _applyEnhancements();
+      _startEnhancement();
     } else {
       _debounceTimer = Timer(const Duration(milliseconds: 250), () {
-        if (mounted) _applyEnhancements();
+        if (mounted) _startEnhancement();
       });
     }
+  }
+
+  void _startEnhancement() {
+    _pendingEnhancement = _applyEnhancements();
   }
 
   Future<void> _applyEnhancements() async {
@@ -172,12 +208,8 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     final master = _masterPath;
     if (master == null) return;
 
-    setState(() {
-      _isEnhancing = true;
-      _recognizedText = '';
-      _wordCount = 0;
-      _isScanning = true;
-    });
+    final generation = ++_enhanceGeneration;
+    setState(() => _isEnhancing = true);
 
     try {
       final OcrEnhancer enhancer =
@@ -196,33 +228,52 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
           rotationAngle: _rotationAngle,
           brightness: _brightness,
           contrast: _contrast,
+          sharpness: _sharpness,
           filter: _selectedFilter,
           invert: _invert,
         ),
       );
 
-      if (!mounted) return;
+      // A newer run started while this one was working; its output wins.
+      if (!mounted || generation != _enhanceGeneration) return;
 
       setState(() {
         _enhancedOutputPath = result.targetPath;
         _previewBytes = result.previewBytes;
         _isEnhancing = false;
       });
-
-      // Run live OCR recognition on the newly enhanced image.
-      _runLiveOcr(result.targetPath);
     } catch (e) {
-      debugPrint('OcrEnhanceScreen: enhancement error ($e)');
-      if (mounted) {
-        setState(() {
-          _isEnhancing = false;
-          _isScanning = false;
-        });
+      AppLogger.warning('OcrEnhanceScreen: enhancement error', error: e);
+      if (mounted && generation == _enhanceGeneration) {
+        setState(() => _isEnhancing = false);
       }
     }
   }
 
-  Future<void> _runLiveOcr(String imagePath) async {
+  /// Reads the text from the image as it looks after all edits. Runs only
+  /// when the user taps the extract text button.
+  Future<void> _extractText() async {
+    HapticFeedback.selectionClick();
+
+    // An edit may still be waiting in the debounce timer. Apply it first, so
+    // the text is read from the image the user actually sees.
+    if (_debounceTimer?.isActive ?? false) {
+      _debounceTimer!.cancel();
+      _startEnhancement();
+    }
+    final pending = _pendingEnhancement;
+    if (pending != null) await pending;
+    // The user edited again while we waited; the image is not final yet.
+    if (!mounted || _isEnhancing || (_debounceTimer?.isActive ?? false)) {
+      return;
+    }
+
+    final pathToScan = _enhancedOutputPath ?? _masterPath;
+    if (pathToScan == null) return;
+    await _runOcr(pathToScan);
+  }
+
+  Future<void> _runOcr(String imagePath) async {
     if (!mounted) return;
 
     // Anything still queued is out of date now.
@@ -256,10 +307,11 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
         _recognizedText = text.trim();
         _wordCount = words;
         _isScanning = false;
+        _hasExtracted = true;
       });
     } catch (e) {
       _pendingOcrRequests.remove(requestId);
-      debugPrint('OcrEnhanceScreen: live OCR failed ($e)');
+      AppLogger.warning('OcrEnhanceScreen: OCR failed', error: e);
       if (mounted && requestId == _ocrRequestCounter) {
         setState(() => _isScanning = false);
         if (e is OcrUnavailableException) {
@@ -274,22 +326,14 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     HapticFeedback.selectionClick();
     setState(() {
       _selectedLanguage = newLang;
-      _recognizedText = '';
-      _wordCount = 0;
-      _isScanning = true;
+      _clearRecognizedText();
     });
-    final pathToScan = _enhancedOutputPath ?? _masterPath;
-    if (pathToScan == null) return;
-    _runLiveOcr(pathToScan);
   }
 
   Future<void> _rotateClockwise() async {
     HapticFeedback.selectionClick();
     setState(() {
       _rotationAngle = (_rotationAngle + 90) % 360;
-      _recognizedText = '';
-      _wordCount = 0;
-      _isScanning = true;
     });
     _scheduleEnhancement(immediate: true);
   }
@@ -298,9 +342,6 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     HapticFeedback.selectionClick();
     setState(() {
       _rotationAngle = (_rotationAngle - 90 + 360) % 360;
-      _recognizedText = '';
-      _wordCount = 0;
-      _isScanning = true;
     });
     _scheduleEnhancement(immediate: true);
   }
@@ -336,14 +377,11 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
           _enhancedOutputPath = null;
           _previewBytes = null;
           _rotationAngle = 0; // Cropper handles its own rotation.
-          _recognizedText = '';
-          _wordCount = 0;
-          _isScanning = true;
         });
         _scheduleEnhancement(immediate: true);
       }
     } catch (e) {
-      debugPrint('OcrEnhanceScreen: crop failed ($e)');
+      AppLogger.warning('OcrEnhanceScreen: crop failed', error: e);
     }
   }
 
@@ -352,17 +390,15 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     setState(() {
       _brightness = 0;
       _contrast = 0;
+      _sharpness = 0;
       _selectedFilter = OcrEnhanceFilter.original;
-      _recognizedText = '';
-      _wordCount = 0;
-      _isScanning = true;
     });
     _scheduleEnhancement(immediate: true);
   }
 
   void _confirmAndUseText() {
     HapticFeedback.mediumImpact();
-    Navigator.of(context).pop(_recognizedText);
+    context.pop(_recognizedText);
   }
 
   @override
@@ -378,13 +414,23 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           tooltip: l10n.ocrRetake,
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
         ),
         title: Text(
           l10n.ocrEnhanceTitle,
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         actions: [
+          IconButton(
+            key: const Key('ocr-enhance-extract-btn'),
+            icon: const Icon(Icons.document_scanner),
+            tooltip: l10n.ocrExtractTextTooltip,
+            color: Colors.amber,
+            disabledColor: Colors.white38,
+            onPressed: _isPreparing || _isEnhancing || _isScanning
+                ? null
+                : _extractText,
+          ),
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: FilledButton.icon(
@@ -569,28 +615,29 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
                         ),
                       ),
                     ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: _wordCount > 0 ? Colors.amber : Colors.white10,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      _wordCount > 0
-                          ? l10n.ocrEnhanceWordCount(_wordCount)
-                          : (_isScanning
-                                ? l10n.ocrEnhanceScanning
-                                : l10n.ocrNoTextFound),
-                      style: TextStyle(
-                        color: _wordCount > 0 ? Colors.black : Colors.white60,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
+                  if (_isScanning || _hasExtracted)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _wordCount > 0 ? Colors.amber : Colors.white10,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        _wordCount > 0
+                            ? l10n.ocrEnhanceWordCount(_wordCount)
+                            : (_isScanning
+                                  ? l10n.ocrEnhanceScanning
+                                  : l10n.ocrNoTextFound),
+                        style: TextStyle(
+                          color: _wordCount > 0 ? Colors.black : Colors.white60,
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
-                  ),
                   const SizedBox(width: 6),
                   Icon(
                     _isTextPanelExpanded
@@ -623,7 +670,10 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
                       ),
                     )
                   : Text(
-                      l10n.ocrEnhanceLiveTextNone,
+                      _hasExtracted || _isScanning
+                          ? l10n.ocrEnhanceLiveTextNone
+                          : l10n.ocrEnhanceExtractHint,
+                      key: const Key('ocr-text-panel-placeholder'),
                       style: const TextStyle(
                         color: Colors.white38,
                         fontSize: 12,
@@ -737,12 +787,27 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
             filter: OcrEnhanceFilter.enhance,
             icon: Icons.tonality,
           ),
+          const SizedBox(width: 8),
+          _buildFilterChip(
+            key: const Key('ocr-filter-screen-chip'),
+            label: l10n.ocrFilterScreen,
+            filter: OcrEnhanceFilter.screen,
+            icon: Icons.screenshot_monitor,
+          ),
+          const SizedBox(width: 8),
+          _buildFilterChip(
+            key: const Key('ocr-filter-adaptive-chip'),
+            label: l10n.ocrFilterAdaptive,
+            filter: OcrEnhanceFilter.adaptiveBw,
+            icon: Icons.wb_shade,
+          ),
         ],
       ),
     );
   }
 
   Widget _buildFilterChip({
+    Key? key,
     required String label,
     required OcrEnhanceFilter filter,
     required IconData icon,
@@ -750,6 +815,7 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     final isSelected = _selectedFilter == filter;
 
     return FilterChip(
+      key: key,
       selected: isSelected,
       showCheckmark: false,
       avatar: Icon(
@@ -799,6 +865,17 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
             _scheduleEnhancement();
           },
         ),
+        _buildAdjustSlider(
+          icon: Icons.deblur,
+          label: l10n.ocrSharpnessLabel,
+          sliderKey: const Key('ocr-sharpness-slider'),
+          value: _sharpness,
+          min: 0,
+          onChanged: (val) {
+            setState(() => _sharpness = val);
+            _scheduleEnhancement();
+          },
+        ),
         Align(
           alignment: Alignment.centerRight,
           child: TextButton.icon(
@@ -812,7 +889,7 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
               l10n.ocrResetFilter,
               style: const TextStyle(color: Colors.white70, fontSize: 12),
             ),
-            onPressed: (_brightness != 0 || _contrast != 0)
+            onPressed: (_brightness != 0 || _contrast != 0 || _sharpness != 0)
                 ? _resetAdjustments
                 : null,
           ),
@@ -827,6 +904,7 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
     required Key sliderKey,
     required int value,
     required ValueChanged<int> onChanged,
+    int min = -100,
   }) {
     return Row(
       children: [
@@ -851,9 +929,9 @@ class _OcrEnhanceScreenState extends ConsumerState<OcrEnhanceScreen> {
             child: Slider(
               key: sliderKey,
               value: value.toDouble(),
-              min: -100,
+              min: min.toDouble(),
               max: 100,
-              divisions: 40,
+              divisions: (100 - min) ~/ 5,
               onChanged: (val) => onChanged(val.round()),
             ),
           ),

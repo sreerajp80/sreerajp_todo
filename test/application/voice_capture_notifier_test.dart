@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/application/voice_capture_notifier.dart';
 import 'package:sreerajp_todo/application/voice_capture_state.dart';
-import 'package:sreerajp_todo/core/platform/speech_channel.dart';
+import 'package:sreerajp_todo/data/platform/speech_channel.dart';
 import 'package:sreerajp_todo/core/voice/voice_parse_result.dart';
 
 /// Stands in for the Android recogniser so the tests never touch a channel.

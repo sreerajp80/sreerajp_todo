@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/core/rules/task_default_rules.dart';
 
 /// Two small number boxes for the target time of a task.
 ///

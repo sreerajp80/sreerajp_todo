@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
 import 'package:sreerajp_todo/presentation/shared/task_default_labels.dart';
@@ -364,7 +364,7 @@ class TaskHistoryScreen extends ConsumerWidget {
           icon: Icons.stop_rounded,
           iconColor: Colors.blueGrey,
           backgroundColor: Colors.blueGrey.withAlpha(30),
-          title: (ctx) => 'Timer Session',
+          title: (ctx) => ctx.l10n.eventTimerSession,
         );
       case TodoHistoryEventType.timerPaused:
         return _EventConfig(
@@ -378,14 +378,14 @@ class TaskHistoryScreen extends ConsumerWidget {
           icon: Icons.more_time_rounded,
           iconColor: Colors.teal,
           backgroundColor: Colors.teal.withAlpha(30),
-          title: (ctx) => 'Manual Time',
+          title: (ctx) => ctx.l10n.eventManualTime,
         );
       case TodoHistoryEventType.statusChanged:
         return _EventConfig(
           icon: Icons.published_with_changes_rounded,
           iconColor: theme.colorScheme.secondary,
           backgroundColor: theme.colorScheme.secondary.withAlpha(30),
-          title: (ctx) => 'Status Change',
+          title: (ctx) => ctx.l10n.eventStatusChange,
         );
       case TodoHistoryEventType.subtaskToggled:
         return _EventConfig(

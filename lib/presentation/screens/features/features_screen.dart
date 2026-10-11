@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 /// One feature item displayed on the Features screen.
 class _AppFeature {
-  const _AppFeature({
+  _AppFeature({
     required this.title,
     required this.description,
     required this.icon,
@@ -18,7 +19,7 @@ class _AppFeature {
 
 /// A category grouping related features.
 class _FeatureCategory {
-  const _FeatureCategory({
+  _FeatureCategory({
     required this.name,
     required this.subtitle,
     required this.icon,
@@ -35,337 +36,279 @@ class _FeatureCategory {
 class FeaturesScreen extends StatelessWidget {
   const FeaturesScreen({super.key});
 
-  static const List<_FeatureCategory> _categories = [
+  /// Builds the feature list in the current UI language.
+  static List<_FeatureCategory> _categories(AppLocalizations l10n) => [
     _FeatureCategory(
-      name: 'Daily Tasks & Workflow',
-      subtitle:
-          'Fast planning, day lock protection, Unicode normalization, and undo',
+      name: l10n.featDailyName,
+      subtitle: l10n.featDailySubtitle,
       icon: Icons.checklist_rounded,
       features: [
         _AppFeature(
-          title: 'Unicode First & Multi-Script Normalization',
-          description:
-              'NFC normalizes all task titles for exact uniqueness and detects text direction dynamically for English, Malayalam, Hindi, and more.',
+          title: l10n.featUnicodeTitle,
+          description: l10n.featUnicodeDesc,
           icon: Icons.translate_rounded,
-          highlights: ['NFC Unicode', 'Multi-script text', 'RTL & LTR'],
+          highlights: [
+            l10n.featUnicodeH1,
+            l10n.featUnicodeH2,
+            l10n.featUnicodeH3,
+          ],
         ),
         _AppFeature(
-          title: 'Day Lock Safeguard',
-          description:
-              'Strict day-level immutability locks past days against retroactive modifications to preserve historical record integrity.',
+          title: l10n.featDayLockTitle,
+          description: l10n.featDayLockDesc,
           icon: Icons.lock_clock_outlined,
           highlights: [
-            'Historical lock',
-            'Immutable past',
-            'Read-only records',
+            l10n.featDayLockH1,
+            l10n.featDayLockH2,
+            l10n.featDayLockH3,
           ],
         ),
         _AppFeature(
-          title: 'Daily List & Calendar Navigation',
-          description:
-              'Fast day-by-day task planning with visual calendar picker, quick-jump to Today, and date swipe navigation.',
+          title: l10n.featCalendarTitle,
+          description: l10n.featCalendarDesc,
           icon: Icons.calendar_month_outlined,
-          highlights: ['Calendar picker', 'Today jump', 'Fast navigation'],
-        ),
-        _AppFeature(
-          title: 'Instant Undo & Reversible Actions',
-          description:
-              '5-second undo toast with persistent app bar undo button for task completions, drops, and status updates.',
-          icon: Icons.undo_rounded,
           highlights: [
-            '5-second undo',
-            'Persistent button',
-            'Safe transitions',
+            l10n.featCalendarH1,
+            l10n.featCalendarH2,
+            l10n.featCalendarH3,
           ],
         ),
         _AppFeature(
-          title: 'Full-Text Search & Filters',
-          description:
-              'Instant search across all your tasks, descriptions, and historical logs by status, priority, and date ranges.',
+          title: l10n.featUndoTitle,
+          description: l10n.featUndoDesc,
+          icon: Icons.undo_rounded,
+          highlights: [l10n.featUndoH1, l10n.featUndoH2, l10n.featUndoH3],
+        ),
+        _AppFeature(
+          title: l10n.featSearchTitle,
+          description: l10n.featSearchDesc,
           icon: Icons.search_rounded,
-          highlights: ['Full-text search', 'Status filters', 'Date ranges'],
+          highlights: [l10n.featSearchH1, l10n.featSearchH2, l10n.featSearchH3],
         ),
       ],
     ),
     _FeatureCategory(
-      name: 'Time Tracking & Focus',
-      subtitle:
-          'Stopwatch timers, single running timer rule, and Pomodoro focus',
+      name: l10n.helpHomeTimeSection,
+      subtitle: l10n.featTimeSubtitle,
       icon: Icons.timer_outlined,
       features: [
         _AppFeature(
-          title: 'Multi-Segment Time Tracking',
-          description:
-              'Measure exact time spent on any task across multiple sessions with live second-by-second precision and target progress.',
+          title: l10n.featSegmentsTitle,
+          description: l10n.featSegmentsDesc,
           icon: Icons.more_time_rounded,
           highlights: [
-            'Multiple segments',
-            'Stopwatch timer',
-            'HH:MM:SS format',
+            l10n.featSegmentsH1,
+            l10n.featSegmentsH2,
+            l10n.featSegmentsH3,
           ],
         ),
         _AppFeature(
-          title: 'Single Running Timer Rule',
-          description:
-              'Guarantees at most one active running timer at any given moment across the entire app to maintain tracking integrity.',
+          title: l10n.helpTimeTrackingSingleTitle,
+          description: l10n.featSingleDesc,
           icon: Icons.play_circle_outline_rounded,
-          highlights: [
-            'One active timer',
-            'Auto-pause previous',
-            'Accurate metrics',
-          ],
+          highlights: [l10n.featSingleH1, l10n.featSingleH2, l10n.featSingleH3],
         ),
         _AppFeature(
-          title: 'Focus Mode & Pomodoro',
-          description:
-              'Distraction-free full-screen focus screen with custom work and break countdown timers.',
+          title: l10n.helpFocusTitle,
+          description: l10n.featFocusDesc,
           icon: Icons.center_focus_strong_rounded,
           highlights: [
-            'Pomodoro timer',
-            'Full-screen focus',
-            'Custom intervals',
+            l10n.featFocusH1,
+            l10n.featFocusH2,
+            l10n.featCustomIntervals,
           ],
         ),
         _AppFeature(
-          title: 'Live Dynamic Timer Stream',
-          description:
-              'Second-by-second live timer updates with optimized rendering that consumes minimal battery and never lags.',
+          title: l10n.featStreamTitle,
+          description: l10n.featStreamDesc,
           icon: Icons.bolt_rounded,
-          highlights: ['StreamProvider', 'Zero UI lag', 'Battery efficient'],
+          highlights: [l10n.featStreamH1, l10n.featStreamH2, l10n.featStreamH3],
         ),
         _AppFeature(
-          title: 'Terminal Status Time Lock',
-          description:
-              'Completed and dropped tasks automatically stop active timers and prevent new segment additions.',
+          title: l10n.featTerminalTitle,
+          description: l10n.featTerminalDesc,
           icon: Icons.task_alt_rounded,
           highlights: [
-            'Auto-stop on finish',
-            'Terminal lock',
-            'Protected logs',
+            l10n.featTerminalH1,
+            l10n.featTerminalH2,
+            l10n.featTerminalH3,
           ],
         ),
       ],
     ),
     _FeatureCategory(
-      name: 'Ritual Mode',
-      subtitle: 'A quiet, guided way to open and close the day',
+      name: l10n.featRitualName,
+      subtitle: l10n.featRitualSubtitle,
       icon: Icons.self_improvement_rounded,
       features: [
         _AppFeature(
-          title: 'Guided Day Open',
-          description:
-              'Breathe, read one reflection card, settle what is left over from before, then begin the day. Off by default, and every step can be skipped.',
+          title: l10n.featDayOpenTitle,
+          description: l10n.featDayOpenDesc,
           icon: Icons.wb_sunny_outlined,
-          highlights: ['Breathing timer', 'Carry over', "Today's three"],
+          highlights: [
+            l10n.featDayOpenH1,
+            l10n.featDayOpenH2,
+            l10n.featDayOpenH3,
+          ],
         ),
         _AppFeature(
-          title: 'Ritual Deck',
-          description:
-              'Fifty reflection cards in English and Malayalam, each with a question and a grounding quote, resurfaced by their own spaced repetition.',
+          title: l10n.featRitualDeckTitle,
+          description: l10n.featRitualDeckDesc,
           icon: Icons.style_outlined,
-          highlights: ['50 cards', 'Bilingual', 'Comes back when due'],
+          highlights: [
+            l10n.featRitualDeckH1,
+            l10n.featRitualDeckH2,
+            l10n.featRitualDeckH3,
+          ],
         ),
         _AppFeature(
-          title: 'Evening Close',
-          description:
-              'Once a day, later on, the day list offers the evening reflection so the day is closed as deliberately as it was opened.',
+          title: l10n.featEveningTitle,
+          description: l10n.featEveningDesc,
           icon: Icons.nightlight_outlined,
-          highlights: ['Once a day', 'Optional', 'Your chosen hour'],
+          highlights: [
+            l10n.featEveningH1,
+            l10n.featEveningH2,
+            l10n.featEveningH3,
+          ],
         ),
       ],
     ),
     _FeatureCategory(
-      name: 'Mastery Deck & Spaced Repetition',
-      subtitle: 'Flashcards, spaced repetition retention, and recurring habits',
+      name: l10n.helpHomeMasterySection,
+      subtitle: l10n.featMasterySubtitle,
       icon: Icons.school_outlined,
       features: [
         _AppFeature(
-          title: 'Spaced Repetition Flashcards',
-          description:
-              'Convert daily learnings and study notes into flashcards with optimized spaced repetition review scheduling.',
+          title: l10n.featSrsTitle,
+          description: l10n.featSrsDesc,
           icon: Icons.psychology_outlined,
-          highlights: [
-            'Spaced repetition',
-            'Retention intervals',
-            'Confidence rating',
-          ],
+          highlights: [l10n.featSrsH1, l10n.featSrsH2, l10n.featSrsH3],
         ),
         _AppFeature(
-          title: 'Decks & Mastery Levels',
-          description:
-              'Organize flashcards into custom decks and track your mastery score progression from Novice to Master.',
+          title: l10n.featDecksTitle,
+          description: l10n.featDecksDesc,
           icon: Icons.style_outlined,
-          highlights: ['Custom decks', 'Mastery scoring', 'Streak tracking'],
+          highlights: [l10n.featDecksH1, l10n.featDecksH2, l10n.featDecksH3],
         ),
         _AppFeature(
-          title: 'Recurring Tasks & RRule Engine',
-          description:
-              'Automate daily, weekly, monthly, or interval-based task generation with the standard RFC-5545 RRule engine.',
+          title: l10n.featRruleTitle,
+          description: l10n.featRruleDesc,
           icon: Icons.repeat_rounded,
           highlights: [
-            'RRule standard',
-            'Custom intervals',
-            'Automated generation',
+            l10n.featRruleH1,
+            l10n.featCustomIntervals,
+            l10n.featRruleH3,
           ],
         ),
         _AppFeature(
-          title: 'Bulk Task Copying',
-          description:
-              'Easily copy unfinished or selected tasks from past days into today\'s list with 1 tap.',
+          title: l10n.featCopyTitle,
+          description: l10n.featCopyDesc,
           icon: Icons.copy_all_rounded,
-          highlights: [
-            '1-tap copying',
-            'Select multiple',
-            'Carry over unfinished',
-          ],
+          highlights: [l10n.featCopyH1, l10n.featCopyH2, l10n.featCopyH3],
         ),
       ],
     ),
     _FeatureCategory(
-      name: 'Offline Sync & Air QR Transfer',
-      subtitle: 'Local Wi-Fi P2P sync, Air QR visual beam, and data handoff',
+      name: l10n.featSyncName,
+      subtitle: l10n.featSyncSubtitle,
       icon: Icons.sync_alt_rounded,
       features: [
         _AppFeature(
-          title: 'Encrypted Local Wi-Fi P2P Sync',
-          description:
-              'Direct device-to-device synchronization over your local Wi-Fi with end-to-end encryption and zero cloud servers.',
+          title: l10n.featWifiTitle,
+          description: l10n.featWifiDesc,
           icon: Icons.wifi_tethering_rounded,
-          highlights: [
-            '100% Local Wi-Fi',
-            'Zero cloud',
-            'End-to-end encrypted',
-          ],
+          highlights: [l10n.featWifiH1, l10n.featWifiH2, l10n.featWifiH3],
         ),
         _AppFeature(
-          title: 'Air QR Task Beam & Scanner',
-          description:
-              'Transfer individual tasks, time logs, and decks between devices via visual animated QR code streams.',
+          title: l10n.featQrTitle,
+          description: l10n.featQrDesc,
           icon: Icons.qr_code_scanner_rounded,
+          highlights: [l10n.featQrH1, l10n.featQrH2, l10n.featQrH3],
+        ),
+        _AppFeature(
+          title: l10n.featHandoffTitle,
+          description: l10n.featHandoffDesc,
+          icon: Icons.send_to_mobile_rounded,
           highlights: [
-            'Visual QR stream',
-            'Camera scanner',
-            'Zero network needed',
+            l10n.featHandoffH1,
+            l10n.featHandoffH2,
+            l10n.featHandoffH3,
           ],
         ),
         _AppFeature(
-          title: 'Offline Data Handoff',
-          description:
-              'Export and import formatted task bundles, JSON, and Markdown summaries via clipboard or local files.',
-          icon: Icons.send_to_mobile_rounded,
-          highlights: ['JSON & Markdown', 'Clipboard handoff', 'Portable data'],
-        ),
-        _AppFeature(
-          title: '100% Offline Operational Guarantee',
-          description:
-              'Absolute privacy with zero network packages, zero cloud SDKs, zero analytics, and no INTERNET permission.',
+          title: l10n.featOfflineTitle,
+          description: l10n.featOfflineDesc,
           icon: Icons.cloud_off_rounded,
           highlights: [
-            'Zero network',
-            'Zero analytics',
-            'No INTERNET permission',
+            l10n.featOfflineH1,
+            l10n.featOfflineH2,
+            l10n.featOfflineH3,
           ],
         ),
       ],
     ),
     _FeatureCategory(
-      name: 'Privacy, Security & Storage',
-      subtitle: 'SQLCipher AES-256 database, app lock, and encrypted backups',
+      name: l10n.featPrivacyName,
+      subtitle: l10n.featPrivacySubtitle,
       icon: Icons.shield_outlined,
       features: [
         _AppFeature(
-          title: 'SQLCipher AES-256 Database Encryption',
-          description:
-              'All tasks, time records, and settings are encrypted at rest with hardware-backed SQLCipher encryption.',
+          title: l10n.helpPrivacyDbTitle,
+          description: l10n.featDbDesc,
           icon: Icons.key_rounded,
-          highlights: [
-            'SQLCipher AES-256',
-            'Device-derived key',
-            'Encrypted at rest',
-          ],
+          highlights: [l10n.featDbH1, l10n.featDbH2, l10n.featDbH3],
         ),
         _AppFeature(
-          title: 'Biometric & App PIN Lock',
-          description:
-              'Lock your tasks and settings with fingerprint, face unlock, or a custom app PIN.',
+          title: l10n.helpPrivacyLockTitle,
+          description: l10n.featLockDesc,
           icon: Icons.fingerprint_rounded,
-          highlights: [
-            'Fingerprint & Face unlock',
-            'App PIN fallback',
-            'Auto-lock timer',
-          ],
+          highlights: [l10n.featLockH1, l10n.featLockH2, l10n.featLockH3],
         ),
         _AppFeature(
-          title: 'Screenshot Guard Defense',
-          description:
-              'Prevents screen captures and hides app window previews in the Android recent apps switcher.',
+          title: l10n.helpPrivacyShotTitle,
+          description: l10n.featShotDesc,
           icon: Icons.screenshot_outlined,
-          highlights: [
-            'Screenshot blocking',
-            'Recent apps shield',
-            'Privacy protection',
-          ],
+          highlights: [l10n.featShotH1, l10n.featShotH2, l10n.featShotH3],
         ),
         _AppFeature(
-          title: 'Password-Protected Encrypted Backups',
-          description:
-              'Export and restore encrypted ZIP backup archives protected with AES-256 user passphrases.',
+          title: l10n.featBackupTitle,
+          description: l10n.featBackupDesc,
           icon: Icons.backup_rounded,
-          highlights: [
-            'AES-256 ZIP',
-            'User passphrase',
-            'Safe portable backups',
-          ],
+          highlights: [l10n.featBackupH1, l10n.featBackupH2, l10n.featBackupH3],
         ),
       ],
     ),
     _FeatureCategory(
-      name: 'Customization & Analytics',
-      subtitle: 'Themes, Malayalam typography, charts, and defaults',
+      name: l10n.featCustomName,
+      subtitle: l10n.featCustomSubtitle,
       icon: Icons.palette_outlined,
       features: [
         _AppFeature(
-          title: 'Light, Dark & Accent Palettes',
-          description:
-              'Support for light, dark, and OLED themes with 8 vibrant curated accent color presets.',
+          title: l10n.featThemeTitle,
+          description: l10n.featThemeDesc,
           icon: Icons.color_lens_outlined,
-          highlights: [
-            'Light & Dark themes',
-            'Vibrant accents',
-            'OLED styling',
-          ],
+          highlights: [l10n.featThemeH1, l10n.featThemeH2, l10n.featThemeH3],
         ),
         _AppFeature(
-          title: 'Typography & Text Scaling',
-          description:
-              'Choose from Manjari, Anek Malayalam, Noto Sans, or system fonts with dynamic text scaling.',
+          title: l10n.featTypeTitle,
+          description: l10n.featTypeDesc,
           icon: Icons.text_fields_rounded,
-          highlights: [
-            'Malayalam fonts',
-            'Dynamic scaling',
-            'Readable typography',
-          ],
+          highlights: [l10n.featTypeH1, l10n.featTypeH2, l10n.featTypeH3],
         ),
         _AppFeature(
-          title: 'Productivity Statistics & Charts',
-          description:
-              'Interactive charts and tables showing completion ratios, time distribution, and daily trends.',
+          title: l10n.featStatsTitle,
+          description: l10n.featStatsDesc,
           icon: Icons.bar_chart_rounded,
-          highlights: [
-            'fl_chart graphs',
-            'Time distribution',
-            'Completion trends',
-          ],
+          highlights: [l10n.featStatsH1, l10n.featStatsH2, l10n.featStatsH3],
         ),
         _AppFeature(
-          title: 'Task Defaults & Time Display',
-          description:
-              'Configure default priorities, target durations, week start day, working days, and time formats.',
+          title: l10n.featDefaultsTitle,
+          description: l10n.featDefaultsDesc,
           icon: Icons.tune_rounded,
           highlights: [
-            'Custom defaults',
-            'Flexible formats',
-            'Tailored workflow',
+            l10n.featDefaultsH1,
+            l10n.featDefaultsH2,
+            l10n.featDefaultsH3,
           ],
         ),
       ],
@@ -374,6 +317,7 @@ class FeaturesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context).settingsFeatures),
@@ -384,7 +328,7 @@ class FeaturesScreen extends StatelessWidget {
           children: [
             _buildHeaderCard(context),
             const SizedBox(height: 20),
-            for (final category in _categories) ...[
+            for (final category in _categories(l10n)) ...[
               _buildCategoryHeader(context, category),
               const SizedBox(height: 10),
               _buildCategoryCard(context, category),
@@ -397,6 +341,7 @@ class FeaturesScreen extends StatelessWidget {
   }
 
   Widget _buildHeaderCard(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -452,14 +397,14 @@ class FeaturesScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'SreerajP ToDo Features',
+                    l10n.featHeaderTitle,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Explore every productivity tool, time tracker, and offline safeguard designed for you.',
+                    l10n.featHeaderSubtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                       height: 1.35,

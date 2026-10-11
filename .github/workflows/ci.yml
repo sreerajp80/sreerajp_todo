@@ -1,0 +1,138 @@
+# CI for SreerajP ToDo.
+#
+# Runs the quality gate on every push and pull request, then builds a release
+# artifact for every declared platform (Android and Windows), as required by
+# docs/guidelines/flutter_project_engineering_standard.md section 19.2.
+#
+# Android signing needs these repository secrets (Settings > Secrets > Actions):
+#   ANDROID_KEYSTORE_BASE64   - the release .jks file, base64-encoded
+#   ANDROID_KEYSTORE_PASSWORD - keystore password
+#   ANDROID_KEY_ALIAS         - key alias
+#   ANDROID_KEY_PASSWORD      - key password
+# Without them the Android job is skipped. No secret is ever written to the repo.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: '3.44.8'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed lib/ test/ integration_test/
+      - run: flutter analyze
+      - run: flutter test --coverage
+
+  android:
+    needs: test
+    runs-on: ubuntu-latest
+    env:
+      HAS_KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.HAS_KEYSTORE == 'true'
+      - uses: actions/setup-java@v4
+        if: env.HAS_KEYSTORE == 'true'
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        if: env.HAS_KEYSTORE == 'true'
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+      - name: Restore release keystore from secrets
+        if: env.HAS_KEYSTORE == 'true'
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          echo "$KEYSTORE_BASE64" | base64 --decode > android/app/ci-release.jks
+          {
+            echo "storeFile=ci-release.jks"
+            echo "storePassword=$KEYSTORE_PASSWORD"
+            echo "keyAlias=$KEY_ALIAS"
+            echo "keyPassword=$KEY_PASSWORD"
+          } > android/key.properties
+      - name: Read app version
+        if: env.HAS_KEYSTORE == 'true'
+        run: echo "APP_VERSION=$(grep '^version:' pubspec.yaml | cut -d' ' -f2 | cut -d'+' -f1)" >> "$GITHUB_ENV"
+      - run: flutter pub get
+        if: env.HAS_KEYSTORE == 'true'
+      - name: Build app bundle (prod)
+        if: env.HAS_KEYSTORE == 'true'
+        run: >
+          flutter build appbundle --flavor prod --release
+          --obfuscate
+          --split-debug-info=build/symbols/android-prod-${{ env.APP_VERSION }}/
+      - name: Build split APKs (prod)
+        if: env.HAS_KEYSTORE == 'true'
+        run: >
+          flutter build apk --flavor prod --release
+          --obfuscate
+          --split-debug-info=build/symbols/android-prod-${{ env.APP_VERSION }}/
+          --split-per-abi
+      - name: Remove signing material
+        if: always() && env.HAS_KEYSTORE == 'true'
+        run: rm -f android/app/ci-release.jks android/key.properties
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_KEYSTORE == 'true'
+        with:
+          name: android-prod-${{ env.APP_VERSION }}
+          path: |
+            build/app/outputs/bundle/prodRelease/*.aab
+            build/app/outputs/flutter-apk/*-prod-release.apk
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_KEYSTORE == 'true'
+        with:
+          name: android-prod-symbols-${{ env.APP_VERSION }}
+          path: build/symbols/
+
+  windows:
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          cache: true
+      - name: Read app version
+        shell: pwsh
+        run: |
+          $version = ((Select-String -Path pubspec.yaml -Pattern '^version:\s*(\S+)').Matches[0].Groups[1].Value -split '\+')[0]
+          "APP_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - run: flutter pub get
+      - name: Build Windows release
+        run: >
+          flutter build windows --release
+          --obfuscate
+          --split-debug-info=build/symbols/windows-${{ env.APP_VERSION }}/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-${{ env.APP_VERSION }}
+          path: build/windows/x64/runner/Release/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-symbols-${{ env.APP_VERSION }}
+          path: build/symbols/

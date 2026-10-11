@@ -51,3 +51,6 @@ android/key.properties
 android/*.jks
 android/*.keystore
 
+
+# Release debug symbols (archive them securely; never commit)
+build/symbols/

@@ -3842,6 +3842,15 @@ class AppLocalizationsMl extends AppLocalizations {
   String get ocrEnhanceInvert => 'ഇൻവേർട്ട്';
 
   @override
+  String get ocrFilterScreen => 'സ്ക്രീൻഷോട്ട്';
+
+  @override
+  String get ocrFilterAdaptive => 'നിഴൽ നീക്കം';
+
+  @override
+  String get ocrSharpnessLabel => 'മൂർച്ച';
+
+  @override
   String get ocrEnhanceLiveText => 'കണ്ടെത്തിയ ടെക്സ്റ്റ്';
 
   @override
@@ -3855,6 +3864,13 @@ class AppLocalizationsMl extends AppLocalizations {
 
   @override
   String get ocrEnhanceScanning => 'വായിക്കുന്നു...';
+
+  @override
+  String get ocrExtractTextTooltip => 'ടെക്സ്റ്റ് വേർതിരിക്കുക';
+
+  @override
+  String get ocrEnhanceExtractHint =>
+      'എഡിറ്റിംഗ് പൂർത്തിയാക്കി, ടെക്സ്റ്റ് വായിക്കാൻ സ്കാൻ ബട്ടൺ അമർത്തുക.';
 
   @override
   String get ocrLanguageTooltip => 'തിരിച്ചറിയൽ ഭാഷ';
@@ -4176,4 +4192,1534 @@ class AppLocalizationsMl extends AppLocalizations {
   @override
   String get airQrScanUnavailable =>
       'QR സ്കാനിംഗ് ആൻഡ്രോയിഡിൽ മാത്രമേ ലഭ്യമാകൂ.';
+
+  @override
+  String get ok => 'ശരി';
+
+  @override
+  String get errorNotLocalNetwork =>
+      'വൈ-ഫൈ സിങ്ക് നിങ്ങളുടെ പ്രാദേശിക നെറ്റ്‌വർക്കിലെ ഉപകരണങ്ങളുമായി മാത്രമേ പ്രവർത്തിക്കൂ.';
+
+  @override
+  String get errorInvalidInput => 'നൽകിയ ചില വിവരങ്ങൾ സാധുവല്ല.';
+
+  @override
+  String get p2pSummaryTasks => 'ടാസ്കുകൾ';
+
+  @override
+  String p2pSummaryAdded(int count) {
+    return '+$count ചേർത്തു';
+  }
+
+  @override
+  String p2pSummarySkipped(int count) {
+    return '($count ഒഴിവാക്കി)';
+  }
+
+  @override
+  String p2pDayLockSkipped(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'കഴിഞ്ഞ ദിവസങ്ങൾ പൂട്ടിയതിനാൽ അവയിലെ $count ഇനങ്ങൾ ഒഴിവാക്കി.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get p2pTabHost => 'ഹോസ്റ്റ് (പങ്കിടുക)';
+
+  @override
+  String get p2pTabPeer => 'പിയർ (സ്വീകരിക്കുക)';
+
+  @override
+  String get p2pHostActive => 'ഹോസ്റ്റ് സെർവർ സജീവം';
+
+  @override
+  String get p2pHostStopped => 'ഹോസ്റ്റ് സെർവർ നിർത്തി';
+
+  @override
+  String p2pHostListening(String address) {
+    return '$address എന്നതിൽ കാത്തിരിക്കുന്നു';
+  }
+
+  @override
+  String get p2pHostIdleHint =>
+      'എൻക്രിപ്റ്റ് ചെയ്ത കണക്ഷൻ തുറക്കാൻ താഴെ ടാപ്പ് ചെയ്യുക.';
+
+  @override
+  String get p2pPairingPinLabel => 'പെയറിംഗ് പിൻ';
+
+  @override
+  String get p2pSelectScope => 'സിങ്ക് പരിധി തിരഞ്ഞെടുക്കുക';
+
+  @override
+  String get p2pStartHost => 'ഹോസ്റ്റ് സെർവർ ആരംഭിക്കുക';
+
+  @override
+  String get p2pStopHost => 'ഹോസ്റ്റ് സെർവർ നിർത്തുക';
+
+  @override
+  String get p2pConnectToHost => 'ഹോസ്റ്റ് ഉപകരണവുമായി ബന്ധിപ്പിക്കുക';
+
+  @override
+  String get p2pHostIpLabel => 'ഹോസ്റ്റ് IP വിലാസം';
+
+  @override
+  String get p2pHostIpHint => 'ഉദാ: 192.168.1.105';
+
+  @override
+  String get p2pPinHint => '6 അക്ക പിൻ';
+
+  @override
+  String get p2pRequestedScope => 'ആവശ്യപ്പെടുന്ന സിങ്ക് പരിധി';
+
+  @override
+  String p2pStatusConnecting(String address) {
+    return '$address എന്നതുമായി ബന്ധിപ്പിക്കുന്നു…';
+  }
+
+  @override
+  String get p2pStatusAuthenticating => 'സുരക്ഷിത സെഷൻ ഒരുക്കുന്നു…';
+
+  @override
+  String daysCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ദിവസം',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String daysShort(int count) {
+    return '$count ദി';
+  }
+
+  @override
+  String tasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ടാസ്കുകൾ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subtasksCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count സബ് ടാസ്കുകൾ',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String subtasksProgress(int done, int total) {
+    return '$done/$total സബ് ടാസ്കുകൾ';
+  }
+
+  @override
+  String get pendingAlertsView => 'കാണുക';
+
+  @override
+  String get masteryTasksInDeck => 'ഡെക്കിലെ ടാസ്കുകൾ';
+
+  @override
+  String masteryTargetTime(String duration) {
+    return 'ലക്ഷ്യം: $duration';
+  }
+
+  @override
+  String carryOverLookBackValue(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ദിവസം',
+      one: '1 ദിവസം (ഇന്നലെ)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String carryOverLookBackChip(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ദി',
+      one: '1 ദി (ഇന്നലെ)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get eventTimerSession => 'ടൈമർ സെഷൻ';
+
+  @override
+  String get eventManualTime => 'നേരിട്ട് ചേർത്ത സമയം';
+
+  @override
+  String get eventStatusChange => 'നില മാറ്റം';
+
+  @override
+  String prerequisitesSelected(int count) {
+    return '$count തിരഞ്ഞെടുത്തു';
+  }
+
+  @override
+  String get ocrNoCamera => 'ഈ ഉപകരണത്തിൽ ക്യാമറയൊന്നും കണ്ടെത്തിയില്ല.';
+
+  @override
+  String get ocrCameraStartFailed => 'ക്യാമറ ആരംഭിക്കാനായില്ല.';
+
+  @override
+  String get ocrOverlayTaskName => '1. ടാസ്കിന്റെ പേര്';
+
+  @override
+  String get ocrOverlaySeparator => 'സ്പേസ് / # / ---';
+
+  @override
+  String get ocrOverlayDescription => '2. വിവരണം (ബാക്കി എല്ലാ എഴുത്തും)';
+
+  @override
+  String pendingNotificationBody(int count, String summary) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ടാസ്കുകൾ ബാക്കിയുണ്ട് ($summary)',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String pendingNotificationSummarySplit(int today, int previous) {
+    return 'ഇന്ന് $today, മുൻദിവസങ്ങളിൽ നിന്ന് $previous';
+  }
+
+  @override
+  String pendingNotificationSummaryToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'ഇന്ന് $count ടാസ്കുകൾ ബാക്കി',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get airQrBackupShareTitle => 'AirQR ബാക്കപ്പ് പങ്കിടൽ';
+
+  @override
+  String airQrSyncDayTitle(String date) {
+    return 'AirQR സിങ്ക് ($date)';
+  }
+
+  @override
+  String airQrEstimate(String time, String size) {
+    return 'സ്കാൻ ചെയ്യാൻ ഏകദേശ സമയം: $time ($size)';
+  }
+
+  @override
+  String get airQrLargeBackupWarning =>
+      'ഇതൊരു വലിയ ഡാറ്റാബേസാണ്, അതിനാൽ ക്യാമറ സിങ്കിന് സമയമെടുത്തേക്കാം. വേഗത്തിൽ കൈമാറാൻ എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പ് ഫയൽ (.zip) ഉപയോഗിക്കുക.';
+
+  @override
+  String get airQrBackupReady =>
+      'മുഴുവൻ ആപ്പ് ബാക്കപ്പ് ക്യാമറ വഴി അയയ്ക്കാൻ തയ്യാർ. സ്വീകരിക്കുന്ന ഫോണിന്റെ ക്യാമറ അനങ്ങാതെ പിടിക്കുക.';
+
+  @override
+  String get airQrFrameParity => 'ഫൗണ്ടൻ പാരിറ്റി';
+
+  @override
+  String get airQrFrameSystematic => 'ക്രമ ബ്ലോക്ക്';
+
+  @override
+  String airQrStreamFrames(int count) {
+    return 'AirQR ഓപ്റ്റിക്കൽ സ്ട്രീം ($count ഫ്രെയിമുകൾ)';
+  }
+
+  @override
+  String airQrFrameCounter(int current, int total, String type) {
+    return 'ഫ്രെയിം $current / $total • $type';
+  }
+
+  @override
+  String get airQrPauseStream => 'സ്ട്രീം നിർത്തിവയ്ക്കുക';
+
+  @override
+  String get airQrResumeStream => 'സ്ട്രീം പുനരാരംഭിക്കുക';
+
+  @override
+  String airQrFpsChip(int fps) {
+    return '$fps/സെ';
+  }
+
+  @override
+  String airQrBackupPayloadEntries(int count) {
+    return 'മുഴുവൻ ആപ്പ് ബാക്കപ്പ് ($count ഇനങ്ങൾ)';
+  }
+
+  @override
+  String get airQrReceivedTasks => 'AirQR ടാസ്കുകൾ ലഭിച്ചു';
+
+  @override
+  String get airQrReceivedTimecard => 'AirQR ടൈംകാർഡ് ലഭിച്ചു';
+
+  @override
+  String get airQrReceivedBackup => 'AirQR ബാക്കപ്പ് ലഭിച്ചു';
+
+  @override
+  String get airQrReceivedUnknown => 'AirQR വിവരങ്ങൾ ലഭിച്ചു';
+
+  @override
+  String airQrTasksReady(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ടാസ്കുകൾ നിങ്ങളുടെ പട്ടികയിൽ ചേർക്കാൻ തയ്യാർ.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String airQrTimecardReady(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count ഇനങ്ങളുള്ള ദിവസ ടൈംകാർഡ് ചേർക്കാൻ തയ്യാർ.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get airQrBackupReceivedDetail =>
+      'മുഴുവൻ ആപ്പ് ബാക്കപ്പ് ക്യാമറ വഴി ലഭിച്ചു.';
+
+  @override
+  String get backupHideLogs => 'ലോഗുകൾ മറയ്ക്കുക';
+
+  @override
+  String backupViewLogs(int count) {
+    return 'ലോഗുകൾ കാണുക ($count)';
+  }
+
+  @override
+  String backupLastRun(String time, String trigger) {
+    return 'അവസാനം നടന്നത്: $time ($trigger)';
+  }
+
+  @override
+  String backupArchiveSize(String size) {
+    return 'ആർക്കൈവ് വലുപ്പം: $size';
+  }
+
+  @override
+  String get progressAllDone => 'എല്ലാം പൂർത്തിയായി! 🎉';
+
+  @override
+  String get progressAllDoneDetail =>
+      'ഇന്നത്തെ പട്ടിക പൂർത്തിയാക്കി, അഭിനന്ദനങ്ങൾ.';
+
+  @override
+  String progressCompletedOf(int completed, int total) {
+    return '$total-ൽ $completed പൂർത്തിയായി';
+  }
+
+  @override
+  String get recallTitle => 'ഓർമ്മയുടെ ഉറപ്പ്';
+
+  @override
+  String get recallPrompt =>
+      'ഈ ടാസ്ക് എത്ര എളുപ്പത്തിൽ ഓർത്തെടുത്തു അല്ലെങ്കിൽ പൂർത്തിയാക്കി?';
+
+  @override
+  String get recallHard => 'കഠിനം';
+
+  @override
+  String get recallHardDetail =>
+      'ബുദ്ധിമുട്ടി അല്ലെങ്കിൽ മറന്നു. അടുത്ത അവലോകനം 1 ദിവസത്തിൽ.';
+
+  @override
+  String get recallRevision => 'പുനരവലോകനം';
+
+  @override
+  String get recallRevisionDetail =>
+      'മിതമായ ശ്രമം. അടുത്ത അവലോകനം 3 ദിവസത്തിൽ.';
+
+  @override
+  String get recallEasy => 'എളുപ്പം';
+
+  @override
+  String recallEasyDetail(int days, int level) {
+    return 'അനായാസം! അടുത്ത അവലോകനം $days ദിവസത്തിൽ (നില $level).';
+  }
+
+  @override
+  String get dataHandoffExportSection => 'കയറ്റുമതി ചെയ്യാനുള്ള വഴികൾ';
+
+  @override
+  String get dataHandoffImportSection => 'ഇറക്കുമതി ചെയ്യാനുള്ള വഴികൾ';
+
+  @override
+  String markdownTargetDate(String date) {
+    return 'ലക്ഷ്യ തീയതി: $date';
+  }
+
+  @override
+  String get markdownImportHint =>
+      '- [ ] ടാസ്കിന്റെ പേര്\n  - [ ] സബ് ടാസ്കിന്റെ പേര്\n  > കുറിപ്പ്';
+
+  @override
+  String get markdownNoItems =>
+      '`- [ ]` അല്ലെങ്കിൽ `- [x]` ചെക്ക്‌ലിസ്റ്റ് ഇനങ്ങളൊന്നും കണ്ടെത്തിയില്ല.';
+
+  @override
+  String get markdownPastDateLocked =>
+      'കഴിഞ്ഞ ദിവസങ്ങൾ പൂട്ടിയിരിക്കുന്നു. ഇറക്കുമതി ചെയ്യാൻ ഇന്നോ പിന്നീടുള്ള തീയതിയോ തിരഞ്ഞെടുക്കുക.';
+
+  @override
+  String get helpTaskMgmtTitle => 'ദിവസ പട്ടികകളും ഡേ ലോക്കും';
+
+  @override
+  String get helpTaskMgmtIntro =>
+      'SreerajP ToDo നിങ്ങളുടെ ടാസ്കുകൾ ദിവസം തോറും കർശനമായി ക്രമീകരിക്കുന്നു. ദിവസ പട്ടിക, ഡേ ലോക്ക് സംരക്ഷണം, അന്തിമ നില ലോക്കുകൾ എന്നിവ നിങ്ങളുടെ ഉൽപ്പാദനക്ഷമതാ രേഖകളുടെ കൃത്യത എങ്ങനെ കാക്കുന്നുവെന്ന് അറിയുക.';
+
+  @override
+  String get helpTaskMgmtDayLockTitle => 'ഡേ ലോക്ക് തത്വം';
+
+  @override
+  String get helpTaskMgmtDayLock1 =>
+      'ഇന്നത്തേതിന് മുമ്പുള്ള തീയതിയിലെ ടാസ്കുകൾ സ്ഥിരമായി വായിക്കാൻ മാത്രമുള്ളതാണ്; അവ മാറ്റാനോ ഇല്ലാതാക്കാനോ കഴിയില്ല.';
+
+  @override
+  String get helpTaskMgmtDayLock2 =>
+      'അങ്ങനെ പഴയ വിവരങ്ങൾ യഥാർത്ഥത്തിൽ നടന്നതിന്റെ മാറ്റമില്ലാത്ത, സത്യസന്ധമായ പ്രതിഫലനമായി നിലനിൽക്കുന്നു.';
+
+  @override
+  String get helpTaskMgmtDayLock3 =>
+      'ഇന്നലത്തെ പൂർത്തിയാകാത്ത ടാസ്കിൽ ജോലി ചെയ്യണമെങ്കിൽ, കഴിഞ്ഞതിനെ തിരുത്തുന്നതിന് പകരം അത് ഇന്നത്തെ പട്ടികയിലേക്ക് പകർത്തുക.';
+
+  @override
+  String get helpTaskMgmtStatusTitle => 'ടാസ്ക് നിലകളും അന്തിമ ലോക്കുകളും';
+
+  @override
+  String get helpTaskMgmtStatus1 =>
+      'ടാസ്കുകൾ ഈ നിലകളിലൂടെ കടന്നുപോകുന്നു: ബാക്കി, പ്രവർത്തനത്തിൽ, പൂർത്തിയായി, ഉപേക്ഷിച്ചു.';
+
+  @override
+  String get helpTaskMgmtStatus2 =>
+      'പൂർത്തിയായി, ഉപേക്ഷിച്ചു എന്നിവ അന്തിമ നിലകളാണ്. ഒരു ടാസ്ക് അന്തിമ നിലയിലെത്തിയാൽ അതിൽ പുതിയ സമയ ഭാഗങ്ങൾ തുടങ്ങാനാവില്ല.';
+
+  @override
+  String get helpTaskMgmtStatus3 =>
+      'പ്രവർത്തനത്തിലുള്ള ടാസ്ക് പൂർത്തിയായി അല്ലെങ്കിൽ ഉപേക്ഷിച്ചു എന്ന് അടയാളപ്പെടുത്തിയാൽ ഓടുന്ന സമയ ഭാഗം സ്വയം നിർത്തും.';
+
+  @override
+  String get helpTaskMgmtUndoTitle => 'അബദ്ധ മാറ്റങ്ങളും പഴയപടിയാക്കലും';
+
+  @override
+  String get helpTaskMgmtUndo1 =>
+      'ടാസ്കിന്റെ നില മാറ്റുമ്പോഴെല്ലാം, പഴയപടിയാക്കാനുള്ള ബട്ടണോടെ 5 സെക്കൻഡ് നീളുന്ന ഒരു അറിയിപ്പ് താഴെ കാണിക്കും.';
+
+  @override
+  String get helpTaskMgmtUndo2 =>
+      'അവസാന നില മാറ്റം വേഗത്തിൽ തിരിച്ചാക്കാൻ മുകളിലെ ബാറിൽ സ്ഥിരമായ ഒരു പഴയപടി ബട്ടണും ഉണ്ട്.';
+
+  @override
+  String get helpTaskMgmtUnicodeTitle =>
+      'യൂണികോഡ് NFC ഏകീകരണവും തലക്കെട്ടിന്റെ അനന്യതയും';
+
+  @override
+  String get helpTaskMgmtUnicode1 =>
+      'എല്ലാ ടാസ്ക് തലക്കെട്ടുകളും ഡാറ്റാബേസിൽ എഴുതുന്നതിന് മുമ്പ് NFC രൂപത്തിലേക്ക് ഏകീകരിക്കുന്നു.';
+
+  @override
+  String get helpTaskMgmtUnicode2 =>
+      'ഒരേ ദിവസത്തിലെ രണ്ട് ടാസ്കുകൾക്ക് ഒരേ തലക്കെട്ട് പാടില്ല (വലിയ-ചെറിയ അക്ഷര വ്യത്യാസവും ഇടകളും പരിഗണിക്കാതെ).';
+
+  @override
+  String get helpTaskMgmtUnicode3 =>
+      'പല ഭാഷകളും സുഗമമായി പിന്തുണയ്ക്കാൻ ഓരോ ഇനത്തിന്റെയും എഴുത്തിന്റെ ദിശ (RTL/LTR) സ്വയം കണ്ടെത്തുന്നു (ഇംഗ്ലീഷ്, മലയാളം, ഹിന്ദി മുതലായവ).';
+
+  @override
+  String get helpTaskMgmtTip =>
+      'നുറുങ്ങ്: കഴിഞ്ഞ ദിവസങ്ങളിലെ പ്രവർത്തനം നോക്കാനോ വരും ദിവസങ്ങൾ ആസൂത്രണം ചെയ്യാനോ തീയതി തിരഞ്ഞെടുക്കൽ ഉപയോഗിക്കുക, അല്ലെങ്കിൽ ദിവസ പട്ടികയിൽ ദിവസങ്ങൾക്കിടയിൽ സ്വൈപ്പ് ചെയ്യുക.';
+
+  @override
+  String get helpRecurringTitle => 'ആവർത്തന ടാസ്കുകളും കൂട്ട പകർത്തലും';
+
+  @override
+  String get helpRecurringIntro =>
+      'സാധാരണ RFC-5545 ആവർത്തന നിയമങ്ങൾ ഉപയോഗിച്ചോ ദിവസങ്ങൾക്കിടയിൽ ടാസ്കുകൾ കൂട്ടമായി പകർത്തിയോ, ദിനചര്യകളും ആഴ്ചതോറുമുള്ള യോഗങ്ങളും ശീലങ്ങളും സ്വയമാക്കി സമയം ലാഭിക്കുക.';
+
+  @override
+  String get helpRecurringRulesTitle => 'ആവർത്തന നിയമങ്ങൾ (RRule)';
+
+  @override
+  String get helpRecurringRules1 =>
+      'അയവുള്ള ആവൃത്തികളോടെ ആവർത്തന നിയമങ്ങൾ ഉണ്ടാക്കുക: ദിവസേന, ആഴ്ചതോറും (തിരഞ്ഞെടുത്ത ദിവസങ്ങൾ), മാസംതോറും, അല്ലെങ്കിൽ ഇഷ്ടമുള്ള ഇടവേളകൾ.';
+
+  @override
+  String get helpRecurringRules2 =>
+      'ഒരു ദിവസം തുറക്കുമ്പോൾ, മുൻകൂട്ടി നിശ്ചയിച്ച മുൻഗണനകളും ലക്ഷ്യ സമയങ്ങളും ചേർത്ത് ആ ദിവസത്തെ ആവർത്തന ടാസ്കുകൾ ആപ്പ് സ്വയം സൃഷ്ടിക്കുന്നു.';
+
+  @override
+  String get helpRecurringRules3 =>
+      'ഒരു ദിവസത്തെ ആവർത്തന ടാസ്ക് തിരുത്തുകയോ പൂർത്തിയാക്കുകയോ ചെയ്താൽ മുമ്പോ പിമ്പോ ഉള്ളവയെ ബാധിക്കില്ല.';
+
+  @override
+  String get helpRecurringCopyTitle => 'കഴിഞ്ഞ ടാസ്കുകൾ കൂട്ടമായി പകർത്തൽ';
+
+  @override
+  String get helpRecurringCopy1 =>
+      'ദിവസ പട്ടികയുടെ മെനുവിൽ \"ടാസ്കുകൾ പകർത്തുക\" ടാപ്പ് ചെയ്ത് പകർത്തൽ സഹായി തുറക്കുക.';
+
+  @override
+  String get helpRecurringCopy2 =>
+      'ഇന്നലത്തെയോ തിരഞ്ഞെടുത്ത കഴിഞ്ഞ തീയതിയിലെയോ പൂർത്തിയാകാത്ത എല്ലാ ടാസ്കുകളും വേഗത്തിൽ തിരഞ്ഞെടുത്ത് ഇന്നത്തെ പട്ടികയിലേക്ക് പകർത്തുക.';
+
+  @override
+  String get helpRecurringCopy3 =>
+      'പകർത്തിയ ടാസ്കുകൾ “ബാക്കി” നിലയിലും സമയ ഭാഗങ്ങൾ ഒന്നുമില്ലാതെയും പുതുതായി തുടങ്ങുന്നു.';
+
+  @override
+  String get helpRecurringTip =>
+      'നുറുങ്ങ്: പതിവ് ശീലങ്ങൾക്ക് (രാവിലത്തെ വ്യായാമം, അവലോകനങ്ങൾ പോലുള്ളവ) ആവർത്തന ടാസ്കുകളും, ഇടയ്ക്ക് ബാക്കിയാകുന്നവയ്ക്ക് കൂട്ട പകർത്തലും ഉപയോഗിക്കുക.';
+
+  @override
+  String get helpTimeTrackingTitle => 'സമയ ട്രാക്കിംഗും സമയ ഭാഗങ്ങളും';
+
+  @override
+  String get helpTimeTrackingIntro =>
+      'SreerajP ToDo-യിൽ ഓരോ ടാസ്കിനും ചെലവഴിച്ച യഥാർത്ഥ സമയം അളക്കുന്ന ഒരു ടൈമർ ഉണ്ട്. ഓരോ ടാസ്കും സമയ ഭാഗങ്ങൾ എന്ന് വിളിക്കുന്ന തുടക്ക-ഒടുക്ക ഇടവേളകളായി സമയം രേഖപ്പെടുത്തുന്നു.';
+
+  @override
+  String get helpTimeTrackingSegmentsTitle => 'സമയ ഭാഗങ്ങളുടെ ഘടന';
+
+  @override
+  String get helpTimeTrackingSegments1 =>
+      'ടൈമർ തുടങ്ങി നിർത്തുമ്പോഴെല്ലാം, കൃത്യമായ തുടക്ക സമയവും ഒടുക്ക സമയവുമുള്ള ഒരു സമയ ഭാഗം രേഖപ്പെടുത്തുന്നു.';
+
+  @override
+  String get helpTimeTrackingSegments2 =>
+      'ഒരു ടാസ്കിൽ പല ഭാഗങ്ങൾ ഉണ്ടാകാം (ഉദാ: രാവിലത്തെ ജോലി, ഉച്ചകഴിഞ്ഞുള്ള ജോലി). ആകെ സമയം എല്ലാ ഭാഗങ്ങളുടെയും തുകയാണ്.';
+
+  @override
+  String get helpTimeTrackingSegments3 =>
+      'ആപ്പിലുടനീളം ദൈർഘ്യം എപ്പോഴും HH:MM:SS രൂപത്തിൽ കാണിക്കുന്നു.';
+
+  @override
+  String get helpTimeTrackingSingleTitle => 'ഒരു സമയം ഒരു ടൈമർ നിയമം';
+
+  @override
+  String get helpTimeTrackingSingle1 =>
+      'ഏത് സമയത്തും ആപ്പിൽ ആകെ ഒരു തുറന്ന സമയ ഭാഗം (ഓടുന്ന ടൈമർ) മാത്രമേ ഉണ്ടാകൂ.';
+
+  @override
+  String get helpTimeTrackingSingle2 =>
+      'പുതിയ ടാസ്കിൽ ടൈമർ തുടങ്ങിയാൽ മറ്റൊരു ടാസ്കിൽ ഓടുന്ന ടൈമർ സ്വയം നിർത്തും.';
+
+  @override
+  String get helpTimeTrackingSingle3 =>
+      'ഈ ഒറ്റ ടൈമർ ഉറപ്പ് പരസ്പരവിരുദ്ധ രേഖകളും പെരുപ്പിച്ച കണക്കുകളും തടയുന്നു.';
+
+  @override
+  String get helpTimeTrackingAutoTitle =>
+      'സ്വയം നിർത്തലും പശ്ചാത്തലത്തിൽ നിർത്തിവയ്ക്കലും';
+
+  @override
+  String get helpTimeTrackingAuto1 =>
+      'ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് എന്നതിൽ, ടൈമറുകൾ അർദ്ധരാത്രിയിലോ ഇഷ്ടമുള്ള മണിക്കൂറിലോ സ്വയം നിർത്താൻ സജ്ജമാക്കാം.';
+
+  @override
+  String get helpTimeTrackingAuto2 =>
+      'മറ്റ് ആപ്പുകളിലേക്ക് മാറുമ്പോൾ ട്രാക്കിംഗ് നിർത്തിവയ്ക്കാൻ \"ആപ്പ് വിടുമ്പോൾ സ്വയം നിർത്തിവയ്ക്കുക\" ഓണാക്കാം.';
+
+  @override
+  String get helpTimeTrackingAuto3 =>
+      'നിശ്ചയിക്കാവുന്ന പരിധിയിൽ (ഉദാ: 10 സെക്കൻഡ് അല്ലെങ്കിൽ 30 സെക്കൻഡ്) താഴെയുള്ള അബദ്ധ ടൈമർ ടാപ്പുകൾ സ്വയം ഒഴിവാക്കാം.';
+
+  @override
+  String get helpTimeTrackingTip =>
+      'നുറുങ്ങ്: ഏത് ടാസ്ക് കാർഡിലെയും സ്റ്റോപ്പ്‌വാച്ച് ചിഹ്നത്തിലോ സമയ ബാഡ്ജിലോ ടാപ്പ് ചെയ്താൽ ഉടൻ ട്രാക്കിംഗ് തുടങ്ങും. നിർത്താൻ വീണ്ടും ടാപ്പ് ചെയ്യുക.';
+
+  @override
+  String get helpFocusTitle => 'ഫോക്കസ് മോഡും പൊമോഡോറോയും';
+
+  @override
+  String get helpFocusIntro =>
+      'ആഴത്തിലുള്ള ജോലിക്കായി ശ്രദ്ധ തെറ്റിക്കാത്ത ഒരു മുഴുവൻ സ്ക്രീൻ ഇടം ഫോക്കസ് മോഡ് നൽകുന്നു; ഒപ്പം ഇഷ്ടാനുസരണം മാറ്റാവുന്ന പൊമോഡോറോ ഇടവേളകളും ലക്ഷ്യ സമയത്തിന്റെ കൗണ്ട്ഡൗണും.';
+
+  @override
+  String get helpFocusScreenTitle => 'മുഴുവൻ സ്ക്രീൻ ഫോക്കസ് മോഡ്';
+
+  @override
+  String get helpFocusScreen1 =>
+      'ഏത് ടാസ്കിന്റെയും വിശദാംശ മെനുവിൽ നിന്ന് ഫോക്കസ് മോഡ് തുറന്ന് ശ്രദ്ധ തെറ്റിക്കാത്ത വൃത്തിയുള്ള സ്ക്രീനിൽ മുഴുകുക.';
+
+  @override
+  String get helpFocusScreen2 =>
+      'ഫോക്കസ് മോഡിൽ വലിയ ടൈമർ (കഴിഞ്ഞ സമയം അല്ലെങ്കിൽ കൗണ്ട്ഡൗൺ), ലക്ഷ്യ പുരോഗതി വളയം, വേഗത്തിൽ നിർത്തിവയ്ക്കാനും തുടരാനുമുള്ള നിയന്ത്രണങ്ങൾ എന്നിവ കാണാം.';
+
+  @override
+  String get helpFocusScreen3 =>
+      'ഫോക്കസ് ടൈമർ ഓടുമ്പോൾ സ്ക്രീൻ ഉണർന്നിരിക്കാനുള്ള ക്രമീകരണം ഡിസ്‌പ്ലേ സജീവമായി നിലനിർത്തുന്നു.';
+
+  @override
+  String get helpFocusPomodoroTitle => 'പൊമോഡോറോ രീതി';
+
+  @override
+  String get helpFocusPomodoro1 =>
+      'ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് → പൊമോഡോറോ എന്നതിൽ ജോലി സമയവും (ഉദാ: 25 മിനിറ്റ്) ഇടവേളകളും (ഉദാ: 5 മിനിറ്റ്) ഇഷ്ടാനുസരണം മാറ്റുക.';
+
+  @override
+  String get helpFocusPomodoro2 =>
+      'ജോലി ഇടവേളകളുടെയും വിശ്രമ സമയത്തിന്റെയും അവസാനം ശബ്ദവും കമ്പനവും വഴി അറിയിക്കുന്നു.';
+
+  @override
+  String get helpFocusPomodoro3 =>
+      'എല്ലാ ഫോക്കസ് സെഷനുകളും അതത് ടാസ്കിന് കീഴിൽ സാധാരണ സമയ ഭാഗങ്ങളായി രേഖപ്പെടുത്തുന്നു.';
+
+  @override
+  String get helpFocusTip =>
+      'നുറുങ്ങ്: ടാസ്ക് ഉണ്ടാക്കുമ്പോഴോ തിരുത്തുമ്പോഴോ ലക്ഷ്യ സമയം നൽകിയാൽ ബാക്കിയുള്ള ഫോക്കസ് സമയം സ്വയം കണക്കാക്കും.';
+
+  @override
+  String get helpMasteryTitle => 'മാസ്റ്ററി ഡെക്കും ഫ്ലാഷ്കാർഡുകളും';
+
+  @override
+  String get helpMasteryIntro =>
+      'മാസ്റ്ററി ഡെക്ക് നിങ്ങളുടെ ദിവസേനയുള്ള പഠനങ്ങളെയും പ്രധാന ആശയങ്ങളെയും പഠനക്കുറിപ്പുകളെയും ഇടവിട്ടുള്ള ആവർത്തനത്തിലൂടെ പ്രവർത്തിക്കുന്ന ഫ്ലാഷ്കാർഡ് സംവിധാനമാക്കുന്നു. ശാസ്ത്രീയമായി ക്രമീകരിച്ച അവലോകന ഇടവേളകളിലൂടെ പഠിച്ചത് ദീർഘകാലം ഓർമ്മയിൽ നിർത്തുക.';
+
+  @override
+  String get helpMasteryReviewTitle => 'ഇടവിട്ടുള്ള ആവർത്തന അവലോകനം';
+
+  @override
+  String get helpMasteryReview1 =>
+      'എത്ര നന്നായി ഓർക്കുന്നു എന്നതനുസരിച്ച് കാർഡുകളുടെ അവലോകനം ക്രമീകരിക്കുന്നു (എളുപ്പം, നല്ലത്, കഠിനം, വീണ്ടും).';
+
+  @override
+  String get helpMasteryReview2 =>
+      '\"എളുപ്പം\" എന്ന് രേഖപ്പെടുത്തിയ കാർഡുകളുടെ അവലോകന ഇടവേള ക്രമാതീതമായി കൂടുന്നു (ഉദാ: 1 ദിവസം → 3 ദിവസം → 7 ദിവസം → 16 ദിവസം).';
+
+  @override
+  String get helpMasteryReview3 =>
+      '\"കഠിനം\" അല്ലെങ്കിൽ \"വീണ്ടും\" എന്ന് രേഖപ്പെടുത്തിയ കാർഡുകളുടെ ഇടവേള പലപ്പോഴും ആവർത്തിക്കാനായി കുറയ്ക്കുകയോ പുനഃസജ്ജമാക്കുകയോ ചെയ്യുന്നു.';
+
+  @override
+  String get helpMasteryDecksTitle => 'ഡെക്കുകളും ക്രമീകരണവും';
+
+  @override
+  String get helpMasteryDecks1 =>
+      'വിഷയം, പദ്ധതി, ഭാഷ എന്നിവ അനുസരിച്ച് ഫ്ലാഷ്കാർഡുകൾ സ്വന്തം ഡെക്കുകളിലായി ഗ്രൂപ്പ് ചെയ്യുക.';
+
+  @override
+  String get helpMasteryDecks2 =>
+      'ഓരോ കാർഡിനും ഒരു ചോദ്യവും (മുൻവശം) ഉത്തരവും/വിശദീകരണവും (പിൻവശം) ഉണ്ട്; അടയാളങ്ങൾ ഐച്ഛികം.';
+
+  @override
+  String get helpMasteryDecks3 =>
+      'ഇന്ന് അവലോകനം ചെയ്യേണ്ടവയുടെ എണ്ണം, ആകെ കാർഡുകൾ, മൊത്തം പ്രാവീണ്യ ശതമാനം എന്നിവ ഡെക്കുകളിൽ തത്സമയം കാണാം.';
+
+  @override
+  String get helpMasteryLevelsTitle => 'പ്രാവീണ്യ നിലകൾ';
+
+  @override
+  String get helpMasteryLevels1 =>
+      'കാർഡുകൾ 5 പ്രാവീണ്യ നിലകളിലൂടെ മുന്നേറുന്നു: പഠിക്കുന്നു, തുടക്കക്കാരൻ, കഴിവുള്ളത്, പ്രാവീണ്യമുള്ളത്, പൂർണ്ണമായി സ്വായത്തമാക്കിയത്.';
+
+  @override
+  String get helpMasteryLevels2 =>
+      'തുടർച്ചയായ ദിവസങ്ങളും സ്ഥിരമായ അവലോകനവും ദിവസേനയുള്ള പങ്കാളിത്തത്തിനും ശീല രൂപീകരണത്തിനും പ്രതിഫലം നൽകുന്നു.';
+
+  @override
+  String get helpMasteryTip =>
+      'നുറുങ്ങ്: Air QR അല്ലെങ്കിൽ ലോക്കൽ വൈ-ഫൈ സിങ്ക് ഉപയോഗിച്ച് നിങ്ങളുടെ ഡെക്കുകൾ മറ്റ് ഉപകരണങ്ങളുമായി കയറ്റുമതി ചെയ്ത് പങ്കിടാം.';
+
+  @override
+  String get helpWifiTitle => 'ലോക്കൽ വൈ-ഫൈ P2P ഉപകരണ സിങ്ക്';
+
+  @override
+  String get helpWifiIntro =>
+      'ഒരേ ലോക്കൽ വൈ-ഫൈ നെറ്റ്‌വർക്കിലുള്ള രണ്ട് ഉപകരണങ്ങൾക്കിടയിൽ നിങ്ങളുടെ ടാസ്കുകളും സമയ രേഖകളും ഫ്ലാഷ്കാർഡുകളും നേരിട്ട് കൈമാറി സിങ്ക് ചെയ്യുക — ക്ലൗഡ് സെർവറുകളോ ഇന്റർനെറ്റ് ഉപയോഗമോ ഇല്ലാതെ.';
+
+  @override
+  String get helpWifiHowTitle => 'ലോക്കൽ വൈ-ഫൈ സിങ്ക് എങ്ങനെ പ്രവർത്തിക്കുന്നു';
+
+  @override
+  String get helpWifiHow1 =>
+      'രണ്ട് ഉപകരണങ്ങളും ഒരേ ലോക്കൽ വൈ-ഫൈ നെറ്റ്‌വർക്കിൽ ബന്ധിപ്പിച്ചിരിക്കണം (അല്ലെങ്കിൽ ഒന്ന് മറ്റൊന്നിന്റെ ഹോട്ട്‌സ്‌പോട്ടിൽ).';
+
+  @override
+  String get helpWifiHow2 =>
+      'ഒരു ഉപകരണം അയയ്ക്കുന്നയാൾ/ഹോസ്റ്റ് ആയി പ്രവർത്തിക്കുന്നു (താൽക്കാലിക പെയറിംഗ് കോഡ് / QR കോഡ് ഉണ്ടാക്കുന്നു), മറ്റേത് സ്വീകരിക്കുന്നയാളായി.';
+
+  @override
+  String get helpWifiHow3 =>
+      'വിവരങ്ങൾ നിങ്ങളുടെ ലോക്കൽ നെറ്റ്‌വർക്കിലൂടെ ഉപകരണങ്ങൾക്കിടയിൽ നേരിട്ട് കൈമാറുന്നു; പുറത്തുള്ള സെർവറുകളോ ഇന്റർനെറ്റോ പൂർണ്ണമായും ഒഴിവാകുന്നു.';
+
+  @override
+  String get helpWifiEncryptionTitle => 'ആദ്യാവസാന എൻക്രിപ്ഷൻ';
+
+  @override
+  String get helpWifiEncryption1 =>
+      'ഒറ്റത്തവണ പെയറിംഗ് വിവരങ്ങൾ ഉപയോഗിച്ച് ലോക്കൽ സിങ്ക് കണക്ഷനുകൾ ഒരു എൻക്രിപ്റ്റ് ചെയ്ത ചാനൽ ഉറപ്പിക്കുന്നു.';
+
+  @override
+  String get helpWifiEncryption2 =>
+      'ഒരേ വൈ-ഫൈ നെറ്റ്‌വർക്കിലെ മറ്റ് ഉപകരണങ്ങൾക്ക് കൈമാറുന്ന വിവരങ്ങൾ കാണാനോ മാറ്റാനോ കഴിയില്ല.';
+
+  @override
+  String get helpWifiModesTitle => 'സിങ്ക് രീതികളും പൊരുത്തക്കേടുകളും';
+
+  @override
+  String get helpWifiModes1 =>
+      'ഇരുവശ സ്മാർട്ട് ലയനം: നിലവിലുള്ള രേഖകൾ നഷ്ടപ്പെടാതെ രണ്ട് ഉപകരണങ്ങളിലെയും ടാസ്കുകളും സമയ ഭാഗങ്ങളും ഒന്നിപ്പിക്കുന്നു.';
+
+  @override
+  String get helpWifiModes2 =>
+      'എല്ലാം മാറ്റിസ്ഥാപിക്കുക: സ്ഥിരീകരണത്തിന് ശേഷം, ലക്ഷ്യ ഉപകരണത്തിലെ വിവരങ്ങൾ മുഴുവനായി ഉറവിട ഉപകരണത്തിന്റെ കൃത്യമായ പകർപ്പ് കൊണ്ട് മാറ്റുന്നു.';
+
+  @override
+  String get helpWifiTip =>
+      'നുറുങ്ങ്: നിങ്ങളുടെ വൈ-ഫൈ റൂട്ടർ ഉപകരണങ്ങൾ തമ്മിലുള്ള ബന്ധം തടയുന്നുവെങ്കിൽ (client isolation), ഒരു ഫോണിൽ മൊബൈൽ ഹോട്ട്‌സ്‌പോട്ട് ഓണാക്കി മറ്റേ ഫോൺ അതിലേക്ക് ബന്ധിപ്പിക്കുക.';
+
+  @override
+  String get helpQrTitle => 'Air QR-ഉം ഡാറ്റ കൈമാറ്റവും';
+
+  @override
+  String get helpQrIntro =>
+      'വൈ-ഫൈയോ കേബിളുകളോ ഇന്റർനെറ്റോ ഇല്ലാതെ ടാസ്കുകളും സമയ സംഗ്രഹങ്ങളും ഫ്ലാഷ്കാർഡുകളും ഉപകരണങ്ങൾക്കിടയിൽ മാറ്റുക. ചലിക്കുന്ന QR കോഡുകൾ വഴി Air QR വിവരങ്ങൾ മറ്റൊരു ഉപകരണത്തിന്റെ ക്യാമറയിലേക്ക് നേരിട്ട് എത്തിക്കുന്നു.';
+
+  @override
+  String get helpQrBeamTitle => 'Air QR ദൃശ്യ പ്രക്ഷേപണം';
+
+  @override
+  String get helpQrBeam1 =>
+      'ടാസ്കുകളോ ഡെക്കുകളോ തിരഞ്ഞെടുത്ത് \"Air QR പങ്കിടുക\" ടാപ്പ് ചെയ്താൽ സ്ക്രീനിൽ QR സ്ട്രീം തെളിയും.';
+
+  @override
+  String get helpQrBeam2 =>
+      'സ്വീകരിക്കുന്ന ഉപകരണത്തിൽ \"Air QR സ്കാൻ\" തുറന്ന് ക്യാമറ അയയ്ക്കുന്ന സ്ക്രീനിലേക്ക് തിരിക്കുക.';
+
+  @override
+  String get helpQrBeam3 =>
+      'ക്യാമറ എല്ലാ വിവര ഭാഗങ്ങളും തത്സമയം കൂട്ടിച്ചേർക്കുന്നു; ഇറക്കുമതിക്ക് മുമ്പ് ചെക്ക്സം പരിശോധിക്കുന്നു.';
+
+  @override
+  String get helpQrBeam4 =>
+      'സ്കാൻ ചെയ്യുമ്പോൾ മാത്രമേ ക്യാമറ അനുമതി ചോദിക്കൂ; ഒരു ഫോട്ടോയോ വീഡിയോയോ ഒരിക്കലും സൂക്ഷിക്കില്ല.';
+
+  @override
+  String get helpQrHandoffTitle => 'ഡാറ്റ കൈമാറ്റം (JSON & Markdown)';
+
+  @override
+  String get helpQrHandoff1 =>
+      'ഇമെയിലിനോ റിപ്പോർട്ടുകൾക്കോ വേണ്ടി ദിവസേനയുള്ള നേട്ടങ്ങളുടെ Markdown സംഗ്രഹങ്ങൾ ഉണ്ടാക്കുക.';
+
+  @override
+  String get helpQrHandoff2 =>
+      'വിവിധ പ്ലാറ്റ്ഫോമുകളിലെ ബാക്കപ്പിനും സ്ക്രിപ്റ്റുകൾക്കുമായി തിരഞ്ഞെടുത്ത ടാസ്കുകളുടെ JSON രൂപം കയറ്റുമതിയും ഇറക്കുമതിയും ചെയ്യുക.';
+
+  @override
+  String get helpQrHandoff3 =>
+      'ഡെസ്ക്ടോപ്പിലോ മൊബൈലിലോ JSON നേരിട്ട് ആപ്പിൽ ഒട്ടിച്ച് ഒറ്റ ടാപ്പിൽ ഇറക്കുമതി ചെയ്യുക.';
+
+  @override
+  String get helpQrTip =>
+      'നുറുങ്ങ്: ഒരു ടാസ്കോ ഫ്ലാഷ്കാർഡ് ഡെക്കോ ഡെസ്ക്ടോപ്പ് സ്ക്രീനിൽ നിന്ന് ഫോണിലേക്ക് നിമിഷങ്ങൾക്കുള്ളിൽ മാറ്റാൻ Air QR ഏറെ സഹായകമാണ്.';
+
+  @override
+  String get helpPrivacyTitle => 'സുരക്ഷ, ആപ്പ് പൂട്ട്, എൻക്രിപ്ഷൻ';
+
+  @override
+  String get helpPrivacyIntro =>
+      'സ്വകാര്യതയ്ക്ക് മുൻഗണന നൽകുന്ന, ഓഫ്‌ലൈൻ ഘടനയോടെയാണ് SreerajP ToDo അടിമുടി നിർമ്മിച്ചിരിക്കുന്നത്. നിങ്ങളുടെ വ്യക്തിപരമായ വിവരങ്ങൾ ശക്തമായി എൻക്രിപ്റ്റ് ചെയ്ത് പല തലങ്ങളിലുള്ള സുരക്ഷയാൽ സംരക്ഷിച്ചിരിക്കുന്നു.';
+
+  @override
+  String get helpPrivacyDbTitle => 'SQLCipher AES-256 ഡാറ്റാബേസ് എൻക്രിപ്ഷൻ';
+
+  @override
+  String get helpPrivacyDb1 =>
+      'പ്രവർത്തനത്തിലുള്ള SQLite ഡാറ്റാബേസ് 256-ബിറ്റ് AES (SQLCipher) ഉപയോഗിച്ച് പൂർണ്ണമായി എൻക്രിപ്റ്റ് ചെയ്തിരിക്കുന്നു.';
+
+  @override
+  String get helpPrivacyDb2 =>
+      'ഡാറ്റാബേസിന്റെ പ്രധാന എൻക്രിപ്ഷൻ കീ സുരക്ഷിതമായി ഉണ്ടാക്കി ഉപകരണത്തിന്റെ സംരക്ഷിത ഹാർഡ്‌വെയർ സംഭരണത്തിൽ (Android Keystore / OS keychain) സൂക്ഷിക്കുന്നു.';
+
+  @override
+  String get helpPrivacyDb3 =>
+      'ആരെങ്കിലും നിങ്ങളുടെ ഉപകരണത്തിൽ നിന്ന് ഡാറ്റാബേസ് ഫയൽ പകർത്തിയാലും കീ ഇല്ലാതെ അത് വായിക്കാനാവില്ല.';
+
+  @override
+  String get helpPrivacyLockTitle => 'ബയോമെട്രിക്, ആപ്പ് പിൻ പൂട്ട്';
+
+  @override
+  String get helpPrivacyLock1 =>
+      'ഉപകരണത്തിലെ വിരലടയാളം, മുഖം തിരിച്ചറിയൽ, അല്ലെങ്കിൽ സ്വന്തം ആപ്പ് പിൻ ഉപയോഗിച്ച് ആപ്പിലേക്കുള്ള പ്രവേശനം സംരക്ഷിക്കുക.';
+
+  @override
+  String get helpPrivacyLock2 =>
+      'മറ്റൊന്നിലേക്ക് മാറുമ്പോൾ ആപ്പ് സുരക്ഷിതമാക്കാൻ സ്വയം പൂട്ടുന്ന സമയം (ഉടൻ, 1 മിനിറ്റ്, 5 മിനിറ്റ്) സജ്ജമാക്കുക.';
+
+  @override
+  String get helpPrivacyShotTitle => 'സ്ക്രീൻഷോട്ട് സംരക്ഷണം';
+
+  @override
+  String get helpPrivacyShot1 =>
+      'ക്രമീകരണങ്ങൾ → സുരക്ഷ എന്നതിൽ സ്ക്രീൻഷോട്ട് സംരക്ഷണം ഓണാക്കിയാൽ സ്ക്രീൻഷോട്ടുകളും സ്ക്രീൻ റെക്കോർഡിംഗും തടയും.';
+
+  @override
+  String get helpPrivacyShot2 =>
+      'പൂർണ്ണ സ്വകാര്യതയ്ക്കായി Android-ലെ സമീപകാല ആപ്പുകളുടെ പട്ടികയിൽ ആപ്പ് സ്ക്രീനിന്റെ പ്രിവ്യൂവും സ്ക്രീൻഷോട്ട് സംരക്ഷണം മറയ്ക്കുന്നു.';
+
+  @override
+  String get helpPrivacyNetTitle => 'ഇന്റർനെറ്റ് ഇല്ലെന്ന ഉറപ്പ്';
+
+  @override
+  String get helpPrivacyNet1 =>
+      'ആപ്പ് ചോദിക്കുന്ന ഒരേയൊരു നെറ്റ്‌വർക്ക് അനുമതി INTERNET ആണ്; അത് ലോക്കൽ നെറ്റ്‌വർക്കിലെ നിങ്ങളുടെ സ്വന്തം ഉപകരണങ്ങളുമായുള്ള വൈ-ഫൈ സിങ്കിന് മാത്രം. ഒന്നും ഒരിക്കലും ഇന്റർനെറ്റ് വഴി അയയ്ക്കില്ല.';
+
+  @override
+  String get helpPrivacyNet2 =>
+      'ടെലിമെട്രിയില്ല, മൂന്നാം കക്ഷി ക്ലൗഡ് SDK-കളില്ല, ക്രാഷ് ട്രാക്കിംഗില്ല, പരസ്യങ്ങളുമില്ല.';
+
+  @override
+  String get helpPrivacyTip =>
+      'നുറുങ്ങ്: ഹാർഡ്‌വെയർ പിന്തുണയുള്ള പരമാവധി സംരക്ഷണത്തിനായി ഫോണിലെ ഉപകരണ പൂട്ട് (വിരലടയാളം/പിൻ) എപ്പോഴും ഓണാക്കി വയ്ക്കുക.';
+
+  @override
+  String get helpBackupTitle => 'എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പും പുനഃസ്ഥാപനവും';
+
+  @override
+  String get helpBackupIntro =>
+      'നിങ്ങളുടെ ടാസ്കുകൾ, സമയ രേഖകൾ, ആവർത്തന നിയമങ്ങൾ, ക്രമീകരണങ്ങൾ എന്നിവ അടങ്ങിയ ഒരൊറ്റ എൻക്രിപ്റ്റ് ചെയ്ത ആർക്കൈവ് (.todobak / ZIP) ബാക്കപ്പ് ഉണ്ടാക്കുന്നു. പുതിയ ഫോണിലേക്ക് വിവരങ്ങൾ മാറ്റാനോ ഫാക്ടറി റീസെറ്റിന് ശേഷം വീണ്ടെടുക്കാനോ ഇടയ്ക്കിടെ ഓഫ്‌ലൈൻ പകർപ്പുകൾ സൂക്ഷിക്കാനോ ഇത് ഉപയോഗിക്കുക.';
+
+  @override
+  String get helpBackupContentsTitle => 'ബാക്കപ്പിൽ എന്തെല്ലാം ഉണ്ട്';
+
+  @override
+  String get helpBackupContents1 =>
+      'എല്ലാ ടാസ്കുകളും വിവരണങ്ങളും നിലകളും പഴയ സമയ ഭാഗങ്ങളും.';
+
+  @override
+  String get helpBackupContents2 =>
+      'ആവർത്തന ടാസ്ക് നിയമങ്ങളും സൃഷ്ടിക്കൽ ക്രമങ്ങളും.';
+
+  @override
+  String get helpBackupContents3 =>
+      'മാസ്റ്ററി ഡെക്ക് കാർഡുകൾ, അവലോകന ഇടവേളകൾ, പ്രാവീണ്യ നിലകൾ.';
+
+  @override
+  String get helpBackupContents4 =>
+      'നിങ്ങളുടെ സ്വന്തം ക്രമീകരണങ്ങൾ (തീം, നിറങ്ങൾ, അക്ഷരരൂപം, ടാസ്ക് സ്വതവേ മൂല്യങ്ങൾ).';
+
+  @override
+  String get helpBackupPassTitle => 'പാസ്ഫ്രെയ്സ് എൻക്രിപ്ഷൻ സുരക്ഷ';
+
+  @override
+  String get helpBackupPass1 =>
+      'നിങ്ങൾ തിരഞ്ഞെടുക്കുന്ന പാസ്ഫ്രെയ്സ് ഉപയോഗിച്ച് AES-256 രീതിയിൽ ബാക്കപ്പുകൾ ശക്തമായി എൻക്രിപ്റ്റ് ചെയ്യുന്നു.';
+
+  @override
+  String get helpBackupPass2 =>
+      'ആപ്പ് നിങ്ങളുടെ ബാക്കപ്പ് പാസ്ഫ്രെയ്സ് എവിടെയും സൂക്ഷിക്കുന്നില്ല. അത് ഓർക്കുകയോ ഒരു പാസ്‌വേഡ് മാനേജറിൽ സൂക്ഷിക്കുകയോ ചെയ്യണം.';
+
+  @override
+  String get helpBackupPass3 =>
+      'പാസ്ഫ്രെയ്സ് നഷ്ടപ്പെട്ടാൽ ആർക്കും ബാക്കപ്പ് തുറക്കാനോ വീണ്ടെടുക്കാനോ കഴിയില്ല.';
+
+  @override
+  String get helpBackupRestoreTitle => 'ബാക്കപ്പിൽ നിന്ന് പുനഃസ്ഥാപിക്കൽ';
+
+  @override
+  String get helpBackupRestore1 =>
+      'പുനഃസ്ഥാപിക്കുമ്പോൾ ആപ്പിലുള്ളതെല്ലാം മാറ്റി ബാക്കപ്പ് ഫയലിൽ നിന്ന് കൃത്യമായ പകർപ്പ് പുനർനിർമ്മിക്കുന്നു.';
+
+  @override
+  String get helpBackupRestore2 =>
+      'പുനഃസ്ഥാപിക്കുന്നതിന് മുമ്പ് ആപ്പ് ആർക്കൈവിന്റെ ചെക്ക്സം പരിശോധിക്കുന്നു, പാസ്ഫ്രെയ്സ് ഉപയോഗിച്ച് തുറക്കുന്നു, വിവര ഘടനയുടെ പതിപ്പ് ഉറപ്പാക്കുന്നു.';
+
+  @override
+  String get helpBackupRestore3 =>
+      'നിലവിലുള്ള വിവരങ്ങൾ മാറ്റാതെ രണ്ട് ഉപകരണങ്ങളിലെ ടാസ്കുകൾ ലയിപ്പിക്കണമെങ്കിൽ, പകരം \"ലോക്കൽ വൈ-ഫൈ സിങ്ക്\" ഉപയോഗിക്കുക.';
+
+  @override
+  String get helpBackupTip =>
+      'നുറുങ്ങ്: ബാക്കപ്പ് ഉണ്ടാക്കിയ ശേഷം ഫയൽ USB ഡ്രൈവ്, SD കാർഡ്, അല്ലെങ്കിൽ നിങ്ങളുടെ സ്വന്തം ക്ലൗഡ് സംഭരണം പോലുള്ള സുരക്ഷിത സ്ഥലത്ത് സൂക്ഷിക്കുക.';
+
+  @override
+  String get helpFaqTitle => 'ചോദ്യോത്തരങ്ങളും പ്രശ്നപരിഹാരവും';
+
+  @override
+  String get helpFaqIntro =>
+      'ഡേ ലോക്ക്, സമയ ട്രാക്കിംഗ് നിയമങ്ങൾ, ഓഫ്‌ലൈൻ സുരക്ഷ എന്നിവയെക്കുറിച്ചുള്ള സാധാരണ ചോദ്യങ്ങൾക്കുള്ള ഉത്തരങ്ങളും SreerajP ToDo നന്നായി ഉപയോഗിക്കാനുള്ള നുറുങ്ങുകളും ഇവിടെ കാണാം.';
+
+  @override
+  String get helpFaqGeneralTitle => 'പൊതുവായതും പ്രവർത്തനരീതിയും';
+
+  @override
+  String get helpFaqEditPastQ =>
+      'ഇന്നലത്തെ ടാസ്ക് എന്തുകൊണ്ട് തിരുത്താനോ ഇല്ലാതാക്കാനോ കഴിയുന്നില്ല?';
+
+  @override
+  String get helpFaqEditPastA =>
+      'SreerajP ToDo ഡേ ലോക്ക് നിയമം പാലിക്കുന്നു: സത്യസന്ധവും മാറ്റം വരുത്താനാവാത്തതുമായ രേഖകൾക്കായി കഴിഞ്ഞ തീയതികൾ സ്ഥിരമായി വായിക്കാൻ മാത്രമുള്ളതാണ്. പൂർത്തിയാകാത്ത പഴയ ടാസ്കിൽ ജോലി ചെയ്യാൻ \"ടാസ്കുകൾ പകർത്തുക\" ടാപ്പ് ചെയ്ത് അത് ഇന്നത്തേക്ക് പകർത്തുക.';
+
+  @override
+  String get helpFaqTimerDoneQ =>
+      'പൂർത്തിയായ ടാസ്കിൽ എന്തുകൊണ്ട് ടൈമർ തുടങ്ങാനാവുന്നില്ല?';
+
+  @override
+  String get helpFaqTimerDoneA =>
+      'പൂർത്തിയായി, ഉപേക്ഷിച്ചു എന്നിവ അന്തിമ നിലകളാണ്. ടാസ്ക് പൂർത്തിയായാൽ അതിന്റെ സമയ രേഖ അടയ്ക്കുന്നു. കൂടുതൽ സമയം രേഖപ്പെടുത്തണമെങ്കിൽ ടാസ്ക് വീണ്ടും തുറക്കാം (നില ബാക്കി അല്ലെങ്കിൽ പ്രവർത്തനത്തിൽ എന്നാക്കി മാറ്റുക).';
+
+  @override
+  String get helpFaqUndoQ => 'അബദ്ധത്തിൽ മാറ്റിയ നില എങ്ങനെ പഴയപടിയാക്കാം?';
+
+  @override
+  String get helpFaqUndoA =>
+      'നില മാറ്റുമ്പോഴെല്ലാം \"പഴയപടി\" ബട്ടണോടെ 5 സെക്കൻഡ് നീളുന്ന അറിയിപ്പ് കാണിക്കും. മുകളിലെ ബാറിലുള്ള സ്ഥിരമായ പഴയപടി ചിഹ്നവും ടാപ്പ് ചെയ്യാം.';
+
+  @override
+  String get helpFaqTimeTitle => 'സമയ ട്രാക്കിംഗും ടൈമറുകളും';
+
+  @override
+  String get helpFaqTwoTimersQ => 'രണ്ട് ടാസ്കുകളിൽ ഒരേ സമയം ടൈമർ ഓടിക്കാമോ?';
+
+  @override
+  String get helpFaqTwoTimersA =>
+      'ഇല്ല. ട്രാക്കിംഗിന്റെ കൃത്യത നിലനിർത്താൻ ആപ്പ് ഒരു സമയം ഒരു ടൈമർ നിയമം പാലിക്കുന്നു. ഏത് ടാസ്കിൽ ടൈമർ തുടങ്ങിയാലും മറ്റൊരു ടാസ്കിൽ ഓടുന്ന ടൈമർ സ്വയം നിർത്തും.';
+
+  @override
+  String get helpFaqForgotStopQ =>
+      'രാത്രിയിൽ ടൈമർ നിർത്താൻ മറന്നാൽ എന്ത് സംഭവിക്കും?';
+
+  @override
+  String get helpFaqForgotStopA =>
+      'ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് → സ്വയം നിർത്തൽ എന്നതിൽ \"അർദ്ധരാത്രിയിൽ സ്വയം നിർത്തുക\" ഓണാക്കിയാൽ, തുറന്ന ടൈമറുകൾ അടുത്ത ദിവസത്തേക്ക് നീളാതെ ദിവസാവസാനം സ്വയം അടയും.';
+
+  @override
+  String get helpFaqShortTapsQ =>
+      'വളരെ ചെറിയ ടൈമർ ടാപ്പുകൾ എന്തുകൊണ്ട് സൂക്ഷിക്കുന്നില്ല?';
+
+  @override
+  String get helpFaqShortTapsA =>
+      'സമയ ഭാഗങ്ങൾ വൃത്തിയായി സൂക്ഷിക്കാൻ, ക്രമീകരണങ്ങൾ → സമയ ട്രാക്കിംഗ് → കുറഞ്ഞ ദൈർഘ്യം എന്നതിൽ 10 അല്ലെങ്കിൽ 30 സെക്കൻഡിൽ താഴെയുള്ള അബദ്ധ ടാപ്പുകൾ ഒഴിവാക്കാം.';
+
+  @override
+  String get helpFaqPrivacyTitle => 'സ്വകാര്യതയും ഓഫ്‌ലൈൻ ഉറപ്പും';
+
+  @override
+  String get helpFaqUploadQ =>
+      'ഏതെങ്കിലും വിവരങ്ങൾ ക്ലൗഡ് സെർവറുകളിലേക്കോ അനലിറ്റിക്സിലേക്കോ അയയ്ക്കുന്നുണ്ടോ?';
+
+  @override
+  String get helpFaqUploadA =>
+      'ഒരു വിവരവും അയയ്ക്കുന്നില്ല. SreerajP ToDo പൂർണ്ണമായും ഓഫ്‌ലൈനായി പ്രവർത്തിക്കുന്നു. അതിന്റെ ഒരേയൊരു നെറ്റ്‌വർക്ക് അനുമതിയായ INTERNET ലോക്കൽ നെറ്റ്‌വർക്കിലെ നിങ്ങളുടെ സ്വന്തം ഉപകരണങ്ങളുമായുള്ള വൈ-ഫൈ സിങ്കിന് മാത്രം ഉപയോഗിക്കുന്നു. എല്ലാ ഡാറ്റാബേസ് പട്ടികകളും രേഖകളും AES-256 എൻക്രിപ്റ്റ് ചെയ്ത സംഭരണത്തിൽ നിങ്ങളുടെ ഉപകരണത്തിൽ തന്നെ തുടരുന്നു.';
+
+  @override
+  String get helpFaqLostPassQ =>
+      'ബാക്കപ്പ് പാസ്‌വേഡ് മറന്നാൽ എന്ത് സംഭവിക്കും?';
+
+  @override
+  String get helpFaqLostPassA =>
+      'ബാക്കപ്പുകൾ ഉപകരണത്തിൽ തന്നെ AES-256 ഉപയോഗിച്ച് ശക്തമായി എൻക്രിപ്റ്റ് ചെയ്യുന്നതിനാലും ക്ലൗഡ് സെർവറോ പ്രധാന കീയോ ഇല്ലാത്തതിനാലും നഷ്ടപ്പെട്ട ബാക്കപ്പ് പാസ്‌വേഡ് വീണ്ടെടുക്കാനാവില്ല. പാസ്ഫ്രെയ്സ് എപ്പോഴും സുരക്ഷിതമായി സൂക്ഷിക്കുക.';
+
+  @override
+  String get helpFaqSyncTitle => 'സിങ്കും ഉപകരണ കൈമാറ്റവും';
+
+  @override
+  String get helpFaqNewPhoneQ =>
+      'എന്റെ എല്ലാ ടാസ്കുകളും പുതിയ ഫോണിലേക്ക് എങ്ങനെ മാറ്റാം?';
+
+  @override
+  String get helpFaqNewPhoneA =>
+      'രണ്ട് എളുപ്പ വഴികളുണ്ട്: (1) വീട്ടിലെ വൈ-ഫൈ വഴി നേരിട്ട് കൈമാറാൻ \"ലോക്കൽ വൈ-ഫൈ P2P സിങ്ക്\" ഉപയോഗിക്കുക, അല്ലെങ്കിൽ (2) ക്രമീകരണങ്ങൾ → ബാക്കപ്പ് എന്നതിൽ എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പ് ZIP ഫയൽ ഉണ്ടാക്കി പുതിയ ഫോണിൽ പുനഃസ്ഥാപിക്കുക.';
+
+  @override
+  String get helpFaqDiscoverQ =>
+      'ലോക്കൽ വൈ-ഫൈ സിങ്ക് എന്തുകൊണ്ട് മറ്റേ ഉപകരണം കണ്ടെത്തുന്നില്ല?';
+
+  @override
+  String get helpFaqDiscoverA =>
+      'രണ്ട് ഉപകരണങ്ങളും ഒരേ വൈ-ഫൈ നെറ്റ്‌വർക്കിലാണെന്ന് ഉറപ്പാക്കുക. റൂട്ടറിൽ \"Client Isolation\" ഓണാണെങ്കിൽ, ഒരു ഫോണിൽ ഹോട്ട്‌സ്‌പോട്ട് ഓണാക്കി മറ്റേത് അതിലേക്ക് ബന്ധിപ്പിക്കുക.';
+
+  @override
+  String get helpFaqFooter =>
+      'കൂടുതൽ വിവരങ്ങൾ വേണോ? സഹായവും മാർഗ്ഗനിർദ്ദേശങ്ങളും എന്നതിലെ ഓരോ വിഷയത്തിന്റെയും ഗൈഡുകൾ നോക്കുക, അല്ലെങ്കിൽ ക്രമീകരണങ്ങൾ → അനുമതികൾ എന്നതിൽ അനുമതികൾ പരിശോധിക്കുക.';
+
+  @override
+  String get helpHomeTaskSection => 'ടാസ്ക് മാനേജ്മെന്റും പ്രവർത്തനരീതിയും';
+
+  @override
+  String get helpHomeTaskMgmtSubtitle =>
+      'ദിവസ സമയരേഖ, ഡേ ലോക്ക്, അന്തിമ നില ലോക്കുകൾ എന്നിവ നിങ്ങളുടെ രേഖകൾ എങ്ങനെ സംരക്ഷിക്കുന്നു.';
+
+  @override
+  String get helpHomeRecurringSubtitle =>
+      'സ്വയം ആവർത്തിക്കുന്ന നിയമങ്ങൾ (ദിവസേന, ആഴ്ചതോറും, മാസംതോറും) ഒരുക്കലും കഴിഞ്ഞ ടാസ്കുകൾ കൂട്ടമായി പകർത്തലും.';
+
+  @override
+  String get helpHomeTimeSection => 'സമയ ട്രാക്കിംഗും ഫോക്കസും';
+
+  @override
+  String get helpHomeTimeTrackingSubtitle =>
+      'പല ഭാഗങ്ങളായുള്ള സമയ രേഖപ്പെടുത്തൽ, ലക്ഷ്യ സമയം, ഒരു സമയം ഒരു ടൈമർ നിയമം എന്നിവ എങ്ങനെ പ്രവർത്തിക്കുന്നു.';
+
+  @override
+  String get helpHomeFocusSubtitle =>
+      'ശ്രദ്ധ തെറ്റിക്കാത്ത ഫോക്കസ് സ്ക്രീൻ, പൊമോഡോറോ കൗണ്ട്ഡൗൺ, സ്വയം നിർത്തൽ സുരക്ഷ എന്നിവയുടെ ഉപയോഗം.';
+
+  @override
+  String get helpHomeMasterySection =>
+      'മാസ്റ്ററി ഡെക്കും ഇടവിട്ടുള്ള ആവർത്തനവും';
+
+  @override
+  String get helpHomeMasterySubtitle =>
+      'കാർഡ് ഡെക്കുകൾ, ഇടവിട്ടുള്ള അവലോകന ഇടവേളകൾ, പ്രാവീണ്യ സ്കോർ എന്നിവ എങ്ങനെ പ്രവർത്തിക്കുന്നു.';
+
+  @override
+  String get helpHomeSyncSection => 'സിങ്കും ഓഫ്‌ലൈൻ കൈമാറ്റവും';
+
+  @override
+  String get helpHomeWifiSubtitle =>
+      'ക്ലൗഡ് ഇല്ലാതെ, ആദ്യാവസാന എൻക്രിപ്ഷനോടെ ലോക്കൽ വൈ-ഫൈ വഴി ഉപകരണങ്ങൾക്കിടയിൽ നേരിട്ടുള്ള സിങ്ക്.';
+
+  @override
+  String get helpHomeQrTitle => 'Air QR സ്കാനറും ഡാറ്റ കൈമാറ്റവും';
+
+  @override
+  String get helpHomeQrSubtitle =>
+      'ചലിക്കുന്ന QR കോഡ് സ്ട്രീമുകളും ക്ലിപ്പ്ബോർഡും വഴി ടാസ്കുകളും ഡെക്കുകളും ഓഫ്‌ലൈനായി കൈമാറൽ.';
+
+  @override
+  String get helpHomePrivacySection => 'സ്വകാര്യത, സുരക്ഷ, ബാക്കപ്പുകൾ';
+
+  @override
+  String get helpHomePrivacySubtitle =>
+      'SQLCipher AES-256 ഡാറ്റാബേസ് എൻക്രിപ്ഷൻ, ബയോമെട്രിക് പ്രാമാണീകരണം, സ്ക്രീൻഷോട്ട് സംരക്ഷണം.';
+
+  @override
+  String get helpHomeBackupSubtitle =>
+      'പാസ്‌വേഡ് സംരക്ഷിത ZIP ബാക്കപ്പ് ഫയലുകൾ ഉണ്ടാക്കൽ, സുരക്ഷാ ശീലങ്ങൾ, പൂർണ്ണ പുനഃസ്ഥാപന ഘട്ടങ്ങൾ.';
+
+  @override
+  String get helpHomeFaqSection => 'പതിവായി ചോദിക്കുന്ന ചോദ്യങ്ങൾ';
+
+  @override
+  String get helpHomeFaqTitle => 'ചോദ്യോത്തരങ്ങളും പ്രശ്നപരിഹാര ഗൈഡും';
+
+  @override
+  String get helpHomeFaqSubtitle =>
+      'ഡേ ലോക്ക്, ഓഫ്‌ലൈൻ പ്രവർത്തനം, ഡാറ്റാബേസ് സുരക്ഷ എന്നിവയെക്കുറിച്ചുള്ള സാധാരണ ചോദ്യങ്ങൾക്ക് നേരിട്ടുള്ള ഉത്തരങ്ങൾ.';
+
+  @override
+  String get helpHomeHeaderTitle => 'സഹായ കേന്ദ്രവും വിജ്ഞാന ശേഖരവും';
+
+  @override
+  String get helpHomeHeaderSubtitle =>
+      'SreerajP ToDo-യുടെ എല്ലാ സവിശേഷതകൾക്കുമുള്ള വിശദമായ ഗൈഡുകളും നിയമങ്ങളും പരിഹാരങ്ങളും കാണുക.';
+
+  @override
+  String get featDailyName => 'ദിവസ ടാസ്കുകളും പ്രവർത്തനരീതിയും';
+
+  @override
+  String get featDailySubtitle =>
+      'വേഗത്തിലുള്ള ആസൂത്രണം, ഡേ ലോക്ക് സംരക്ഷണം, യൂണികോഡ് ഏകീകരണം, പഴയപടിയാക്കൽ';
+
+  @override
+  String get featUnicodeTitle => 'യൂണികോഡ് മുൻഗണനയും ബഹുലിപി ഏകീകരണവും';
+
+  @override
+  String get featUnicodeDesc =>
+      'കൃത്യമായ അനന്യതയ്ക്കായി എല്ലാ ടാസ്ക് തലക്കെട്ടുകളും NFC രൂപത്തിലാക്കുന്നു; ഇംഗ്ലീഷ്, മലയാളം, ഹിന്ദി തുടങ്ങിയവയുടെ എഴുത്ത് ദിശ സ്വയം കണ്ടെത്തുന്നു.';
+
+  @override
+  String get featUnicodeH1 => 'NFC യൂണികോഡ്';
+
+  @override
+  String get featUnicodeH2 => 'ബഹുലിപി എഴുത്ത്';
+
+  @override
+  String get featUnicodeH3 => 'RTL, LTR ദിശകൾ';
+
+  @override
+  String get featDayLockTitle => 'ഡേ ലോക്ക് സംരക്ഷണം';
+
+  @override
+  String get featDayLockDesc =>
+      'പഴയ രേഖകളുടെ കൃത്യത കാക്കാൻ കഴിഞ്ഞ ദിവസങ്ങൾ പിന്നീട് മാറ്റം വരുത്താനാവാത്ത വിധം കർശനമായി പൂട്ടുന്നു.';
+
+  @override
+  String get featDayLockH1 => 'ചരിത്ര പൂട്ട്';
+
+  @override
+  String get featDayLockH2 => 'മാറ്റമില്ലാത്ത ഭൂതകാലം';
+
+  @override
+  String get featDayLockH3 => 'വായിക്കാൻ മാത്രമുള്ള രേഖകൾ';
+
+  @override
+  String get featCalendarTitle => 'ദിവസ പട്ടികയും കലണ്ടർ നാവിഗേഷനും';
+
+  @override
+  String get featCalendarDesc =>
+      'കലണ്ടർ വഴി തീയതി തിരഞ്ഞെടുക്കൽ, ഇന്നിലേക്ക് പെട്ടെന്ന് മടങ്ങൽ, സ്വൈപ്പ് ചെയ്ത് ദിവസം മാറ്റൽ എന്നിവയോടെ വേഗത്തിലുള്ള ദിവസ ആസൂത്രണം.';
+
+  @override
+  String get featCalendarH1 => 'കലണ്ടർ തിരഞ്ഞെടുക്കൽ';
+
+  @override
+  String get featCalendarH2 => 'ഇന്നിലേക്ക് പോകൽ';
+
+  @override
+  String get featCalendarH3 => 'വേഗത്തിലുള്ള നീക്കം';
+
+  @override
+  String get featUndoTitle =>
+      'ഉടനടി പഴയപടിയാക്കലും തിരിച്ചാക്കാവുന്ന പ്രവൃത്തികളും';
+
+  @override
+  String get featUndoDesc =>
+      'ടാസ്ക് പൂർത്തിയാക്കൽ, ഉപേക്ഷിക്കൽ, നില മാറ്റം എന്നിവയ്ക്ക് 5 സെക്കൻഡ് പഴയപടി അറിയിപ്പും മുകളിലെ ബാറിൽ സ്ഥിരമായ പഴയപടി ബട്ടണും.';
+
+  @override
+  String get featUndoH1 => '5 സെക്കൻഡ് പഴയപടി';
+
+  @override
+  String get featUndoH2 => 'സ്ഥിര ബട്ടൺ';
+
+  @override
+  String get featUndoH3 => 'സുരക്ഷിത മാറ്റങ്ങൾ';
+
+  @override
+  String get featSearchTitle => 'പൂർണ്ണ പാഠ തിരയലും അരിപ്പകളും';
+
+  @override
+  String get featSearchDesc =>
+      'നില, മുൻഗണന, തീയതി പരിധി എന്നിവ അനുസരിച്ച് എല്ലാ ടാസ്കുകളിലും വിവരണങ്ങളിലും പഴയ രേഖകളിലും ഉടനടി തിരയൽ.';
+
+  @override
+  String get featSearchH1 => 'പൂർണ്ണ പാഠ തിരയൽ';
+
+  @override
+  String get featSearchH2 => 'നില അരിപ്പകൾ';
+
+  @override
+  String get featSearchH3 => 'തീയതി പരിധികൾ';
+
+  @override
+  String get featTimeSubtitle =>
+      'സ്റ്റോപ്പ്‌വാച്ച് ടൈമറുകൾ, ഒരു സമയം ഒരു ടൈമർ നിയമം, പൊമോഡോറോ ഫോക്കസ്';
+
+  @override
+  String get featSegmentsTitle => 'പല ഭാഗങ്ങളായുള്ള സമയ ട്രാക്കിംഗ്';
+
+  @override
+  String get featSegmentsDesc =>
+      'തത്സമയം സെക്കൻഡ് തോറുമുള്ള കൃത്യതയോടെയും ലക്ഷ്യ പുരോഗതിയോടെയും പല സെഷനുകളിലായി ഏത് ടാസ്കിനും ചെലവഴിച്ച കൃത്യ സമയം അളക്കുക.';
+
+  @override
+  String get featSegmentsH1 => 'പല ഭാഗങ്ങൾ';
+
+  @override
+  String get featSegmentsH2 => 'സ്റ്റോപ്പ്‌വാച്ച് ടൈമർ';
+
+  @override
+  String get featSegmentsH3 => 'HH:MM:SS രൂപം';
+
+  @override
+  String get featSingleDesc =>
+      'ട്രാക്കിംഗിന്റെ കൃത്യത കാക്കാൻ ഏത് നിമിഷവും ആപ്പിൽ ആകെ ഒരു ടൈമർ മാത്രമേ ഓടൂ എന്ന് ഉറപ്പാക്കുന്നു.';
+
+  @override
+  String get featSingleH1 => 'ഒരു സജീവ ടൈമർ';
+
+  @override
+  String get featSingleH2 => 'മുമ്പത്തേത് സ്വയം നിർത്തും';
+
+  @override
+  String get featSingleH3 => 'കൃത്യമായ കണക്കുകൾ';
+
+  @override
+  String get featFocusDesc =>
+      'ഇഷ്ടാനുസരണമുള്ള ജോലി, ഇടവേള കൗണ്ട്ഡൗൺ ടൈമറുകളോടെ ശ്രദ്ധ തെറ്റിക്കാത്ത മുഴുവൻ സ്ക്രീൻ ഫോക്കസ്.';
+
+  @override
+  String get featFocusH1 => 'പൊമോഡോറോ ടൈമർ';
+
+  @override
+  String get featFocusH2 => 'മുഴുവൻ സ്ക്രീൻ ഫോക്കസ്';
+
+  @override
+  String get featCustomIntervals => 'ഇഷ്ടാനുസരണ ഇടവേളകൾ';
+
+  @override
+  String get featStreamTitle => 'തത്സമയ ടൈമർ പ്രവാഹം';
+
+  @override
+  String get featStreamDesc =>
+      'കുറഞ്ഞ ബാറ്ററി മാത്രം ഉപയോഗിക്കുന്ന, ഒരിക്കലും വൈകാത്ത, സെക്കൻഡ് തോറുമുള്ള തത്സമയ ടൈമർ പുതുക്കലുകൾ.';
+
+  @override
+  String get featStreamH1 => 'തത്സമയ പ്രവാഹം';
+
+  @override
+  String get featStreamH2 => 'ഒട്ടും വൈകലില്ല';
+
+  @override
+  String get featStreamH3 => 'ബാറ്ററി ലാഭം';
+
+  @override
+  String get featTerminalTitle => 'അന്തിമ നില സമയ പൂട്ട്';
+
+  @override
+  String get featTerminalDesc =>
+      'പൂർത്തിയായതും ഉപേക്ഷിച്ചതുമായ ടാസ്കുകൾ ഓടുന്ന ടൈമറുകൾ സ്വയം നിർത്തുകയും പുതിയ സമയ ഭാഗങ്ങൾ തടയുകയും ചെയ്യുന്നു.';
+
+  @override
+  String get featTerminalH1 => 'തീരുമ്പോൾ സ്വയം നിർത്തൽ';
+
+  @override
+  String get featTerminalH2 => 'അന്തിമ പൂട്ട്';
+
+  @override
+  String get featTerminalH3 => 'സംരക്ഷിത രേഖകൾ';
+
+  @override
+  String get featRitualName => 'അനുഷ്ഠാന മോഡ്';
+
+  @override
+  String get featRitualSubtitle =>
+      'ദിവസം ശാന്തമായി തുടങ്ങാനും അവസാനിപ്പിക്കാനുമുള്ള ഒരു വഴികാട്ടി';
+
+  @override
+  String get featDayOpenTitle => 'വഴികാട്ടിയോടെ ദിവസത്തിന്റെ തുടക്കം';
+
+  @override
+  String get featDayOpenDesc =>
+      'ശ്വസിക്കുക, ഒരു ചിന്താ കാർഡ് വായിക്കുക, മുമ്പ് ബാക്കിയായത് ഒതുക്കുക, എന്നിട്ട് ദിവസം തുടങ്ങുക. സ്വതവേ ഓഫാണ്; ഓരോ ഘട്ടവും ഒഴിവാക്കാം.';
+
+  @override
+  String get featDayOpenH1 => 'ശ്വസന ടൈമർ';
+
+  @override
+  String get featDayOpenH2 => 'കൊണ്ടുവരൽ';
+
+  @override
+  String get featDayOpenH3 => 'ഇന്നത്തെ മൂന്ന്';
+
+  @override
+  String get featRitualDeckTitle => 'അനുഷ്ഠാന ഡെക്ക്';
+
+  @override
+  String get featRitualDeckDesc =>
+      'ഇംഗ്ലീഷിലും മലയാളത്തിലുമായി അമ്പത് ചിന്താ കാർഡുകൾ; ഓരോന്നിലും ഒരു ചോദ്യവും ഒരു ഉദ്ധരണിയും; സ്വന്തം ഇടവിട്ടുള്ള ആവർത്തനത്തിലൂടെ വീണ്ടും വരുന്നു.';
+
+  @override
+  String get featRitualDeckH1 => '50 കാർഡുകൾ';
+
+  @override
+  String get featRitualDeckH2 => 'ദ്വിഭാഷ';
+
+  @override
+  String get featRitualDeckH3 => 'സമയമാകുമ്പോൾ തിരികെ വരും';
+
+  @override
+  String get featEveningTitle => 'സന്ധ്യാ സമാപനം';
+
+  @override
+  String get featEveningDesc =>
+      'ദിവസം ശ്രദ്ധയോടെ തുടങ്ങിയതുപോലെ ശ്രദ്ധയോടെ അവസാനിപ്പിക്കാൻ, ദിവസത്തിൽ ഒരിക്കൽ, പിന്നീട്, ദിവസ പട്ടിക സന്ധ്യാ അവലോകനം നൽകുന്നു.';
+
+  @override
+  String get featEveningH1 => 'ദിവസത്തിൽ ഒരിക്കൽ';
+
+  @override
+  String get featEveningH2 => 'ഐച്ഛികം';
+
+  @override
+  String get featEveningH3 => 'നിങ്ങൾ തിരഞ്ഞെടുത്ത സമയം';
+
+  @override
+  String get featMasterySubtitle =>
+      'ഫ്ലാഷ്കാർഡുകൾ, ഇടവിട്ടുള്ള ആവർത്തനത്തിലൂടെ ഓർമ്മ, ആവർത്തിക്കുന്ന ശീലങ്ങൾ';
+
+  @override
+  String get featSrsTitle => 'ഇടവിട്ടുള്ള ആവർത്തന ഫ്ലാഷ്കാർഡുകൾ';
+
+  @override
+  String get featSrsDesc =>
+      'ദിവസേനയുള്ള പഠനങ്ങളും കുറിപ്പുകളും മികച്ച ഇടവിട്ടുള്ള അവലോകന ക്രമത്തോടെ ഫ്ലാഷ്കാർഡുകളാക്കുക.';
+
+  @override
+  String get featSrsH1 => 'ഇടവിട്ടുള്ള ആവർത്തനം';
+
+  @override
+  String get featSrsH2 => 'ഓർമ്മ ഇടവേളകൾ';
+
+  @override
+  String get featSrsH3 => 'ഉറപ്പിന്റെ നിരക്ക്';
+
+  @override
+  String get featDecksTitle => 'ഡെക്കുകളും പ്രാവീണ്യ നിലകളും';
+
+  @override
+  String get featDecksDesc =>
+      'ഫ്ലാഷ്കാർഡുകൾ സ്വന്തം ഡെക്കുകളിൽ ക്രമീകരിച്ച് തുടക്കക്കാരനിൽ നിന്ന് വിദഗ്ദ്ധനിലേക്കുള്ള പ്രാവീണ്യ പുരോഗതി പിന്തുടരുക.';
+
+  @override
+  String get featDecksH1 => 'സ്വന്തം ഡെക്കുകൾ';
+
+  @override
+  String get featDecksH2 => 'പ്രാവീണ്യ സ്കോർ';
+
+  @override
+  String get featDecksH3 => 'തുടർച്ച പിന്തുടരൽ';
+
+  @override
+  String get featRruleTitle => 'ആവർത്തന ടാസ്കുകളും RRule സംവിധാനവും';
+
+  @override
+  String get featRruleDesc =>
+      'സാധാരണ RFC-5545 RRule സംവിധാനം ഉപയോഗിച്ച് ദിവസേന, ആഴ്ചതോറും, മാസംതോറും അല്ലെങ്കിൽ ഇടവേള അടിസ്ഥാനത്തിൽ ടാസ്ക് സൃഷ്ടി സ്വയമാക്കുക.';
+
+  @override
+  String get featRruleH1 => 'RRule മാനദണ്ഡം';
+
+  @override
+  String get featRruleH3 => 'സ്വയം സൃഷ്ടി';
+
+  @override
+  String get featCopyTitle => 'ടാസ്കുകൾ കൂട്ടമായി പകർത്തൽ';
+
+  @override
+  String get featCopyDesc =>
+      'കഴിഞ്ഞ ദിവസങ്ങളിലെ പൂർത്തിയാകാത്തതോ തിരഞ്ഞെടുത്തതോ ആയ ടാസ്കുകൾ ഒറ്റ ടാപ്പിൽ ഇന്നത്തെ പട്ടികയിലേക്ക് പകർത്തുക.';
+
+  @override
+  String get featCopyH1 => 'ഒറ്റ ടാപ്പ് പകർത്തൽ';
+
+  @override
+  String get featCopyH2 => 'പലത് തിരഞ്ഞെടുക്കൽ';
+
+  @override
+  String get featCopyH3 => 'തീരാത്തവ കൊണ്ടുവരൽ';
+
+  @override
+  String get featSyncName => 'ഓഫ്‌ലൈൻ സിങ്കും Air QR കൈമാറ്റവും';
+
+  @override
+  String get featSyncSubtitle =>
+      'ലോക്കൽ വൈ-ഫൈ P2P സിങ്ക്, Air QR ദൃശ്യ പ്രക്ഷേപണം, ഡാറ്റ കൈമാറ്റം';
+
+  @override
+  String get featWifiTitle => 'എൻക്രിപ്റ്റ് ചെയ്ത ലോക്കൽ വൈ-ഫൈ P2P സിങ്ക്';
+
+  @override
+  String get featWifiDesc =>
+      'ക്ലൗഡ് സെർവറുകളില്ലാതെ, ആദ്യാവസാന എൻക്രിപ്ഷനോടെ നിങ്ങളുടെ ലോക്കൽ വൈ-ഫൈ വഴി ഉപകരണങ്ങൾക്കിടയിൽ നേരിട്ടുള്ള സിങ്ക്.';
+
+  @override
+  String get featWifiH1 => '100% ലോക്കൽ വൈ-ഫൈ';
+
+  @override
+  String get featWifiH2 => 'ക്ലൗഡ് ഇല്ല';
+
+  @override
+  String get featWifiH3 => 'ആദ്യാവസാനം എൻക്രിപ്റ്റ് ചെയ്തത്';
+
+  @override
+  String get featQrTitle => 'Air QR ടാസ്ക് പ്രക്ഷേപണവും സ്കാനറും';
+
+  @override
+  String get featQrDesc =>
+      'ചലിക്കുന്ന QR കോഡ് സ്ട്രീമുകൾ വഴി ടാസ്കുകളും സമയ രേഖകളും ഡെക്കുകളും ഉപകരണങ്ങൾക്കിടയിൽ കൈമാറുക.';
+
+  @override
+  String get featQrH1 => 'ദൃശ്യ QR സ്ട്രീം';
+
+  @override
+  String get featQrH2 => 'ക്യാമറ സ്കാനർ';
+
+  @override
+  String get featQrH3 => 'നെറ്റ്‌വർക്ക് ആവശ്യമില്ല';
+
+  @override
+  String get featHandoffTitle => 'ഓഫ്‌ലൈൻ ഡാറ്റ കൈമാറ്റം';
+
+  @override
+  String get featHandoffDesc =>
+      'ക്ലിപ്പ്ബോർഡ് അല്ലെങ്കിൽ ലോക്കൽ ഫയലുകൾ വഴി ടാസ്ക് കൂട്ടങ്ങളും JSON-ഉം Markdown സംഗ്രഹങ്ങളും കയറ്റുമതിയും ഇറക്കുമതിയും ചെയ്യുക.';
+
+  @override
+  String get featHandoffH1 => 'JSON, Markdown രൂപങ്ങൾ';
+
+  @override
+  String get featHandoffH2 => 'ക്ലിപ്പ്ബോർഡ് കൈമാറ്റം';
+
+  @override
+  String get featHandoffH3 => 'കൊണ്ടുപോകാവുന്ന വിവരങ്ങൾ';
+
+  @override
+  String get featOfflineTitle => '100% ഓഫ്‌ലൈൻ പ്രവർത്തന ഉറപ്പ്';
+
+  @override
+  String get featOfflineDesc =>
+      'ക്ലൗഡ് SDK-കളോ അനലിറ്റിക്സോ ഇല്ലാത്ത പൂർണ്ണ സ്വകാര്യത. നിങ്ങൾ തുടങ്ങുന്ന, ലോക്കൽ നെറ്റ്‌വർക്കിലെ സ്വന്തം ഉപകരണങ്ങളുമായുള്ള വൈ-ഫൈ സിങ്ക് മാത്രമാണ് നെറ്റ്‌വർക്ക് ഉപയോഗം.';
+
+  @override
+  String get featOfflineH1 => 'ഇന്റർനെറ്റ് ഇല്ല';
+
+  @override
+  String get featOfflineH2 => 'അനലിറ്റിക്സ് ഇല്ല';
+
+  @override
+  String get featOfflineH3 => 'ലോക്കൽ നെറ്റ്‌വർക്ക് മാത്രം';
+
+  @override
+  String get featPrivacyName => 'സ്വകാര്യത, സുരക്ഷ, സംഭരണം';
+
+  @override
+  String get featPrivacySubtitle =>
+      'SQLCipher AES-256 ഡാറ്റാബേസ്, ആപ്പ് പൂട്ട്, എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പുകൾ';
+
+  @override
+  String get featDbDesc =>
+      'എല്ലാ ടാസ്കുകളും സമയ രേഖകളും ക്രമീകരണങ്ങളും ഹാർഡ്‌വെയർ പിന്തുണയുള്ള SQLCipher ഉപയോഗിച്ച് സംഭരണത്തിൽ എൻക്രിപ്റ്റ് ചെയ്യുന്നു.';
+
+  @override
+  String get featDbH1 => 'SQLCipher AES-256 സുരക്ഷ';
+
+  @override
+  String get featDbH2 => 'ഉപകരണത്തിൽ നിന്നുള്ള കീ';
+
+  @override
+  String get featDbH3 => 'സംഭരണത്തിൽ എൻക്രിപ്റ്റ് ചെയ്തത്';
+
+  @override
+  String get featLockDesc =>
+      'വിരലടയാളം, മുഖം തിരിച്ചറിയൽ, അല്ലെങ്കിൽ സ്വന്തം ആപ്പ് പിൻ ഉപയോഗിച്ച് ടാസ്കുകളും ക്രമീകരണങ്ങളും പൂട്ടുക.';
+
+  @override
+  String get featLockH1 => 'വിരലടയാളവും മുഖവും';
+
+  @override
+  String get featLockH2 => 'ആപ്പ് പിൻ പകരം';
+
+  @override
+  String get featLockH3 => 'സ്വയം പൂട്ടുന്ന സമയം';
+
+  @override
+  String get featShotDesc =>
+      'സ്ക്രീൻ പിടിക്കൽ തടയുകയും Android-ലെ സമീപകാല ആപ്പുകളുടെ പട്ടികയിൽ ആപ്പ് പ്രിവ്യൂ മറയ്ക്കുകയും ചെയ്യുന്നു.';
+
+  @override
+  String get featShotH1 => 'സ്ക്രീൻഷോട്ട് തടയൽ';
+
+  @override
+  String get featShotH2 => 'സമീപകാല ആപ്പ് മറ';
+
+  @override
+  String get featShotH3 => 'സ്വകാര്യത സംരക്ഷണം';
+
+  @override
+  String get featBackupTitle =>
+      'പാസ്‌വേഡ് സംരക്ഷിത എൻക്രിപ്റ്റ് ചെയ്ത ബാക്കപ്പുകൾ';
+
+  @override
+  String get featBackupDesc =>
+      'നിങ്ങളുടെ AES-256 പാസ്ഫ്രെയ്സ് കൊണ്ട് സംരക്ഷിച്ച എൻക്രിപ്റ്റ് ചെയ്ത ZIP ബാക്കപ്പുകൾ കയറ്റുമതിയും പുനഃസ്ഥാപനവും ചെയ്യുക.';
+
+  @override
+  String get featBackupH1 => 'AES-256 ZIP ഫയൽ';
+
+  @override
+  String get featBackupH2 => 'സ്വന്തം പാസ്ഫ്രെയ്സ്';
+
+  @override
+  String get featBackupH3 => 'സുരക്ഷിതമായി കൊണ്ടുപോകാവുന്ന ബാക്കപ്പുകൾ';
+
+  @override
+  String get featCustomName => 'ഇഷ്ടാനുസരണവും വിശകലനവും';
+
+  @override
+  String get featCustomSubtitle =>
+      'തീമുകൾ, മലയാളം അക്ഷരരൂപങ്ങൾ, ചാർട്ടുകൾ, സ്വതവേ മൂല്യങ്ങൾ';
+
+  @override
+  String get featThemeTitle => 'തെളിഞ്ഞ, ഇരുണ്ട രൂപങ്ങളും നിറക്കൂട്ടുകളും';
+
+  @override
+  String get featThemeDesc =>
+      '8 തിളക്കമുള്ള നിറ മാതൃകകളോടെ തെളിഞ്ഞ, ഇരുണ്ട, OLED തീമുകൾ.';
+
+  @override
+  String get featThemeH1 => 'തെളിഞ്ഞ, ഇരുണ്ട തീമുകൾ';
+
+  @override
+  String get featThemeH2 => 'തിളക്കമുള്ള നിറങ്ങൾ';
+
+  @override
+  String get featThemeH3 => 'OLED രൂപകൽപ്പന';
+
+  @override
+  String get featTypeTitle => 'അക്ഷരരൂപവും വലുപ്പം മാറ്റലും';
+
+  @override
+  String get featTypeDesc =>
+      'മഞ്ജരി, അനേക് മലയാളം, നോട്ടോ സാൻസ്, അല്ലെങ്കിൽ സിസ്റ്റം ഫോണ്ടുകൾ തിരഞ്ഞെടുക്കാം; എഴുത്തിന്റെ വലുപ്പം മാറ്റാം.';
+
+  @override
+  String get featTypeH1 => 'മലയാളം ഫോണ്ടുകൾ';
+
+  @override
+  String get featTypeH2 => 'വലുപ്പം മാറ്റൽ';
+
+  @override
+  String get featTypeH3 => 'വായിക്കാൻ എളുപ്പമുള്ള അക്ഷരങ്ങൾ';
+
+  @override
+  String get featStatsTitle =>
+      'ഉൽപ്പാദനക്ഷമതാ സ്ഥിതിവിവരക്കണക്കുകളും ചാർട്ടുകളും';
+
+  @override
+  String get featStatsDesc =>
+      'പൂർത്തീകരണ നിരക്ക്, സമയ വിതരണം, ദിവസ പ്രവണതകൾ എന്നിവ കാണിക്കുന്ന ചാർട്ടുകളും പട്ടികകളും.';
+
+  @override
+  String get featStatsH1 => 'fl_chart ഗ്രാഫുകൾ';
+
+  @override
+  String get featStatsH2 => 'സമയ വിതരണം';
+
+  @override
+  String get featStatsH3 => 'പൂർത്തീകരണ പ്രവണതകൾ';
+
+  @override
+  String get featDefaultsTitle => 'ടാസ്ക് സ്വതവേ മൂല്യങ്ങളും സമയ പ്രദർശനവും';
+
+  @override
+  String get featDefaultsDesc =>
+      'സ്വതവേയുള്ള മുൻഗണന, ലക്ഷ്യ സമയം, ആഴ്ചയുടെ ആദ്യ ദിവസം, ജോലിദിവസങ്ങൾ, സമയ രൂപങ്ങൾ എന്നിവ ക്രമീകരിക്കുക.';
+
+  @override
+  String get featDefaultsH1 => 'സ്വന്തം സ്വതവേ മൂല്യങ്ങൾ';
+
+  @override
+  String get featDefaultsH2 => 'അയവുള്ള രൂപങ്ങൾ';
+
+  @override
+  String get featDefaultsH3 => 'നിങ്ങൾക്കിണങ്ങിയ പ്രവർത്തനരീതി';
+
+  @override
+  String get featHeaderTitle => 'SreerajP ToDo സവിശേഷതകൾ';
+
+  @override
+  String get featHeaderSubtitle =>
+      'നിങ്ങൾക്കായി ഒരുക്കിയ എല്ലാ ഉൽപ്പാദനക്ഷമതാ ഉപകരണങ്ങളും ടൈമറുകളും ഓഫ്‌ലൈൻ സുരക്ഷകളും കാണുക.';
 }

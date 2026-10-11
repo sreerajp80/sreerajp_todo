@@ -10,7 +10,7 @@ Allow the user to export the full encrypted SQLite database to user-accessible s
 - Read `CLAUDE.md` — encryption strategy, backup exceptions, offline constraint.
 - Read `docs/security.md` — dual-key architecture (§6), backup/import/export validation (§11), never-log rules (§8), sensitive data inventory (§4).
 - Read `docs/architecture.md` — persistence model (§10), data flow (§6).
-- Read `docs/flutter_project_engineering_standard.md` — sensitive data extension (§7.2 — encrypted export by default, backup/recovery tested as critical flows), testing standard (§9), Definition of Done (§14.3).
+- Read `docs/guidelines/flutter_project_engineering_standard.md` — sensitive data extension (§7.2 — encrypted export by default, backup/recovery tested as critical flows), testing standard (§9), Definition of Done (§14.3).
 
 ## Key Design Decisions
 - **Dual-key encryption:**

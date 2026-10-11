@@ -1,4 +1,4 @@
-import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart';
 
 abstract class RecurrenceRuleRepository {
   Future<List<RecurrenceRuleEntity>> findAll();

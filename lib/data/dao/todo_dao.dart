@@ -5,9 +5,9 @@ import 'package:sreerajp_todo/data/dao/sub_task_dao.dart';
 import 'package:sreerajp_todo/data/dao/task_dependency_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_search_index_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_search_result.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_search_result.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 
 class TodoDao {
   TodoDao(

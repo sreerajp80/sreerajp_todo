@@ -1,4 +1,4 @@
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
 
 abstract class TimeSegmentRepository {
   Future<void> startSegment(String todoId);

@@ -21,23 +21,25 @@ import 'package:sreerajp_todo/application/app_lock_notifier.dart';
 import 'package:sreerajp_todo/application/pending_alert_notifier.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
-import 'package:sreerajp_todo/data/models/todo_status.dart';
-import 'package:sreerajp_todo/core/platform/pending_notification_channel.dart';
-import 'package:sreerajp_todo/core/platform/running_notification_channel.dart';
-import 'package:sreerajp_todo/core/platform/screen_wake_channel.dart';
-import 'package:sreerajp_todo/core/platform/speech_channel.dart';
+import 'package:sreerajp_todo/domain/entities/todo_status.dart';
+import 'package:sreerajp_todo/data/platform/pending_notification_channel.dart';
+import 'package:sreerajp_todo/data/platform/running_notification_channel.dart';
+import 'package:sreerajp_todo/data/platform/screen_wake_channel.dart';
+import 'package:sreerajp_todo/data/platform/speech_channel.dart';
 import 'package:sreerajp_todo/data/backup/backup_service.dart';
 import 'package:sreerajp_todo/data/dao/daily_reflection_dao.dart';
 import 'package:sreerajp_todo/data/dao/recurrence_rule_dao.dart';
 import 'package:sreerajp_todo/data/dao/statistics_query_service.dart';
+import 'package:sreerajp_todo/data/repositories/statistics_repository_impl.dart';
+import 'package:sreerajp_todo/domain/repositories/statistics_repository.dart';
 import 'package:sreerajp_todo/data/dao/time_segment_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_dao.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/daily_intention_entity.dart';
-import 'package:sreerajp_todo/data/models/daily_reflection_entity.dart';
-import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_search_result.dart';
+import 'package:sreerajp_todo/domain/entities/daily_intention_entity.dart';
+import 'package:sreerajp_todo/domain/entities/daily_reflection_entity.dart';
+import 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_search_result.dart';
 import 'package:sreerajp_todo/data/repositories/daily_reflection_repository_impl.dart';
 import 'package:sreerajp_todo/data/repositories/recurrence_rule_repository_impl.dart';
 import 'package:sreerajp_todo/data/repositories/time_segment_repository_impl.dart';
@@ -60,9 +62,9 @@ import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 import 'package:sreerajp_todo/domain/usecases/undo_move_todo.dart';
 import 'package:sreerajp_todo/data/dao/spaced_repetition_dao.dart';
 import 'package:sreerajp_todo/data/dao/todo_history_dao.dart';
-import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_history_entity.dart';
 import 'package:sreerajp_todo/data/repositories/spaced_repetition_repository_impl.dart';
-import 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart';
+import 'package:sreerajp_todo/domain/entities/spaced_repetition_item_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/spaced_repetition_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/complete_srs_todo.dart';
 import 'package:sreerajp_todo/domain/usecases/generate_spaced_repetition_tasks.dart';
@@ -73,30 +75,32 @@ import 'package:sreerajp_todo/data/services/data_handoff_service.dart';
 import 'package:sreerajp_todo/data/services/p2p_wifi_sync_service.dart';
 import 'package:sreerajp_todo/data/services/ritual_service.dart';
 
-export 'package:sreerajp_todo/data/backup/backup_file_info.dart'
+export 'package:sreerajp_todo/domain/entities/backup_file_info.dart'
     show BackupFileInfo;
-export 'package:sreerajp_todo/data/models/daily_intention_entity.dart'
+export 'package:sreerajp_todo/domain/entities/daily_intention_entity.dart'
     show DailyIntentionEntity;
-export 'package:sreerajp_todo/data/models/daily_reflection_entity.dart'
+export 'package:sreerajp_todo/domain/entities/daily_reflection_entity.dart'
     show DailyReflectionEntity;
-export 'package:sreerajp_todo/data/models/recall_confidence.dart'
+export 'package:sreerajp_todo/domain/entities/recall_confidence.dart'
     show RecallConfidence;
-export 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart'
+export 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart'
     show RecurrenceRuleEntity;
-export 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart'
+export 'package:sreerajp_todo/domain/entities/spaced_repetition_item_entity.dart'
     show SpacedRepetitionItemEntity;
-export 'package:sreerajp_todo/data/models/statistics_models.dart'
+export 'package:sreerajp_todo/domain/entities/statistics_models.dart'
     show DayStats, TodoTimeStats, TitleTimePoint, SummaryStats;
-export 'package:sreerajp_todo/data/models/sub_task_item.dart' show SubTaskItem;
-export 'package:sreerajp_todo/data/models/time_segment_entity.dart'
+export 'package:sreerajp_todo/domain/entities/sub_task_item.dart'
+    show SubTaskItem;
+export 'package:sreerajp_todo/domain/entities/time_segment_entity.dart'
     show TimeSegmentEntity;
-export 'package:sreerajp_todo/data/models/todo_entity.dart' show TodoEntity;
-export 'package:sreerajp_todo/data/models/todo_history_entity.dart'
+export 'package:sreerajp_todo/domain/entities/todo_entity.dart' show TodoEntity;
+export 'package:sreerajp_todo/domain/entities/todo_history_entity.dart'
     show TodoHistoryEntity, TodoHistoryEventType;
-export 'package:sreerajp_todo/data/models/todo_priority.dart' show TodoPriority;
-export 'package:sreerajp_todo/data/models/todo_search_result.dart'
+export 'package:sreerajp_todo/domain/entities/todo_priority.dart'
+    show TodoPriority;
+export 'package:sreerajp_todo/domain/entities/todo_search_result.dart'
     show TodoSearchResult;
-export 'package:sreerajp_todo/data/models/todo_status.dart' show TodoStatus;
+export 'package:sreerajp_todo/domain/entities/todo_status.dart' show TodoStatus;
 export 'package:sreerajp_todo/data/services/air_qr_service.dart'
     show AirQrService;
 export 'package:sreerajp_todo/data/services/air_qr_payload_service.dart'
@@ -123,7 +127,7 @@ import 'package:sreerajp_todo/domain/services/ocr_capture_downscaler.dart';
 import 'package:sreerajp_todo/domain/services/ocr_enhancer.dart';
 import 'package:sreerajp_todo/domain/services/ocr_service.dart';
 import 'package:sreerajp_todo/domain/services/qr_decoder_service.dart';
-import 'package:sreerajp_todo/data/models/backup_log_entity.dart';
+import 'package:sreerajp_todo/domain/entities/backup_log_entity.dart';
 
 final airQrServiceProvider = Provider<AirQrService>((ref) {
   return AirQrService();
@@ -207,6 +211,10 @@ final recurrenceRuleDaoProvider = Provider<RecurrenceRuleDao>((ref) {
 
 final statisticsQueryServiceProvider = Provider<StatisticsQueryService>((ref) {
   return StatisticsQueryService(ref.read(databaseServiceProvider));
+});
+
+final statisticsRepositoryProvider = Provider<StatisticsRepository>((ref) {
+  return StatisticsRepositoryImpl(ref.read(statisticsQueryServiceProvider));
 });
 
 final todoRepositoryProvider = Provider<TodoRepository>((ref) {
@@ -733,7 +741,7 @@ final recurrenceRulesProvider =
 final statisticsProvider =
     StateNotifierProvider<StatisticsNotifier, StatisticsState>((ref) {
       return StatisticsNotifier(
-        ref.read(statisticsQueryServiceProvider),
+        ref.read(statisticsRepositoryProvider),
         workingDays: () => ref.read(dateTimeSettingsProvider).workingDays,
       );
     });

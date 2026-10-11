@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/help/widgets/help_widgets.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 /// "Help" hub reached from Settings -> Help.
 /// Lists in-app help topics grouped into intuitive categories.
@@ -11,6 +12,7 @@ class HelpHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(AppLocalizations.of(context).settingsHelp)),
       body: SafeArea(
@@ -22,122 +24,112 @@ class HelpHomeScreen extends StatelessWidget {
 
             _buildSectionHeader(
               context,
-              'Task Management & Workflow',
+              l10n.helpHomeTaskSection,
               Icons.checklist_rounded,
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.calendar_month_outlined,
-              title: 'Daily Lists & Day Lock',
-              subtitle:
-                  'How the daily timeline, day-lock immutability, and terminal status locks protect your records.',
+              title: l10n.helpTaskMgmtTitle,
+              subtitle: l10n.helpHomeTaskMgmtSubtitle,
               onTap: () => context.push(AppRoutes.helpTaskManagement),
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.repeat_rounded,
-              title: 'Recurring Tasks & Bulk Copy',
-              subtitle:
-                  'Setting up automated recurrence rules (daily, weekly, monthly) and bulk copying past tasks.',
+              title: l10n.helpRecurringTitle,
+              subtitle: l10n.helpHomeRecurringSubtitle,
               onTap: () => context.push(AppRoutes.helpRecurringTasks),
             ),
             const SizedBox(height: 22),
 
             _buildSectionHeader(
               context,
-              'Time Tracking & Focus',
+              l10n.helpHomeTimeSection,
               Icons.timer_outlined,
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.more_time_rounded,
-              title: 'Time Tracking & Segments',
-              subtitle:
-                  'How multi-segment logging, target durations, and the single running timer rule work.',
+              title: l10n.helpTimeTrackingTitle,
+              subtitle: l10n.helpHomeTimeTrackingSubtitle,
               onTap: () => context.push(AppRoutes.helpTimeTracking),
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.center_focus_strong_rounded,
-              title: 'Focus Mode & Pomodoro',
-              subtitle:
-                  'Using the distraction-free focus screen, Pomodoro countdowns, and auto-stop safeguards.',
+              title: l10n.helpFocusTitle,
+              subtitle: l10n.helpHomeFocusSubtitle,
               onTap: () => context.push(AppRoutes.helpFocus),
             ),
             const SizedBox(height: 22),
 
             _buildSectionHeader(
               context,
-              'Mastery Deck & Spaced Repetition',
+              l10n.helpHomeMasterySection,
               Icons.school_outlined,
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.psychology_outlined,
-              title: 'Mastery Deck & Flashcards',
-              subtitle:
-                  'How card decks, spaced repetition review intervals, and mastery scoring operate.',
+              title: l10n.helpMasteryTitle,
+              subtitle: l10n.helpHomeMasterySubtitle,
               onTap: () => context.push(AppRoutes.helpMasteryDeck),
             ),
             const SizedBox(height: 22),
 
             _buildSectionHeader(
               context,
-              'Sync & Offline Transfer',
+              l10n.helpHomeSyncSection,
               Icons.sync_alt_rounded,
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.wifi_tethering_rounded,
-              title: 'Local Wi-Fi P2P Device Sync',
-              subtitle:
-                  'Direct device-to-device synchronization over local Wi-Fi with end-to-end encryption and zero cloud.',
+              title: l10n.helpWifiTitle,
+              subtitle: l10n.helpHomeWifiSubtitle,
               onTap: () => context.push(AppRoutes.helpWifiSync),
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.qr_code_scanner_rounded,
-              title: 'Air QR Scanner & Data Handoff',
-              subtitle:
-                  'Transferring tasks and decks offline via visual animated QR code streams and clipboard handoff.',
+              title: l10n.helpHomeQrTitle,
+              subtitle: l10n.helpHomeQrSubtitle,
               onTap: () => context.push(AppRoutes.helpQrHandoff),
             ),
             const SizedBox(height: 22),
 
             _buildSectionHeader(
               context,
-              'Privacy, Security & Backups',
+              l10n.helpHomePrivacySection,
               Icons.shield_outlined,
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.security_rounded,
-              title: 'Security, App Lock & Encryption',
-              subtitle:
-                  'SQLCipher AES-256 database encryption, biometric authentication, and screenshot guard.',
+              title: l10n.helpPrivacyTitle,
+              subtitle: l10n.helpHomePrivacySubtitle,
               onTap: () => context.push(AppRoutes.helpPrivacySecurity),
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.backup_rounded,
-              title: 'Encrypted Backup & Restore',
-              subtitle:
-                  'Creating password-protected ZIP backup files, safety practices, and full restore steps.',
+              title: l10n.helpBackupTitle,
+              subtitle: l10n.helpHomeBackupSubtitle,
               onTap: () => context.push(AppRoutes.helpBackup),
             ),
             const SizedBox(height: 22),
 
             _buildSectionHeader(
               context,
-              'Frequently Asked Questions',
+              l10n.helpHomeFaqSection,
               Icons.question_answer_outlined,
             ),
             const SizedBox(height: 10),
             HelpTopicCard(
               icon: Icons.help_outline_rounded,
-              title: 'FAQs & Troubleshooting Guide',
-              subtitle:
-                  'Direct answers to common questions about day lock, offline operation, and database safety.',
+              title: l10n.helpHomeFaqTitle,
+              subtitle: l10n.helpHomeFaqSubtitle,
               onTap: () => context.push(AppRoutes.helpFaq),
             ),
           ],
@@ -147,6 +139,7 @@ class HelpHomeScreen extends StatelessWidget {
   }
 
   Widget _buildHeaderCard(BuildContext context) {
+    final l10n = context.l10n;
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -202,14 +195,14 @@ class HelpHomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Help Center & Knowledge Base',
+                    l10n.helpHomeHeaderTitle,
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Browse in-depth guides, rules, and solutions for all features of SreerajP ToDo.',
+                    l10n.helpHomeHeaderSubtitle,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                       height: 1.35,

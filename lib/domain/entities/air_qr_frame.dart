@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 /// Immutable representation of a single optical AirQR stream frame.
 /// Supports both systematic v1 frames (direct chunk) and Luby Transform LT1 parity frames.
-@immutable
 class AirQrFrame {
   final String streamId;
   final int totalBlocks;
@@ -72,7 +71,7 @@ class AirQrFrame {
         );
       }
     } catch (e) {
-      if (kDebugMode) debugPrint('AirQrFrame parse error: $e');
+      AppLogger.debug('AirQrFrame parse error (${e.runtimeType})');
     }
     return null;
   }

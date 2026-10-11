@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/ritual_rules.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/core/rules/ritual_rules.dart';
 
 /// The slow circle of the first ritual step.
 ///

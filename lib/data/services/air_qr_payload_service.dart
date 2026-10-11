@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 enum AirQrPayloadType { tasks, timecard, backup, unknown }
 
@@ -82,7 +83,7 @@ class AirQrPayloadService {
       final Map<String, dynamic> json = jsonDecode(jsonString);
       return _parseJsonMap(json);
     } catch (e) {
-      if (kDebugMode) debugPrint('AirQrPayloadService parse error: $e');
+      AppLogger.debug('AirQrPayloadService parse error (${e.runtimeType})');
       return const AirQrParsedPayload(type: AirQrPayloadType.unknown);
     }
   }

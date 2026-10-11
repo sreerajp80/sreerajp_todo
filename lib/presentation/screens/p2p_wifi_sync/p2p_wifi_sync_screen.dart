@@ -3,9 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_payload.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_scope.dart';
+
+/// Progress steps shown while this device syncs as a peer.
+enum _PeerStep { connecting, authenticating }
 
 class P2pWifiSyncScreen extends ConsumerStatefulWidget {
   const P2pWifiSyncScreen({super.key});
@@ -31,7 +35,8 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
   final String _saltHex = '';
   P2pSyncScope _peerScope = const P2pSyncScope.full();
   bool _isPeerSyncing = false;
-  String _peerStatusMessage = '';
+  _PeerStep _peerStep = _PeerStep.connecting;
+  String _peerAddress = '';
 
   @override
   void initState() {
@@ -127,7 +132,8 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
 
     setState(() {
       _isPeerSyncing = true;
-      _peerStatusMessage = 'Connecting to host $hostIp:$port...';
+      _peerStep = _PeerStep.connecting;
+      _peerAddress = '$hostIp:$port';
     });
 
     final syncService = ref.read(p2pWifiSyncServiceProvider);
@@ -145,7 +151,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
       }
 
       setState(() {
-        _peerStatusMessage = 'Authenticating AES-256 session handshake...';
+        _peerStep = _PeerStep.authenticating;
       });
 
       final mergeResult = await syncService.connectAndSyncAsPeer(
@@ -158,7 +164,6 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
 
       setState(() {
         _isPeerSyncing = false;
-        _peerStatusMessage = 'Sync completed successfully!';
       });
 
       if (mounted) {
@@ -167,12 +172,15 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
     } catch (e) {
       setState(() {
         _isPeerSyncing = false;
-        _peerStatusMessage = 'Sync failed: $e';
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(context.l10n.p2pSyncFailedMessage(e.toString())),
+            content: Text(
+              context.l10n.p2pSyncFailedMessage(
+                mapErrorToMessage(context.l10n, e),
+              ),
+            ),
             backgroundColor: Colors.redAccent,
             behavior: SnackBarBehavior.floating,
           ),
@@ -202,28 +210,28 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
               children: [
                 _buildSummaryRow(
                   icon: Icons.task_alt_outlined,
-                  title: 'Tasks',
+                  title: context.l10n.p2pSummaryTasks,
                   added: result.todosAdded,
                   skipped: result.todosSkipped,
                 ),
                 const Divider(),
                 _buildSummaryRow(
                   icon: Icons.timer_outlined,
-                  title: 'Time Segments',
+                  title: context.l10n.p2pOptionTimeSegments,
                   added: result.segmentsAdded,
                   skipped: result.segmentsSkipped,
                 ),
                 const Divider(),
                 _buildSummaryRow(
                   icon: Icons.repeat_outlined,
-                  title: 'Recurrence Rules',
+                  title: context.l10n.p2pOptionRecurrenceRules,
                   added: result.rulesAdded,
                   skipped: result.rulesSkipped,
                 ),
                 const Divider(),
                 _buildSummaryRow(
                   icon: Icons.style_outlined,
-                  title: 'Mastery Deck',
+                  title: context.l10n.p2pOptionMasteryDeck,
                   added: result.masteryAdded,
                   skipped: result.masterySkipped,
                 ),
@@ -245,7 +253,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            '${result.dayLockViolations} past-day items skipped due to Day-Lock immutability.',
+                            context.l10n.p2pDayLockSkipped(
+                              result.dayLockViolations,
+                            ),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: Colors.amber.shade900,
                             ),
@@ -261,7 +271,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
           actions: [
             TextButton(
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('OK'),
+              child: Text(context.l10n.ok),
             ),
           ],
         );
@@ -288,7 +298,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
             ),
           ),
           Text(
-            '+$added added',
+            context.l10n.p2pSummaryAdded(added),
             style: const TextStyle(
               color: Colors.green,
               fontWeight: FontWeight.bold,
@@ -296,7 +306,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
           ),
           const SizedBox(width: 8),
           Text(
-            '($skipped skipped)',
+            context.l10n.p2pSummarySkipped(skipped),
             style: const TextStyle(color: Colors.grey, fontSize: 12),
           ),
         ],
@@ -313,9 +323,15 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
         title: Text(context.l10n.p2pScreenTitle),
         bottom: TabBar(
           controller: _tabController,
-          tabs: const [
-            Tab(icon: Icon(Icons.wifi_tethering), text: 'Host (Share)'),
-            Tab(icon: Icon(Icons.phonelink_ring), text: 'Peer (Receive)'),
+          tabs: [
+            Tab(
+              icon: const Icon(Icons.wifi_tethering),
+              text: context.l10n.p2pTabHost,
+            ),
+            Tab(
+              icon: const Icon(Icons.phonelink_ring),
+              text: context.l10n.p2pTabPeer,
+            ),
           ],
         ),
       ),
@@ -367,8 +383,8 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                             children: [
                               Text(
                                 _isHostRunning
-                                    ? 'Host Server Active'
-                                    : 'Host Server Stopped',
+                                    ? context.l10n.p2pHostActive
+                                    : context.l10n.p2pHostStopped,
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -376,8 +392,10 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                               const SizedBox(height: 4),
                               Text(
                                 _isHostRunning
-                                    ? 'Listening on TCP $_hostIp:$_hostPort'
-                                    : 'Tap below to open encrypted TCP socket.',
+                                    ? context.l10n.p2pHostListening(
+                                        '$_hostIp:$_hostPort',
+                                      )
+                                    : context.l10n.p2pHostIdleHint,
                                 style: theme.textTheme.bodySmall,
                               ),
                             ],
@@ -394,9 +412,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                         children: [
                           Column(
                             children: [
-                              const Text(
-                                'PAIRING PIN',
-                                style: TextStyle(
+                              Text(
+                                context.l10n.p2pPairingPinLabel.toUpperCase(),
+                                style: const TextStyle(
                                   fontSize: 10,
                                   letterSpacing: 1.2,
                                   color: Colors.grey,
@@ -415,9 +433,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                           ),
                           Column(
                             children: [
-                              const Text(
-                                'PORT',
-                                style: TextStyle(
+                              Text(
+                                context.l10n.port.toUpperCase(),
+                                style: const TextStyle(
                                   fontSize: 10,
                                   letterSpacing: 1.2,
                                   color: Colors.grey,
@@ -467,7 +485,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
             ),
             const SizedBox(height: 20),
             Text(
-              'Select Sync Scope',
+              context.l10n.p2pSelectScope,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -498,7 +516,9 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                 _isHostRunning ? Icons.stop_circle_outlined : Icons.play_arrow,
               ),
               label: Text(
-                _isHostRunning ? 'Stop Host Server' : 'Start Host Server',
+                _isHostRunning
+                    ? context.l10n.p2pStopHost
+                    : context.l10n.p2pStartHost,
               ),
             ),
           ],
@@ -525,7 +545,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Connect to Host Device',
+                      context.l10n.p2pConnectToHost,
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
@@ -533,11 +553,11 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                     const SizedBox(height: 16),
                     TextField(
                       controller: _hostIpController,
-                      decoration: const InputDecoration(
-                        labelText: 'Host IP Address',
-                        hintText: 'e.g. 192.168.1.105',
-                        prefixIcon: Icon(Icons.wifi),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.p2pHostIpLabel,
+                        hintText: context.l10n.p2pHostIpHint,
+                        prefixIcon: const Icon(Icons.wifi),
+                        border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.datetime,
                     ),
@@ -547,11 +567,11 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                         Expanded(
                           child: TextField(
                             controller: _hostPortController,
-                            decoration: const InputDecoration(
-                              labelText: 'Port',
-                              hintText: 'Port',
-                              prefixIcon: Icon(Icons.numbers),
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: context.l10n.port,
+                              hintText: context.l10n.port,
+                              prefixIcon: const Icon(Icons.numbers),
+                              border: const OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.number,
                           ),
@@ -560,11 +580,11 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
                         Expanded(
                           child: TextField(
                             controller: _pinController,
-                            decoration: const InputDecoration(
-                              labelText: 'Pairing PIN',
-                              hintText: '6-digit PIN',
-                              prefixIcon: Icon(Icons.lock_outline),
-                              border: OutlineInputBorder(),
+                            decoration: InputDecoration(
+                              labelText: context.l10n.p2pPairingPinLabel,
+                              hintText: context.l10n.p2pPinHint,
+                              prefixIcon: const Icon(Icons.lock_outline),
+                              border: const OutlineInputBorder(),
                             ),
                             keyboardType: TextInputType.number,
                             maxLength: 6,
@@ -578,7 +598,7 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
             ),
             const SizedBox(height: 20),
             Text(
-              'Requested Sync Scope',
+              context.l10n.p2pRequestedScope,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
@@ -597,10 +617,13 @@ class _P2pWifiSyncScreenState extends ConsumerState<P2pWifiSyncScreen>
               const Center(child: CircularProgressIndicator()),
               const SizedBox(height: 12),
               Center(
-                child: Text(
-                  _peerStatusMessage,
-                  style: theme.textTheme.bodyMedium,
-                ),
+                child: Text(switch (_peerStep) {
+                  _PeerStep.connecting => context.l10n.p2pStatusConnecting(
+                    _peerAddress,
+                  ),
+                  _PeerStep.authenticating =>
+                    context.l10n.p2pStatusAuthenticating,
+                }, style: theme.textTheme.bodyMedium),
               ),
             ] else
               ElevatedButton.icon(

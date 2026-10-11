@@ -21,7 +21,6 @@ Before adding any package:
 | Package | Purpose | Category |
 |---|---|---|
 | `flutter_localizations` | Trilingual localization (English, Malayalam & Sanskrit) | Internationalization |
-| `cupertino_icons` | iOS-style iconography support | UI |
 | `characters` | Grapheme-cluster-aligned string walking for Indic search folding | Core Utilities |
 | `sqflite_sqlcipher` | AES-256 encrypted SQLite engine (Mobile) | Database |
 | `sqflite_common_ffi` | SQLCipher-enabled SQLite engine (Desktop) | Database |
@@ -80,7 +79,7 @@ The following package types are strictly prohibited in `pubspec.yaml` and transi
 
 ---
 
-## 4a. Native Capabilities Used Without A Package
+## 5. Native Capabilities Used Without A Package
 
 Some platform features are reached through the app's own small method channels rather than
 by adding a package. This keeps the audited list above short and keeps every native call
@@ -96,7 +95,7 @@ visible in `MainActivity.kt` instead of inside someone else's plugin.
 
 ---
 
-## 5. Dependency Audit Command
+## 6. Dependency Audit Command
 
 After editing `pubspec.yaml`, execute the following audit command in PowerShell:
 

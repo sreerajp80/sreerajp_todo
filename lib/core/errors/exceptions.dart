@@ -1,4 +1,12 @@
-class DayLockedException implements Exception {
+/// Base type for every error the app throws on purpose.
+///
+/// It is `sealed`, so a `switch` over it must handle every case. Add new
+/// app errors to this file.
+sealed class AppException implements Exception {
+  const AppException();
+}
+
+class DayLockedException extends AppException {
   const DayLockedException([
     this.message = 'Cannot modify tasks from past dates.',
   ]);
@@ -8,7 +16,7 @@ class DayLockedException implements Exception {
   String toString() => 'DayLockedException: $message';
 }
 
-class CompletedLockException implements Exception {
+class CompletedLockException extends AppException {
   const CompletedLockException([
     this.message = 'Cannot add time segments to a completed or dropped task.',
   ]);
@@ -18,7 +26,7 @@ class CompletedLockException implements Exception {
   String toString() => 'CompletedLockException: $message';
 }
 
-class FutureDayTimerException implements Exception {
+class FutureDayTimerException extends AppException {
   const FutureDayTimerException([
     this.message =
         'Cannot start a timer on a task that starts on a future day.',
@@ -29,7 +37,7 @@ class FutureDayTimerException implements Exception {
   String toString() => 'FutureDayTimerException: $message';
 }
 
-class DuplicateTitleException implements Exception {
+class DuplicateTitleException extends AppException {
   const DuplicateTitleException([
     this.message = 'A task with this title already exists for this date.',
   ]);
@@ -39,7 +47,7 @@ class DuplicateTitleException implements Exception {
   String toString() => 'DuplicateTitleException: $message';
 }
 
-class MultiDayDuplicateTitleException implements Exception {
+class MultiDayDuplicateTitleException extends AppException {
   const MultiDayDuplicateTitleException(
     this.conflictingDate, [
     this.message =
@@ -54,7 +62,7 @@ class MultiDayDuplicateTitleException implements Exception {
       'MultiDayDuplicateTitleException: $message (conflictingDate: $conflictingDate)';
 }
 
-class SegmentAlreadyRunningException implements Exception {
+class SegmentAlreadyRunningException extends AppException {
   const SegmentAlreadyRunningException([
     this.message = 'A time segment is already running for this task.',
   ]);
@@ -64,7 +72,7 @@ class SegmentAlreadyRunningException implements Exception {
   String toString() => 'SegmentAlreadyRunningException: $message';
 }
 
-class TodoNotFoundException implements Exception {
+class TodoNotFoundException extends AppException {
   const TodoNotFoundException([this.message = 'Task not found.']);
   final String message;
 
@@ -72,7 +80,7 @@ class TodoNotFoundException implements Exception {
   String toString() => 'TodoNotFoundException: $message';
 }
 
-class SegmentOverlapException implements Exception {
+class SegmentOverlapException extends AppException {
   const SegmentOverlapException([
     this.message = 'This segment overlaps with an existing one.',
   ]);
@@ -82,7 +90,7 @@ class SegmentOverlapException implements Exception {
   String toString() => 'SegmentOverlapException: $message';
 }
 
-class BackupVersionTooNewException implements Exception {
+class BackupVersionTooNewException extends AppException {
   const BackupVersionTooNewException(
     this.backupVersion,
     this.appVersion, [
@@ -98,7 +106,7 @@ class BackupVersionTooNewException implements Exception {
       'BackupVersionTooNewException: $message (backupVersion: $backupVersion, appVersion: $appVersion)';
 }
 
-class BackupCorruptedException implements Exception {
+class BackupCorruptedException extends AppException {
   const BackupCorruptedException([
     this.details,
     this.message = 'The backup file is corrupted.',
@@ -115,7 +123,7 @@ class BackupCorruptedException implements Exception {
 
 /// Thrown when Wi-Fi sync is asked to talk to an address outside the local
 /// network. The app never sends data over the internet.
-class NonLocalAddressException implements Exception {
+class NonLocalAddressException extends AppException {
   const NonLocalAddressException(
     this.address, [
     this.message = 'Wi-Fi sync works only with devices on the local network.',
@@ -130,7 +138,7 @@ class NonLocalAddressException implements Exception {
 
 /// Thrown when on-device text reading (Tesseract OCR) is not available on
 /// this platform, for example on Windows.
-class OcrUnavailableException implements Exception {
+class OcrUnavailableException extends AppException {
   const OcrUnavailableException([
     this.message = 'Text reading is not available on this device.',
   ]);
@@ -143,7 +151,7 @@ class OcrUnavailableException implements Exception {
 
 /// Thrown when the native QR decoder is not available on this platform, for
 /// example on Windows.
-class QrScannerUnavailableException implements Exception {
+class QrScannerUnavailableException extends AppException {
   const QrScannerUnavailableException([
     this.message = 'QR scanning is not available on this device.',
   ]);
@@ -152,4 +160,15 @@ class QrScannerUnavailableException implements Exception {
 
   @override
   String toString() => 'QrScannerUnavailableException: $message';
+}
+
+/// Thrown when input breaks a rule, for example a time segment whose start is
+/// not before its end.
+class ValidationException extends AppException {
+  const ValidationException(this.message);
+
+  final String message;
+
+  @override
+  String toString() => 'ValidationException: $message';
 }

@@ -7,12 +7,12 @@ import 'package:uuid/uuid.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/errors/error_message_mapper.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart' as unicode_utils;
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/repeat_option_picker.dart';
-import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/core/rules/task_default_rules.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/priority_selector.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/target_time_field.dart';
 import 'package:sreerajp_todo/presentation/screens/create_edit_todo/widgets/title_autocomplete_field.dart';
@@ -22,7 +22,6 @@ import 'package:sreerajp_todo/domain/usecases/update_recurring_todos.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/adaptive_directionality.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/voice_command_sheet.dart';
-import 'package:sreerajp_todo/presentation/screens/ocr/ocr_scan_screen.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/confirm_dialog.dart';
 import 'package:sreerajp_todo/core/utils/rrule_display_utils.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/undo_status_snackbar.dart';
@@ -111,6 +110,11 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   @override
   void initState() {
     super.initState();
+    // A message from the previous screen (such as "Status changed to
+    // Completed") has nothing to do with this form, so clear it.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) hideAppSnackBars(context);
+    });
     _effectiveDate = widget.date ?? todayAsIso();
     if (!widget.isEditing) {
       // A brand new task opens on the values chosen in Settings. An existing
@@ -744,13 +748,11 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
                             icon: const Icon(Icons.document_scanner_outlined),
                             tooltip: context.l10n.ocrScanButtonTooltip,
                             onPressed: () async {
-                              final result = await Navigator.of(context)
+                              final result = await context
                                   .push<Map<String, dynamic>>(
-                                    MaterialPageRoute(
-                                      builder: (_) => OcrScanScreen(
-                                        date: _effectiveDate,
-                                        returnResultDirectly: true,
-                                      ),
+                                    AppRoutes.ocrScanPath(
+                                      date: _effectiveDate,
+                                      returnResult: true,
                                     ),
                                   );
                               if (result != null && mounted) {
@@ -1608,7 +1610,7 @@ class _CreateEditTodoScreenState extends ConsumerState<CreateEditTodoScreen> {
   Widget _buildPrerequisitesCard() {
     return AppSectionCard(
       title: context.l10n.prerequisiteTasks,
-      subtitle: '${_prerequisiteTodoIds.length} selected',
+      subtitle: context.l10n.prerequisitesSelected(_prerequisiteTodoIds.length),
       child: Wrap(
         spacing: 8,
         runSpacing: 8,

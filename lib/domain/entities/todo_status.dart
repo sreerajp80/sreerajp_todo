@@ -1,1 +1,16 @@
-export 'package:sreerajp_todo/data/models/todo_status.dart';
+enum TodoStatus {
+  pending,
+  working,
+  completed,
+  dropped,
+  ported;
+
+  String toDbString() => name;
+
+  static TodoStatus fromDbString(String value) {
+    return TodoStatus.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => throw ArgumentError('Unknown TodoStatus: $value'),
+    );
+  }
+}

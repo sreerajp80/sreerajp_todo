@@ -2,8 +2,8 @@ import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/dao/daily_reflection_dao.dart';
-import 'package:sreerajp_todo/data/models/daily_intention_entity.dart';
-import 'package:sreerajp_todo/data/models/daily_reflection_entity.dart';
+import 'package:sreerajp_todo/domain/entities/daily_intention_entity.dart';
+import 'package:sreerajp_todo/domain/entities/daily_reflection_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/daily_reflection_repository.dart';
 
 class DailyReflectionRepositoryImpl implements DailyReflectionRepository {

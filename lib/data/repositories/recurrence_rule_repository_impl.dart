@@ -1,6 +1,6 @@
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/dao/recurrence_rule_dao.dart';
-import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
 
 class RecurrenceRuleRepositoryImpl implements RecurrenceRuleRepository {

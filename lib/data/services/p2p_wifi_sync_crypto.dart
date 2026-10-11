@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'package:sreerajp_todo/core/utils/crypto_utils.dart';
+import 'package:sreerajp_todo/core/security/crypto_utils.dart';
 
 /// Pure Dart Authenticated Encryption Engine (AES-256-CTR + HMAC-SHA256)
 /// with key derivation via PBKDF2-HMAC-SHA256 (300,000 iterations).

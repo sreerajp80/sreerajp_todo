@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/time_tracking_state.dart';
 import 'package:sreerajp_todo/application/timer_paused_store.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
-import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
+import 'package:sreerajp_todo/core/rules/time_tracking_rules.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/time_segment_repository.dart';
 import 'package:sreerajp_todo/domain/usecases/start_time_segment.dart';
 

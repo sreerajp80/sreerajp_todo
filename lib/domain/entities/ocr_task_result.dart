@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
-
 /// The type of separator detected between the task name and description.
 enum OcrSeparatorType { none, space, hash, dashed }
 
 /// Represents the parsed result of an OCR text recognition operation.
-@immutable
 class OcrTaskResult {
   final String title;
   final String description;

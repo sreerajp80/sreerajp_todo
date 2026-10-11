@@ -8,6 +8,8 @@ import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/carry_over_sheet.dart';
 import 'package:sreerajp_todo/presentation/screens/daily_list/widgets/pending_todos_alert_sheet.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 /// Wraps the application and monitors day-start and interval-based triggers
 /// for pending task alerts.
@@ -81,8 +83,12 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
         intervalMinutes: settings.intervalMinutes,
         count: payload.totalCount,
       );
-    } catch (e) {
-      debugPrint('PendingAlertWatcher: sync background schedule failed ($e)');
+    } catch (e, st) {
+      AppLogger.error(
+        'PendingAlertWatcher: sync background schedule failed',
+        error: e,
+        stackTrace: st,
+      );
     }
   }
 
@@ -143,8 +149,12 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
             ref.invalidate(statisticsProvider);
           }
         }
-      } catch (e) {
-        debugPrint('PendingAlertWatcher: auto carry-over failed ($e)');
+      } catch (e, st) {
+        AppLogger.error(
+          'PendingAlertWatcher: auto carry-over failed',
+          error: e,
+          stackTrace: st,
+        );
       }
     }
 
@@ -165,18 +175,22 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
           .markIntervalAlertShown(now.millisecondsSinceEpoch);
     }
 
-    if (payload.isEmpty) return;
+    if (payload.isEmpty || !mounted) return;
 
     // Post native Android system notification
+    final l10n = context.l10n;
     final notificationChannel = ref.read(pendingNotificationChannelProvider);
     final count = payload.totalCount;
     final summary = payload.previousTodos.isNotEmpty
-        ? '${payload.todayTodos.length} today, ${payload.previousTodos.length} from previous days'
-        : '$count tasks remaining today';
+        ? l10n.pendingNotificationSummarySplit(
+            payload.todayTodos.length,
+            payload.previousTodos.length,
+          )
+        : l10n.pendingNotificationSummaryToday(count);
 
     await notificationChannel.showReminder(
-      title: 'Pending Tasks Reminder',
-      body: 'You have $count pending tasks waiting ($summary)',
+      title: l10n.pendingAlertsNotificationTitle,
+      body: l10n.pendingNotificationBody(count, summary),
       count: count,
     );
 
@@ -192,8 +206,12 @@ class _PendingAlertWatcherState extends ConsumerState<PendingAlertWatcher>
       _isSheetOpen = true;
       try {
         await PendingTodosAlertSheet.showPayload(navContext, payload);
-      } catch (e) {
-        debugPrint('PendingAlertWatcher: failed to show sheet ($e)');
+      } catch (e, st) {
+        AppLogger.error(
+          'PendingAlertWatcher: failed to show sheet',
+          error: e,
+          stackTrace: st,
+        );
       } finally {
         _isSheetOpen = false;
       }

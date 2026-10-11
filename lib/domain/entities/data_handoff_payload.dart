@@ -1,11 +1,9 @@
-import 'package:flutter/foundation.dart';
-import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
-import 'package:sreerajp_todo/data/models/sub_task_item.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/domain/entities/sub_task_item.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
 
 /// Container model for structured JSON data export and import.
-@immutable
 class DataHandoffPayload {
   final int version;
   final String date;

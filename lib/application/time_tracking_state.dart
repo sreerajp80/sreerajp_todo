@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
 
 part 'time_tracking_state.freezed.dart';
 

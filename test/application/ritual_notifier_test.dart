@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/application/ritual_notifier.dart';
-import 'package:sreerajp_todo/core/utils/ritual_rules.dart';
+import 'package:sreerajp_todo/core/rules/ritual_rules.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

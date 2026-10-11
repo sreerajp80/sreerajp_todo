@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
-import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/core/rules/task_default_rules.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
 
 /// Settings -> Task defaults -> Task actions.
@@ -93,9 +93,9 @@ class DefaultsTaskActionsScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
-                            defaults.carryOverLookBackDays == 1
-                                ? '1 day (Yesterday)'
-                                : '${defaults.carryOverLookBackDays} days',
+                            context.l10n.carryOverLookBackValue(
+                              defaults.carryOverLookBackDays,
+                            ),
                             style: Theme.of(context).textTheme.labelMedium
                                 ?.copyWith(
                                   color: Theme.of(
@@ -114,7 +114,9 @@ class DefaultsTaskActionsScreen extends ConsumerWidget {
                       max: kMaxCarryOverLookBackDays.toDouble(),
                       divisions:
                           kMaxCarryOverLookBackDays - kMinCarryOverLookBackDays,
-                      label: '${defaults.carryOverLookBackDays} days',
+                      label: context.l10n.daysCount(
+                        defaults.carryOverLookBackDays,
+                      ),
                       onChanged: (val) =>
                           notifier.setCarryOverLookBackDays(val.round()),
                     ),
@@ -126,9 +128,7 @@ class DefaultsTaskActionsScreen extends ConsumerWidget {
                         for (final preset in CarryOverLookBack.values)
                           ChoiceChip(
                             label: Text(
-                              preset == CarryOverLookBack.previousDay
-                                  ? '1d (Yesterday)'
-                                  : '${preset.days}d',
+                              context.l10n.carryOverLookBackChip(preset.days),
                             ),
                             selected:
                                 defaults.carryOverLookBackDays == preset.days,

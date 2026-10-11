@@ -60,38 +60,44 @@ The app uses a custom 5-layer architecture (Presentation / Application / Domain 
 lib/
 |-- main.dart
 |-- app.dart                        # MaterialApp, ThemeData, go_router
-|-- core/
-|   |-- config/                     # app_config, config_service (About screen)
-|   |-- constants/                  # app_constants, app_routes
-|   |-- errors/                     # exceptions, failures
-|   |-- extensions/                 # localization and build context extensions
-|   |-- platform/                   # thin Dart sides of the app's own method channels
+|-- core/                           # pure Dart only (config_service.dart is the one allowed exception)
+|   |-- config/                     # app_config, config_service (About screen, fixed path)
+|   |-- constants/                  # app_constants, app_routes, todo_sort_option
+|   |-- errors/                     # exceptions (sealed AppException hierarchy)
+|   |-- logging/                    # app_logger (AppLogger: levels, no user content)
+|   |-- network/                    # network_address_utils (local-network address check)
+|   |-- rules/                      # pure business-rule tables: app_lock, focus_pulse, ritual, task_default, time_tracking
+|   |-- security/                   # app_lock_service, crypto_utils, win32_dpapi
+|   |-- storage/                    # atomic_saver
 |   |-- voice/                      # voice_command_parser + the en and ml lexicons
-|   `-- utils/                      # date_utils, duration_utils, unicode_utils
+|   `-- utils/                      # small helpers: date, duration, unicode, indic search, rrule display
 |-- data/
 |   |-- database/                   # database_service, database_key_service, migrations/
 |   |-- dao/                        # todo_dao, time_segment_dao, recurrence_rule_dao, statistics_query_service
-|   |-- repositories/               # todo_repository_impl, time_segment_repository_impl
+|   |-- repositories/               # todo, time_segment, statistics ... repository impls
 |   |-- backup/                     # backup_service
-|   |-- services/                   # air_qr, ritual, OCR engines and image enhancement
-|   `-- models/                     # freezed entities + todo_status enum
+|   |-- platform/                   # thin Dart sides of the app's own method channels
+|   |-- security/                   # secret_store (platform-backed secret storage)
+|   `-- services/                   # air_qr, ritual, OCR engines and image enhancement
 |-- domain/
-|   |-- entities/                   # domain models (immutable)
+|   |-- entities/                   # immutable models (freezed entities, enums), incl. speech_event
 |   |-- repositories/               # abstract interfaces
-|   |-- services/                   # abstract service contracts (OCR, enhancer, image edit)
+|   |-- services/                   # abstract service contracts (OCR, enhancer, image edit) + ocr_task_parser
 |   `-- usecases/                   # multi-step business orchestrations
 |-- l10n/                           # ARB string files + generated AppLocalizations
 |-- application/                    # providers.dart, notifiers
 `-- presentation/
     |-- screens/                    # one folder per screen with widgets/ subdirectory
-    `-- shared/                     # shared widgets, theme
+    `-- shared/                     # widgets/ (incl. safe_error_fallback), theme/, extensions/
+                                    # (context.l10n), l10n/ (Sanskrit framework delegates),
+                                    # error_message_mapper
 ```
-
+| `lib/core/` | Pure Dart only: config loader (the one allowed Flutter import), constants, exceptions, business-rule tables, small helpers |
 ### Ownership Rules
 
 | Path | Responsibility |
 |------|----------------|
-| `lib/core/` | Pure Dart utilities, config loader, constants, exceptions |
+| `lib/core/` | Pure Dart utilities, config loader, constants, exceptions, `AppLogger` |
 | `lib/l10n/` | ARB translations and generated localization classes |
 | `lib/data/` | Repository implementations, DAOs, database service, backup, migrations |
 | `lib/domain/` | Abstract repository and service interfaces, use-case classes, domain entities — zero data-layer imports |
@@ -137,9 +143,9 @@ default reproduces the app's earlier fixed behaviour.
 | `PomodoroNotifier` | `application/pomodoro_notifier.dart` | Work / break cycle. Owns no database work — it calls back into `TimeTrackingNotifier` to start and stop segments |
 | `FocusPulseNotifier` | `application/focus_pulse_notifier.dart` | The nudge given every so often while a timer runs. Owns the schedule only; the mode, the gap, the clock and the nudge itself are all injected, so it is tested with no platform channel. Stays quiet while Pomodoro is on |
 | `TimerPausedStore` / `PausedTodosNotifier` | `application/timer_paused_store.dart` | Which todos show Resume rather than Start, for today only |
-| `focus_pulse_rules.dart` | `core/utils/` | Pure Dart: the nudge mode enum, the allowed range for the gap, and the next-pulse instant. Pulses are counted from the start of the running segment, so the schedule cannot drift |
-| `time_tracking_rules.dart` | `core/utils/` | Pure Dart: the setting enums, rounding, minimum-length check, next auto-stop instant. No Flutter imports, so every rule is unit tested without a binding |
-| `ScreenWakeChannel` | `core/platform/` | Dart side of the keep-awake channel; a no-op off Android |
+| `focus_pulse_rules.dart` | `core/rules/` | Pure Dart: the nudge mode enum, the allowed range for the gap, and the next-pulse instant. Pulses are counted from the start of the running segment, so the schedule cannot drift |
+| `time_tracking_rules.dart` | `core/rules/` | Pure Dart: the setting enums, rounding, minimum-length check, next auto-stop instant. No Flutter imports, so every rule is unit tested without a binding |
+| `ScreenWakeChannel` | `data/platform/` | Dart side of the keep-awake channel; a no-op off Android |
 | `TimerLifecycleWatcher` | `presentation/shared/widgets/` | `WidgetsBindingObserver` wrapping the app: auto-stop, auto-pause on background, keep-awake, and pointing the focus nudge at the running timer |
 | `TrackedDurationFormat` | `presentation/shared/utils/` | Inherited widget handing the rounding and format choices to deeply nested report widgets, so Statistics did not need a new constructor argument on every layer |
 
@@ -157,7 +163,7 @@ and every default reproduces the behaviour the app had before the setting existe
 | Piece | File | Job |
 |-------|------|-----|
 | `TaskDefaultsNotifier` | `application/task_defaults_notifier.dart` | Holds and saves every task default |
-| `task_default_rules.dart` | `core/utils/` | Pure Dart: the setting enums, the target-time split/join, and the once-a-day carry-over check. No Flutter imports |
+| `task_default_rules.dart` | `core/rules/` | Pure Dart: the setting enums, the target-time split/join, and the once-a-day carry-over check. No Flutter imports |
 | `TodoSortOption` | `core/constants/todo_sort_option.dart` | The 9 day-list orders. It lives in `core/` because the saved default is held in the application layer, which must never import from `presentation/` |
 | `day_list_filters.dart` | `presentation/screens/daily_list/` | The show/hide and sink-to-bottom rules, pulled out of the screen so they can be unit tested without a widget tree |
 | `CarryOverSheet` | `presentation/screens/daily_list/widgets/` | Finds the unfinished tasks and offers to copy them into today. Copying goes through the existing `CopyTodos` use case, so nothing about the day lock or NFC normalisation is re-implemented |
@@ -212,8 +218,8 @@ Use-cases exist only for multi-step business orchestrations:
 ### Serialization Strategy
 
 - JSON models: Yes (`json_serializable` for DB map conversion)
-- Database models: Yes (freezed models in `lib/data/models/` mirror DB tables)
-- Separate domain entities from transport models: Yes — domain entities in `lib/domain/entities/`, DB models in `lib/data/models/`
+- Database models: the freezed models in `lib/domain/entities/` mirror the DB tables. Their `toMap()` / `fromMap()` use plain Dart maps and never import `sqflite`.
+- Separate domain entities from transport models: No — one immutable model serves storage and UI (allowed for a simple app by the engineering standard §4.3). The models live in `domain/` so that `domain/` never imports `data/`.
 
 ---
 
@@ -294,7 +300,7 @@ Use-cases exist only for multi-step business orchestrations:
 - `in.sreerajp.todo/database_key`: Own channel to the Android Keystore for the database key
 - `in.sreerajp.todo/screen_wake`: Own channel setting and clearing `FLAG_KEEP_SCREEN_ON` while a timer runs (Android only). Written as a channel rather than a package so the audited dependency list stays unchanged
 - `in.sreerajp.todo/app_lock`: Own channel for `FLAG_SECURE` and the device unlock screen (Android only)
-- `in.sreerajp.todo/ocr`: Own channel to native Tesseract 5 (Tesseract4Android) for English and Malayalam text recognition (Android only). The language models ship in `assets/tessdata/` and are copied to app-internal storage on first use, so recognition is entirely on-device. Where the channel is absent — host tests, and Windows — `NativeOcrService` falls back to ML Kit
+- `in.sreerajp.todo/ocr`: Own channel to native Tesseract 5 (Tesseract4Android) for English and Malayalam text recognition (Android only). The language models ship in `assets/tessdata/` and are copied to app-internal storage on first use, so recognition is entirely on-device. Where the channel is absent — host tests, and Windows — `NativeOcrService` throws `OcrUnavailableException`, because Tesseract is the only OCR engine; text reading is not available there
 - `in.sreerajp.todo/qr_decoder`: Own channel to on-device ZXing core for the AirQR scanner (Android only). Dart sends the brightness plane of one camera frame; the host decodes it on a background thread and answers with the QR text or null.
 - `image_cropper`: Platform channel to the native uCrop crop-and-rotate editor, used before recognition
 - `in.sreerajp.todo/speech` and `in.sreerajp.todo/speech_events`: Own method and event channel pair over Android `SpeechRecognizer`, for the voice task sheet (Android only). The host always asks for the on-device engine and refuses to listen when it cannot, so the offline guarantee holds; see `docs/security.md` section 10. Written as a channel rather than a package for the same reason as the two above
@@ -336,27 +342,22 @@ Use-cases exist only for multi-step business orchestrations:
 
 ### Test Layout
 
+`test/` mirrors `lib/`: a test for `lib/<path>/<name>.dart` lives at
+`test/<path>/<name>_test.dart` ([engineering standard](guidelines/flutter_project_engineering_standard.md) §3.2).
+Only whole-app checks sit outside the mirror.
+
 ```text
 test/
-|-- data/
-|   |-- todo_dao_test.dart
-|   |-- time_segment_dao_test.dart
-|   |-- statistics_query_service_test.dart
-|   |-- backup_service_test.dart
-|   `-- recurrence_rule_dao_test.dart
-|-- domain/
-|   |-- todo_repository_test.dart
-|   `-- usecases/
-|       |-- mark_todo_completed_test.dart
-|       |-- mark_todo_dropped_test.dart
-|       |-- generate_recurring_tasks_test.dart
-|       |-- move_todo_test.dart
-|       `-- copy_todos_test.dart
-|-- core/
-|   `-- unicode_utils_test.dart
-`-- presentation/
-    |-- daily_list_screen_test.dart
-    `-- create_edit_screen_test.dart
+|-- application/                    # notifier tests
+|-- core/                           # config/, errors/, network/, rules/, storage/, utils/, voice/
+|-- data/                           # backup/, dao/, database/ (+ migrations/), platform/, repositories/, services/
+|-- domain/                         # entities/, repositories/, services/, usecases/
+|-- presentation/
+|   |-- screens/<screen>/           # screen tests (+ widgets/ for screen-private widgets)
+|   |-- shared/                     # l10n/, theme/, widgets/
+|   `-- icon_button_tooltips_compliance_test.dart   # whole-app tooltip check
+|-- l10n/                           # ARB parity and Sanskrit quality gates (whole app)
+`-- helpers/                        # shared test database, fixtures, l10n helpers
 ```
 
 ### Critical Test Areas
@@ -380,6 +381,9 @@ test/
   - No `compute()` or `Isolate.spawn()` for DB queries (sqflite handles are not transferable)
   - 10-second result cache in StatisticsNotifier
 - Regulatory or store constraints: None (personal use, not published to app stores in v1.0)
+- Logging: `AppLogger` (`lib/core/logging/app_logger.dart`) writes to the developer console only, through `dart:developer`. `trace` and `debug` are silent in release builds. It records the error type, never the error message. There is no log file, so no log rotation is needed.
+- Error boundaries: `main()` sets `FlutterError.onError` and `PlatformDispatcher.instance.onError` (both log through `AppLogger`). In release builds `ErrorWidget.builder` shows `SafeErrorFallback`, a neutral box with no error details.
+- User-facing errors: screens show `mapErrorToMessage(...)`, never raw exception text. All app errors extend the sealed `AppException`, so the mapper's `switch` must cover every type.
 - Team constraints: Single developer, all phases sequential
 
 ---
@@ -411,6 +415,8 @@ test/
   Mitigation: Paginated queries, yield to UI between batches, 10-second cache, optional read-only second DB connection.
 - Risk: Future package upgrade silently introduces a transitive networking dependency.
   Mitigation: Pre-commit hook runs offline dep audit; the release checklist audits the merged manifest for extra network permissions and telemetry backends.
+- Risk: `build_runner` fails on this code base. The locked `analyzer` is older than the Dart language version and cannot read dot-shorthand syntax.
+  Mitigation: Generated files are committed. Upgrade `build_runner` / `freezed` / `analyzer` in a separate change before the next model change, then run `flutter analyze` and `flutter test`.
 - Risk: A plugin adds its own telemetry (as Google ML Kit's `datatransport` did before ML Kit was removed).
   Mitigation: Remove the backend with `tools:node="remove"` in `AndroidManifest.xml` and check the merged manifest on every release build.
 
@@ -421,7 +427,8 @@ test/
 - [README.md](../README.md)
 - [CLAUDE.md](../CLAUDE.md)
 - [AGENTS.md](../AGENTS.md)
-- [flutter_project_engineering_standard.md](flutter_project_engineering_standard.md)
+- [PROJECT_PROFILE.md](PROJECT_PROFILE.md)
+- [guidelines/flutter_project_engineering_standard.md](guidelines/flutter_project_engineering_standard.md)
 - [release_process.md](release_process.md)
 - [security.md](security.md)
 - [workflow_rules.md](workflow_rules.md)

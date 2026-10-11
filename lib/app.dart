@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/l10n/sa_framework_localizations.dart';
+import 'package:sreerajp_todo/presentation/shared/l10n/sa_framework_localizations.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/about/about_screen.dart';
@@ -58,6 +58,7 @@ import 'package:sreerajp_todo/presentation/screens/ritual/ritual_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/ritual/ritual_settings_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/settings/pending_alerts_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/air_qr_scan_screen.dart';
+import 'package:sreerajp_todo/presentation/screens/ocr/ocr_enhance_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/ocr/ocr_scan_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/p2p_wifi_sync/p2p_wifi_sync_screen.dart';
 import 'package:sreerajp_todo/presentation/screens/data_handoff/data_handoff_screen.dart';
@@ -359,7 +360,18 @@ GoRouter _createRouter(String initialLocation) => GoRouter(
       path: AppRoutes.ocrScan,
       pageBuilder: (context, state) {
         final date = state.uri.queryParameters['date'];
-        return _buildPage(state, OcrScanScreen(date: date));
+        final returnResult = state.uri.queryParameters['return'] == '1';
+        return _buildPage(
+          state,
+          OcrScanScreen(date: date, returnResultDirectly: returnResult),
+        );
+      },
+    ),
+    GoRoute(
+      path: AppRoutes.ocrEnhance,
+      pageBuilder: (context, state) {
+        final imagePath = state.extra! as String;
+        return _buildPage(state, OcrEnhanceScreen(imagePath: imagePath));
       },
     ),
     GoRoute(

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sreerajp_todo/application/focus_pulse_notifier.dart';
-import 'package:sreerajp_todo/core/utils/focus_pulse_rules.dart';
+import 'package:sreerajp_todo/core/rules/focus_pulse_rules.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

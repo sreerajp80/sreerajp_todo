@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
-
 /// Categories of items that can be selectively included in a P2P Wi-Fi sync session.
 enum P2pSyncCategory { todaysTasks, timeSegments, recurrenceRules, masteryDeck }
 
 /// Represents the active selection scope for a P2P Wi-Fi sync transfer.
-@immutable
 class P2pSyncScope {
   final bool todaysTasks;
   final bool timeSegments;

@@ -4681,6 +4681,18 @@
   "@ocrEnhanceInvert": {
     "description": "Tool button that flips light and dark, for light text on a dark background."
   },
+  "ocrFilterScreen": "Screenshot",
+  "@ocrFilterScreen": {
+    "description": "OCR filter chip for screen captures: grayscale, dark mode flipped, and enlarged so small UI text reads well."
+  },
+  "ocrFilterAdaptive": "Shadow fix",
+  "@ocrFilterAdaptive": {
+    "description": "OCR filter chip that makes a black-and-white page from a photo with shadows or uneven light."
+  },
+  "ocrSharpnessLabel": "Sharpness",
+  "@ocrSharpnessLabel": {
+    "description": "Label of the OCR fine-tune slider that sharpens soft letter edges."
+  },
   "ocrEnhanceLiveText": "Recognised text",
   "@ocrEnhanceLiveText": {
     "description": "Header of the panel showing the text found in the photo so far."
@@ -4701,6 +4713,14 @@
   "ocrEnhanceScanning": "Reading...",
   "@ocrEnhanceScanning": {
     "description": "Badge shown while recognition is still running."
+  },
+  "ocrExtractTextTooltip": "Extract text",
+  "@ocrExtractTextTooltip": {
+    "description": "Tooltip of the icon-only button that reads the text from the edited photo."
+  },
+  "ocrEnhanceExtractHint": "Finish editing, then tap the scan button to read the text.",
+  "@ocrEnhanceExtractHint": {
+    "description": "Shown in the recognised text panel before the user has tapped the extract text button."
   },
   "ocrLanguageTooltip": "Recognition language",
   "@ocrLanguageTooltip": {
@@ -5169,5 +5189,1839 @@
   "airQrScanUnavailable": "QR scanning is available on Android only.",
   "@airQrScanUnavailable": {
     "description": "Shown on the AirQR scan screen on platforms without the native QR decoder."
+  },
+  "ok": "OK",
+  "@ok": {
+    "description": "Generic OK button that closes a dialog."
+  },
+  "errorNotLocalNetwork": "Wi-Fi sync works only with devices on your local network.",
+  "@errorNotLocalNetwork": {
+    "description": "Error shown when Wi-Fi sync is pointed at an address outside the local network."
+  },
+  "errorInvalidInput": "Some of the values entered are not valid.",
+  "@errorInvalidInput": {
+    "description": "Generic error shown when the user's input breaks a rule."
+  },
+  "p2pSummaryTasks": "Tasks",
+  "@p2pSummaryTasks": {
+    "description": "Row label in the Wi-Fi sync summary dialog for tasks."
+  },
+  "p2pSummaryAdded": "+{count} added",
+  "@p2pSummaryAdded": {
+    "description": "Number of items added by a Wi-Fi sync, in the summary dialog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pSummarySkipped": "({count} skipped)",
+  "@p2pSummarySkipped": {
+    "description": "Number of items skipped by a Wi-Fi sync, in the summary dialog.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pDayLockSkipped": "{count, plural, =1{1 item from a past day was skipped because past days are locked.} other{{count} items from past days were skipped because past days are locked.}}",
+  "@p2pDayLockSkipped": {
+    "description": "Warning in the Wi-Fi sync summary when items for locked past days were not merged.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "p2pTabHost": "Host (Share)",
+  "@p2pTabHost": {
+    "description": "Tab label: this device shares its data. Keep short."
+  },
+  "p2pTabPeer": "Peer (Receive)",
+  "@p2pTabPeer": {
+    "description": "Tab label: this device receives data. Keep short."
+  },
+  "p2pHostActive": "Host server active",
+  "@p2pHostActive": {
+    "description": "Status title when this device is sharing over Wi-Fi."
+  },
+  "p2pHostStopped": "Host server stopped",
+  "@p2pHostStopped": {
+    "description": "Status title when this device is not sharing over Wi-Fi."
+  },
+  "p2pHostListening": "Listening on {address}",
+  "@p2pHostListening": {
+    "description": "Status line with the local address and port the host listens on.",
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pHostIdleHint": "Tap below to open an encrypted connection.",
+  "@p2pHostIdleHint": {
+    "description": "Hint shown while the host server is stopped."
+  },
+  "p2pPairingPinLabel": "Pairing PIN",
+  "@p2pPairingPinLabel": {
+    "description": "Label for the PIN the other device must type to pair."
+  },
+  "p2pSelectScope": "Select sync scope",
+  "@p2pSelectScope": {
+    "description": "Heading above the list of data types to share."
+  },
+  "p2pStartHost": "Start host server",
+  "@p2pStartHost": {
+    "description": "Button that starts sharing over Wi-Fi."
+  },
+  "p2pStopHost": "Stop host server",
+  "@p2pStopHost": {
+    "description": "Button that stops sharing over Wi-Fi."
+  },
+  "p2pConnectToHost": "Connect to host device",
+  "@p2pConnectToHost": {
+    "description": "Heading of the card where the user types the host's details."
+  },
+  "p2pHostIpLabel": "Host IP address",
+  "@p2pHostIpLabel": {
+    "description": "Label of the host IP address field."
+  },
+  "p2pHostIpHint": "e.g. 192.168.1.105",
+  "@p2pHostIpHint": {
+    "description": "Example shown in the empty host IP address field."
+  },
+  "p2pPinHint": "6-digit PIN",
+  "@p2pPinHint": {
+    "description": "Hint shown in the empty pairing PIN field."
+  },
+  "p2pRequestedScope": "Requested sync scope",
+  "@p2pRequestedScope": {
+    "description": "Heading above the list of data types to receive."
+  },
+  "p2pStatusConnecting": "Connecting to {address}…",
+  "@p2pStatusConnecting": {
+    "description": "Progress text while connecting to the host.",
+    "placeholders": {
+      "address": {
+        "type": "String"
+      }
+    }
+  },
+  "p2pStatusAuthenticating": "Setting up a secure session…",
+  "@p2pStatusAuthenticating": {
+    "description": "Progress text while the encrypted session is being set up."
+  },
+  "daysCount": "{count, plural, =1{1 day} other{{count} days}}",
+  "@daysCount": {
+    "description": "A number of days, for example on a slider or a badge.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "daysShort": "{count}d",
+  "@daysShort": {
+    "description": "Very short number of days for a compact chip, for example '7d'.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tasksCount": "{count, plural, =1{1 task} other{{count} tasks}}",
+  "@tasksCount": {
+    "description": "A number of tasks, shown in a small chip.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subtasksCount": "{count, plural, =1{1 subtask} other{{count} subtasks}}",
+  "@subtasksCount": {
+    "description": "A number of subtasks under a task.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "subtasksProgress": "{done}/{total} subtasks",
+  "@subtasksProgress": {
+    "description": "How many subtasks of a task are done.",
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingAlertsView": "View",
+  "@pendingAlertsView": {
+    "description": "Button on the pending-tasks sheet that opens a task that is already running."
+  },
+  "masteryTasksInDeck": "Tasks in deck",
+  "@masteryTasksInDeck": {
+    "description": "Heading above the task list on a Mastery Deck page."
+  },
+  "masteryTargetTime": "Target: {duration}",
+  "@masteryTargetTime": {
+    "description": "Target time of a task in a Mastery Deck, as HH:MM:SS.",
+    "placeholders": {
+      "duration": {
+        "type": "String"
+      }
+    }
+  },
+  "carryOverLookBackValue": "{count, plural, =1{1 day (yesterday)} other{{count} days}}",
+  "@carryOverLookBackValue": {
+    "description": "How far back the carry-over looks, shown next to the setting.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "carryOverLookBackChip": "{count, plural, =1{1d (yesterday)} other{{count}d}}",
+  "@carryOverLookBackChip": {
+    "description": "Short preset chip for the carry-over look-back days.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "eventTimerSession": "Timer session",
+  "@eventTimerSession": {
+    "description": "Task history event: a timer was stopped, closing a session."
+  },
+  "eventManualTime": "Manual time",
+  "@eventManualTime": {
+    "description": "Task history event: time was added by hand."
+  },
+  "eventStatusChange": "Status change",
+  "@eventStatusChange": {
+    "description": "Task history event: the task status changed."
+  },
+  "prerequisitesSelected": "{count} selected",
+  "@prerequisitesSelected": {
+    "description": "How many prerequisite tasks are selected.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ocrNoCamera": "No camera found on this device.",
+  "@ocrNoCamera": {
+    "description": "Shown on the OCR scanner when the device has no camera."
+  },
+  "ocrCameraStartFailed": "The camera could not be started.",
+  "@ocrCameraStartFailed": {
+    "description": "Shown on the OCR scanner when the camera fails to start."
+  },
+  "ocrOverlayTaskName": "1. Task name",
+  "@ocrOverlayTaskName": {
+    "description": "Label on the upper area of the OCR camera frame."
+  },
+  "ocrOverlaySeparator": "space / # / ---",
+  "@ocrOverlaySeparator": {
+    "description": "Hint showing the marks that separate a task name from its description."
+  },
+  "ocrOverlayDescription": "2. Description (all remaining text)",
+  "@ocrOverlayDescription": {
+    "description": "Label on the lower area of the OCR camera frame."
+  },
+  "pendingNotificationBody": "{count, plural, =1{You have 1 pending task waiting ({summary})} other{You have {count} pending tasks waiting ({summary})}}",
+  "@pendingNotificationBody": {
+    "description": "Body of the pending-tasks system notification.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "summary": {
+        "type": "String"
+      }
+    }
+  },
+  "pendingNotificationSummarySplit": "{today} today, {previous} from previous days",
+  "@pendingNotificationSummarySplit": {
+    "description": "Summary in the pending-tasks notification when some tasks are from earlier days.",
+    "placeholders": {
+      "today": {
+        "type": "int"
+      },
+      "previous": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingNotificationSummaryToday": "{count, plural, =1{1 task remaining today} other{{count} tasks remaining today}}",
+  "@pendingNotificationSummaryToday": {
+    "description": "Summary in the pending-tasks notification when all tasks are from today.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupShareTitle": "AirQR backup share",
+  "@airQrBackupShareTitle": {
+    "description": "Title of the AirQR dialog that shares a backup."
+  },
+  "airQrSyncDayTitle": "AirQR sync ({date})",
+  "@airQrSyncDayTitle": {
+    "description": "Title of the AirQR dialog that shares one day's tasks.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrEstimate": "Estimated scan time: {time} ({size})",
+  "@airQrEstimate": {
+    "description": "Estimated time and data size of an AirQR transfer.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrLargeBackupWarning": "This is a large database, so camera sync may take a while. For a faster transfer, use an encrypted backup file (.zip).",
+  "@airQrLargeBackupWarning": {
+    "description": "Warning when a backup is too large to send quickly by AirQR."
+  },
+  "airQrBackupReady": "Full app backup ready to send by camera. Hold the receiving phone's camera steady.",
+  "@airQrBackupReady": {
+    "description": "Hint shown while a backup is being sent by AirQR."
+  },
+  "airQrFrameParity": "Fountain parity",
+  "@airQrFrameParity": {
+    "description": "Type of the AirQR frame being shown: an extra recovery frame."
+  },
+  "airQrFrameSystematic": "Systematic block",
+  "@airQrFrameSystematic": {
+    "description": "Type of the AirQR frame being shown: a normal data frame."
+  },
+  "airQrStreamFrames": "AirQR optical stream ({count} frames)",
+  "@airQrStreamFrames": {
+    "description": "Heading of the AirQR share dialog with the number of frames.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrFrameCounter": "Frame {current} / {total} • {type}",
+  "@airQrFrameCounter": {
+    "description": "Which AirQR frame is shown now, and its type.",
+    "placeholders": {
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "type": {
+        "type": "String"
+      }
+    }
+  },
+  "airQrPauseStream": "Pause stream",
+  "@airQrPauseStream": {
+    "description": "Tooltip of the button that pauses the AirQR stream."
+  },
+  "airQrResumeStream": "Resume stream",
+  "@airQrResumeStream": {
+    "description": "Tooltip of the button that resumes the AirQR stream."
+  },
+  "airQrFpsChip": "{fps} FPS",
+  "@airQrFpsChip": {
+    "description": "Chip that picks the AirQR frame rate in frames per second.",
+    "placeholders": {
+      "fps": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupPayloadEntries": "Full app backup ({count} entries)",
+  "@airQrBackupPayloadEntries": {
+    "description": "Summary of a backup received by AirQR.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrReceivedTasks": "AirQR tasks received",
+  "@airQrReceivedTasks": {
+    "description": "Title after scanning AirQR tasks."
+  },
+  "airQrReceivedTimecard": "AirQR timecard received",
+  "@airQrReceivedTimecard": {
+    "description": "Title after scanning an AirQR timecard."
+  },
+  "airQrReceivedBackup": "AirQR backup received",
+  "@airQrReceivedBackup": {
+    "description": "Title after scanning an AirQR backup."
+  },
+  "airQrReceivedUnknown": "AirQR data received",
+  "@airQrReceivedUnknown": {
+    "description": "Title after scanning AirQR data of an unknown type."
+  },
+  "airQrTasksReady": "{count, plural, =1{1 task ready to merge into your list.} other{{count} tasks ready to merge into your list.}}",
+  "@airQrTasksReady": {
+    "description": "Detail after scanning AirQR tasks.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrTimecardReady": "{count, plural, =1{Daily timecard with 1 item ready to merge.} other{Daily timecard with {count} items ready to merge.}}",
+  "@airQrTimecardReady": {
+    "description": "Detail after scanning an AirQR timecard.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "airQrBackupReceivedDetail": "Full app backup received through the camera.",
+  "@airQrBackupReceivedDetail": {
+    "description": "Detail after scanning an AirQR backup."
+  },
+  "backupHideLogs": "Hide logs",
+  "@backupHideLogs": {
+    "description": "Button that hides the backup run log."
+  },
+  "backupViewLogs": "View logs ({count})",
+  "@backupViewLogs": {
+    "description": "Button that shows the backup run log, with the number of entries.",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "backupLastRun": "Last run: {time} ({trigger})",
+  "@backupLastRun": {
+    "description": "When the last backup ran and whether it was manual or scheduled.",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      },
+      "trigger": {
+        "type": "String"
+      }
+    }
+  },
+  "backupArchiveSize": "Archive size: {size}",
+  "@backupArchiveSize": {
+    "description": "Size of the last backup file.",
+    "placeholders": {
+      "size": {
+        "type": "String"
+      }
+    }
+  },
+  "progressAllDone": "All caught up! 🎉",
+  "@progressAllDone": {
+    "description": "Day list header when every task of the day is finished."
+  },
+  "progressAllDoneDetail": "Great job finishing today's agenda.",
+  "@progressAllDoneDetail": {
+    "description": "Line under the all-done header on the day list."
+  },
+  "progressCompletedOf": "{completed} of {total} completed",
+  "@progressCompletedOf": {
+    "description": "Day list header: how many of the day's tasks are completed.",
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "recallTitle": "Recall confidence",
+  "@recallTitle": {
+    "description": "Title of the dialog shown when a Mastery Deck task is completed."
+  },
+  "recallPrompt": "How easily did you recall or complete this task?",
+  "@recallPrompt": {
+    "description": "Question in the recall confidence dialog."
+  },
+  "recallHard": "Hard",
+  "@recallHard": {
+    "description": "Recall answer: it was hard."
+  },
+  "recallHardDetail": "Struggled or forgot. Next review in 1 day.",
+  "@recallHardDetail": {
+    "description": "Explains the Hard recall answer."
+  },
+  "recallRevision": "Revision",
+  "@recallRevision": {
+    "description": "Recall answer: it needed some effort."
+  },
+  "recallRevisionDetail": "Moderate effort. Next review in 3 days.",
+  "@recallRevisionDetail": {
+    "description": "Explains the Revision recall answer."
+  },
+  "recallEasy": "Easy",
+  "@recallEasy": {
+    "description": "Recall answer: it was easy."
+  },
+  "recallEasyDetail": "Effortless! Next review in {days} days (level {level}).",
+  "@recallEasyDetail": {
+    "description": "Explains the Easy recall answer.",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      },
+      "level": {
+        "type": "int"
+      }
+    }
+  },
+  "dataHandoffExportSection": "Export options",
+  "@dataHandoffExportSection": {
+    "description": "Heading above the export actions on the data handoff screen."
+  },
+  "dataHandoffImportSection": "Import options",
+  "@dataHandoffImportSection": {
+    "description": "Heading above the import actions on the data handoff screen."
+  },
+  "markdownTargetDate": "Target date: {date}",
+  "@markdownTargetDate": {
+    "description": "The date that pasted Markdown tasks will be added to.",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "markdownImportHint": "- [ ] Task title\n  - [ ] Subtask title\n  > Note",
+  "@markdownImportHint": {
+    "description": "Example Markdown shown in the empty paste box. Keep the '- [ ]' and '>' marks."
+  },
+  "markdownNoItems": "No `- [ ]` or `- [x]` checklist items found.",
+  "@markdownNoItems": {
+    "description": "Shown when the pasted Markdown has no checklist items."
+  },
+  "markdownPastDateLocked": "Past days are locked. Choose today or a later date to import.",
+  "@markdownPastDateLocked": {
+    "description": "Shown when the Markdown import target date is in the past."
+  },
+  "helpTaskMgmtTitle": "Daily Lists & Day Lock",
+  "@helpTaskMgmtTitle": {
+    "description": "Help topic title: daily lists and the day lock."
+  },
+  "helpTaskMgmtIntro": "SreerajP ToDo organizes your tasks strictly on a day-by-day basis. Learn how the daily list, day lock protection, and terminal status locks maintain the integrity of your productivity logs.",
+  "@helpTaskMgmtIntro": {
+    "description": "Help: task management intro paragraph."
+  },
+  "helpTaskMgmtDayLockTitle": "The Day Lock Principle",
+  "@helpTaskMgmtDayLockTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtDayLock1": "Tasks dated prior to today are permanently read-only and cannot be modified or deleted.",
+  "@helpTaskMgmtDayLock1": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtDayLock2": "This ensures historical data remains an authentic, unedited reflection of what actually occurred.",
+  "@helpTaskMgmtDayLock2": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtDayLock3": "If you need to work on an incomplete task from yesterday, copy it to today’s list rather than editing the past.",
+  "@helpTaskMgmtDayLock3": {
+    "description": "Help: day lock bullet."
+  },
+  "helpTaskMgmtStatusTitle": "Task Statuses & Terminal Locks",
+  "@helpTaskMgmtStatusTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtStatus1": "Tasks progress through statuses: Pending, Working, Completed, and Dropped.",
+  "@helpTaskMgmtStatus1": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtStatus2": "Completed and Dropped are terminal statuses. Once a task reaches a terminal status, no new time segments can be started on it.",
+  "@helpTaskMgmtStatus2": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtStatus3": "Marking an in-progress task as Completed or Dropped automatically stops any active running time segment.",
+  "@helpTaskMgmtStatus3": {
+    "description": "Help: task status bullet."
+  },
+  "helpTaskMgmtUndoTitle": "Accidental Changes & Undo Action",
+  "@helpTaskMgmtUndoTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtUndo1": "Whenever a task status is changed, a 5-second SnackBar appears with an Undo button.",
+  "@helpTaskMgmtUndo1": {
+    "description": "Help: undo bullet."
+  },
+  "helpTaskMgmtUndo2": "A persistent Undo button is also available in the app bar to quickly reverse your last status transition.",
+  "@helpTaskMgmtUndo2": {
+    "description": "Help: undo bullet."
+  },
+  "helpTaskMgmtUnicodeTitle": "Unicode NFC Normalization & Title Uniqueness",
+  "@helpTaskMgmtUnicodeTitle": {
+    "description": "Help: task management section title."
+  },
+  "helpTaskMgmtUnicode1": "All task titles are NFC-normalized before being written to the database.",
+  "@helpTaskMgmtUnicode1": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtUnicode2": "No two tasks on the same day can share identical titles (ignoring case and whitespace).",
+  "@helpTaskMgmtUnicode2": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtUnicode3": "Text direction (RTL/LTR) is dynamically detected per item for seamless multilingual support (English, Malayalam, Hindi, etc.).",
+  "@helpTaskMgmtUnicode3": {
+    "description": "Help: Unicode bullet."
+  },
+  "helpTaskMgmtTip": "Tip: Use the date picker or swipe between days on the daily list to review past productivity or plan future days.",
+  "@helpTaskMgmtTip": {
+    "description": "Help: task management footer tip."
+  },
+  "helpRecurringTitle": "Recurring Tasks & Bulk Copy",
+  "@helpRecurringTitle": {
+    "description": "Help topic title: recurring tasks and bulk copy."
+  },
+  "helpRecurringIntro": "Save time by automating repetitive daily routines, weekly meetings, and habit tasks using standard RFC-5545 recurrence rules or bulk copying tasks across days.",
+  "@helpRecurringIntro": {
+    "description": "Help: recurring tasks intro paragraph."
+  },
+  "helpRecurringRulesTitle": "Recurrence Rules (RRule)",
+  "@helpRecurringRulesTitle": {
+    "description": "Help: recurring tasks section title."
+  },
+  "helpRecurringRules1": "Create recurring rules with flexible frequencies: Daily, Weekly (selected weekdays), Monthly, or Custom intervals.",
+  "@helpRecurringRules1": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringRules2": "When you view a day, the app automatically generates that day's recurring task instances with preset priorities and target durations.",
+  "@helpRecurringRules2": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringRules3": "Editing or completing a single day’s recurring instance does not affect future or past instances.",
+  "@helpRecurringRules3": {
+    "description": "Help: recurrence rules bullet."
+  },
+  "helpRecurringCopyTitle": "Bulk Copying Past Tasks",
+  "@helpRecurringCopyTitle": {
+    "description": "Help: recurring tasks section title."
+  },
+  "helpRecurringCopy1": "From the daily list menu, tap \"Copy Tasks\" to open the copy assistant.",
+  "@helpRecurringCopy1": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringCopy2": "Quickly select all unfinished tasks from yesterday or a custom past date and clone them into today’s list.",
+  "@helpRecurringCopy2": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringCopy3": "Copied tasks start fresh with status Pending and zero elapsed time segments.",
+  "@helpRecurringCopy3": {
+    "description": "Help: bulk copy bullet."
+  },
+  "helpRecurringTip": "Tip: Use Recurring Tasks for regular habits (like morning workouts or reviews), and Bulk Copy for ad-hoc carried-over items.",
+  "@helpRecurringTip": {
+    "description": "Help: recurring tasks footer tip."
+  },
+  "helpTimeTrackingTitle": "Time Tracking & Segments",
+  "@helpTimeTrackingTitle": {
+    "description": "Help topic title: time tracking and segments."
+  },
+  "helpTimeTrackingIntro": "SreerajP ToDo includes a built-in time tracker that measures the real duration spent on each task. Each task records time through individual start and end intervals called Time Segments.",
+  "@helpTimeTrackingIntro": {
+    "description": "Help: time tracking intro paragraph."
+  },
+  "helpTimeTrackingSegmentsTitle": "Time Segments Architecture",
+  "@helpTimeTrackingSegmentsTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingSegments1": "Each time you start and stop the timer, a Time Segment is recorded with an exact start timestamp and end timestamp.",
+  "@helpTimeTrackingSegments1": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSegments2": "A task can contain multiple segments (e.g. morning work session, afternoon session). The total time is the sum of all segments.",
+  "@helpTimeTrackingSegments2": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSegments3": "Durations are always displayed in standard HH:MM:SS format across the entire app.",
+  "@helpTimeTrackingSegments3": {
+    "description": "Help: time segments bullet."
+  },
+  "helpTimeTrackingSingleTitle": "Single Running Timer Rule",
+  "@helpTimeTrackingSingleTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingSingle1": "At most one open time segment (running timer) can exist across the entire app at any time.",
+  "@helpTimeTrackingSingle1": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingSingle2": "Starting a timer on a new task automatically stops any currently running timer on another task.",
+  "@helpTimeTrackingSingle2": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingSingle3": "This single-active-timer guarantee prevents conflicting logs and inflated tracking numbers.",
+  "@helpTimeTrackingSingle3": {
+    "description": "Help: single timer bullet."
+  },
+  "helpTimeTrackingAutoTitle": "Auto-Stop & Background Pausing",
+  "@helpTimeTrackingAutoTitle": {
+    "description": "Help: time tracking section title."
+  },
+  "helpTimeTrackingAuto1": "Under Settings → Time Tracking, you can configure timers to automatically stop at midnight or at a custom hour.",
+  "@helpTimeTrackingAuto1": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingAuto2": "You can enable \"Auto-pause when leaving the app\" to pause tracking if you switch to other apps.",
+  "@helpTimeTrackingAuto2": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingAuto3": "Short accidental timer taps under a configurable threshold (e.g. 10s or 30s) can be automatically discarded.",
+  "@helpTimeTrackingAuto3": {
+    "description": "Help: auto-stop bullet."
+  },
+  "helpTimeTrackingTip": "Tip: Tap the stopwatch icon or time badge on any task card to start tracking instantly. Tap it again to stop.",
+  "@helpTimeTrackingTip": {
+    "description": "Help: time tracking footer tip."
+  },
+  "helpFocusTitle": "Focus Mode & Pomodoro",
+  "@helpFocusTitle": {
+    "description": "Help topic title: focus mode and Pomodoro."
+  },
+  "helpFocusIntro": "Focus Mode provides a distraction-free full-screen environment for deep work sessions, coupled with customizable Pomodoro intervals and target duration countdowns.",
+  "@helpFocusIntro": {
+    "description": "Help: focus intro paragraph."
+  },
+  "helpFocusScreenTitle": "Full-Screen Focus Mode",
+  "@helpFocusScreenTitle": {
+    "description": "Help: focus section title."
+  },
+  "helpFocusScreen1": "Open Focus Mode from any task details menu to immerse in a clean, distraction-free screen.",
+  "@helpFocusScreen1": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusScreen2": "Focus Mode displays a large elapsed or countdown timer, target progress ring, and quick pause/resume controls.",
+  "@helpFocusScreen2": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusScreen3": "Keep-screen-awake mode keeps your display active while your focus timer is running.",
+  "@helpFocusScreen3": {
+    "description": "Help: focus screen bullet."
+  },
+  "helpFocusPomodoroTitle": "Pomodoro Technique",
+  "@helpFocusPomodoroTitle": {
+    "description": "Help: focus section title."
+  },
+  "helpFocusPomodoro1": "Customize your focus work duration (e.g. 25 minutes) and break intervals (e.g. 5 minutes) under Settings → Time Tracking → Pomodoro.",
+  "@helpFocusPomodoro1": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusPomodoro2": "Audio and haptic vibrations signal the end of work intervals and break periods.",
+  "@helpFocusPomodoro2": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusPomodoro3": "All focus sessions seamlessly record standard Time Segments under the parent task.",
+  "@helpFocusPomodoro3": {
+    "description": "Help: Pomodoro bullet."
+  },
+  "helpFocusTip": "Tip: Target durations can be configured when creating or editing a task to automatically calculate your remaining focus time.",
+  "@helpFocusTip": {
+    "description": "Help: focus footer tip."
+  },
+  "helpMasteryTitle": "Mastery Deck & Flashcards",
+  "@helpMasteryTitle": {
+    "description": "Help topic title: Mastery Deck and flashcards."
+  },
+  "helpMasteryIntro": "Mastery Deck turns your daily learnings, key concepts, and study notes into an active spaced repetition flashcard system. Retain what you learn long-term with scientifically scheduled review intervals.",
+  "@helpMasteryIntro": {
+    "description": "Help: Mastery Deck intro paragraph."
+  },
+  "helpMasteryReviewTitle": "Spaced Repetition Review",
+  "@helpMasteryReviewTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryReview1": "Cards are scheduled for review based on how well you remember them (Easy, Good, Hard, Again).",
+  "@helpMasteryReview1": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryReview2": "Cards rated \"Easy\" increase their review intervals exponentially (e.g. 1 day → 3 days → 7 days → 16 days).",
+  "@helpMasteryReview2": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryReview3": "Cards rated \"Hard\" or \"Again\" reset or shorten their intervals for frequent reinforcement.",
+  "@helpMasteryReview3": {
+    "description": "Help: review bullet."
+  },
+  "helpMasteryDecksTitle": "Decks & Organization",
+  "@helpMasteryDecksTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryDecks1": "Group flashcards by subject, project, or language into custom Decks.",
+  "@helpMasteryDecks1": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryDecks2": "Each card has a Question (Front) and Answer/Explanation (Back), with optional tags.",
+  "@helpMasteryDecks2": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryDecks3": "Decks show live metrics including Due Today count, Total Cards, and Overall Mastery Percentage.",
+  "@helpMasteryDecks3": {
+    "description": "Help: decks bullet."
+  },
+  "helpMasteryLevelsTitle": "Mastery Levels",
+  "@helpMasteryLevelsTitle": {
+    "description": "Help: Mastery Deck section title."
+  },
+  "helpMasteryLevels1": "Cards progress through 5 mastery levels: Learning, Novice, Competent, Proficient, and Mastered.",
+  "@helpMasteryLevels1": {
+    "description": "Help: mastery levels bullet."
+  },
+  "helpMasteryLevels2": "Streaks and review consistency reward daily engagement and habit formation.",
+  "@helpMasteryLevels2": {
+    "description": "Help: mastery levels bullet."
+  },
+  "helpMasteryTip": "Tip: You can export and share your custom decks with other devices using Air QR beams or Local Wi-Fi Sync.",
+  "@helpMasteryTip": {
+    "description": "Help: Mastery Deck footer tip."
+  },
+  "helpWifiTitle": "Local Wi-Fi P2P Device Sync",
+  "@helpWifiTitle": {
+    "description": "Help topic title: local Wi-Fi sync."
+  },
+  "helpWifiIntro": "Transfer and synchronize your tasks, time records, and mastery flashcards directly between two devices on the same local Wi-Fi network — with zero cloud servers and zero internet traffic.",
+  "@helpWifiIntro": {
+    "description": "Help: Wi-Fi sync intro paragraph."
+  },
+  "helpWifiHowTitle": "How Local Wi-Fi Sync Works",
+  "@helpWifiHowTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiHow1": "Both devices must be connected to the same local Wi-Fi network (or one device connected to the other’s hotspot).",
+  "@helpWifiHow1": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiHow2": "One device acts as the Sender/Host (generating a temporary pairing code / QR code), and the other acts as the Receiver.",
+  "@helpWifiHow2": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiHow3": "Data is transferred directly socket-to-socket over your local LAN, completely bypassing external servers or the internet.",
+  "@helpWifiHow3": {
+    "description": "Help: how sync works bullet."
+  },
+  "helpWifiEncryptionTitle": "End-to-End Encryption",
+  "@helpWifiEncryptionTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiEncryption1": "Local sync connections negotiate an encrypted channel using one-time pairing credentials.",
+  "@helpWifiEncryption1": {
+    "description": "Help: encryption bullet."
+  },
+  "helpWifiEncryption2": "Other devices on the same Wi-Fi network cannot inspect or tamper with the transferred payload.",
+  "@helpWifiEncryption2": {
+    "description": "Help: encryption bullet."
+  },
+  "helpWifiModesTitle": "Sync Modes & Conflicts",
+  "@helpWifiModesTitle": {
+    "description": "Help: Wi-Fi sync section title."
+  },
+  "helpWifiModes1": "Two-Way Smart Merge: Combines tasks and segments from both devices without losing existing records.",
+  "@helpWifiModes1": {
+    "description": "Help: sync modes bullet."
+  },
+  "helpWifiModes2": "Replace All: Replaces the target device’s data completely with an exact clone of the source device (after confirmation).",
+  "@helpWifiModes2": {
+    "description": "Help: sync modes bullet."
+  },
+  "helpWifiTip": "Tip: If your Wi-Fi router blocks client-to-client traffic (client isolation), simply turn on a mobile hotspot on one phone and connect the other phone to it.",
+  "@helpWifiTip": {
+    "description": "Help: Wi-Fi sync footer tip."
+  },
+  "helpQrTitle": "Air QR & Data Handoff",
+  "@helpQrTitle": {
+    "description": "Help topic title: Air QR and data handoff."
+  },
+  "helpQrIntro": "Move tasks, time tracking summaries, and flashcards across devices without Wi-Fi, cables, or internet. Air QR uses high-density animated visual QR codes to beam data directly into the camera of another device.",
+  "@helpQrIntro": {
+    "description": "Help: Air QR intro paragraph."
+  },
+  "helpQrBeamTitle": "Air QR Visual Beam",
+  "@helpQrBeamTitle": {
+    "description": "Help: Air QR section title."
+  },
+  "helpQrBeam1": "Select tasks or decks and tap \"Air QR Share\" to produce a visual QR stream on screen.",
+  "@helpQrBeam1": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam2": "On the receiving device, open \"Air QR Scan\" and point the camera at the sending screen.",
+  "@helpQrBeam2": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam3": "The camera reassembles all data chunks in real time, validating checksums before applying imports.",
+  "@helpQrBeam3": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrBeam4": "Camera permission is requested only while scanning and no photo or video is ever saved to disk.",
+  "@helpQrBeam4": {
+    "description": "Help: Air QR bullet."
+  },
+  "helpQrHandoffTitle": "Data Handoff (JSON & Markdown)",
+  "@helpQrHandoffTitle": {
+    "description": "Help: Air QR section title."
+  },
+  "helpQrHandoff1": "Generate formatted Markdown summaries of your daily accomplishments for email or reports.",
+  "@helpQrHandoff1": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrHandoff2": "Export and import raw JSON representations of specific tasks for cross-platform backup and scripts.",
+  "@helpQrHandoff2": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrHandoff3": "Paste JSON bundles directly into the app on desktop or mobile for instant 1-tap import.",
+  "@helpQrHandoff3": {
+    "description": "Help: data handoff bullet."
+  },
+  "helpQrTip": "Tip: Air QR is especially handy for moving a quick task or flashcard deck from your desktop screen to your phone in seconds.",
+  "@helpQrTip": {
+    "description": "Help: Air QR footer tip."
+  },
+  "helpPrivacyTitle": "Security, App Lock & Encryption",
+  "@helpPrivacyTitle": {
+    "description": "Help topic title: security, app lock and encryption."
+  },
+  "helpPrivacyIntro": "SreerajP ToDo is built from the ground up with a privacy-first, zero-trust offline architecture. Your personal productivity data is strongly encrypted and protected by multiple layers of security.",
+  "@helpPrivacyIntro": {
+    "description": "Help: security intro paragraph."
+  },
+  "helpPrivacyDbTitle": "SQLCipher AES-256 Database Encryption",
+  "@helpPrivacyDbTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyDb1": "The live SQLite database is fully encrypted with 256-bit AES cipher (SQLCipher).",
+  "@helpPrivacyDb1": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyDb2": "The database master encryption key is derived securely and stored in device-protected hardware storage (Android Keystore / OS keychain).",
+  "@helpPrivacyDb2": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyDb3": "Even if someone copies the raw database file from your device storage, it cannot be read without the key.",
+  "@helpPrivacyDb3": {
+    "description": "Help: database encryption bullet."
+  },
+  "helpPrivacyLockTitle": "Biometric & App PIN Lock",
+  "@helpPrivacyLockTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyLock1": "Protect access to the app using your device’s fingerprint, face unlock, or a custom App PIN.",
+  "@helpPrivacyLock1": {
+    "description": "Help: app lock bullet."
+  },
+  "helpPrivacyLock2": "Configure auto-lock timers (Immediately, 1 minute, 5 minutes) to secure the app when switching away.",
+  "@helpPrivacyLock2": {
+    "description": "Help: app lock bullet."
+  },
+  "helpPrivacyShotTitle": "Screenshot Guard Defense",
+  "@helpPrivacyShotTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyShot1": "Under Settings → Security, enable Screenshot Guard to block screenshots and screen recordings.",
+  "@helpPrivacyShot1": {
+    "description": "Help: screenshot guard bullet."
+  },
+  "helpPrivacyShot2": "Screenshot Guard also hides the app screen preview in Android’s Recent Apps switcher for complete visual privacy.",
+  "@helpPrivacyShot2": {
+    "description": "Help: screenshot guard bullet."
+  },
+  "helpPrivacyNetTitle": "Zero Network Guarantee",
+  "@helpPrivacyNetTitle": {
+    "description": "Help: security section title."
+  },
+  "helpPrivacyNet1": "The only network permission the app declares is INTERNET, and it is used only for Wi-Fi sync with your own devices on the local network. Nothing is ever sent over the internet.",
+  "@helpPrivacyNet1": {
+    "description": "Help: network guarantee bullet. The app declares INTERNET only for local Wi-Fi sync."
+  },
+  "helpPrivacyNet2": "Zero telemetry, zero third-party cloud SDKs, zero crash tracking, and zero advertising.",
+  "@helpPrivacyNet2": {
+    "description": "Help: network guarantee bullet."
+  },
+  "helpPrivacyTip": "Tip: Keep your device lock (fingerprint/PIN) active on your phone for maximum hardware-backed cryptographic protection.",
+  "@helpPrivacyTip": {
+    "description": "Help: security footer tip."
+  },
+  "helpBackupTitle": "Encrypted Backup & Restore",
+  "@helpBackupTitle": {
+    "description": "Help topic title: encrypted backup and restore."
+  },
+  "helpBackupIntro": "A backup creates a single encrypted archive (.todobak / ZIP) containing your tasks, time records, recurrence rules, and settings. Use it to transfer data to a new phone, recover after a factory reset, or keep periodic offline archives.",
+  "@helpBackupIntro": {
+    "description": "Help: backup intro paragraph."
+  },
+  "helpBackupContentsTitle": "What the Backup Contains",
+  "@helpBackupContentsTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupContents1": "All tasks, descriptions, statuses, and historical time segments.",
+  "@helpBackupContents1": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents2": "Recurring task rules and generation schedules.",
+  "@helpBackupContents2": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents3": "Mastery Deck cards, review intervals, and mastery levels.",
+  "@helpBackupContents3": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupContents4": "Your personalized settings (Theme mode, accent colors, typography, task defaults).",
+  "@helpBackupContents4": {
+    "description": "Help: backup contents bullet."
+  },
+  "helpBackupPassTitle": "Password Encryption Safety",
+  "@helpBackupPassTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupPass1": "Backup archives are strongly encrypted with a passphrase you choose using AES-256 standard encryption.",
+  "@helpBackupPass1": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupPass2": "The app does NOT store your backup passphrase anywhere. You must remember or store it in a password manager.",
+  "@helpBackupPass2": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupPass3": "If you lose the passphrase, the backup cannot be decrypted or recovered by anyone.",
+  "@helpBackupPass3": {
+    "description": "Help: passphrase bullet."
+  },
+  "helpBackupRestoreTitle": "Restoring from a Backup",
+  "@helpBackupRestoreTitle": {
+    "description": "Help: backup section title."
+  },
+  "helpBackupRestore1": "Restoring replaces what is currently in the app and rebuilds an exact copy from the backup file.",
+  "@helpBackupRestore1": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupRestore2": "Before restoring, the app verifies the archive checksum, decrypts with your passphrase, and validates data schema version.",
+  "@helpBackupRestore2": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupRestore3": "If you want to merge tasks between two devices without replacing existing data, use \"Local Wi-Fi Sync\" instead.",
+  "@helpBackupRestore3": {
+    "description": "Help: restore bullet."
+  },
+  "helpBackupTip": "Tip: After creating a backup, save the file to a secure location such as an external USB drive, SD card, or your personal cloud storage.",
+  "@helpBackupTip": {
+    "description": "Help: backup footer tip."
+  },
+  "helpFaqTitle": "FAQs & Troubleshooting",
+  "@helpFaqTitle": {
+    "description": "Help topic title: FAQs."
+  },
+  "helpFaqIntro": "Find answers to common questions about day lock, time tracking rules, offline security, and tips for getting the most out of SreerajP ToDo.",
+  "@helpFaqIntro": {
+    "description": "Help: FAQ intro paragraph."
+  },
+  "helpFaqGeneralTitle": "General & Workflow",
+  "@helpFaqGeneralTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqEditPastQ": "Why can’t I edit or delete a task from yesterday?",
+  "@helpFaqEditPastQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqEditPastA": "SreerajP ToDo enforces the Day Lock rule: past dates are permanently read-only to preserve honest, tamper-proof productivity records. To work on an unfinished past task, tap \"Copy Tasks\" and copy it to today.",
+  "@helpFaqEditPastA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqTimerDoneQ": "Why can’t I start a timer on a completed task?",
+  "@helpFaqTimerDoneQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqTimerDoneA": "Completed and Dropped are terminal statuses. Once a task is completed, its time record is sealed. You can reopen the task (change status back to Pending or Working) if you wish to record more time.",
+  "@helpFaqTimerDoneA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqUndoQ": "How do I undo an accidental status change?",
+  "@helpFaqUndoQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqUndoA": "Whenever you update a status, a 5-second SnackBar appears with an \"Undo\" button. You can also tap the persistent Undo icon in the top app bar.",
+  "@helpFaqUndoA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqTimeTitle": "Time Tracking & Timers",
+  "@helpFaqTimeTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqTwoTimersQ": "Can I run timers on two tasks simultaneously?",
+  "@helpFaqTwoTimersQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqTwoTimersA": "No. To maintain tracking integrity, the app enforces the Single Running Timer rule. Starting a timer on any task automatically pauses/stops any running timer on another task.",
+  "@helpFaqTwoTimersA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqForgotStopQ": "What happens if I forget to stop my timer at night?",
+  "@helpFaqForgotStopQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqForgotStopA": "You can enable \"Auto-stop at midnight\" under Settings → Time Tracking → Auto-stop so open timers are automatically closed at day’s end without overflowing into the next morning.",
+  "@helpFaqForgotStopA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqShortTapsQ": "Why are very short timer taps not saved?",
+  "@helpFaqShortTapsQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqShortTapsA": "Under Settings → Time Tracking → Minimum length, you can discard accidental taps under 10 or 30 seconds to keep your time segments clean.",
+  "@helpFaqShortTapsA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqPrivacyTitle": "Privacy & Offline Guarantee",
+  "@helpFaqPrivacyTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqUploadQ": "Is any data uploaded to cloud servers or analytics?",
+  "@helpFaqUploadQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqUploadA": "No data is uploaded. SreerajP ToDo works fully offline. Its only network permission, INTERNET, is used just for Wi-Fi sync with your own devices on the local network. All database tables and logs stay on your device in AES-256 encrypted storage.",
+  "@helpFaqUploadA": {
+    "description": "Help: FAQ answer. The app declares INTERNET only for local Wi-Fi sync."
+  },
+  "helpFaqLostPassQ": "What happens if I forget my backup password?",
+  "@helpFaqLostPassQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqLostPassA": "Because backups are strongly encrypted on-device with AES-256 and there is no cloud server or master key, a lost backup password cannot be recovered. Always store your passphrase securely.",
+  "@helpFaqLostPassA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqSyncTitle": "Sync & Device Transfer",
+  "@helpFaqSyncTitle": {
+    "description": "Help: FAQ section title."
+  },
+  "helpFaqNewPhoneQ": "How do I transfer all my tasks to a new phone?",
+  "@helpFaqNewPhoneQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqNewPhoneA": "You have two easy options: (1) Use \"Local Wi-Fi P2P Sync\" to transfer directly over your home Wi-Fi, or (2) Create an encrypted Backup ZIP file under Settings → Backup and restore it on the new phone.",
+  "@helpFaqNewPhoneA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqDiscoverQ": "Why is Local Wi-Fi Sync not discovering the other device?",
+  "@helpFaqDiscoverQ": {
+    "description": "Help: FAQ question."
+  },
+  "helpFaqDiscoverA": "Ensure both devices are on the exact same Wi-Fi network. If your router has \"Client Isolation\" turned on, enable a portable Wi-Fi hotspot on one phone and connect the other to it.",
+  "@helpFaqDiscoverA": {
+    "description": "Help: FAQ answer."
+  },
+  "helpFaqFooter": "Need further details? Explore the individual topic guides under Help & User Guides or review your permissions under Settings → Permissions.",
+  "@helpFaqFooter": {
+    "description": "Help: FAQ footer."
+  },
+  "helpHomeTaskSection": "Task Management & Workflow",
+  "@helpHomeTaskSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeTaskMgmtSubtitle": "How the daily timeline, day-lock immutability, and terminal status locks protect your records.",
+  "@helpHomeTaskMgmtSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeRecurringSubtitle": "Setting up automated recurrence rules (daily, weekly, monthly) and bulk copying past tasks.",
+  "@helpHomeRecurringSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeTimeSection": "Time Tracking & Focus",
+  "@helpHomeTimeSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeTimeTrackingSubtitle": "How multi-segment logging, target durations, and the single running timer rule work.",
+  "@helpHomeTimeTrackingSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeFocusSubtitle": "Using the distraction-free focus screen, Pomodoro countdowns, and auto-stop safeguards.",
+  "@helpHomeFocusSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeMasterySection": "Mastery Deck & Spaced Repetition",
+  "@helpHomeMasterySection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeMasterySubtitle": "How card decks, spaced repetition review intervals, and mastery scoring operate.",
+  "@helpHomeMasterySubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeSyncSection": "Sync & Offline Transfer",
+  "@helpHomeSyncSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeWifiSubtitle": "Direct device-to-device synchronization over local Wi-Fi with end-to-end encryption and zero cloud.",
+  "@helpHomeWifiSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeQrTitle": "Air QR Scanner & Data Handoff",
+  "@helpHomeQrTitle": {
+    "description": "Help home: topic card title for Air QR."
+  },
+  "helpHomeQrSubtitle": "Transferring tasks and decks offline via visual animated QR code streams and clipboard handoff.",
+  "@helpHomeQrSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomePrivacySection": "Privacy, Security & Backups",
+  "@helpHomePrivacySection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomePrivacySubtitle": "SQLCipher AES-256 database encryption, biometric authentication, and screenshot guard.",
+  "@helpHomePrivacySubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeBackupSubtitle": "Creating password-protected ZIP backup files, safety practices, and full restore steps.",
+  "@helpHomeBackupSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeFaqSection": "Frequently Asked Questions",
+  "@helpHomeFaqSection": {
+    "description": "Help home: section heading (shown in capitals)."
+  },
+  "helpHomeFaqTitle": "FAQs & Troubleshooting Guide",
+  "@helpHomeFaqTitle": {
+    "description": "Help home: topic card title for FAQs."
+  },
+  "helpHomeFaqSubtitle": "Direct answers to common questions about day lock, offline operation, and database safety.",
+  "@helpHomeFaqSubtitle": {
+    "description": "Help home: topic card subtitle."
+  },
+  "helpHomeHeaderTitle": "Help Center & Knowledge Base",
+  "@helpHomeHeaderTitle": {
+    "description": "Help home: header card title."
+  },
+  "helpHomeHeaderSubtitle": "Browse in-depth guides, rules, and solutions for all features of SreerajP ToDo.",
+  "@helpHomeHeaderSubtitle": {
+    "description": "Help home: header card subtitle."
+  },
+  "featDailyName": "Daily Tasks & Workflow",
+  "@featDailyName": {
+    "description": "Features: category name."
+  },
+  "featDailySubtitle": "Fast planning, day lock protection, Unicode normalization, and undo",
+  "@featDailySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featUnicodeTitle": "Unicode First & Multi-Script Normalization",
+  "@featUnicodeTitle": {
+    "description": "Features: feature title."
+  },
+  "featUnicodeDesc": "NFC normalizes all task titles for exact uniqueness and detects text direction dynamically for English, Malayalam, Hindi, and more.",
+  "@featUnicodeDesc": {
+    "description": "Features: feature description."
+  },
+  "featUnicodeH1": "NFC Unicode",
+  "@featUnicodeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featUnicodeH2": "Multi-script text",
+  "@featUnicodeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featUnicodeH3": "RTL & LTR",
+  "@featUnicodeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockTitle": "Day Lock Safeguard",
+  "@featDayLockTitle": {
+    "description": "Features: feature title."
+  },
+  "featDayLockDesc": "Strict day-level immutability locks past days against retroactive modifications to preserve historical record integrity.",
+  "@featDayLockDesc": {
+    "description": "Features: feature description."
+  },
+  "featDayLockH1": "Historical lock",
+  "@featDayLockH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockH2": "Immutable past",
+  "@featDayLockH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayLockH3": "Read-only records",
+  "@featDayLockH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarTitle": "Daily List & Calendar Navigation",
+  "@featCalendarTitle": {
+    "description": "Features: feature title."
+  },
+  "featCalendarDesc": "Fast day-by-day task planning with visual calendar picker, quick-jump to Today, and date swipe navigation.",
+  "@featCalendarDesc": {
+    "description": "Features: feature description."
+  },
+  "featCalendarH1": "Calendar picker",
+  "@featCalendarH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarH2": "Today jump",
+  "@featCalendarH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCalendarH3": "Fast navigation",
+  "@featCalendarH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoTitle": "Instant Undo & Reversible Actions",
+  "@featUndoTitle": {
+    "description": "Features: feature title."
+  },
+  "featUndoDesc": "5-second undo toast with persistent app bar undo button for task completions, drops, and status updates.",
+  "@featUndoDesc": {
+    "description": "Features: feature description."
+  },
+  "featUndoH1": "5-second undo",
+  "@featUndoH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoH2": "Persistent button",
+  "@featUndoH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featUndoH3": "Safe transitions",
+  "@featUndoH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchTitle": "Full-Text Search & Filters",
+  "@featSearchTitle": {
+    "description": "Features: feature title."
+  },
+  "featSearchDesc": "Instant search across all your tasks, descriptions, and historical logs by status, priority, and date ranges.",
+  "@featSearchDesc": {
+    "description": "Features: feature description."
+  },
+  "featSearchH1": "Full-text search",
+  "@featSearchH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchH2": "Status filters",
+  "@featSearchH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSearchH3": "Date ranges",
+  "@featSearchH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTimeSubtitle": "Stopwatch timers, single running timer rule, and Pomodoro focus",
+  "@featTimeSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featSegmentsTitle": "Multi-Segment Time Tracking",
+  "@featSegmentsTitle": {
+    "description": "Features: feature title."
+  },
+  "featSegmentsDesc": "Measure exact time spent on any task across multiple sessions with live second-by-second precision and target progress.",
+  "@featSegmentsDesc": {
+    "description": "Features: feature description."
+  },
+  "featSegmentsH1": "Multiple segments",
+  "@featSegmentsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSegmentsH2": "Stopwatch timer",
+  "@featSegmentsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSegmentsH3": "HH:MM:SS format",
+  "@featSegmentsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleDesc": "Guarantees at most one active running timer at any given moment across the entire app to maintain tracking integrity.",
+  "@featSingleDesc": {
+    "description": "Features: feature description."
+  },
+  "featSingleH1": "One active timer",
+  "@featSingleH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleH2": "Auto-pause previous",
+  "@featSingleH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSingleH3": "Accurate metrics",
+  "@featSingleH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featFocusDesc": "Distraction-free full-screen focus screen with custom work and break countdown timers.",
+  "@featFocusDesc": {
+    "description": "Features: feature description."
+  },
+  "featFocusH1": "Pomodoro timer",
+  "@featFocusH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featFocusH2": "Full-screen focus",
+  "@featFocusH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCustomIntervals": "Custom intervals",
+  "@featCustomIntervals": {
+    "description": "Features: short highlight chip (used twice)."
+  },
+  "featStreamTitle": "Live Dynamic Timer Stream",
+  "@featStreamTitle": {
+    "description": "Features: feature title."
+  },
+  "featStreamDesc": "Second-by-second live timer updates with optimized rendering that consumes minimal battery and never lags.",
+  "@featStreamDesc": {
+    "description": "Features: feature description."
+  },
+  "featStreamH1": "StreamProvider",
+  "@featStreamH1": {
+    "description": "Features: short highlight chip (live update stream)."
+  },
+  "featStreamH2": "Zero UI lag",
+  "@featStreamH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featStreamH3": "Battery efficient",
+  "@featStreamH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalTitle": "Terminal Status Time Lock",
+  "@featTerminalTitle": {
+    "description": "Features: feature title."
+  },
+  "featTerminalDesc": "Completed and dropped tasks automatically stop active timers and prevent new segment additions.",
+  "@featTerminalDesc": {
+    "description": "Features: feature description."
+  },
+  "featTerminalH1": "Auto-stop on finish",
+  "@featTerminalH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalH2": "Terminal lock",
+  "@featTerminalH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featTerminalH3": "Protected logs",
+  "@featTerminalH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualName": "Ritual Mode",
+  "@featRitualName": {
+    "description": "Features: category name."
+  },
+  "featRitualSubtitle": "A quiet, guided way to open and close the day",
+  "@featRitualSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featDayOpenTitle": "Guided Day Open",
+  "@featDayOpenTitle": {
+    "description": "Features: feature title."
+  },
+  "featDayOpenDesc": "Breathe, read one reflection card, settle what is left over from before, then begin the day. Off by default, and every step can be skipped.",
+  "@featDayOpenDesc": {
+    "description": "Features: feature description."
+  },
+  "featDayOpenH1": "Breathing timer",
+  "@featDayOpenH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayOpenH2": "Carry over",
+  "@featDayOpenH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDayOpenH3": "Today's three",
+  "@featDayOpenH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckTitle": "Ritual Deck",
+  "@featRitualDeckTitle": {
+    "description": "Features: feature title."
+  },
+  "featRitualDeckDesc": "Fifty reflection cards in English and Malayalam, each with a question and a grounding quote, resurfaced by their own spaced repetition.",
+  "@featRitualDeckDesc": {
+    "description": "Features: feature description."
+  },
+  "featRitualDeckH1": "50 cards",
+  "@featRitualDeckH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckH2": "Bilingual",
+  "@featRitualDeckH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featRitualDeckH3": "Comes back when due",
+  "@featRitualDeckH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningTitle": "Evening Close",
+  "@featEveningTitle": {
+    "description": "Features: feature title."
+  },
+  "featEveningDesc": "Once a day, later on, the day list offers the evening reflection so the day is closed as deliberately as it was opened.",
+  "@featEveningDesc": {
+    "description": "Features: feature description."
+  },
+  "featEveningH1": "Once a day",
+  "@featEveningH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningH2": "Optional",
+  "@featEveningH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featEveningH3": "Your chosen hour",
+  "@featEveningH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featMasterySubtitle": "Flashcards, spaced repetition retention, and recurring habits",
+  "@featMasterySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featSrsTitle": "Spaced Repetition Flashcards",
+  "@featSrsTitle": {
+    "description": "Features: feature title."
+  },
+  "featSrsDesc": "Convert daily learnings and study notes into flashcards with optimized spaced repetition review scheduling.",
+  "@featSrsDesc": {
+    "description": "Features: feature description."
+  },
+  "featSrsH1": "Spaced repetition",
+  "@featSrsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featSrsH2": "Retention intervals",
+  "@featSrsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featSrsH3": "Confidence rating",
+  "@featSrsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksTitle": "Decks & Mastery Levels",
+  "@featDecksTitle": {
+    "description": "Features: feature title."
+  },
+  "featDecksDesc": "Organize flashcards into custom decks and track your mastery score progression from Novice to Master.",
+  "@featDecksDesc": {
+    "description": "Features: feature description."
+  },
+  "featDecksH1": "Custom decks",
+  "@featDecksH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksH2": "Mastery scoring",
+  "@featDecksH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDecksH3": "Streak tracking",
+  "@featDecksH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featRruleTitle": "Recurring Tasks & RRule Engine",
+  "@featRruleTitle": {
+    "description": "Features: feature title."
+  },
+  "featRruleDesc": "Automate daily, weekly, monthly, or interval-based task generation with the standard RFC-5545 RRule engine.",
+  "@featRruleDesc": {
+    "description": "Features: feature description."
+  },
+  "featRruleH1": "RRule standard",
+  "@featRruleH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featRruleH3": "Automated generation",
+  "@featRruleH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyTitle": "Bulk Task Copying",
+  "@featCopyTitle": {
+    "description": "Features: feature title."
+  },
+  "featCopyDesc": "Easily copy unfinished or selected tasks from past days into today's list with 1 tap.",
+  "@featCopyDesc": {
+    "description": "Features: feature description."
+  },
+  "featCopyH1": "1-tap copying",
+  "@featCopyH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyH2": "Select multiple",
+  "@featCopyH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featCopyH3": "Carry over unfinished",
+  "@featCopyH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featSyncName": "Offline Sync & Air QR Transfer",
+  "@featSyncName": {
+    "description": "Features: category name."
+  },
+  "featSyncSubtitle": "Local Wi-Fi P2P sync, Air QR visual beam, and data handoff",
+  "@featSyncSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featWifiTitle": "Encrypted Local Wi-Fi P2P Sync",
+  "@featWifiTitle": {
+    "description": "Features: feature title."
+  },
+  "featWifiDesc": "Direct device-to-device synchronization over your local Wi-Fi with end-to-end encryption and zero cloud servers.",
+  "@featWifiDesc": {
+    "description": "Features: feature description."
+  },
+  "featWifiH1": "100% Local Wi-Fi",
+  "@featWifiH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featWifiH2": "Zero cloud",
+  "@featWifiH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featWifiH3": "End-to-end encrypted",
+  "@featWifiH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrTitle": "Air QR Task Beam & Scanner",
+  "@featQrTitle": {
+    "description": "Features: feature title."
+  },
+  "featQrDesc": "Transfer individual tasks, time logs, and decks between devices via visual animated QR code streams.",
+  "@featQrDesc": {
+    "description": "Features: feature description."
+  },
+  "featQrH1": "Visual QR stream",
+  "@featQrH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrH2": "Camera scanner",
+  "@featQrH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featQrH3": "Zero network needed",
+  "@featQrH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffTitle": "Offline Data Handoff",
+  "@featHandoffTitle": {
+    "description": "Features: feature title."
+  },
+  "featHandoffDesc": "Export and import formatted task bundles, JSON, and Markdown summaries via clipboard or local files.",
+  "@featHandoffDesc": {
+    "description": "Features: feature description."
+  },
+  "featHandoffH1": "JSON & Markdown",
+  "@featHandoffH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffH2": "Clipboard handoff",
+  "@featHandoffH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featHandoffH3": "Portable data",
+  "@featHandoffH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineTitle": "100% Offline Operational Guarantee",
+  "@featOfflineTitle": {
+    "description": "Features: feature title."
+  },
+  "featOfflineDesc": "Absolute privacy with zero cloud SDKs and zero analytics. The only network use is Wi-Fi sync that you start, with your own devices on the local network.",
+  "@featOfflineDesc": {
+    "description": "Features: feature description. The app uses the network only for local Wi-Fi sync."
+  },
+  "featOfflineH1": "Zero network",
+  "@featOfflineH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineH2": "Zero analytics",
+  "@featOfflineH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featOfflineH3": "Local network only",
+  "@featOfflineH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featPrivacyName": "Privacy, Security & Storage",
+  "@featPrivacyName": {
+    "description": "Features: category name."
+  },
+  "featPrivacySubtitle": "SQLCipher AES-256 database, app lock, and encrypted backups",
+  "@featPrivacySubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featDbDesc": "All tasks, time records, and settings are encrypted at rest with hardware-backed SQLCipher encryption.",
+  "@featDbDesc": {
+    "description": "Features: feature description."
+  },
+  "featDbH1": "SQLCipher AES-256",
+  "@featDbH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDbH2": "Device-derived key",
+  "@featDbH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDbH3": "Encrypted at rest",
+  "@featDbH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockDesc": "Lock your tasks and settings with fingerprint, face unlock, or a custom app PIN.",
+  "@featLockDesc": {
+    "description": "Features: feature description."
+  },
+  "featLockH1": "Fingerprint & Face unlock",
+  "@featLockH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockH2": "App PIN fallback",
+  "@featLockH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featLockH3": "Auto-lock timer",
+  "@featLockH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotDesc": "Prevents screen captures and hides app window previews in the Android recent apps switcher.",
+  "@featShotDesc": {
+    "description": "Features: feature description."
+  },
+  "featShotH1": "Screenshot blocking",
+  "@featShotH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotH2": "Recent apps shield",
+  "@featShotH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featShotH3": "Privacy protection",
+  "@featShotH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupTitle": "Password-Protected Encrypted Backups",
+  "@featBackupTitle": {
+    "description": "Features: feature title."
+  },
+  "featBackupDesc": "Export and restore encrypted ZIP backup archives protected with AES-256 user passphrases.",
+  "@featBackupDesc": {
+    "description": "Features: feature description."
+  },
+  "featBackupH1": "AES-256 ZIP",
+  "@featBackupH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupH2": "User passphrase",
+  "@featBackupH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featBackupH3": "Safe portable backups",
+  "@featBackupH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featCustomName": "Customization & Analytics",
+  "@featCustomName": {
+    "description": "Features: category name."
+  },
+  "featCustomSubtitle": "Themes, Malayalam typography, charts, and defaults",
+  "@featCustomSubtitle": {
+    "description": "Features: category subtitle."
+  },
+  "featThemeTitle": "Light, Dark & Accent Palettes",
+  "@featThemeTitle": {
+    "description": "Features: feature title."
+  },
+  "featThemeDesc": "Support for light, dark, and OLED themes with 8 vibrant curated accent color presets.",
+  "@featThemeDesc": {
+    "description": "Features: feature description."
+  },
+  "featThemeH1": "Light & Dark themes",
+  "@featThemeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featThemeH2": "Vibrant accents",
+  "@featThemeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featThemeH3": "OLED styling",
+  "@featThemeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeTitle": "Typography & Text Scaling",
+  "@featTypeTitle": {
+    "description": "Features: feature title."
+  },
+  "featTypeDesc": "Choose from Manjari, Anek Malayalam, Noto Sans, or system fonts with dynamic text scaling.",
+  "@featTypeDesc": {
+    "description": "Features: feature description. Keep font names."
+  },
+  "featTypeH1": "Malayalam fonts",
+  "@featTypeH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeH2": "Dynamic scaling",
+  "@featTypeH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featTypeH3": "Readable typography",
+  "@featTypeH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsTitle": "Productivity Statistics & Charts",
+  "@featStatsTitle": {
+    "description": "Features: feature title."
+  },
+  "featStatsDesc": "Interactive charts and tables showing completion ratios, time distribution, and daily trends.",
+  "@featStatsDesc": {
+    "description": "Features: feature description."
+  },
+  "featStatsH1": "fl_chart graphs",
+  "@featStatsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsH2": "Time distribution",
+  "@featStatsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featStatsH3": "Completion trends",
+  "@featStatsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsTitle": "Task Defaults & Time Display",
+  "@featDefaultsTitle": {
+    "description": "Features: feature title."
+  },
+  "featDefaultsDesc": "Configure default priorities, target durations, week start day, working days, and time formats.",
+  "@featDefaultsDesc": {
+    "description": "Features: feature description."
+  },
+  "featDefaultsH1": "Custom defaults",
+  "@featDefaultsH1": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsH2": "Flexible formats",
+  "@featDefaultsH2": {
+    "description": "Features: short highlight chip."
+  },
+  "featDefaultsH3": "Tailored workflow",
+  "@featDefaultsH3": {
+    "description": "Features: short highlight chip."
+  },
+  "featHeaderTitle": "SreerajP ToDo Features",
+  "@featHeaderTitle": {
+    "description": "Features: header card title."
+  },
+  "featHeaderSubtitle": "Explore every productivity tool, time tracker, and offline safeguard designed for you.",
+  "@featHeaderSubtitle": {
+    "description": "Features: header card subtitle."
   }
 }

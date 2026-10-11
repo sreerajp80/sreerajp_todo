@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/presentation/shared/widgets/app_section_card.dart';
+import 'package:sreerajp_todo/l10n/app_localizations.dart';
 
 class BackupHealthDashboard extends ConsumerStatefulWidget {
   const BackupHealthDashboard({super.key});
@@ -94,8 +95,8 @@ class _BackupHealthDashboardState extends ConsumerState<BackupHealthDashboard> {
                       ),
                       label: Text(
                         _isExpanded
-                            ? 'Hide Logs'
-                            : 'View Logs (${logs.length})',
+                            ? l10n.backupHideLogs
+                            : l10n.backupViewLogs(logs.length),
                       ),
                     ),
                 ],
@@ -103,12 +104,17 @@ class _BackupHealthDashboardState extends ConsumerState<BackupHealthDashboard> {
               const SizedBox(height: 12),
               if (latestLog != null) ...[
                 Text(
-                  'Last Execution: ${_formatTimestamp(latestLog.timestamp)} (${latestLog.triggerType.toUpperCase()})',
+                  l10n.backupLastRun(
+                    _formatTimestamp(latestLog.timestamp),
+                    _triggerLabel(l10n, latestLog.triggerType),
+                  ),
                   style: theme.textTheme.bodyMedium,
                 ),
                 if (latestLog.fileSizeBytes > 0)
                   Text(
-                    'Archive Size: ${_formatBytes(latestLog.fileSizeBytes)}',
+                    l10n.backupArchiveSize(
+                      _formatBytes(latestLog.fileSizeBytes),
+                    ),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
@@ -149,7 +155,8 @@ class _BackupHealthDashboardState extends ConsumerState<BackupHealthDashboard> {
                           size: 20,
                         ),
                         title: Text(
-                          '${_formatTimestamp(log.timestamp)} — ${log.triggerType.toUpperCase()}',
+                          '${_formatTimestamp(log.timestamp)} — '
+                          '${_triggerLabel(context.l10n, log.triggerType)}',
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         subtitle: Text(
@@ -193,6 +200,14 @@ class _BackupHealthDashboardState extends ConsumerState<BackupHealthDashboard> {
     if (dt == null) return timestampStr;
     return formatDateTime(dt.toLocal(), withSeconds: true);
   }
+
+  /// Shows the stored trigger type (`manual` or `scheduled`) in the UI language.
+  String _triggerLabel(AppLocalizations l10n, String triggerType) =>
+      switch (triggerType) {
+        'manual' => l10n.backupHealthTriggerManual,
+        'scheduled' => l10n.backupHealthTriggerScheduled,
+        _ => triggerType,
+      };
 
   String _formatBytes(int bytes) {
     if (bytes <= 0) return '0 B';

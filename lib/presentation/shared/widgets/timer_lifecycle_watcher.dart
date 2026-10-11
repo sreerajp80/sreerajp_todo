@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
+import 'package:sreerajp_todo/core/rules/time_tracking_rules.dart';
 import 'package:sreerajp_todo/presentation/shared/utils/tracked_duration_format.dart';
 
 /// Wraps the app and applies the time-tracking settings that need to react to

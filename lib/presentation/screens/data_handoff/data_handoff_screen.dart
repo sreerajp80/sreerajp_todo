@@ -3,11 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart' as p;
 import 'package:sreerajp_todo/application/providers.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
 import 'package:sreerajp_todo/domain/entities/data_handoff_payload.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 import 'package:sreerajp_todo/presentation/screens/data_handoff/widgets/markdown_import_dialog.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
 
 /// Screen facilitating offline multi-format JSON payload and Markdown checklist export and ingestion.
 class DataHandoffScreen extends ConsumerStatefulWidget {
@@ -85,7 +86,11 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(context.l10n.dataHandoffExportFailed(e.toString())),
+            content: Text(
+              context.l10n.dataHandoffExportFailed(
+                mapErrorToMessage(context.l10n, e),
+              ),
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -169,7 +174,11 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(context.l10n.dataHandoffExportFailed(e.toString())),
+            content: Text(
+              context.l10n.dataHandoffExportFailed(
+                mapErrorToMessage(context.l10n, e),
+              ),
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -250,7 +259,11 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(context.l10n.dataHandoffImportFailed(e.toString())),
+            content: Text(
+              context.l10n.dataHandoffImportFailed(
+                mapErrorToMessage(context.l10n, e),
+              ),
+            ),
             backgroundColor: Theme.of(context).colorScheme.error,
           ),
         );
@@ -400,7 +413,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
 
               // Export Actions Section
               Text(
-                'Export Data Options',
+                l10n.dataHandoffExportSection,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -436,7 +449,7 @@ class _DataHandoffScreenState extends ConsumerState<DataHandoffScreen> {
 
               // Import Actions Section
               Text(
-                'Ingest & Import Options',
+                l10n.dataHandoffImportSection,
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),

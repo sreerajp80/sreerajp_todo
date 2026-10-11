@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/application/time_tracking_notifier.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 
 /// Runs a timer action and shows whatever the user needs to know about it.
 ///
@@ -103,6 +103,8 @@ class TimerActions {
         SnackBar(
           content: Text(l10n.trackingSegmentDiscarded),
           duration: const Duration(seconds: 5),
+          persist: false,
+          showCloseIcon: true,
           action: SnackBarAction(
             label: l10n.undo,
             onPressed: () => notifier.undoDiscardedSegment(discarded),

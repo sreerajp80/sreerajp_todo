@@ -1,7 +1,7 @@
 import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/utils/unicode_utils.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
-import 'package:sreerajp_todo/data/models/statistics_models.dart';
+import 'package:sreerajp_todo/domain/entities/statistics_models.dart';
 
 class StatisticsQueryService {
   StatisticsQueryService(this._databaseService);

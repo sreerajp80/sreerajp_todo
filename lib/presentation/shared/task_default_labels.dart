@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/constants/todo_sort_option.dart';
-import 'package:sreerajp_todo/core/utils/task_default_rules.dart';
+import 'package:sreerajp_todo/core/rules/task_default_rules.dart';
 import 'package:sreerajp_todo/domain/entities/todo_priority.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
 

@@ -60,6 +60,10 @@ abstract final class AppRoutes {
   static const String pendingAlerts = '/settings/pending-alerts';
   static const String airQrScan = '/air-qr-scan';
   static const String ocrScan = '/ocr-scan';
+
+  /// The OCR enhance step. The image path is passed as `extra`, and the page
+  /// returns the recognized text through `context.pop`.
+  static const String ocrEnhance = '/ocr-scan/enhance';
   static const String wifiSync = '/wifi-sync';
   static const String dataHandoff = '/data-handoff';
   static const String features = '/features';
@@ -115,7 +119,17 @@ abstract final class AppRoutes {
   static String todoHistoryPath(String id) => '/todo/$id/history';
   static String focusPath(String id) => '/focus/$id';
   static String copyTodosPath(String fromDate) => '/copy?from=$fromDate';
-  static String ocrScanPath({String? date}) =>
-      date != null ? '/ocr-scan?date=$date' : ocrScan;
+
+  /// With [returnResult] set, the scanner pops the scanned title and
+  /// description back to the caller instead of opening the task editor.
+  static String ocrScanPath({String? date, bool returnResult = false}) {
+    final params = <String, String>{
+      'date': ?date,
+      if (returnResult) 'return': '1',
+    };
+    if (params.isEmpty) return ocrScan;
+    return Uri(path: ocrScan, queryParameters: params).toString();
+  }
+
   static String masteryDeckDetailPath(String id) => '/mastery-deck/$id';
 }

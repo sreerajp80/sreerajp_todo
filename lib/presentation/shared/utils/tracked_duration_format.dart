@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sreerajp_todo/core/utils/duration_utils.dart';
-import 'package:sreerajp_todo/core/utils/time_tracking_rules.dart';
+import 'package:sreerajp_todo/core/rules/time_tracking_rules.dart';
 
 /// Carries the user's rounding and format choices down the widget tree.
 ///

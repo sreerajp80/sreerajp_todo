@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
-import 'package:sreerajp_todo/data/models/recurrence_rule_entity.dart';
-import 'package:sreerajp_todo/data/models/spaced_repetition_item_entity.dart';
-import 'package:sreerajp_todo/data/models/time_segment_entity.dart';
-import 'package:sreerajp_todo/data/models/todo_entity.dart';
+import 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart';
+import 'package:sreerajp_todo/domain/entities/spaced_repetition_item_entity.dart';
+import 'package:sreerajp_todo/domain/entities/time_segment_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_entity.dart';
 import 'package:sreerajp_todo/domain/entities/p2p_sync_scope.dart';
 
 /// Caps and bounds constraints for P2P Wi-Fi Sync payloads as per 3.14 specification.
@@ -14,7 +13,6 @@ abstract final class P2pSyncBounds {
 }
 
 /// Container for serialized synchronization items sent across P2P TCP connections.
-@immutable
 class P2pSyncPayload {
   final String date;
   final String exportedAt;
@@ -132,7 +130,6 @@ class P2pSyncPayload {
 }
 
 /// Statistics and counters returned after executing an Add-Only Non-Destructive Merge.
-@immutable
 class P2pSyncMergeResult {
   final int todosAdded;
   final int todosSkipped;

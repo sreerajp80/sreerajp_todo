@@ -30,6 +30,7 @@ class RecallConfidenceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     final easyDays = 7 * (currentLevel + 1);
 
     return AlertDialog(
@@ -37,10 +38,10 @@ class RecallConfidenceDialog extends StatelessWidget {
         children: [
           Icon(Icons.psychology, color: theme.colorScheme.primary),
           const SizedBox(width: 8),
-          const Expanded(
+          Expanded(
             child: Text(
-              'Recall Confidence',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              l10n.recallTitle,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -57,33 +58,32 @@ class RecallConfidenceDialog extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'How effortlessly did you recall or complete this task?',
+            l10n.recallPrompt,
             style: theme.textTheme.bodyMedium?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 16),
           _ConfidenceOptionTile(
-            title: 'Hard',
-            subtitle: 'Struggled or forgot. Next review: 1 day',
-            badgeText: '1 day',
+            title: l10n.recallHard,
+            subtitle: l10n.recallHardDetail,
+            badgeText: l10n.daysCount(1),
             color: Colors.redAccent,
             onTap: () => Navigator.of(context).pop(RecallConfidence.hard),
           ),
           const SizedBox(height: 8),
           _ConfidenceOptionTile(
-            title: 'Revision',
-            subtitle: 'Moderate effort. Next review: 3 days',
-            badgeText: '3 days',
+            title: l10n.recallRevision,
+            subtitle: l10n.recallRevisionDetail,
+            badgeText: l10n.daysCount(3),
             color: Colors.amber.shade800,
             onTap: () => Navigator.of(context).pop(RecallConfidence.revision),
           ),
           const SizedBox(height: 8),
           _ConfidenceOptionTile(
-            title: 'Easy',
-            subtitle:
-                'Effortless! Next review: $easyDays days (Lvl ${currentLevel + 1})',
-            badgeText: '$easyDays d',
+            title: l10n.recallEasy,
+            subtitle: l10n.recallEasyDetail(easyDays, currentLevel + 1),
+            badgeText: l10n.daysShort(easyDays),
             color: Colors.green.shade700,
             onTap: () => Navigator.of(context).pop(RecallConfidence.easy),
           ),
@@ -92,7 +92,7 @@ class RecallConfidenceDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(null),
-          child: Text(AppLocalizations.of(context).cancel),
+          child: Text(l10n.cancel),
         ),
       ],
     );

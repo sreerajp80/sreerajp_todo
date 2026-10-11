@@ -1,4 +1,4 @@
-import 'package:sreerajp_todo/data/models/todo_history_entity.dart';
+import 'package:sreerajp_todo/domain/entities/todo_history_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/todo_repository.dart';
 
 class GetTodoHistory {

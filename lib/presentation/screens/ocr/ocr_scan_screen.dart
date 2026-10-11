@@ -6,13 +6,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sreerajp_todo/core/constants/app_routes.dart';
-import 'package:sreerajp_todo/core/extensions/localization_extensions.dart';
+import 'package:sreerajp_todo/core/logging/app_logger.dart';
+import 'package:sreerajp_todo/presentation/shared/extensions/localization_extensions.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';
-import 'package:sreerajp_todo/core/utils/ocr_task_parser.dart';
-import 'package:sreerajp_todo/presentation/screens/ocr/ocr_enhance_screen.dart';
+import 'package:sreerajp_todo/domain/services/ocr_task_parser.dart';
 import 'package:sreerajp_todo/presentation/screens/ocr/widgets/ocr_camera_overlay.dart';
 import 'package:sreerajp_todo/presentation/screens/ocr/widgets/ocr_result_bottom_sheet.dart';
 import 'package:sreerajp_todo/presentation/shared/theme/app_theme.dart';
+import 'package:sreerajp_todo/presentation/shared/error_message_mapper.dart';
 
 /// Full-screen OCR Camera Scanner offering advanced camera controls:
 /// - Real-time viewfinder with framing overlay
@@ -126,7 +127,7 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       if (_cameras.isEmpty) {
         if (mounted) {
           setState(() {
-            _errorMessage = 'No camera found on device';
+            _errorMessage = context.l10n.ocrNoCamera;
           });
         }
         return;
@@ -145,13 +146,13 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
         setState(() {
           _errorMessage = e.code == 'CameraAccessDenied'
               ? context.l10n.ocrCameraPermissionRequired
-              : e.description ?? 'Camera initialization failed';
+              : context.l10n.ocrCameraStartFailed;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = e.toString();
+          _errorMessage = context.l10n.ocrCameraStartFailed;
         });
       }
     }
@@ -219,9 +220,13 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
         });
       }
     } on CameraException catch (e) {
+      AppLogger.warning(
+        'OcrScanScreen: camera controller start failed',
+        error: e,
+      );
       if (mounted) {
         setState(() {
-          _errorMessage = e.description ?? 'Failed to initialize camera';
+          _errorMessage = context.l10n.ocrCameraStartFailed;
           _isCameraInitialized = false;
         });
       }
@@ -368,10 +373,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       final file = await controller.takePicture();
       if (!mounted) return;
 
-      final recognizedText = await Navigator.of(context).push<String>(
-        MaterialPageRoute(
-          builder: (_) => OcrEnhanceScreen(imagePath: file.path),
-        ),
+      final recognizedText = await context.push<String>(
+        AppRoutes.ocrEnhance,
+        extra: file.path,
       );
       if (recognizedText == null || !mounted) return;
 
@@ -380,7 +384,11 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(context.l10n.ocrImageCaptureFailed(e.toString())),
+            content: Text(
+              context.l10n.ocrImageCaptureFailed(
+                mapErrorToMessage(context.l10n, e),
+              ),
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -404,8 +412,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       final path = result?.files.single.path;
       if (path == null || !mounted) return;
 
-      final recognizedText = await Navigator.of(context).push<String>(
-        MaterialPageRoute(builder: (_) => OcrEnhanceScreen(imagePath: path)),
+      final recognizedText = await context.push<String>(
+        AppRoutes.ocrEnhance,
+        extra: path,
       );
       if (recognizedText == null || !mounted) return;
 
@@ -415,7 +424,11 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(context.l10n.ocrImagePickFailed(e.toString())),
+            content: Text(
+              context.l10n.ocrImagePickFailed(
+                mapErrorToMessage(context.l10n, e),
+              ),
+            ),
             behavior: SnackBarBehavior.floating,
           ),
         );
@@ -464,12 +477,12 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
 
     if (widget.returnResultDirectly) {
       // Pop back to the calling screen with the scanned fields
-      Navigator.of(context).pop({'title': title, 'description': description});
+      context.pop({'title': title, 'description': description});
       return;
     }
 
     // Close OCR scanner screen so user lands cleanly on the task editor
-    Navigator.of(context).pop();
+    context.pop();
 
     // Open full CreateEditTodoScreen pre-populated via route query parameters
     context.push(
@@ -522,7 +535,7 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
                 _buildCircleButton(
                   icon: Icons.arrow_back,
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => context.pop(),
                 ),
                 Row(
                   children: [
