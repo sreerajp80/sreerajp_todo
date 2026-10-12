@@ -75,9 +75,8 @@ void main() {
     final prefs = await SharedPreferences.getInstance();
     final repo = mockRepo ?? MockTodoRepository();
     final timeSegmentRepo = MockTimeSegmentRepository();
-    when(
-      () => timeSegmentRepo.getRunningSegment(any()),
-    ).thenAnswer((_) async => null);
+    when(() => timeSegmentRepo.getRunningSegment(any()))
+        .thenAnswer((_) async => null);
     when(() => timeSegmentRepo.getSegments(any())).thenAnswer((_) async => []);
 
     await tester.pumpWidget(
@@ -122,9 +121,8 @@ void main() {
 
       final mockRepo = MockTodoRepository();
       when(() => mockRepo.getTodosByDate(any())).thenAnswer((_) async => []);
-      when(
-        () => mockRepo.getTodoById('t-prev-1'),
-      ).thenAnswer((_) async => dummyPreviousTodos.first);
+      when(() => mockRepo.getTodoById('t-prev-1'))
+          .thenAnswer((_) async => dummyPreviousTodos.first);
       when(
         () => mockRepo.titleExistsOnDate(
           any(),

@@ -60,7 +60,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
       return;
     }
 
-    final selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    final selectedDirectory = await FilePicker.getDirectoryPath();
     final destinationDirectory =
         selectedDirectory ??
         await ref.read(backupServiceProvider).getDefaultBackupDirectory();
@@ -82,12 +82,11 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
   }
 
   Future<void> _handleImport() async {
-    final picked = await FilePicker.platform.pickFiles(
+    final picked = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: ['db', 'aes'],
-      withData: false,
     );
-    final sourcePath = picked?.files.single.path;
+    final sourcePath = picked?.path;
     if (sourcePath == null || !mounted) {
       return;
     }

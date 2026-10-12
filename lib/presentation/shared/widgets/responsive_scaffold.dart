@@ -47,14 +47,13 @@ class ResponsiveScaffold extends StatelessWidget {
                         padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
                         child: DecoratedBox(
                           decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.surface.withValues(alpha: 0.82),
+                            color: Theme.of(context).colorScheme.surface
+                                .withValues(alpha: 0.82),
                             borderRadius: BorderRadius.circular(28),
                             border: Border.all(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.outlineVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .outlineVariant,
                             ),
                           ),
                           child: NavigationRail(
@@ -116,9 +115,9 @@ class ResponsiveScaffold extends StatelessWidget {
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color:
-                          Theme.of(
-                            context,
-                          ).navigationBarTheme.backgroundColor ??
+                          Theme.of(context)
+                              .navigationBarTheme
+                              .backgroundColor ??
                           Theme.of(context).colorScheme.surface,
                       borderRadius: BorderRadius.circular(28),
                     ),

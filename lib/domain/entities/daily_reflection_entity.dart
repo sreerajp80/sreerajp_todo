@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'daily_reflection_entity.freezed.dart';
 
 @freezed
-class DailyReflectionEntity with _$DailyReflectionEntity {
+abstract class DailyReflectionEntity with _$DailyReflectionEntity {
   const DailyReflectionEntity._();
 
   const factory DailyReflectionEntity({

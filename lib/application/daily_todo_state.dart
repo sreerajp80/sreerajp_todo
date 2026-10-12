@@ -5,7 +5,7 @@ import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 part 'daily_todo_state.freezed.dart';
 
 @freezed
-class DailyTodoState with _$DailyTodoState {
+abstract class DailyTodoState with _$DailyTodoState {
   const factory DailyTodoState({
     @Default([]) List<TodoEntity> todos,
     @Default(false) bool isLoading,
@@ -17,7 +17,7 @@ class DailyTodoState with _$DailyTodoState {
 }
 
 @freezed
-class UndoEntry with _$UndoEntry {
+abstract class UndoEntry with _$UndoEntry {
   const factory UndoEntry({
     required String todoId,
     required TodoStatus oldStatus,

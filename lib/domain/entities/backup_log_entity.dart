@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'backup_log_entity.freezed.dart';
 
 @freezed
-class BackupLogEntity with _$BackupLogEntity {
+abstract class BackupLogEntity with _$BackupLogEntity {
   const BackupLogEntity._();
 
   const factory BackupLogEntity({

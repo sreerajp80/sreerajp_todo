@@ -307,9 +307,8 @@ void main() {
         TimeSegmentEntity(
           id: 'manual-1',
           todoId: 'segment-1',
-          startTime: DateTime.parse(
-            '${todayAsIso()}T09:00:00',
-          ).toIso8601String(),
+          startTime: DateTime.parse('${todayAsIso()}T09:00:00')
+              .toIso8601String(),
           endTime: DateTime.parse('${todayAsIso()}T10:30:00').toIso8601String(),
           durationSeconds: 5400,
           manual: true,
@@ -330,12 +329,10 @@ void main() {
           TimeSegmentEntity(
             id: 'manual-2',
             todoId: 'segment-1',
-            startTime: DateTime.parse(
-              '${todayAsIso()}T09:30:00',
-            ).toIso8601String(),
-            endTime: DateTime.parse(
-              '${todayAsIso()}T11:00:00',
-            ).toIso8601String(),
+            startTime: DateTime.parse('${todayAsIso()}T09:30:00')
+                .toIso8601String(),
+            endTime: DateTime.parse('${todayAsIso()}T11:00:00')
+                .toIso8601String(),
             durationSeconds: 5400,
             manual: true,
             createdAt: DateTime.now().toUtc().toIso8601String(),

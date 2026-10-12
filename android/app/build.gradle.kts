@@ -2,12 +2,15 @@ import java.io.File
 import java.io.FileInputStream
 import java.time.LocalDate
 import java.util.Properties
+import javax.inject.Inject
 import org.gradle.api.GradleException
+import org.gradle.process.ExecOperations
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    // No kotlin-android here: AGP compiles Kotlin itself (android.builtInKotlin=true).
+    // The Flutter Gradle Plugin must be applied after the Android Gradle plugin.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -42,9 +45,17 @@ val dartExecutable = File(
 )
 val projectRootDir = rootProject.projectDir.parentFile
 
+// Gradle 9 removed project.exec { }, so custom tasks get ExecOperations by injection.
+interface InjectedExecOps {
+    @get:Inject
+    val execOps: ExecOperations
+}
+
 val generateBuildMetadata = tasks.register("generateBuildMetadata") {
     group = "build setup"
     description = "Generates About-screen build metadata before Android builds."
+
+    val execOps = project.objects.newInstance<InjectedExecOps>().execOps
 
     inputs.file(projectRootDir.resolve("pubspec.yaml"))
     inputs.file(projectRootDir.resolve("tool/generate_app_version.dart"))
@@ -61,11 +72,11 @@ val generateBuildMetadata = tasks.register("generateBuildMetadata") {
             )
         }
 
-        project.exec {
+        execOps.exec {
             workingDir = projectRootDir
             commandLine(dartExecutable.absolutePath, "run", "tool/generate_app_version.dart")
         }
-        project.exec {
+        execOps.exec {
             workingDir = projectRootDir
             commandLine(dartExecutable.absolutePath, "run", "tool/generate_build_date.dart")
         }
@@ -90,10 +101,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     defaultConfig {
@@ -153,6 +160,12 @@ android {
                 "proguard-rules.pro",
             )
         }
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
     }
 }
 

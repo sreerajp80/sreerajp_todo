@@ -7,8 +7,8 @@
 **A personal, privacy-first, fully offline daily ToDo and time-tracking system built with Flutter.**
 
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20Windows-blue.svg)](#supported-platforms)
-[![Flutter](https://img.shields.io/badge/Flutter-3.44.8-blue.svg)](pubspec.yaml)
-[![Dart](https://img.shields.io/badge/Dart-3.12.2-blue.svg)](pubspec.yaml)
+[![Flutter](https://img.shields.io/badge/Flutter-3.47.6-blue.svg)](pubspec.yaml)
+[![Dart](https://img.shields.io/badge/Dart-3.13.5-blue.svg)](pubspec.yaml)
 [![Security](https://img.shields.io/badge/Security-SQLCipher%20%2B%20AES--256-red.svg)](#offline-guarantee--security-architecture)
 [![Privacy](https://img.shields.io/badge/Privacy-100%25%20Offline%20%7C%20Zero%20Telemetry-orange.svg)](#offline-guarantee--security-architecture)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -138,8 +138,8 @@ Most modern task apps push your personal schedule, thoughts, and habits into ext
 
 ### Prerequisites
 
-- Flutter SDK `3.44.8` stable
-- Dart SDK `3.12.2`
+- Flutter SDK `3.47.6` stable
+- Dart SDK `3.13.5`
 - Android SDK (targetSdk 34, minSdk 21)
 - Windows 10/11 with C++ Desktop Workload (Visual Studio 2022) for Windows builds
 
@@ -445,7 +445,7 @@ lib/
 
 | Layer | Technology | Responsibility |
 |---|---|---|
-| **Presentation** | Flutter 3.44.8 / Material 3 | Responsive UI screens, custom painters, and dialogs |
+| **Presentation** | Flutter 3.47.6 / Material 3 | Responsive UI screens, custom painters, and dialogs |
 | **State Management** | Riverpod (`flutter_riverpod`) | Reactive state management and dependency injection |
 | **Domain** | Freezed / Pure Dart | Immutable entities, value objects, and business rules |
 | **Database** | SQLCipher (`sqflite_sqlcipher`) | AES-256 encrypted SQLite with WAL mode and foreign keys |

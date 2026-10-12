@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'daily_intention_entity.freezed.dart';
 
 @freezed
-class DailyIntentionEntity with _$DailyIntentionEntity {
+abstract class DailyIntentionEntity with _$DailyIntentionEntity {
   const DailyIntentionEntity._();
 
   const factory DailyIntentionEntity({

@@ -49,7 +49,7 @@ or JSON/Markdown files, and switch theme and language inside the app.
 - **Target Audience:** Daily planners, time-tracking professionals, multi-lingual users,
   and privacy-conscious individuals who need fully local data.
 - **Platforms:** Android (minSdk 21, targetSdk 35), Windows (v1.0 active targets); iOS, Linux, macOS (not built yet)
-- **Framework & Language:** Flutter (`3.44.8 stable`) / Dart (`3.12.2`)
+- **Framework & Language:** Flutter (`3.47.6 stable`) / Dart (`3.13.5`)
 - **Database Storage:** Local SQLite database (`sreerajp_todo.db`) via `sqflite_sqlcipher`
   (mobile) and `sqflite_common_ffi` with SQLCipher (desktop). The live database is opened
   **with a password** taken from `DatabaseKeyService`. See section 2.2.

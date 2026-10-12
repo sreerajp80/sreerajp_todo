@@ -58,13 +58,17 @@ Before adding any package:
 | `freezed` | Code generator for immutable data models |
 | `json_serializable` | Code generator for JSON serialization |
 | `mocktail` | Null-safe mocking framework for unit testing |
+| `plugin_platform_interface` | Lets widget tests swap in a fake file picker (`MockPlatformInterfaceMixin`); test-only, no network code |
 | `flutter_native_splash` | Native splash screen generator |
 
 ---
 
 ## 4. Prohibited Dependency Categories
 
-The following package types are strictly prohibited in `pubspec.yaml` and transitive dependencies:
+The following package types are strictly prohibited in `pubspec.yaml` and transitive dependencies.
+The only allowed exceptions are the transitive packages listed in §4.1. Each one was checked
+and is never compiled into the app. No other exception may be added without the same check.
+
 - **HTTP / REST Clients:** `http`, `dio`, `retrofit`, `chopper`
 - **WebSockets / Network Sockets:** `web_socket_channel`, `socket_io_client`
 - **Cloud / BaaS SDKs:** `firebase_core`, `supabase_flutter`, `aws_signature_v4`, `amplify_flutter`
@@ -76,6 +80,22 @@ The following package types are strictly prohibited in `pubspec.yaml` and transi
   entry (features 3.9) needed speech-to-text, and the package route was rejected here.
   It is done instead with the app's own `in.sreerajp.todo/speech` method channel over
   Android `SpeechRecognizer`, which adds no package and keeps this inventory unchanged.
+
+### 4.1 Known transitive exceptions
+
+These packages show up in `pubspec.lock` only because an approved package depends on them.
+The app never imports them, and their network code is not compiled into any build target
+this project ships.
+
+| Package | Pulled in by | Why it is allowed |
+|---|---|---|
+| `http` | `image_cropper` → `image_cropper_platform_interface` | Used only by the package's web `CroppedFile` (`lib/src/models/cropped_file/html.dart`), to read a cropped image from a browser blob URL. A conditional export picks that file only on web. Android and desktop builds use `cropped_file/io.dart`, which reads local files and has no network code. The app does not target web, so `http` is never compiled in. |
+
+Check this list again when:
+- `image_cropper` or `image_cropper_platform_interface` is upgraded — confirm `http` is
+  still imported only from the web file; or
+- a web build target is added — `http` would then be compiled in, and the exception no
+  longer holds.
 
 ---
 
@@ -103,4 +123,5 @@ After editing `pubspec.yaml`, execute the following audit command in PowerShell:
 flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|sentry|crashlytics|analytics"
 ```
 
-Zero matches from direct project dependencies are required.
+Zero matches are required, except the transitive packages listed in §4.1 (Known transitive
+exceptions). Any other match must be checked before the change is accepted.

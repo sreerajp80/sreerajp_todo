@@ -11,6 +11,7 @@ import 'package:sreerajp_todo/core/constants/app_constants.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';
 import 'package:sreerajp_todo/data/backup/backup_service.dart';
 import 'package:sreerajp_todo/data/database/database_service.dart';
+
 import '../../helpers/test_database.dart';
 
 void main() {
@@ -124,40 +125,34 @@ void main() {
     expect(titles, ['Restorable task']);
   });
 
-  test(
-    'import with schema version 1 migrates to current version and promotes worked todos',
-    () async {
-      await _insertTodo(databaseService, title: 'Migrated task');
-      await _insertSegmentForTodo(databaseService, title: 'Migrated task');
+  test('import with schema version 1 migrates to current version and promotes worked todos', () async {
+    await _insertTodo(databaseService, title: 'Migrated task');
+    await _insertSegmentForTodo(databaseService, title: 'Migrated task');
 
-      final backupDirectory = Directory(p.join(tempDir.path, 'backups'));
-      final backupPath = await backupService.exportDatabase(
-        destinationPath: backupDirectory.path,
-        passphrase: 'correct horse battery staple',
-      );
-      await _rewriteBackupUserVersion(
-        backupPath,
-        'correct horse battery staple',
-        1,
-      );
+    final backupDirectory = Directory(p.join(tempDir.path, 'backups'));
+    final backupPath = await backupService.exportDatabase(
+      destinationPath: backupDirectory.path,
+      passphrase: 'correct horse battery staple',
+    );
+    await _rewriteBackupUserVersion(
+      backupPath,
+      'correct horse battery staple',
+      1,
+    );
 
-      await _replaceTodosWith(databaseService, ['Different current task']);
+    await _replaceTodosWith(databaseService, ['Different current task']);
 
-      await backupService.importDatabase(
-        sourcePath: backupPath,
-        passphrase: 'correct horse battery staple',
-      );
+    await backupService.importDatabase(
+      sourcePath: backupPath,
+      passphrase: 'correct horse battery staple',
+    );
 
-      final db = await databaseService.database;
-      final versionResult = await db.rawQuery('PRAGMA user_version');
-      expect(versionResult.first.values.first, kDatabaseVersion);
-      expect(await _loadTitles(databaseService), ['Migrated task']);
-      expect(
-        await _loadTodoStatus(databaseService, 'Migrated task'),
-        'working',
-      );
-    },
-  );
+    final db = await databaseService.database;
+    final versionResult = await db.rawQuery('PRAGMA user_version');
+    expect(versionResult.first.values.first, kDatabaseVersion);
+    expect(await _loadTitles(databaseService), ['Migrated task']);
+    expect(await _loadTodoStatus(databaseService, 'Migrated task'), 'working');
+  });
   test(
     'import with newer schema version throws BackupVersionTooNewException',
     () async {
@@ -366,9 +361,8 @@ Future<void> _rewriteBackupUserVersion(
       ..addFile(
         ArchiveFile.bytes(kDatabaseName, await File(dbPath).readAsBytes()),
       );
-    final encoded = ZipEncoder(
-      password: passphrase,
-    ).encodeBytes(rewrittenArchive);
+    final encoded = ZipEncoder(password: passphrase)
+        .encodeBytes(rewrittenArchive);
     await File(backupPath).writeAsBytes(encoded, flush: true);
   } finally {
     await tempDir.delete(recursive: true);

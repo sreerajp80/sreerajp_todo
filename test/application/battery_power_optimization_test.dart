@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,47 +38,47 @@ void main() {
       );
     });
 
-    test(
-      'liveTimerProvider suspends active ticking when lifecycle is paused or hidden',
-      () async {
-        final startTime = DateTime.now()
-            .subtract(const Duration(seconds: 42))
-            .toIso8601String();
-        final container = ProviderContainer(
-          overrides: [
-            timeTrackingProvider('todo-1').overrideWith(
-              (ref) => _FakeTimeTrackingNotifier(
-                TimeTrackingState(
-                  totalDurationSeconds: 42,
-                  runningSegment: TimeSegmentEntity(
-                    id: 'seg-1',
-                    todoId: 'todo-1',
-                    startTime: startTime,
-                    createdAt: startTime,
-                  ),
+    test('liveTimerProvider suspends active ticking when lifecycle is paused or hidden', () async {
+      final startTime = DateTime.now()
+          .subtract(const Duration(seconds: 42))
+          .toIso8601String();
+      final container = ProviderContainer(
+        overrides: [
+          timeTrackingProvider('todo-1').overrideWith(
+            (ref) => _FakeTimeTrackingNotifier(
+              TimeTrackingState(
+                totalDurationSeconds: 42,
+                runningSegment: TimeSegmentEntity(
+                  id: 'seg-1',
+                  todoId: 'todo-1',
+                  startTime: startTime,
+                  createdAt: startTime,
                 ),
               ),
             ),
-          ],
-        );
-        addTearDown(container.dispose);
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      // Riverpod 3 disposes an unlistened autoDispose provider before it
+      // emits, so keep it alive for the reads below.
+      container.listen(liveTimerProvider('todo-1'), (_, _) {});
 
-        // While in foreground, reading it yields the elapsed value
-        final initialSeconds = await container.read(
-          liveTimerProvider('todo-1').future,
-        );
-        expect(initialSeconds, greaterThanOrEqualTo(42));
+      // While in foreground, reading it yields the elapsed value
+      final initialSeconds = await container.read(
+        liveTimerProvider('todo-1').future,
+      );
+      expect(initialSeconds, greaterThanOrEqualTo(42));
 
-        // When paused/backgrounded, liveTimerProvider emits static value without periodic ticking
-        container.read(appLifecycleStateProvider.notifier).state =
-            AppLifecycleState.paused;
+      // When paused/backgrounded, liveTimerProvider emits static value without periodic ticking
+      container.read(appLifecycleStateProvider.notifier).state =
+          AppLifecycleState.paused;
 
-        final pausedSeconds = await container.read(
-          liveTimerProvider('todo-1').future,
-        );
-        expect(pausedSeconds, greaterThanOrEqualTo(42));
-      },
-    );
+      final pausedSeconds = await container.read(
+        liveTimerProvider('todo-1').future,
+      );
+      expect(pausedSeconds, greaterThanOrEqualTo(42));
+    });
 
     test('pomodoroCountdownProvider suspends ticking when paused', () async {
       final container = ProviderContainer();
@@ -85,6 +86,7 @@ void main() {
 
       container.read(appLifecycleStateProvider.notifier).state =
           AppLifecycleState.paused;
+      container.listen(pomodoroCountdownProvider, (_, _) {});
 
       final seconds = await container.read(pomodoroCountdownProvider.future);
       expect(seconds, equals(0));
@@ -96,6 +98,7 @@ void main() {
 
       container.read(appLifecycleStateProvider.notifier).state =
           AppLifecycleState.hidden;
+      container.listen(focusPulseCountdownProvider, (_, _) {});
 
       final seconds = await container.read(focusPulseCountdownProvider.future);
       expect(seconds, equals(0));

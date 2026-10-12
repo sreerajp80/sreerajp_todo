@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_initializing_formals
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:sreerajp_todo/application/voice_capture_state.dart';
 import 'package:sreerajp_todo/data/platform/speech_channel.dart';
 import 'package:sreerajp_todo/core/utils/date_utils.dart';

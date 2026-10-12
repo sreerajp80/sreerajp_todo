@@ -297,15 +297,12 @@ class DataHandoffService {
 
   /// Launches the system file picker to select a `.json` or `.md` file for import.
   Future<FileReadResult?> pickAndReadImportFile() async {
-    final result = await FilePicker.platform.pickFiles(
+    final file = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: ['json', 'md', 'txt'],
     );
 
-    if (result == null || result.files.isEmpty) return null;
-
-    final file = result.files.first;
-    if (file.path == null) return null;
+    if (file == null || file.path == null) return null;
 
     final ioFile = File(file.path!);
     final content = await ioFile.readAsString();
@@ -322,23 +319,27 @@ class DataHandoffService {
     required String content,
     required String defaultFileName,
   }) async {
-    String? selectedPath;
     try {
-      selectedPath = await FilePicker.platform.saveFile(
+      // The plugin writes the bytes to the chosen location itself.
+      final savedUri = await FilePicker.saveFile(
         dialogTitle: 'Save Export File',
         fileName: defaultFileName,
+        bytes: utf8.encode(content),
         type: FileType.custom,
         allowedExtensions: [p.extension(defaultFileName).replaceAll('.', '')],
       );
+      if (savedUri != null) {
+        return savedUri.scheme == 'file'
+            ? savedUri.toFilePath()
+            : savedUri.toString();
+      }
     } catch (_) {
       // Safe to ignore: platform file picker dialog might be unavailable; fallback handles it.
     }
 
-    if (selectedPath == null) {
-      // Fallback to Documents/Downloads folder if save dialog is unsupported
-      final docsDir = await getApplicationDocumentsDirectory();
-      selectedPath = p.join(docsDir.path, defaultFileName);
-    }
+    // Fallback to Documents/Downloads folder if save dialog is unsupported
+    final docsDir = await getApplicationDocumentsDirectory();
+    final selectedPath = p.join(docsDir.path, defaultFileName);
 
     final targetFile = File(selectedPath);
     await targetFile.writeAsString(content);

@@ -39,9 +39,8 @@ class RitualSettingsScreen extends ConsumerWidget {
     if (confirmed != true || !context.mounted) return;
     await ref.read(ritualServiceProvider).resetAllReviews();
     if (!context.mounted) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(l10n.ritualResetDone)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(l10n.ritualResetDone)));
   }
 
   @override

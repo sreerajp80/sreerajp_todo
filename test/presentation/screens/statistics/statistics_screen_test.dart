@@ -152,9 +152,8 @@ void main() {
       ];
     });
 
-    when(
-      () => service.getPerItemCount(titleQuery: any(named: 'titleQuery')),
-    ).thenAnswer((_) async => 21);
+    when(() => service.getPerItemCount(titleQuery: any(named: 'titleQuery')))
+        .thenAnswer((_) async => 21);
 
     when(() => service.getTimeSeriesForTitle(any())).thenAnswer((
       invocation,

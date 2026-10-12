@@ -40,7 +40,7 @@ enum TodoHistoryEventType {
 }
 
 @freezed
-class TodoHistoryEntity with _$TodoHistoryEntity {
+abstract class TodoHistoryEntity with _$TodoHistoryEntity {
   const TodoHistoryEntity._();
 
   const factory TodoHistoryEntity({

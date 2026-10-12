@@ -44,7 +44,7 @@ class PomodoroBanner extends ConsumerWidget {
     // The countdown always shows seconds, whatever the display format is,
     // because a focus timer that jumps a minute at a time reads as stuck.
     final secondsLeft =
-        ref.watch(pomodoroCountdownProvider).valueOrNull ??
+        ref.watch(pomodoroCountdownProvider).value ??
         pomodoro.secondsLeft(DateTime.now());
 
     return Container(

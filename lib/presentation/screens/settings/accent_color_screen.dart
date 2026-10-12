@@ -268,9 +268,8 @@ class _WheelPainter extends CustomPainter {
         HSVColor.fromAHSV(1, i % 360.0, 1, 1).toColor(),
     ];
     final sweep = Paint()
-      ..shader = SweepGradient(
-        colors: hueColors,
-      ).createShader(Rect.fromCircle(center: centre, radius: radius));
+      ..shader = SweepGradient(colors: hueColors)
+          .createShader(Rect.fromCircle(center: centre, radius: radius));
     canvas.drawCircle(centre, radius, sweep);
 
     final saturationPaint = Paint()

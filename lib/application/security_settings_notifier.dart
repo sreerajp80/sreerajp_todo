@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_initializing_formals
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/data/platform/app_lock_channel.dart';
 import 'package:sreerajp_todo/core/security/app_lock_service.dart';

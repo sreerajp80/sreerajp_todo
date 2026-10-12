@@ -125,7 +125,7 @@ class _FocusBody extends ConsumerWidget {
     final tracking = ref.watch(timeTrackingProvider(todo.id));
     final settings = ref.watch(timeTrackingSettingsProvider);
     final isRunning = tracking.runningSegment != null;
-    final liveSeconds = ref.watch(liveTimerProvider(todo.id)).valueOrNull ?? 0;
+    final liveSeconds = ref.watch(liveTimerProvider(todo.id)).value ?? 0;
 
     final isPast = isPastDate(todo.date);
     final isTerminal =
@@ -172,7 +172,7 @@ class _FocusBody extends ConsumerWidget {
               padding: const EdgeInsets.only(top: 8),
               child: AdaptiveDirectionality(
                 text: todo.description!,
-                child: Text(
+                child: SelectableText(
                   todo.description!,
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -282,9 +282,8 @@ class _FocusControls extends ConsumerWidget {
         child: Text(
           l10n.errorTimerFutureTask,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium
+              ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
       );
     }
@@ -335,7 +334,7 @@ class _NextNudgeLine extends ConsumerWidget {
     if (!pulse.isArmed) return Text(l10n.focusNudgesOff, style: style);
 
     final left =
-        ref.watch(focusPulseCountdownProvider).valueOrNull ??
+        ref.watch(focusPulseCountdownProvider).value ??
         pulse.secondsToNextPulse(DateTime.now());
 
     return Text(l10n.focusNextNudge(formatDuration(left)), style: style);

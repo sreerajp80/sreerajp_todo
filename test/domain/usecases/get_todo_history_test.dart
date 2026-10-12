@@ -34,39 +34,36 @@ void main() {
   });
 
   group('GetTodoHistory', () {
-    test(
-      'synthesizes created and past time segments when no explicit history exists',
-      () async {
-        final now = DateTime.now().toUtc().toIso8601String();
-        final todo = TodoEntity(
-          id: 'legacy-todo',
-          date: '2026-08-25',
-          title: 'Legacy task',
-          status: TodoStatus.completed,
-          sortOrder: 0,
-          createdAt: '2026-08-25T08:00:00.000Z',
-          updatedAt: now,
-        );
-        await todoDao.insert(todo);
+    test('synthesizes created and past time segments when no explicit history exists', () async {
+      final now = DateTime.now().toUtc().toIso8601String();
+      final todo = TodoEntity(
+        id: 'legacy-todo',
+        date: '2026-08-25',
+        title: 'Legacy task',
+        status: TodoStatus.completed,
+        sortOrder: 0,
+        createdAt: '2026-08-25T08:00:00.000Z',
+        updatedAt: now,
+      );
+      await todoDao.insert(todo);
 
-        const seg1 = TimeSegmentEntity(
-          id: 'seg-1',
-          todoId: 'legacy-todo',
-          startTime: '2026-08-25T09:00:00.000Z',
-          endTime: '2026-08-25T09:25:00.000Z',
-          durationSeconds: 1500,
-          manual: false,
-          createdAt: '2026-08-25T09:00:00.000Z',
-        );
-        await timeSegmentDao.insert(seg1);
+      const seg1 = TimeSegmentEntity(
+        id: 'seg-1',
+        todoId: 'legacy-todo',
+        startTime: '2026-08-25T09:00:00.000Z',
+        endTime: '2026-08-25T09:25:00.000Z',
+        durationSeconds: 1500,
+        manual: false,
+        createdAt: '2026-08-25T09:00:00.000Z',
+      );
+      await timeSegmentDao.insert(seg1);
 
-        final history = await useCase('legacy-todo');
-        expect(history.length, 2);
-        expect(history[0].eventType, TodoHistoryEventType.created);
-        expect(history[0].description, contains('2026-08-25'));
-        expect(history[1].eventType, TodoHistoryEventType.timerStopped);
-        expect(history[1].description, contains('1500s'));
-      },
-    );
+      final history = await useCase('legacy-todo');
+      expect(history.length, 2);
+      expect(history[0].eventType, TodoHistoryEventType.created);
+      expect(history[0].description, contains('2026-08-25'));
+      expect(history[1].eventType, TodoHistoryEventType.timerStopped);
+      expect(history[1].description, contains('1500s'));
+    });
   });
 }

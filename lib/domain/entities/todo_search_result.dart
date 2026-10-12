@@ -10,7 +10,7 @@ part 'todo_search_result.freezed.dart';
 /// description. It is null otherwise, and the screen falls back to showing the
 /// description.
 @freezed
-class TodoSearchResult with _$TodoSearchResult {
+abstract class TodoSearchResult with _$TodoSearchResult {
   const factory TodoSearchResult({
     required TodoEntity todo,
     String? matchedNote,

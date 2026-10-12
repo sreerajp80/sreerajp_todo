@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+
 import 'package:sreerajp_todo/domain/entities/air_qr_frame.dart';
 import 'package:sreerajp_todo/domain/entities/air_qr_progress.dart';
 import 'package:sreerajp_todo/core/logging/app_logger.dart';

@@ -87,9 +87,9 @@ class DefaultsTaskActionsScreen extends ConsumerWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.primaryContainer,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primaryContainer,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Text(
@@ -98,9 +98,9 @@ class DefaultsTaskActionsScreen extends ConsumerWidget {
                             ),
                             style: Theme.of(context).textTheme.labelMedium
                                 ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onPrimaryContainer,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onPrimaryContainer,
                                   fontWeight: FontWeight.bold,
                                 ),
                           ),

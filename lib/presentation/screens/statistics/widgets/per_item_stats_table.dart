@@ -337,10 +337,8 @@ class _StatusPill extends StatelessWidget {
       ),
       child: Text(
         '$label $value',
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: color,
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.labelMedium
+            ?.copyWith(color: color, fontWeight: FontWeight.w600),
       ),
     );
   }

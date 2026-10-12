@@ -40,9 +40,8 @@ void main() {
 
   setUp(() {
     database = MockDatabase();
-    when(
-      () => database.rawQuery(any()),
-    ).thenAnswer((_) async => <Map<String, Object?>>[]);
+    when(() => database.rawQuery(any()))
+        .thenAnswer((_) async => <Map<String, Object?>>[]);
     databaseService = TestDatabaseService(database);
   });
 

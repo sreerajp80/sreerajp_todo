@@ -59,12 +59,10 @@ void main() {
     );
 
     when(() => todoRepo.getTodoById('t-1')).thenAnswer((_) async => todo);
-    when(
-      () => segmentRepo.getRunningSegment('t-1'),
-    ).thenAnswer((_) async => null);
-    when(
-      () => todoRepo.updateStatus('t-1', TodoStatus.completed),
-    ).thenAnswer((_) async {});
+    when(() => segmentRepo.getRunningSegment('t-1'))
+        .thenAnswer((_) async => null);
+    when(() => todoRepo.updateStatus('t-1', TodoStatus.completed))
+        .thenAnswer((_) async {});
     when(() => srsRepo.getItemById('srs-1')).thenAnswer((_) async => srsItem);
     when(() => srsRepo.updateItem(any())).thenAnswer((_) async {});
 
@@ -102,12 +100,10 @@ void main() {
       );
 
       when(() => todoRepo.getTodoById('t-1')).thenAnswer((_) async => todo);
-      when(
-        () => segmentRepo.getRunningSegment('t-1'),
-      ).thenAnswer((_) async => null);
-      when(
-        () => todoRepo.updateStatus('t-1', TodoStatus.completed),
-      ).thenAnswer((_) async {});
+      when(() => segmentRepo.getRunningSegment('t-1'))
+          .thenAnswer((_) async => null);
+      when(() => todoRepo.updateStatus('t-1', TodoStatus.completed))
+          .thenAnswer((_) async {});
       when(() => srsRepo.getItemById('srs-1')).thenAnswer((_) async => srsItem);
       when(() => srsRepo.updateItem(any())).thenAnswer((_) async {});
 

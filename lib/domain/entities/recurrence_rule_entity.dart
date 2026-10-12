@@ -9,7 +9,7 @@ import 'package:sreerajp_todo/domain/entities/todo_priority.dart';
 part 'recurrence_rule_entity.freezed.dart';
 
 @freezed
-class RecurrenceRuleEntity with _$RecurrenceRuleEntity {
+abstract class RecurrenceRuleEntity with _$RecurrenceRuleEntity {
   const RecurrenceRuleEntity._();
 
   const factory RecurrenceRuleEntity({

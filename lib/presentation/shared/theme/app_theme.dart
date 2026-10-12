@@ -48,9 +48,9 @@ abstract final class AppTheme {
 
   /// Returns [color] with its lightness moved to [lightness] (0..1).
   static Color _withLightness(Color color, double lightness) =>
-      HSLColor.fromColor(
-        color,
-      ).withLightness(lightness.clamp(0.0, 1.0)).toColor();
+      HSLColor.fromColor(color)
+          .withLightness(lightness.clamp(0.0, 1.0))
+          .toColor();
 
   static ThemeData _buildTheme(
     Brightness brightness, {

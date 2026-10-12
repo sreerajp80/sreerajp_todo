@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'sub_task_item.freezed.dart';
 
 @freezed
-class SubTaskItem with _$SubTaskItem {
+abstract class SubTaskItem with _$SubTaskItem {
   const SubTaskItem._();
 
   const factory SubTaskItem({

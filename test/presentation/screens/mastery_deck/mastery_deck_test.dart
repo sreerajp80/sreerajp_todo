@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/misc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -72,9 +73,8 @@ void main() {
     mockTimeRepo = MockTimeSegmentRepository();
 
     when(() => mockTimeRepo.getSegments(any())).thenAnswer((_) async => []);
-    when(
-      () => mockTimeRepo.getRunningSegment(any()),
-    ).thenAnswer((_) async => null);
+    when(() => mockTimeRepo.getRunningSegment(any()))
+        .thenAnswer((_) async => null);
   });
 
   testWidgets('MasteryDeckScreen shows empty state when no decks exist', (
@@ -147,9 +147,8 @@ void main() {
       ).copyWith(spacedRepetitionItemId: 'deck-1');
 
       when(() => mockSrsRepo.getAllItems()).thenAnswer((_) async => [deck]);
-      when(
-        () => mockTodoRepo.getTodosByMasteryDeckId('deck-1'),
-      ).thenAnswer((_) async => [todo1, todo2]);
+      when(() => mockTodoRepo.getTodosByMasteryDeckId('deck-1'))
+          .thenAnswer((_) async => [todo1, todo2]);
 
       await tester.pumpWidget(
         buildTestApp(
@@ -196,12 +195,10 @@ void main() {
         status: TodoStatus.working,
       ).copyWith(spacedRepetitionItemId: 'deck-1');
 
-      when(
-        () => mockSrsRepo.getItemById('deck-1'),
-      ).thenAnswer((_) async => deck);
-      when(
-        () => mockTodoRepo.getTodosByMasteryDeckId('deck-1'),
-      ).thenAnswer((_) async => [todo1, todo2]);
+      when(() => mockSrsRepo.getItemById('deck-1'))
+          .thenAnswer((_) async => deck);
+      when(() => mockTodoRepo.getTodosByMasteryDeckId('deck-1'))
+          .thenAnswer((_) async => [todo1, todo2]);
 
       await tester.pumpWidget(
         buildTestApp(

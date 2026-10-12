@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:sreerajp_todo/core/logging/app_logger.dart';
 
 /// Immutable representation of a single optical AirQR stream frame.

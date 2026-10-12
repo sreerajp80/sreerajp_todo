@@ -379,7 +379,7 @@ class TodoListTile extends ConsumerWidget {
 
     final totalSeconds = trackingState.totalDurationSeconds;
     final liveElapsed = ref.watch(liveTimerProvider(todo.id));
-    final liveSeconds = liveElapsed.valueOrNull ?? 0;
+    final liveSeconds = liveElapsed.value ?? 0;
     final displayTotalSeconds = isRunning
         ? totalSeconds + liveSeconds
         : totalSeconds;
@@ -426,7 +426,7 @@ class TodoListTile extends ConsumerWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     final pendingPrereqs =
-        ref.watch(pendingPrerequisitesProvider(todo.id)).valueOrNull ?? [];
+        ref.watch(pendingPrerequisitesProvider(todo.id)).value ?? [];
     final isBlocked = pendingPrereqs.isNotEmpty;
 
     final completedSubTasks = todo.subTasks
@@ -1229,10 +1229,8 @@ class _SwipeActionButton extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   label,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: Theme.of(context).textTheme.labelSmall
+                      ?.copyWith(color: color, fontWeight: FontWeight.w600),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

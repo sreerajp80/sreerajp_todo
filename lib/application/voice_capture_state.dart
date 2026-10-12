@@ -18,7 +18,7 @@ enum VoiceCaptureStage {
 
 /// Everything the voice sheet needs to draw itself.
 @freezed
-class VoiceCaptureState with _$VoiceCaptureState {
+abstract class VoiceCaptureState with _$VoiceCaptureState {
   const factory VoiceCaptureState({
     @Default(VoiceCaptureStage.idle) VoiceCaptureStage stage,
 

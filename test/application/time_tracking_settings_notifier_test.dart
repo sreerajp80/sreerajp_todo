@@ -43,9 +43,8 @@ void main() {
   group('TimeTrackingSettingsNotifier saving', () {
     test('saves the auto-stop mode and reads it back', () async {
       final prefs = await freshPrefs();
-      await TimeTrackingSettingsNotifier(
-        prefs,
-      ).setAutoStopMode(AutoStopMode.midnight);
+      await TimeTrackingSettingsNotifier(prefs)
+          .setAutoStopMode(AutoStopMode.midnight);
 
       expect(prefs.getInt(kAutoStopModeKey), AutoStopMode.midnight.index);
       expect(
@@ -56,9 +55,8 @@ void main() {
 
     test('saves the custom auto-stop time', () async {
       final prefs = await freshPrefs();
-      await TimeTrackingSettingsNotifier(
-        prefs,
-      ).setAutoStopTime(const TimeOfDay(hour: 21, minute: 45));
+      await TimeTrackingSettingsNotifier(prefs)
+          .setAutoStopTime(const TimeOfDay(hour: 21, minute: 45));
 
       final state = TimeTrackingSettingsNotifier(prefs).state;
       expect(state.autoStopHour, 21);
@@ -126,9 +124,8 @@ void main() {
 
     test('saves the focus pulse mode and reads it back', () async {
       final prefs = await freshPrefs();
-      await TimeTrackingSettingsNotifier(
-        prefs,
-      ).setFocusPulseMode(FocusPulseMode.both);
+      await TimeTrackingSettingsNotifier(prefs)
+          .setFocusPulseMode(FocusPulseMode.both);
 
       expect(prefs.getInt(kFocusPulseModeKey), FocusPulseMode.both.index);
       expect(
@@ -139,9 +136,8 @@ void main() {
 
     test('saves the focus pulse gap and reads it back', () async {
       final prefs = await freshPrefs();
-      await TimeTrackingSettingsNotifier(
-        prefs,
-      ).setFocusPulseIntervalMinutes(15);
+      await TimeTrackingSettingsNotifier(prefs)
+          .setFocusPulseIntervalMinutes(15);
 
       expect(prefs.getInt(kFocusPulseIntervalKey), 15);
       expect(

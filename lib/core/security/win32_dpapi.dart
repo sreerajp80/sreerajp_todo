@@ -9,52 +9,50 @@ base class DataBlob extends Struct {
   external Pointer<Uint8> pbData;
 }
 
-typedef NativeCryptProtectData =
-    Int32 Function(
-      Pointer<DataBlob> pDataIn,
-      Pointer<Void> szDataDescr,
-      Pointer<DataBlob> pOptionalEntropy,
-      Pointer<Void> pvReserved,
-      Pointer<Void> pPromptStruct,
-      Uint32 dwFlags,
-      Pointer<DataBlob> pDataOut,
-    );
+typedef NativeCryptProtectData = Int32 Function(
+  Pointer<DataBlob> pDataIn,
+  Pointer<Void> szDataDescr,
+  Pointer<DataBlob> pOptionalEntropy,
+  Pointer<Void> pvReserved,
+  Pointer<Void> pPromptStruct,
+  Uint32 dwFlags,
+  Pointer<DataBlob> pDataOut,
+);
 
-typedef DartCryptProtectData =
-    int Function(
-      Pointer<DataBlob> pDataIn,
-      Pointer<Void> szDataDescr,
-      Pointer<DataBlob> pOptionalEntropy,
-      Pointer<Void> pvReserved,
-      Pointer<Void> pPromptStruct,
-      int dwFlags,
-      Pointer<DataBlob> pDataOut,
-    );
+typedef DartCryptProtectData = int Function(
+  Pointer<DataBlob> pDataIn,
+  Pointer<Void> szDataDescr,
+  Pointer<DataBlob> pOptionalEntropy,
+  Pointer<Void> pvReserved,
+  Pointer<Void> pPromptStruct,
+  int dwFlags,
+  Pointer<DataBlob> pDataOut,
+);
 
-typedef NativeCryptUnprotectData =
-    Int32 Function(
-      Pointer<DataBlob> pDataIn,
-      Pointer<Void> ppszDataDescr,
-      Pointer<DataBlob> pOptionalEntropy,
-      Pointer<Void> pvReserved,
-      Pointer<Void> pPromptStruct,
-      Uint32 dwFlags,
-      Pointer<DataBlob> pDataOut,
-    );
+typedef NativeCryptUnprotectData = Int32 Function(
+  Pointer<DataBlob> pDataIn,
+  Pointer<Void> ppszDataDescr,
+  Pointer<DataBlob> pOptionalEntropy,
+  Pointer<Void> pvReserved,
+  Pointer<Void> pPromptStruct,
+  Uint32 dwFlags,
+  Pointer<DataBlob> pDataOut,
+);
 
-typedef DartCryptUnprotectData =
-    int Function(
-      Pointer<DataBlob> pDataIn,
-      Pointer<Void> ppszDataDescr,
-      Pointer<DataBlob> pOptionalEntropy,
-      Pointer<Void> pvReserved,
-      Pointer<Void> pPromptStruct,
-      int dwFlags,
-      Pointer<DataBlob> pDataOut,
-    );
+typedef DartCryptUnprotectData = int Function(
+  Pointer<DataBlob> pDataIn,
+  Pointer<Void> ppszDataDescr,
+  Pointer<DataBlob> pOptionalEntropy,
+  Pointer<Void> pvReserved,
+  Pointer<Void> pPromptStruct,
+  int dwFlags,
+  Pointer<DataBlob> pDataOut,
+);
 
-typedef NativeLocalAlloc =
-    Pointer<Void> Function(Uint32 uFlags, IntPtr dwBytes);
+typedef NativeLocalAlloc = Pointer<Void> Function(
+  Uint32 uFlags,
+  IntPtr dwBytes,
+);
 typedef DartLocalAlloc = Pointer<Void> Function(int uFlags, int dwBytes);
 
 typedef NativeLocalFree = Pointer<Void> Function(Pointer<Void> hMem);

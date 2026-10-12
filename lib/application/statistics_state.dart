@@ -6,7 +6,7 @@ part 'statistics_state.freezed.dart';
 enum DateRange { last7Days, last30Days, allTime, custom }
 
 @freezed
-class StatisticsState with _$StatisticsState {
+abstract class StatisticsState with _$StatisticsState {
   const factory StatisticsState({
     @Default([]) List<DayStats> dailyStats,
     @Default(0) int dailyCurrentPage,

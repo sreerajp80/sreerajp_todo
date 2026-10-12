@@ -136,9 +136,8 @@ void main() {
     test('survives being written and read again', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      await RitualService(
-        prefs,
-      ).rateCard('sd_07', RepetitionRating.easy, now: monday);
+      await RitualService(prefs)
+          .rateCard('sd_07', RepetitionRating.easy, now: monday);
 
       final reloaded = RitualService(prefs).reviewState('sd_07', now: monday);
       expect(reloaded.level, 1);

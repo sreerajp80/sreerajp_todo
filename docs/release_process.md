@@ -157,7 +157,7 @@ Complete these items before every release.
   ```
 - [ ] Merged release manifest clean — `INTERNET` (for local Wi-Fi sync only) is expected; nothing below may match:
   ```powershell
-  Select-String -Path "build\app\intermediates\merged_manifest\prodRelease\processProdReleaseMainManifest\AndroidManifest.xml" -Pattern "ACCESS_NETWORK_STATE|ACCESS_WIFI_STATE|CHANGE_WIFI|com\.google\.mlkit|com\.google\.android\.gms|datatransport|firebase"
+  Select-String -Path "build\app\intermediates\merged_manifest\prodRelease\processProdReleaseMainManifest\AndroidManifest.xml" -Pattern "ACCESS_NETWORK_STATE|ACCESS_WIFI_STATE|CHANGE_WIFI|EXTERNAL_STORAGE|EXACT_ALARM|com\.google\.mlkit|com\.google\.android\.gms|datatransport|firebase"
   # Expected: ZERO matches.
   ```
 - [ ] Only Wi-Fi sync opens sockets, and it checks every address with `isLocalNetworkAddress()`:
@@ -200,6 +200,7 @@ Complete these items before every release.
 
 - [ ] Android release APK built successfully.
 - [ ] Android release AAB built successfully.
+- [ ] `libapp.so` in every release APK and in the AAB is stripped (no DWARF debug info) — see §8 step 7. The "unobfuscated DWARF" build warning is expected and is not a failure by itself.
 - [ ] Windows release built successfully.
 - [ ] `sqlite3.dll` bundled in Windows release folder.
 - [ ] Version name and build number are correct in built artifacts.
@@ -222,23 +223,51 @@ Complete these items before every release.
    flutter build apk --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/ --split-per-abi
    flutter build appbundle --flavor prod --release --obfuscate --split-debug-info=build/symbols/android-prod/
    ```
+   Run these two builds one after the other, never at the same time as `flutter test`.
+
+   Expected warning, once per CPU type: `The generated ELF library contains unobfuscated DWARF debugging information.`
+   On Android, Flutter does not strip debug info (DWARF) from `libapp.so` (the compiled Dart
+   code) itself. It leaves that to the Android Gradle Plugin, which strips the file while
+   packaging. The warning is about the file before packaging. Step 7 confirms that the
+   shipped file is stripped.
 6. Archive debug symbols immediately to secure storage:
    ```powershell
    # Archive build/symbols/android-prod/ alongside release notes
    ```
-7. Verify the merged manifest has no extra network permission and no Google ML Kit, Play Services or telemetry entries:
+7. Verify that the shipped Dart library (`libapp.so`) in every APK and in the app bundle has no debug info:
    ```powershell
-   Select-String -Path "build\app\intermediates\merged_manifest\prodRelease\processProdReleaseMainManifest\AndroidManifest.xml" -Pattern "ACCESS_NETWORK_STATE|ACCESS_WIFI_STATE|com\.google\.mlkit|com\.google\.android\.gms|datatransport|firebase"
+   Add-Type -AssemblyName System.IO.Compression.FileSystem
+   $archives = @(Get-ChildItem "build\app\outputs\flutter-apk\*-prod-release.apk") + @(Get-ChildItem "build\app\outputs\bundle\prodRelease\*.aab")
+   foreach ($archive in $archives) {
+       $zip = [System.IO.Compression.ZipFile]::OpenRead($archive.FullName)
+       try {
+           foreach ($entry in $zip.Entries | Where-Object { $_.FullName -like '*lib/*/libapp.so' }) {
+               $stream = $entry.Open(); $buffer = New-Object System.IO.MemoryStream
+               $stream.CopyTo($buffer); $stream.Dispose()
+               $text = [System.Text.Encoding]::ASCII.GetString($buffer.ToArray())
+               $status = if ($text.Contains('.debug_info')) { 'NOT STRIPPED - HALT' } else { 'stripped' }
+               '{0} {1}: {2}' -f $archive.Name, $entry.FullName, $status
+           }
+       } finally { $zip.Dispose() }
+   }
+   # Expected: every line ends with "stripped" (3 APKs + 3 lines for the .aab).
+   # If any line says NOT STRIPPED: HALT. Check that the NDK version Flutter uses
+   # (flutter.ndkVersion) is installed, and look for an AGP "Unable to strip" warning
+   # in the build output.
+   ```
+8. Verify the merged manifest has no extra network permission, no unused storage or exact-alarm permission, and no Google ML Kit, Play Services or telemetry entries:
+   ```powershell
+   Select-String -Path "build\app\intermediates\merged_manifest\prodRelease\processProdReleaseMainManifest\AndroidManifest.xml" -Pattern "ACCESS_NETWORK_STATE|ACCESS_WIFI_STATE|CHANGE_WIFI|EXTERNAL_STORAGE|EXACT_ALARM|com\.google\.mlkit|com\.google\.android\.gms|datatransport|firebase"
    # Expected: ZERO matches. If any found: HALT and investigate.
    # INTERNET is expected: it is used only by Wi-Fi sync on the local network.
    ```
-8. Install the release APK on a physical device.
-9. **Disable Wi-Fi AND mobile data** (airplane mode).
-10. Launch the app and perform a full smoke test: create todo, start/stop timer, change status, view statistics, export/import backup.
-11. Verify the app functions normally with zero network access.
-12. Turn Wi-Fi back on (no mobile data) and run one Wi-Fi sync between two devices, plus one OCR scan and one QR scan.
-13. Complete the Google Play readiness gate (§10) before uploading to Play.
-14. Tag the release in git: `git tag v2.1.0`.
+9. Install the release APK on a physical device.
+10. **Disable Wi-Fi AND mobile data** (airplane mode).
+11. Launch the app and perform a full smoke test: create todo, start/stop timer, change status, view statistics, export/import backup.
+12. Verify the app functions normally with zero network access.
+13. Turn Wi-Fi back on (no mobile data) and run one Wi-Fi sync between two devices, plus one OCR scan and one QR scan.
+14. Complete the Google Play readiness gate (§10) before uploading to Play.
+15. Tag the release in git: `git tag v2.1.0`.
 
 ### Release Artifacts
 
@@ -310,7 +339,15 @@ Every app is built to be publishable on Google Play. This gate MUST pass **befor
 
 ### 10.4 Manifest, permissions, and policy declarations
 
-- Every permission in the merged manifest is justified and used: `CAMERA` (for AirQR sync), `RECORD_AUDIO` (for on-device speech-to-text voice input) and `INTERNET` (for Wi-Fi sync on the local network only). Remove anything inherited from a dependency that the app does not need (`tools:node="remove"`).
+- Every permission in the merged manifest is justified and used. The full list is:
+  - `CAMERA` (OCR scanning and AirQR sync)
+  - `RECORD_AUDIO` (on-device speech-to-text voice input)
+  - `POST_NOTIFICATIONS` (running-timer and pending-task reminder notifications)
+  - `RECEIVE_BOOT_COMPLETED` (schedule reminder alarms again after a phone restart)
+  - `INTERNET` (Wi-Fi sync on the local network only)
+  - `<applicationId>.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION` (added by AndroidX core; internal to the app, expected)
+
+  See `docs/security.md` §10 for details. Remove anything inherited from a dependency that the app does not need (`tools:node="remove"`). `READ_EXTERNAL_STORAGE` and `WRITE_EXTERNAL_STORAGE` (added by the camera plugin) are removed this way. Reminders use inexact alarms, so `SCHEDULE_EXACT_ALARM` and `USE_EXACT_ALARM` must not be declared.
 - Sensitive permissions require an in-console declaration: camera and microphone declarations explain offline, user-initiated usage.
 - `android:debuggable=false`, `android:allowBackup="false"`, `usesCleartextTraffic=false`.
 - No accidental `android:exported="true"`.

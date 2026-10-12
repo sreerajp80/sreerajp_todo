@@ -134,81 +134,74 @@ void main() {
       expect(reloadedRule?.title, 'Daily Task');
     });
 
-    test(
-      'allFutureInstances updates rule and future instances, leaving past instances untouched',
-      () async {
-        final rule = makeRule();
-        await ruleRepo.insert(rule);
+    test('allFutureInstances updates rule and future instances, leaving past instances untouched', () async {
+      final rule = makeRule();
+      await ruleRepo.insert(rule);
 
-        final today = todayAsIso();
-        final pastDate = dateTimeToIso(
-          parseIsoDate(today).subtract(const Duration(days: 7)),
-        );
-        final futureDate = dateTimeToIso(
-          parseIsoDate(today).add(const Duration(days: 7)),
-        );
+      final today = todayAsIso();
+      final pastDate = dateTimeToIso(
+        parseIsoDate(today).subtract(const Duration(days: 7)),
+      );
+      final futureDate = dateTimeToIso(
+        parseIsoDate(today).add(const Duration(days: 7)),
+      );
 
-        final pastTodo = makeTodo(
-          id: 't-past',
-          date: pastDate,
-          ruleId: rule.id,
-        );
-        final todayTodo = makeTodo(id: 't-today', date: today, ruleId: rule.id);
-        final futureTodo = makeTodo(
-          id: 't-future',
-          date: futureDate,
-          ruleId: rule.id,
-        );
+      final pastTodo = makeTodo(id: 't-past', date: pastDate, ruleId: rule.id);
+      final todayTodo = makeTodo(id: 't-today', date: today, ruleId: rule.id);
+      final futureTodo = makeTodo(
+        id: 't-future',
+        date: futureDate,
+        ruleId: rule.id,
+      );
 
-        await todoDao.insert(pastTodo);
-        await todoRepo.createTodo(todayTodo);
-        await todoRepo.createTodo(futureTodo);
+      await todoDao.insert(pastTodo);
+      await todoRepo.createTodo(todayTodo);
+      await todoRepo.createTodo(futureTodo);
 
-        final updatedToday = todayTodo.copyWith(
-          title: 'New Future Title',
-          priority: TodoPriority.urgent,
-          subTasks: [
-            SubTaskItem(
-              id: 'sub-1',
-              todoId: 't-today',
-              title: 'Subtask 1',
-              isCompleted: false,
-              createdAt: nowUtc(),
-              updatedAt: nowUtc(),
-            ),
-          ],
-        );
-        final updatedRule = rule.copyWith(title: 'New Future Title');
+      final updatedToday = todayTodo.copyWith(
+        title: 'New Future Title',
+        priority: TodoPriority.urgent,
+        subTasks: [
+          SubTaskItem(
+            id: 'sub-1',
+            todoId: 't-today',
+            title: 'Subtask 1',
+            isCompleted: false,
+            createdAt: nowUtc(),
+            updatedAt: nowUtc(),
+          ),
+        ],
+      );
+      final updatedRule = rule.copyWith(title: 'New Future Title');
 
-        await useCase.execute(
-          baseTodo: todayTodo,
-          updatedTodo: updatedToday,
-          updatedRule: updatedRule,
-          target: RecurringEditTarget.allFutureInstances,
-        );
+      await useCase.execute(
+        baseTodo: todayTodo,
+        updatedTodo: updatedToday,
+        updatedRule: updatedRule,
+        target: RecurringEditTarget.allFutureInstances,
+      );
 
-        // Today updated
-        final reloadedToday = await todoRepo.getTodoById('t-today');
-        expect(reloadedToday?.title, 'New Future Title');
-        expect(reloadedToday?.priority, TodoPriority.urgent);
-        expect(reloadedToday?.subTasks.length, 1);
+      // Today updated
+      final reloadedToday = await todoRepo.getTodoById('t-today');
+      expect(reloadedToday?.title, 'New Future Title');
+      expect(reloadedToday?.priority, TodoPriority.urgent);
+      expect(reloadedToday?.subTasks.length, 1);
 
-        // Future updated
-        final reloadedFuture = await todoRepo.getTodoById('t-future');
-        expect(reloadedFuture?.title, 'New Future Title');
-        expect(reloadedFuture?.priority, TodoPriority.urgent);
-        expect(reloadedFuture?.subTasks.length, 1);
+      // Future updated
+      final reloadedFuture = await todoRepo.getTodoById('t-future');
+      expect(reloadedFuture?.title, 'New Future Title');
+      expect(reloadedFuture?.priority, TodoPriority.urgent);
+      expect(reloadedFuture?.subTasks.length, 1);
 
-        // Past untouched
-        final reloadedPast = await todoRepo.getTodoById('t-past');
-        expect(reloadedPast?.title, 'Daily Task');
-        expect(reloadedPast?.priority, TodoPriority.normal);
+      // Past untouched
+      final reloadedPast = await todoRepo.getTodoById('t-past');
+      expect(reloadedPast?.title, 'Daily Task');
+      expect(reloadedPast?.priority, TodoPriority.normal);
 
-        // Rule updated
-        final reloadedRule = await ruleRepo.findById(rule.id);
-        expect(reloadedRule?.title, 'New Future Title');
-      },
-    );
+      // Rule updated
+      final reloadedRule = await ruleRepo.findById(rule.id);
+      expect(reloadedRule?.title, 'New Future Title');
+    });
 
     test(
       'allInstances updates past, present, and future instances and rule',

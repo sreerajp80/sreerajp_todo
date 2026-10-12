@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:sreerajp_todo/domain/entities/recurrence_rule_entity.dart';
 import 'package:sreerajp_todo/domain/repositories/recurrence_rule_repository.dart';
 import 'package:sreerajp_todo/core/logging/app_logger.dart';

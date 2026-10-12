@@ -151,7 +151,7 @@ class TaskHistoryScreen extends ConsumerWidget {
               const SizedBox(height: 8),
               AdaptiveDirectionality(
                 text: todo.description!,
-                child: Text(
+                child: SelectableText(
                   todo.description!,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,

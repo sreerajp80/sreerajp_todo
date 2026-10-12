@@ -324,10 +324,8 @@ class _LegendBadge extends StatelessWidget {
       ),
       child: Text(
         '$label $value',
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: foregroundColor,
-          fontWeight: FontWeight.w600,
-        ),
+        style: Theme.of(context).textTheme.labelMedium
+            ?.copyWith(color: foregroundColor, fontWeight: FontWeight.w600),
       ),
     );
   }

@@ -147,131 +147,118 @@ void main() {
       },
     );
 
-    test(
-      'Carrying forward a task moves the task and preserves its todo ID and journey',
-      () async {
-        const originalId = 'unique-task-journey-id';
-        final pendingTask = createTestTodo(
-          id: originalId,
-          date: yesterday,
-          title: 'Develop Calculator app in flutter',
-          status: TodoStatus.pending,
-        );
-        await todoDao.insert(pendingTask);
+    test('Carrying forward a task moves the task and preserves its todo ID and journey', () async {
+      const originalId = 'unique-task-journey-id';
+      final pendingTask = createTestTodo(
+        id: originalId,
+        date: yesterday,
+        title: 'Develop Calculator app in flutter',
+        status: TodoStatus.pending,
+      );
+      await todoDao.insert(pendingTask);
 
-        // Move to today (carry forward)
-        await moveTodoUseCase(originalId, today);
+      // Move to today (carry forward)
+      await moveTodoUseCase(originalId, today);
 
-        // Verify it is on today with the exact same ID
-        final movedTask = await todoRepo.getTodoById(originalId);
-        expect(movedTask, isNotNull);
-        expect(
-          movedTask!.id,
-          equals(originalId),
-          reason: 'Todo ID must not change',
-        );
-        expect(movedTask.date, equals(today), reason: 'Date must be today');
-        expect(
-          movedTask.sourceDate,
-          equals(yesterday),
-          reason: 'Original sourceDate preserved',
-        );
+      // Verify it is on today with the exact same ID
+      final movedTask = await todoRepo.getTodoById(originalId);
+      expect(movedTask, isNotNull);
+      expect(
+        movedTask!.id,
+        equals(originalId),
+        reason: 'Todo ID must not change',
+      );
+      expect(movedTask.date, equals(today), reason: 'Date must be today');
+      expect(
+        movedTask.sourceDate,
+        equals(yesterday),
+        reason: 'Original sourceDate preserved',
+      );
 
-        // Verify task remains visible on yesterday as part of its multi-day journey
-        final yesterdayTodos = await todoRepo.getTodosByDate(yesterday);
-        expect(yesterdayTodos.any((t) => t.id == originalId), isTrue);
+      // Verify task remains visible on yesterday as part of its multi-day journey
+      final yesterdayTodos = await todoRepo.getTodosByDate(yesterday);
+      expect(yesterdayTodos.any((t) => t.id == originalId), isTrue);
 
-        // Complete the task on today
-        await todoRepo.updateStatus(originalId, TodoStatus.completed);
+      // Complete the task on today
+      await todoRepo.updateStatus(originalId, TodoStatus.completed);
 
-        // When scanning for tomorrow, the completed task is NOT a candidate
-        final tomorrow = dateTimeToIso(target.add(const Duration(days: 1)));
-        final candidatesForTomorrow =
-            await CarryOverSheet.findAllUnfinishedCandidates(
-              container,
-              targetDate: tomorrow,
-              lookBackDays: 7,
-            );
-        expect(
-          candidatesForTomorrow.any((t) => t.id == originalId),
-          isFalse,
-          reason: 'Completed task cannot be carried over to tomorrow',
-        );
-      },
-    );
+      // When scanning for tomorrow, the completed task is NOT a candidate
+      final tomorrow = dateTimeToIso(target.add(const Duration(days: 1)));
+      final candidatesForTomorrow =
+          await CarryOverSheet.findAllUnfinishedCandidates(
+            container,
+            targetDate: tomorrow,
+            lookBackDays: 7,
+          );
+      expect(
+        candidatesForTomorrow.any((t) => t.id == originalId),
+        isFalse,
+        reason: 'Completed task cannot be carried over to tomorrow',
+      );
+    });
 
-    test(
-      'findCandidates returns empty when all tasks on previous days were completed',
-      () async {
-        final completedYesterday = createTestTodo(
-          id: 'task-done-yesterday',
-          date: yesterday,
-          title: 'Meditation',
-          status: TodoStatus.completed,
-        );
-        final oldPendingTwoDaysAgo = createTestTodo(
-          id: 'task-done-old',
-          date: twoDaysAgo,
-          title: 'Meditation',
-          status: TodoStatus.pending,
-        );
-        await todoDao.insert(completedYesterday);
-        await todoDao.insert(oldPendingTwoDaysAgo);
+    test('findCandidates returns empty when all tasks on previous days were completed', () async {
+      final completedYesterday = createTestTodo(
+        id: 'task-done-yesterday',
+        date: yesterday,
+        title: 'Meditation',
+        status: TodoStatus.completed,
+      );
+      final oldPendingTwoDaysAgo = createTestTodo(
+        id: 'task-done-old',
+        date: twoDaysAgo,
+        title: 'Meditation',
+        status: TodoStatus.pending,
+      );
+      await todoDao.insert(completedYesterday);
+      await todoDao.insert(oldPendingTwoDaysAgo);
 
-        final candidates = await CarryOverSheet.findCandidates(
-          container,
-          targetDate: today,
-          lookBack: CarryOverLookBack.lastSevenDays,
-        );
+      final candidates = await CarryOverSheet.findCandidates(
+        container,
+        targetDate: today,
+        lookBack: CarryOverLookBack.lastSevenDays,
+      );
 
-        expect(candidates, isEmpty);
-      },
-    );
+      expect(candidates, isEmpty);
+    });
 
-    test(
-      'pendingAlertPayloadProvider omits tasks that were completed or dropped on more recent days',
-      () async {
-        final taskCompleted = createTestTodo(
-          id: 'task-comp-yesterday',
-          date: yesterday,
-          title: 'correct todo app mastery section',
-          status: TodoStatus.completed,
-        );
-        final legacyPending = createTestTodo(
-          id: 'task-legacy-pending',
-          date: twoDaysAgo,
-          title: 'correct todo app mastery section',
-          status: TodoStatus.pending,
-        );
-        final realPending = createTestTodo(
-          id: 'real-pending',
-          date: twoDaysAgo,
-          title: 'Developing Battery Soul Android App',
-          status: TodoStatus.pending,
-        );
+    test('pendingAlertPayloadProvider omits tasks that were completed or dropped on more recent days', () async {
+      final taskCompleted = createTestTodo(
+        id: 'task-comp-yesterday',
+        date: yesterday,
+        title: 'correct todo app mastery section',
+        status: TodoStatus.completed,
+      );
+      final legacyPending = createTestTodo(
+        id: 'task-legacy-pending',
+        date: twoDaysAgo,
+        title: 'correct todo app mastery section',
+        status: TodoStatus.pending,
+      );
+      final realPending = createTestTodo(
+        id: 'real-pending',
+        date: twoDaysAgo,
+        title: 'Developing Battery Soul Android App',
+        status: TodoStatus.pending,
+      );
 
-        await todoDao.insert(taskCompleted);
-        await todoDao.insert(legacyPending);
-        await todoDao.insert(realPending);
+      await todoDao.insert(taskCompleted);
+      await todoDao.insert(legacyPending);
+      await todoDao.insert(realPending);
 
-        final payload = await container.read(
-          pendingAlertPayloadProvider.future,
-        );
+      final payload = await container.read(pendingAlertPayloadProvider.future);
 
-        final previousTitles = payload.previousTodos
-            .map((t) => t.title)
-            .toList();
-        expect(
-          previousTitles.contains('correct todo app mastery section'),
-          isFalse,
-          reason: 'Completed task must not show in pending alerts',
-        );
-        expect(
-          previousTitles.contains('Developing Battery Soul Android App'),
-          isTrue,
-        );
-      },
-    );
+      final previousTitles = payload.previousTodos.map((t) => t.title).toList();
+      expect(
+        previousTitles.contains('correct todo app mastery section'),
+        isFalse,
+        reason: 'Completed task must not show in pending alerts',
+      );
+      expect(
+        previousTitles.contains('Developing Battery Soul Android App'),
+        isTrue,
+      );
+    });
 
     test('Dropped tasks are not resurrected from older days', () async {
       final taskDropped = createTestTodo(

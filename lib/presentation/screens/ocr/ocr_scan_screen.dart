@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:camera/camera.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -404,12 +405,9 @@ class _OcrScanScreenState extends ConsumerState<OcrScanScreen>
     if (_isProcessing) return;
 
     try {
-      final result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowMultiple: false,
-      );
+      final result = await FilePicker.pickFile(type: FileType.image);
 
-      final path = result?.files.single.path;
+      final path = result?.path;
       if (path == null || !mounted) return;
 
       final recognizedText = await context.push<String>(

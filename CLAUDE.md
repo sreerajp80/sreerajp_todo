@@ -13,8 +13,8 @@ Read it before making any change. See the docs table below for full detail.
 | Type | Personal offline-first daily ToDo and time-tracker |
 | Platform(s) | Android (minSdk 21, targetSdk 35) + Windows desktop (v1.0 active); iOS, Linux, macOS (future) |
 | Package / org id | `in.sreerajp.sreerajp_todo` |
-| Flutter SDK | 3.44.8 stable |
-| Dart SDK | 3.12.2 |
+| Flutter SDK | 3.47.6 stable |
+| Dart SDK | 3.13.5 |
 | State management | Riverpod (`flutter_riverpod`) |
 | Navigation | `go_router` |
 | Database | SQLite via `sqflite_sqlcipher` (mobile, AES-256 encrypted) + `sqflite_common_ffi` with SQLCipher (desktop) |
@@ -177,7 +177,7 @@ flutter pub deps --json | Select-String -Pattern "http|socket|firebase|supabase|
 ## Dependency constraints
 
 - **Do not upgrade packages** without running `flutter analyze` and all tests afterwards.
-- **Android Gradle Plugin:** Stay on AGP **8.x**.
+- **Android Gradle Plugin:** Stay on AGP **9.x** (with Gradle 9.x).
 - **Blocked package categories:** HTTP clients, WebSockets, Cloud/BaaS SDKs, Analytics, Crash reporting, Ads, Network status packages.
 - **Approved local-only packages:** `sqflite_sqlcipher`, `sqflite_common_ffi`, `path`, `path_provider`, `flutter_riverpod`, `go_router`, `intl`, `fl_chart`, `table_calendar`, `uuid`, `flutter_localizations`, `characters`, `freezed`, `freezed_annotation`, `json_serializable`, `json_annotation`, `build_runner`, `mocktail`, `flutter_test`, `unorm_dart`, `file_picker`, `flutter_native_splash`, `rrule`, `image`, `image_cropper`, `camera`, `qr_flutter`, `shared_preferences`. Android Gradle: `com.google.zxing:core` (pure-Java QR decoding; the name is historical, it has no Google services).
 

@@ -65,7 +65,7 @@ sreerajp_todo/
 
 ## 3. Platform Host Directories
 
-- **`android/`**: Configured with target SDK 35, AGP 8.x, native splash configuration, locale configuration (`locales_config.xml`), and `INTERNET` as the only network permission (local Wi-Fi sync only).
+- **`android/`**: Configured with target SDK 35, AGP 9.x, native splash configuration, locale configuration (`locales_config.xml`), and `INTERNET` as the only network permission (local Wi-Fi sync only).
 - **`windows/`**: Configured for Windows C++ desktop host with SQLCipher FFI binding support and no internet traffic (Wi-Fi sync stays on the local network).
 
 ---

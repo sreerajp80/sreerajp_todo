@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:sreerajp_todo/application/providers.dart';
 import 'package:sreerajp_todo/data/backup/backup_service.dart';
 import 'package:sreerajp_todo/l10n/app_localizations.dart';
@@ -15,66 +16,75 @@ import '../../../helpers/test_l10n.dart';
 
 class MockBackupService extends Mock implements BackupService {}
 
-class FakeFilePicker extends FilePicker {
-  FakeFilePicker({this.pickFilesResult, this.directoryPath});
+class FakeFilePicker extends FilePickerPlatform
+    with MockPlatformInterfaceMixin {
+  FakeFilePicker({this.pickedFile, this.directoryPath});
 
-  final FilePickerResult? pickFilesResult;
+  final PlatformFile? pickedFile;
   final String? directoryPath;
-
-  @override
-  Future<bool?> clearTemporaryFiles() async => true;
 
   @override
   Future<String?> getDirectoryPath({
     String? dialogTitle,
-    bool lockParentWindow = false,
     String? initialDirectory,
+    AndroidOptions androidOptions = const AndroidOptions(),
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
   }) async => directoryPath;
 
   @override
-  Future<FilePickerResult?> pickFiles({
+  Future<PlatformFile?> pickFile({
     String? dialogTitle,
     String? initialDirectory,
     FileType type = FileType.any,
     List<String>? allowedExtensions,
     Function(FilePickerStatus)? onFileLoading,
-    bool allowCompression = true,
-    int compressionQuality = 30,
-    bool allowMultiple = false,
-    bool withData = false,
-    bool withReadStream = false,
-    bool lockParentWindow = false,
-    bool readSequential = false,
-  }) async => pickFilesResult;
+    int compressionQuality = 0,
+    AndroidOptions androidOptions = const AndroidOptions(),
+    DarwinOptions darwinOptions = const DarwinOptions(),
+    WindowsOptions windowsOptions = const WindowsOptions(),
+    LinuxOptions linuxOptions = const LinuxOptions(),
+    WebOptions webOptions = const WebOptions(),
+  }) async => pickedFile;
+}
+
+final class FakePlatformFile extends PlatformFile {
+  FakePlatformFile({required this.name, required this.uri});
 
   @override
-  Future<String?> saveFile({
-    String? dialogTitle,
-    String? fileName,
-    String? initialDirectory,
-    FileType type = FileType.any,
-    List<String>? allowedExtensions,
-    Uint8List? bytes,
-    bool lockParentWindow = false,
-  }) async => null;
+  final String name;
+
+  @override
+  final Uri uri;
+
+  @override
+  get xFile => throw UnimplementedError();
+
+  @override
+  int? lengthSync() => 1;
+
+  @override
+  Future<int?> length() async => 1;
+
+  @override
+  Future<Uint8List> readAsBytes() async => Uint8List(1);
+
+  @override
+  Stream<Uint8List> readAsByteStream() => Stream.value(Uint8List(1));
 }
 
 void main() {
   late MockBackupService backupService;
-  FilePicker? originalFilePicker;
+  late FilePickerPlatform originalFilePicker;
 
   setUp(() {
     backupService = MockBackupService();
-    try {
-      originalFilePicker = FilePicker.platform;
-    } catch (_) {
-      originalFilePicker = null;
-    }
-    FilePicker.platform = FakeFilePicker();
+    originalFilePicker = FilePickerPlatform.instance;
+    FilePickerPlatform.instance = FakeFilePicker();
 
-    when(
-      () => backupService.getDefaultBackupDirectory(),
-    ).thenAnswer((_) async => r'L:\Backups');
+    when(() => backupService.getDefaultBackupDirectory())
+        .thenAnswer((_) async => r'L:\Backups');
     when(() => backupService.listBackups(any())).thenAnswer(
       (_) async => [
         buildBackupInfo(
@@ -87,9 +97,7 @@ void main() {
   });
 
   tearDown(() {
-    if (originalFilePicker != null) {
-      FilePicker.platform = originalFilePicker!;
-    }
+    FilePickerPlatform.instance = originalFilePicker;
   });
 
   Future<void> pumpBackupScreen(WidgetTester tester) async {
@@ -134,10 +142,11 @@ void main() {
   testWidgets('shows import confirmation dialog after passphrase entry', (
     tester,
   ) async {
-    FilePicker.platform = FakeFilePicker(
-      pickFilesResult: FilePickerResult([
-        PlatformFile(path: r'L:\Backups\picked.db', name: 'picked.db', size: 1),
-      ]),
+    FilePickerPlatform.instance = FakeFilePicker(
+      pickedFile: FakePlatformFile(
+        name: 'picked.db',
+        uri: Uri.file(r'L:\Backups\picked.db', windows: true),
+      ),
     );
 
     await pumpBackupScreen(tester);

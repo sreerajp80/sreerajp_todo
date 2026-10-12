@@ -4,13 +4,12 @@ import 'dart:developer' as developer;
 enum LogLevel { trace, debug, info, warning, error, fatal }
 
 /// Receives each log record. Tests replace it to capture output.
-typedef LogSink =
-    void Function(
-      LogLevel level,
-      String message, {
-      Object? error,
-      StackTrace? stackTrace,
-    });
+typedef LogSink = void Function(
+  LogLevel level,
+  String message, {
+  Object? error,
+  StackTrace? stackTrace,
+});
 
 /// The app's only logger. Never use `print` or `debugPrint`.
 ///

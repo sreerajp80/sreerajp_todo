@@ -419,9 +419,10 @@ class TodoDao {
     final todos = await searchByTitle(query, limit: limit);
     if (todos.isEmpty) return [];
 
-    final tokens = foldForSearch(
-      query,
-    ).split(RegExp(r'\s+')).where((t) => t.isNotEmpty).toList();
+    final tokens = foldForSearch(query)
+        .split(RegExp(r'\s+'))
+        .where((t) => t.isNotEmpty)
+        .toList();
     if (tokens.isEmpty) {
       return todos.map((t) => TodoSearchResult(todo: t)).toList();
     }

@@ -190,7 +190,7 @@ class MasteryDeckDetailScreen extends ConsumerWidget {
                                 if (deck.description != null &&
                                     deck.description!.isNotEmpty) ...[
                                   const SizedBox(height: 4),
-                                  Text(
+                                  SelectableText(
                                     deck.description!,
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       color: colorScheme.onSurfaceVariant,

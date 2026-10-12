@@ -81,24 +81,21 @@ Bring previous medical reports.
       expect(result.separatorType, OcrSeparatorType.dashed);
     });
 
-    test(
-      'falls back to line 1 as title and subsequent lines as description when no separator',
-      () {
-        const input = '''
+    test('falls back to line 1 as title and subsequent lines as description when no separator', () {
+      const input = '''
 Fix roof leak
 Inspect shingles near chimney
 Apply sealant
 ''';
-        final result = OcrTaskParser.parse(input);
-        expect(result.title, 'Fix roof leak');
-        expect(
-          result.description,
-          'Inspect shingles near chimney\nApply sealant',
-        );
-        expect(result.hasSeparator, isFalse);
-        expect(result.separatorType, OcrSeparatorType.none);
-      },
-    );
+      final result = OcrTaskParser.parse(input);
+      expect(result.title, 'Fix roof leak');
+      expect(
+        result.description,
+        'Inspect shingles near chimney\nApply sealant',
+      );
+      expect(result.hasSeparator, isFalse);
+      expect(result.separatorType, OcrSeparatorType.none);
+    });
 
     test('strips leading markdown header hashes from title', () {
       const input = '''

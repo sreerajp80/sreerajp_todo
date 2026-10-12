@@ -34,14 +34,11 @@ void main() {
       expect(nfcNormalize(devanagari), isNotEmpty);
     });
 
-    test(
-      'NFC equivalence: decomposed and composed compare equal after normalisation',
-      () {
-        const a = '\u00F1'; // ñ (NFC)
-        const b = '\u006E\u0303'; // n + ◌̃ (NFD)
-        expect(nfcNormalize(a), nfcNormalize(b));
-      },
-    );
+    test('NFC equivalence: decomposed and composed compare equal after normalisation', () {
+      const a = '\u00F1'; // ñ (NFC)
+      const b = '\u006E\u0303'; // n + ◌̃ (NFD)
+      expect(nfcNormalize(a), nfcNormalize(b));
+    });
 
     test('composes Hangul Jamo', () {
       const decomposed = '\u1112\u1161\u11AB'; // ㅎ + ㅏ + ㄴ

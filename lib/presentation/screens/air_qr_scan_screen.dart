@@ -262,9 +262,8 @@ class _AirQrScanScreenState extends ConsumerState<AirQrScanScreen>
 
   Future<void> _resumeAfterMessage(String message) async {
     if (mounted) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(message)));
     }
     await _resume();
   }

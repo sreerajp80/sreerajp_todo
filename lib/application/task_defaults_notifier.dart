@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sreerajp_todo/core/constants/todo_sort_option.dart';
 import 'package:sreerajp_todo/core/rules/task_default_rules.dart';

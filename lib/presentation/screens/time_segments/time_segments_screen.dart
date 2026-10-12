@@ -153,7 +153,7 @@ class _SegmentsBody extends ConsumerWidget {
 
     final liveElapsed = ref.watch(liveTimerProvider(todoId));
     final isRunning = runningSegment != null;
-    final runningExtra = isRunning ? (liveElapsed.valueOrNull ?? 0) : 0;
+    final runningExtra = isRunning ? (liveElapsed.value ?? 0) : 0;
     final grandTotal = totalDurationSeconds + runningExtra;
     final settings = ref.watch(timeTrackingSettingsProvider);
     final isPaused =
@@ -361,7 +361,7 @@ class _SegmentsBody extends ConsumerWidget {
             const SizedBox(height: 8),
             AdaptiveDirectionality(
               text: todo.description!,
-              child: Text(
+              child: SelectableText(
                 todo.description!,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurfaceVariant,
@@ -488,7 +488,7 @@ class _SegmentTile extends ConsumerWidget {
     if (isRunning) {
       endStr = context.l10n.emptyValue;
       final liveElapsed = ref.watch(liveTimerProvider(todoId));
-      final elapsed = liveElapsed.valueOrNull ?? 0;
+      final elapsed = liveElapsed.value ?? 0;
       durationStr = context.l10n.segmentRunning;
       if (elapsed > 0) {
         durationStr = formatDuration(elapsed);
@@ -941,10 +941,8 @@ class _TypeBadge extends StatelessWidget {
       ),
       child: Text(
         isManual ? context.l10n.manualSegmentShort : label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: textColor,
-          fontWeight: FontWeight.w700,
-        ),
+        style: Theme.of(context).textTheme.labelSmall
+            ?.copyWith(color: textColor, fontWeight: FontWeight.w700),
       ),
     );
   }

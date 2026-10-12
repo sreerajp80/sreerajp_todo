@@ -302,9 +302,8 @@ void main() {
       final tomorrow = dateTimeToIso(
         DateTime(today.year, today.month, today.day + 1),
       );
-      final generated = (await todoDao.findByDate(
-        tomorrow,
-      )).firstWhere((t) => t.title == 'Daily Task');
+      final generated = (await todoDao.findByDate(tomorrow))
+          .firstWhere((t) => t.title == 'Daily Task');
       expect(generated.priority, TodoPriority.high);
       expect(generated.targetSeconds, 1800);
       expect(generated.subTasks.map((s) => s.title), ['Step one', 'Step two']);
@@ -324,9 +323,8 @@ void main() {
       await ruleDao.insert(makeRule());
       await useCase.call();
 
-      final generated = (await todoDao.findByDate(
-        todayAsIso(),
-      )).firstWhere((t) => t.title == 'Daily Task');
+      final generated = (await todoDao.findByDate(todayAsIso()))
+          .firstWhere((t) => t.title == 'Daily Task');
       expect(generated.priority, TodoPriority.normal);
       expect(generated.targetSeconds, isNull);
       expect(generated.subTasks, isEmpty);
@@ -343,9 +341,8 @@ void main() {
 
       await useCase.call();
 
-      final generated = (await todoDao.findByDate(
-        todayAsIso(),
-      )).firstWhere((t) => t.title == 'Daily Task');
+      final generated = (await todoDao.findByDate(todayAsIso()))
+          .firstWhere((t) => t.title == 'Daily Task');
       expect(generated.priority, TodoPriority.urgent);
       expect(generated.targetSeconds, 900);
       expect(generated.subTasks.map((s) => s.title), ['Warm up', 'Practice']);
@@ -395,9 +392,8 @@ void main() {
       final tomorrow = dateTimeToIso(
         DateTime(today.year, today.month, today.day + 1),
       );
-      final generated = (await todoDao.findByDate(
-        tomorrow,
-      )).firstWhere((t) => t.title == 'Daily Task');
+      final generated = (await todoDao.findByDate(tomorrow))
+          .firstWhere((t) => t.title == 'Daily Task');
       expect(generated.priority, TodoPriority.low);
       expect(generated.targetSeconds, isNull);
       expect(generated.subTasks, isEmpty);

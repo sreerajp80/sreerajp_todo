@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart' show AppLifecycleState;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:sreerajp_todo/application/daily_todo_notifier.dart';
 import 'package:sreerajp_todo/application/focus_pulse_notifier.dart';
 import 'package:sreerajp_todo/application/daily_todo_state.dart';

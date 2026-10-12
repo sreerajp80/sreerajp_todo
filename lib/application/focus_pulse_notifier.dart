@@ -7,7 +7,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:sreerajp_todo/core/rules/focus_pulse_rules.dart';
 
 /// Where the focus pulse schedule stands right now.

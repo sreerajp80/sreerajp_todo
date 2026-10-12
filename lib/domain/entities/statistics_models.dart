@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'statistics_models.freezed.dart';
 
 @freezed
-class DayStats with _$DayStats {
+abstract class DayStats with _$DayStats {
   const factory DayStats({
     required String date,
     required int total,
@@ -17,7 +17,7 @@ class DayStats with _$DayStats {
 }
 
 @freezed
-class TodoTimeStats with _$TodoTimeStats {
+abstract class TodoTimeStats with _$TodoTimeStats {
   const factory TodoTimeStats({
     required String title,
     @Default(0) int appearances,
@@ -31,7 +31,7 @@ class TodoTimeStats with _$TodoTimeStats {
 }
 
 @freezed
-class TitleTimePoint with _$TitleTimePoint {
+abstract class TitleTimePoint with _$TitleTimePoint {
   const factory TitleTimePoint({
     required String title,
     required String date,
@@ -41,7 +41,7 @@ class TitleTimePoint with _$TitleTimePoint {
 }
 
 @freezed
-class SummaryStats with _$SummaryStats {
+abstract class SummaryStats with _$SummaryStats {
   const factory SummaryStats({
     @Default(0) int totalTodos,
     @Default(0) double avgCompletedPerDay,

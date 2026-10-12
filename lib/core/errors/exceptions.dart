@@ -50,8 +50,7 @@ class DuplicateTitleException extends AppException {
 class MultiDayDuplicateTitleException extends AppException {
   const MultiDayDuplicateTitleException(
     this.conflictingDate, [
-    this.message =
-        'A task with this title already exists on another date where this task was active.',
+    this.message = 'A task with this title already exists on another date where this task was active.',
   ]);
 
   final String conflictingDate;

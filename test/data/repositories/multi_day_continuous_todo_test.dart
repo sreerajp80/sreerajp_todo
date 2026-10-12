@@ -64,42 +64,39 @@ void main() {
     );
   }
 
-  test(
-    'incomplete task created on day 1 appears on both day 1 and day 2 when carried forward',
-    () async {
-      final day1 = dayFromToday(-1);
-      final day2 = dayFromToday(0);
-      final todo = makeTodo(
-        id: 'task-1',
-        date: day1,
-        title: 'Continuous task',
-        status: TodoStatus.pending,
-      );
-      await todoDao.insert(todo);
+  test('incomplete task created on day 1 appears on both day 1 and day 2 when carried forward', () async {
+    final day1 = dayFromToday(-1);
+    final day2 = dayFromToday(0);
+    final todo = makeTodo(
+      id: 'task-1',
+      date: day1,
+      title: 'Continuous task',
+      status: TodoStatus.pending,
+    );
+    await todoDao.insert(todo);
 
-      // Query on day 1: visible on day 1
-      final day1Todos = await todoDao.findByDate(day1);
-      expect(day1Todos.length, 1);
-      expect(day1Todos.first.id, 'task-1');
-      expect(day1Todos.first.date, day1);
+    // Query on day 1: visible on day 1
+    final day1Todos = await todoDao.findByDate(day1);
+    expect(day1Todos.length, 1);
+    expect(day1Todos.first.id, 'task-1');
+    expect(day1Todos.first.date, day1);
 
-      // When carried forward to day 2
-      await todoRepo.moveTodo('task-1', day2);
+    // When carried forward to day 2
+    await todoRepo.moveTodo('task-1', day2);
 
-      // Query on day 2: visible on day 2 as pending
-      final day2Todos = await todoDao.findByDate(day2);
-      expect(day2Todos.length, 1);
-      expect(day2Todos.first.id, 'task-1');
-      expect(day2Todos.first.date, day2);
-      expect(day2Todos.first.sourceDate, day1);
-      expect(day2Todos.first.status, TodoStatus.pending);
+    // Query on day 2: visible on day 2 as pending
+    final day2Todos = await todoDao.findByDate(day2);
+    expect(day2Todos.length, 1);
+    expect(day2Todos.first.id, 'task-1');
+    expect(day2Todos.first.date, day2);
+    expect(day2Todos.first.sourceDate, day1);
+    expect(day2Todos.first.status, TodoStatus.pending);
 
-      // Query on day 1: STILL visible on day 1 (sourceDate <= date AND date >= sourceDate)
-      final day1After = await todoDao.findByDate(day1);
-      expect(day1After.length, 1);
-      expect(day1After.first.id, 'task-1');
-    },
-  );
+    // Query on day 1: STILL visible on day 1 (sourceDate <= date AND date >= sourceDate)
+    final day1After = await todoDao.findByDate(day1);
+    expect(day1After.length, 1);
+    expect(day1After.first.id, 'task-1');
+  });
 
   test(
     'an explicit move (detach) removes the task from the old date',
@@ -297,82 +294,76 @@ void main() {
     },
   );
 
-  test(
-    'renaming task across active dates throws MultiDayDuplicateTitleException on clash',
-    () async {
-      // On Sept 20, create "Write Report"
-      final taskA = makeTodo(
-        id: 'task-a',
-        date: '2026-09-20',
-        title: 'Write Report',
-      );
-      await todoDao.insert(taskA);
+  test('renaming task across active dates throws MultiDayDuplicateTitleException on clash', () async {
+    // On Sept 20, create "Write Report"
+    final taskA = makeTodo(
+      id: 'task-a',
+      date: '2026-09-20',
+      title: 'Write Report',
+    );
+    await todoDao.insert(taskA);
 
-      // On Sept 21, task B is created and carried forward
-      final taskB = makeTodo(
-        id: 'task-b',
-        date: '2026-09-21',
-        sourceDate: '2026-09-20',
-        title: 'Draft Notes',
-      );
-      await todoDao.insert(taskB);
+    // On Sept 21, task B is created and carried forward
+    final taskB = makeTodo(
+      id: 'task-b',
+      date: '2026-09-21',
+      sourceDate: '2026-09-20',
+      title: 'Draft Notes',
+    );
+    await todoDao.insert(taskB);
 
-      // Attempting to rename task B to "Write Report" on Sept 21 clashes with task A on Sept 20
-      expect(
-        () => todoRepo.updateTodo(
-          taskB.copyWith(title: 'Write Report'),
-          bypassLock: true,
-        ),
-        throwsA(
-          isA<MultiDayDuplicateTitleException>().having(
-            (e) => e.conflictingDate,
-            'conflictingDate',
-            '2026-09-20',
-          ),
-        ),
-      );
-    },
-  );
-
-  test(
-    'deleteTodoFromDate drops task from today onwards and preserves past records',
-    () async {
-      final todo = makeTodo(
-        id: 'task-del',
-        date: '2026-09-21',
-        sourceDate: '2026-09-20',
-        title: 'To be dropped today',
-      );
-      await todoDao.insert(todo);
-
-      // Insert past segment on Sept 20
-      await timeSegmentDao.insert(
-        const TimeSegmentEntity(
-          id: 'seg-past',
-          todoId: 'task-del',
-          startTime: '2026-09-20T10:00:00.000Z',
-          endTime: '2026-09-20T10:30:00.000Z',
-          durationSeconds: 1800,
-          createdAt: '2026-09-20T10:30:00.000Z',
-        ),
-      );
-
-      // Remove from Sept 21 only
-      await todoRepo.deleteTodoFromDate(
-        'task-del',
-        '2026-09-21',
+    // Attempting to rename task B to "Write Report" on Sept 21 clashes with task A on Sept 20
+    expect(
+      () => todoRepo.updateTodo(
+        taskB.copyWith(title: 'Write Report'),
         bypassLock: true,
-      );
+      ),
+      throwsA(
+        isA<MultiDayDuplicateTitleException>().having(
+          (e) => e.conflictingDate,
+          'conflictingDate',
+          '2026-09-20',
+        ),
+      ),
+    );
+  });
 
-      // Sept 21 query: task is gone!
-      final day2Todos = await todoDao.findByDate('2026-09-21');
-      expect(day2Todos.any((t) => t.id == 'task-del'), isFalse);
+  test('deleteTodoFromDate drops task from today onwards and preserves past records', () async {
+    final todo = makeTodo(
+      id: 'task-del',
+      date: '2026-09-21',
+      sourceDate: '2026-09-20',
+      title: 'To be dropped today',
+    );
+    await todoDao.insert(todo);
 
-      // Sept 20 query: task is preserved in history with dropped status and time segment intact!
-      final day1Todos = await todoDao.findByDate('2026-09-20');
-      expect(day1Todos.any((t) => t.id == 'task-del'), isTrue);
-      final pastSegment = await timeSegmentDao.findById('seg-past');
-      expect(pastSegment, isNotNull);
-    },
-  );
+    // Insert past segment on Sept 20
+    await timeSegmentDao.insert(
+      const TimeSegmentEntity(
+        id: 'seg-past',
+        todoId: 'task-del',
+        startTime: '2026-09-20T10:00:00.000Z',
+        endTime: '2026-09-20T10:30:00.000Z',
+        durationSeconds: 1800,
+        createdAt: '2026-09-20T10:30:00.000Z',
+      ),
+    );
+
+    // Remove from Sept 21 only
+    await todoRepo.deleteTodoFromDate(
+      'task-del',
+      '2026-09-21',
+      bypassLock: true,
+    );
+
+    // Sept 21 query: task is gone!
+    final day2Todos = await todoDao.findByDate('2026-09-21');
+    expect(day2Todos.any((t) => t.id == 'task-del'), isFalse);
+
+    // Sept 20 query: task is preserved in history with dropped status and time segment intact!
+    final day1Todos = await todoDao.findByDate('2026-09-20');
+    expect(day1Todos.any((t) => t.id == 'task-del'), isTrue);
+    final pastSegment = await timeSegmentDao.findById('seg-past');
+    expect(pastSegment, isNotNull);
+  });
 }

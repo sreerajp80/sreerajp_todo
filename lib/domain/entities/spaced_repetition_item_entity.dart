@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'spaced_repetition_item_entity.freezed.dart';
 
 @freezed
-class SpacedRepetitionItemEntity with _$SpacedRepetitionItemEntity {
+abstract class SpacedRepetitionItemEntity with _$SpacedRepetitionItemEntity {
   const SpacedRepetitionItemEntity._();
 
   const factory SpacedRepetitionItemEntity({

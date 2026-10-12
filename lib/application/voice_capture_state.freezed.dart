@@ -1,6 +1,6 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint
+// coverage:ignore-file
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'voice_capture_state.dart';
@@ -9,274 +9,297 @@ part of 'voice_capture_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$VoiceCaptureState {
-  VoiceCaptureStage get stage => throw _privateConstructorUsedError;
 
-  /// The words heard or typed so far.
-  String get text => throw _privateConstructorUsedError;
+ VoiceCaptureStage get stage;/// The words heard or typed so far.
+ String get text;/// What those words were understood to mean. Null while the box is empty.
+ VoiceParseResult? get result;/// Why listening failed, if it did.
+ SpeechErrorCode? get error;/// Why the microphone cannot be used, if it cannot.
+///
+/// Set once when the sheet opens. It is never an error on its own: the
+/// sheet simply shows its text box instead of its microphone.
+ SpeechUnavailableReason? get unavailable;
+/// Create a copy of VoiceCaptureState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$VoiceCaptureStateCopyWith<VoiceCaptureState> get copyWith => _$VoiceCaptureStateCopyWithImpl<VoiceCaptureState>(this as VoiceCaptureState, _$identity);
 
-  /// What those words were understood to mean. Null while the box is empty.
-  VoiceParseResult? get result => throw _privateConstructorUsedError;
 
-  /// Why listening failed, if it did.
-  SpeechErrorCode? get error => throw _privateConstructorUsedError;
 
-  /// Why the microphone cannot be used, if it cannot.
-  ///
-  /// Set once when the sheet opens. It is never an error on its own: the
-  /// sheet simply shows its text box instead of its microphone.
-  SpeechUnavailableReason? get unavailable =>
-      throw _privateConstructorUsedError;
+@override
+bool operator ==(Object other) {
+  final _this = this as VoiceCaptureState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VoiceCaptureState&&(identical(other.stage, _this.stage) || other.stage == _this.stage)&&(identical(other.text, _this.text) || other.text == _this.text)&&(identical(other.result, _this.result) || other.result == _this.result)&&(identical(other.error, _this.error) || other.error == _this.error)&&(identical(other.unavailable, _this.unavailable) || other.unavailable == _this.unavailable));
+}
 
-  /// Create a copy of VoiceCaptureState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $VoiceCaptureStateCopyWith<VoiceCaptureState> get copyWith =>
-      throw _privateConstructorUsedError;
+
+@override
+int get hashCode {
+  final _this = this as VoiceCaptureState;
+  return Object.hash(runtimeType,_this.stage,_this.text,_this.result,_this.error,_this.unavailable);
+}
+
+@override
+String toString() {
+  final _this = this as VoiceCaptureState;
+  return 'VoiceCaptureState(stage: ${_this.stage}, text: ${_this.text}, result: ${_this.result}, error: ${_this.error}, unavailable: ${_this.unavailable})';
+}
+
+
 }
 
 /// @nodoc
-abstract class $VoiceCaptureStateCopyWith<$Res> {
-  factory $VoiceCaptureStateCopyWith(
-    VoiceCaptureState value,
-    $Res Function(VoiceCaptureState) then,
-  ) = _$VoiceCaptureStateCopyWithImpl<$Res, VoiceCaptureState>;
-  @useResult
-  $Res call({
-    VoiceCaptureStage stage,
-    String text,
-    VoiceParseResult? result,
-    SpeechErrorCode? error,
-    SpeechUnavailableReason? unavailable,
-  });
-}
+abstract mixin class $VoiceCaptureStateCopyWith<$Res>  {
+  factory $VoiceCaptureStateCopyWith(VoiceCaptureState value, $Res Function(VoiceCaptureState) _then) = _$VoiceCaptureStateCopyWithImpl;
+@useResult
+$Res call({
+ VoiceCaptureStage stage, String text, VoiceParseResult? result, SpeechErrorCode? error, SpeechUnavailableReason? unavailable
+});
 
+
+
+
+}
 /// @nodoc
-class _$VoiceCaptureStateCopyWithImpl<$Res, $Val extends VoiceCaptureState>
+class _$VoiceCaptureStateCopyWithImpl<$Res>
     implements $VoiceCaptureStateCopyWith<$Res> {
-  _$VoiceCaptureStateCopyWithImpl(this._value, this._then);
+  _$VoiceCaptureStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final VoiceCaptureState _self;
+  final $Res Function(VoiceCaptureState) _then;
 
-  /// Create a copy of VoiceCaptureState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? stage = null,
-    Object? text = null,
-    Object? result = freezed,
-    Object? error = freezed,
-    Object? unavailable = freezed,
-  }) {
-    return _then(
-      _value.copyWith(
-            stage: null == stage
-                ? _value.stage
-                : stage // ignore: cast_nullable_to_non_nullable
-                      as VoiceCaptureStage,
-            text: null == text
-                ? _value.text
-                : text // ignore: cast_nullable_to_non_nullable
-                      as String,
-            result: freezed == result
-                ? _value.result
-                : result // ignore: cast_nullable_to_non_nullable
-                      as VoiceParseResult?,
-            error: freezed == error
-                ? _value.error
-                : error // ignore: cast_nullable_to_non_nullable
-                      as SpeechErrorCode?,
-            unavailable: freezed == unavailable
-                ? _value.unavailable
-                : unavailable // ignore: cast_nullable_to_non_nullable
-                      as SpeechUnavailableReason?,
-          )
-          as $Val,
-    );
-  }
+/// Create a copy of VoiceCaptureState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? stage = null,Object? text = null,Object? result = freezed,Object? error = freezed,Object? unavailable = freezed,}) {
+  return _then(VoiceCaptureState(
+stage: null == stage ? _self.stage : stage // ignore: cast_nullable_to_non_nullable
+as VoiceCaptureStage,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String,result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as VoiceParseResult?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as SpeechErrorCode?,unavailable: freezed == unavailable ? _self.unavailable : unavailable // ignore: cast_nullable_to_non_nullable
+as SpeechUnavailableReason?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [VoiceCaptureState].
+extension VoiceCaptureStatePatterns on VoiceCaptureState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _VoiceCaptureState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _VoiceCaptureState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _VoiceCaptureState value)  $default,){
+final _that = this;
+switch (_that) {
+case _VoiceCaptureState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _VoiceCaptureState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _VoiceCaptureState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( VoiceCaptureStage stage,  String text,  VoiceParseResult? result,  SpeechErrorCode? error,  SpeechUnavailableReason? unavailable)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _VoiceCaptureState() when $default != null:
+return $default(_that.stage,_that.text,_that.result,_that.error,_that.unavailable);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( VoiceCaptureStage stage,  String text,  VoiceParseResult? result,  SpeechErrorCode? error,  SpeechUnavailableReason? unavailable)  $default,) {final _that = this;
+switch (_that) {
+case _VoiceCaptureState():
+return $default(_that.stage,_that.text,_that.result,_that.error,_that.unavailable);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( VoiceCaptureStage stage,  String text,  VoiceParseResult? result,  SpeechErrorCode? error,  SpeechUnavailableReason? unavailable)?  $default,) {final _that = this;
+switch (_that) {
+case _VoiceCaptureState() when $default != null:
+return $default(_that.stage,_that.text,_that.result,_that.error,_that.unavailable);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$VoiceCaptureStateImplCopyWith<$Res>
-    implements $VoiceCaptureStateCopyWith<$Res> {
-  factory _$$VoiceCaptureStateImplCopyWith(
-    _$VoiceCaptureStateImpl value,
-    $Res Function(_$VoiceCaptureStateImpl) then,
-  ) = __$$VoiceCaptureStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({
-    VoiceCaptureStage stage,
-    String text,
-    VoiceParseResult? result,
-    SpeechErrorCode? error,
-    SpeechUnavailableReason? unavailable,
-  });
+
+
+class _VoiceCaptureState extends VoiceCaptureState {
+  const _VoiceCaptureState({this.stage = VoiceCaptureStage.idle, this.text = '', this.result, this.error, this.unavailable}): super._();
+  
+
+@override@JsonKey() final  VoiceCaptureStage stage;
+/// The words heard or typed so far.
+@override@JsonKey() final  String text;
+/// What those words were understood to mean. Null while the box is empty.
+@override final  VoiceParseResult? result;
+/// Why listening failed, if it did.
+@override final  SpeechErrorCode? error;
+/// Why the microphone cannot be used, if it cannot.
+///
+/// Set once when the sheet opens. It is never an error on its own: the
+/// sheet simply shows its text box instead of its microphone.
+@override final  SpeechUnavailableReason? unavailable;
+
+/// Create a copy of VoiceCaptureState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VoiceCaptureStateCopyWith<_VoiceCaptureState> get copyWith => __$VoiceCaptureStateCopyWithImpl<_VoiceCaptureState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _VoiceCaptureState&&(identical(other.stage, stage) || other.stage == stage)&&(identical(other.text, text) || other.text == text)&&(identical(other.result, result) || other.result == result)&&(identical(other.error, error) || other.error == error)&&(identical(other.unavailable, unavailable) || other.unavailable == unavailable));
 }
 
-/// @nodoc
-class __$$VoiceCaptureStateImplCopyWithImpl<$Res>
-    extends _$VoiceCaptureStateCopyWithImpl<$Res, _$VoiceCaptureStateImpl>
-    implements _$$VoiceCaptureStateImplCopyWith<$Res> {
-  __$$VoiceCaptureStateImplCopyWithImpl(
-    _$VoiceCaptureStateImpl _value,
-    $Res Function(_$VoiceCaptureStateImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of VoiceCaptureState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? stage = null,
-    Object? text = null,
-    Object? result = freezed,
-    Object? error = freezed,
-    Object? unavailable = freezed,
-  }) {
-    return _then(
-      _$VoiceCaptureStateImpl(
-        stage: null == stage
-            ? _value.stage
-            : stage // ignore: cast_nullable_to_non_nullable
-                  as VoiceCaptureStage,
-        text: null == text
-            ? _value.text
-            : text // ignore: cast_nullable_to_non_nullable
-                  as String,
-        result: freezed == result
-            ? _value.result
-            : result // ignore: cast_nullable_to_non_nullable
-                  as VoiceParseResult?,
-        error: freezed == error
-            ? _value.error
-            : error // ignore: cast_nullable_to_non_nullable
-                  as SpeechErrorCode?,
-        unavailable: freezed == unavailable
-            ? _value.unavailable
-            : unavailable // ignore: cast_nullable_to_non_nullable
-                  as SpeechUnavailableReason?,
-      ),
-    );
-  }
+@override
+int get hashCode {
+    return Object.hash(runtimeType,stage,text,result,error,unavailable);
 }
 
-/// @nodoc
-
-class _$VoiceCaptureStateImpl extends _VoiceCaptureState {
-  const _$VoiceCaptureStateImpl({
-    this.stage = VoiceCaptureStage.idle,
-    this.text = '',
-    this.result,
-    this.error,
-    this.unavailable,
-  }) : super._();
-
-  @override
-  @JsonKey()
-  final VoiceCaptureStage stage;
-
-  /// The words heard or typed so far.
-  @override
-  @JsonKey()
-  final String text;
-
-  /// What those words were understood to mean. Null while the box is empty.
-  @override
-  final VoiceParseResult? result;
-
-  /// Why listening failed, if it did.
-  @override
-  final SpeechErrorCode? error;
-
-  /// Why the microphone cannot be used, if it cannot.
-  ///
-  /// Set once when the sheet opens. It is never an error on its own: the
-  /// sheet simply shows its text box instead of its microphone.
-  @override
-  final SpeechUnavailableReason? unavailable;
-
-  @override
-  String toString() {
+@override
+String toString() {
     return 'VoiceCaptureState(stage: $stage, text: $text, result: $result, error: $error, unavailable: $unavailable)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$VoiceCaptureStateImpl &&
-            (identical(other.stage, stage) || other.stage == stage) &&
-            (identical(other.text, text) || other.text == text) &&
-            (identical(other.result, result) || other.result == result) &&
-            (identical(other.error, error) || other.error == error) &&
-            (identical(other.unavailable, unavailable) ||
-                other.unavailable == unavailable));
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, stage, text, result, error, unavailable);
-
-  /// Create a copy of VoiceCaptureState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$VoiceCaptureStateImplCopyWith<_$VoiceCaptureStateImpl> get copyWith =>
-      __$$VoiceCaptureStateImplCopyWithImpl<_$VoiceCaptureStateImpl>(
-        this,
-        _$identity,
-      );
 }
 
-abstract class _VoiceCaptureState extends VoiceCaptureState {
-  const factory _VoiceCaptureState({
-    final VoiceCaptureStage stage,
-    final String text,
-    final VoiceParseResult? result,
-    final SpeechErrorCode? error,
-    final SpeechUnavailableReason? unavailable,
-  }) = _$VoiceCaptureStateImpl;
-  const _VoiceCaptureState._() : super._();
 
-  @override
-  VoiceCaptureStage get stage;
-
-  /// The words heard or typed so far.
-  @override
-  String get text;
-
-  /// What those words were understood to mean. Null while the box is empty.
-  @override
-  VoiceParseResult? get result;
-
-  /// Why listening failed, if it did.
-  @override
-  SpeechErrorCode? get error;
-
-  /// Why the microphone cannot be used, if it cannot.
-  ///
-  /// Set once when the sheet opens. It is never an error on its own: the
-  /// sheet simply shows its text box instead of its microphone.
-  @override
-  SpeechUnavailableReason? get unavailable;
-
-  /// Create a copy of VoiceCaptureState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$VoiceCaptureStateImplCopyWith<_$VoiceCaptureStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+abstract mixin class _$VoiceCaptureStateCopyWith<$Res> implements $VoiceCaptureStateCopyWith<$Res> {
+  factory _$VoiceCaptureStateCopyWith(_VoiceCaptureState value, $Res Function(_VoiceCaptureState) _then) = __$VoiceCaptureStateCopyWithImpl;
+@override @useResult
+$Res call({
+ VoiceCaptureStage stage, String text, VoiceParseResult? result, SpeechErrorCode? error, SpeechUnavailableReason? unavailable
+});
+
+
+
+
+}
+/// @nodoc
+class __$VoiceCaptureStateCopyWithImpl<$Res>
+    implements _$VoiceCaptureStateCopyWith<$Res> {
+  __$VoiceCaptureStateCopyWithImpl(this._self, this._then);
+
+  final _VoiceCaptureState _self;
+  final $Res Function(_VoiceCaptureState) _then;
+
+/// Create a copy of VoiceCaptureState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? stage = null,Object? text = null,Object? result = freezed,Object? error = freezed,Object? unavailable = freezed,}) {
+  return _then(_VoiceCaptureState(
+stage: null == stage ? _self.stage : stage // ignore: cast_nullable_to_non_nullable
+as VoiceCaptureStage,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
+as String,result: freezed == result ? _self.result : result // ignore: cast_nullable_to_non_nullable
+as VoiceParseResult?,error: freezed == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as SpeechErrorCode?,unavailable: freezed == unavailable ? _self.unavailable : unavailable // ignore: cast_nullable_to_non_nullable
+as SpeechUnavailableReason?,
+  ));
+}
+
+
+}
+
+// dart format on

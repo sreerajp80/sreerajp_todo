@@ -171,12 +171,16 @@ Re-keying between the device key and user passphrase is performed via `PRAGMA re
 | Permission | Why It Is Needed | Requested When | Denial Handling |
 |------------|------------------|----------------|-----------------|
 | Local file storage (implicit) | SQLite database in app's private directory | Automatic (OS grants to all apps for their own data directory) | Not applicable |
-| External storage / file access | Backup export/import to user-accessible location | When the user taps Export or Import on the Backup screen | Show error explaining file access is required for backup |
-| `CAMERA` | Scanning an AirQR code to move data between the user's own devices | When the user opens the QR scanner | The scanner screen explains that the camera is required; every other feature keeps working |
+| User-chosen files (no permission) | Backup export/import, and picking an image for OCR | When the user taps Export or Import on the Backup screen, or picks an image on the OCR screen | Uses the system file picker, which gives access only to the file the user chooses. No storage permission is needed. If the user cancels, nothing happens |
+| `CAMERA` | OCR scanning of text for new tasks, and scanning an AirQR code to move data between the user's own devices | When the user opens the OCR scanner or the QR scanner | The scanner screen explains that the camera is required; every other feature keeps working |
 | `INTERNET` | Wi-Fi sync between the user's own devices on the local network. No internet traffic | Granted at install (normal permission) | Not applicable |
 | `RECORD_AUDIO` | The offline voice task sheet | Only after the user turns **Voice input** on in Settings → Task defaults → Day list, and then taps the microphone | The sheet shows its text box instead, and the sentence is parsed exactly the same way |
+| `POST_NOTIFICATIONS` | The ongoing live timer notification for a running task, and pending-task reminder notifications | Android 13+: when the user turns on the running-timer notification in timer settings, or when a timer runs and the permission is not yet granted. Older Android: granted at install | No notification is shown. Timers, reminders inside the app and every other feature keep working |
+| `RECEIVE_BOOT_COMPLETED` | Schedules pending-task reminder alarms again after the phone restarts | Granted at install (normal permission) | Not applicable |
 
-Permissions the app explicitly does NOT request: `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `LOCATION`, `CONTACTS`, `PHONE`, `NOTIFICATIONS`.
+Reminder alarms use inexact alarms (`setAndAllowWhileIdle`), which need no alarm permission.
+
+Permissions the app explicitly does NOT request: `ACCESS_NETWORK_STATE`, `ACCESS_WIFI_STATE`, `LOCATION`, `CONTACTS`, `PHONE`, `READ_EXTERNAL_STORAGE`, `WRITE_EXTERNAL_STORAGE`, `SCHEDULE_EXACT_ALARM`, `USE_EXACT_ALARM`. The storage permissions are added by the camera plugin and removed in `android/app/src/main/AndroidManifest.xml` with `tools:node="remove"`.
 
 ### Why `RECORD_AUDIO` does not break the offline guarantee
 

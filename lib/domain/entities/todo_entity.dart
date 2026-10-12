@@ -6,7 +6,7 @@ import 'package:sreerajp_todo/domain/entities/todo_status.dart';
 part 'todo_entity.freezed.dart';
 
 @freezed
-class TodoEntity with _$TodoEntity {
+abstract class TodoEntity with _$TodoEntity {
   const TodoEntity._();
 
   const factory TodoEntity({

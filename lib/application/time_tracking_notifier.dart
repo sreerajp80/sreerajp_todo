@@ -1,4 +1,4 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:sreerajp_todo/application/time_tracking_state.dart';
 import 'package:sreerajp_todo/application/timer_paused_store.dart';
 import 'package:sreerajp_todo/core/errors/exceptions.dart';

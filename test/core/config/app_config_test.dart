@@ -110,112 +110,108 @@ void main() {
   });
 
   group('app_config.json compliance tests', () {
-    test(
-      'app_config.json has complete en, ml, sa entries and no Hindi markers',
-      () {
-        final file = File('assets/config/app_config.json');
-        expect(file.existsSync(), isTrue, reason: 'app_config.json must exist');
+    test('app_config.json has complete en, ml, sa entries and no Hindi markers', () {
+      final file = File('assets/config/app_config.json');
+      expect(file.existsSync(), isTrue, reason: 'app_config.json must exist');
 
-        final json =
-            jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
-        final problems = <String>[];
+      final json = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+      final problems = <String>[];
 
-        void checkLanguages(String path, dynamic value) {
-          if (value is! Map<String, dynamic>) {
-            problems.add('$path must be a locale map');
-            return;
-          }
-          for (final lang in ['en', 'ml', 'sa']) {
-            final text = value[lang]?.toString().trim() ?? '';
-            if (text.isEmpty) {
-              problems.add('$path.$lang is missing or empty');
-            }
+      void checkLanguages(String path, dynamic value) {
+        if (value is! Map<String, dynamic>) {
+          problems.add('$path must be a locale map');
+          return;
+        }
+        for (final lang in ['en', 'ml', 'sa']) {
+          final text = value[lang]?.toString().trim() ?? '';
+          if (text.isEmpty) {
+            problems.add('$path.$lang is missing or empty');
           }
         }
+      }
 
-        checkLanguages('appName', json['appName']);
-        checkLanguages('description', json['description']);
+      checkLanguages('appName', json['appName']);
+      checkLanguages('description', json['description']);
 
-        final details = json['details'] as Map<String, dynamic>;
-        checkLanguages('details.author', details['author']);
-        checkLanguages('details.license', details['license']);
-        checkLanguages('details.aiUsed', details['aiUsed']);
-        checkLanguages('details.ideUsed', details['ideUsed']);
+      final details = json['details'] as Map<String, dynamic>;
+      checkLanguages('details.author', details['author']);
+      checkLanguages('details.license', details['license']);
+      checkLanguages('details.aiUsed', details['aiUsed']);
+      checkLanguages('details.ideUsed', details['ideUsed']);
 
-        expect(problems, isEmpty, reason: problems.join('\n'));
+      expect(problems, isEmpty, reason: problems.join('\n'));
 
-        // Forbidden Hindi markers and nukta check from standard §8.5
-        const forbiddenSubstringMarkers = [
-          'करें',
-          'करना',
-          'करके',
-          'रहा',
-          'रही',
-          'रहे',
-          'गया',
-          'गयी',
-          'चाहिए',
-          'नहीं',
-          'लेकिन',
-          'क्या',
-          'कृपया',
-          'सेटिंग्स',
-          'ऐप',
-        ];
+      // Forbidden Hindi markers and nukta check from standard §8.5
+      const forbiddenSubstringMarkers = [
+        'करें',
+        'करना',
+        'करके',
+        'रहा',
+        'रही',
+        'रहे',
+        'गया',
+        'गयी',
+        'चाहिए',
+        'नहीं',
+        'लेकिन',
+        'क्या',
+        'कृपया',
+        'सेटिंग्स',
+        'ऐप',
+      ];
 
-        const forbiddenStandaloneMarkers = [
-          'था',
-          'थे',
-          'थी',
-          'हो',
-          'है',
-          'हैं',
-          'हूं',
-          'और',
-        ];
+      const forbiddenStandaloneMarkers = [
+        'था',
+        'थे',
+        'थी',
+        'हो',
+        'है',
+        'हैं',
+        'हूं',
+        'और',
+      ];
 
-        void checkSanskritText(String path, dynamic value) {
-          if (value is Map<String, dynamic>) {
-            final saText = value['sa']?.toString() ?? '';
+      void checkSanskritText(String path, dynamic value) {
+        if (value is Map<String, dynamic>) {
+          final saText = value['sa']?.toString() ?? '';
 
-            // Check nukta
-            for (final rune in saText.runes) {
-              if (rune == 0x093C || (rune >= 0x0958 && rune <= 0x095F)) {
-                problems.add(
-                  'Nukta character U+${rune.toRadixString(16).toUpperCase()} found in $path.sa: "$saText"',
-                );
-              }
+          // Check nukta
+          for (final rune in saText.runes) {
+            if (rune == 0x093C || (rune >= 0x0958 && rune <= 0x095F)) {
+              problems.add(
+                'Nukta character U+${rune.toRadixString(16).toUpperCase()} found in $path.sa: "$saText"',
+              );
             }
+          }
 
-            // Check forbidden substrings
-            for (final marker in forbiddenSubstringMarkers) {
-              if (saText.contains(marker)) {
-                problems.add(
-                  'Forbidden Hindi marker "$marker" found in $path.sa: "$saText"',
-                );
-              }
+          // Check forbidden substrings
+          for (final marker in forbiddenSubstringMarkers) {
+            if (saText.contains(marker)) {
+              problems.add(
+                'Forbidden Hindi marker "$marker" found in $path.sa: "$saText"',
+              );
             }
+          }
 
-            // Check forbidden standalone words
-            final words = saText.split(RegExp(r'[\s।,.\?!;:\-_/]+'));
-            for (final marker in forbiddenStandaloneMarkers) {
-              if (words.contains(marker)) {
-                problems.add(
-                  'Forbidden Hindi word "$marker" found in $path.sa: "$saText"',
-                );
-              }
+          // Check forbidden standalone words
+          final words = saText.split(RegExp(r'[\s।,.\?!;:\-_/]+'));
+          for (final marker in forbiddenStandaloneMarkers) {
+            if (words.contains(marker)) {
+              problems.add(
+                'Forbidden Hindi word "$marker" found in $path.sa: "$saText"',
+              );
             }
           }
         }
+      }
 
-        checkSanskritText('appName', json['appName']);
-        checkSanskritText('description', json['description']);
-        for (final entry in details.entries) {
-          checkSanskritText('details.${entry.key}', entry.value);
-        }
+      checkSanskritText('appName', json['appName']);
+      checkSanskritText('description', json['description']);
+      for (final entry in details.entries) {
+        checkSanskritText('details.${entry.key}', entry.value);
+      }
 
-        expect(problems, isEmpty, reason: problems.join('\n'));
-      },
-    );
+      expect(problems, isEmpty, reason: problems.join('\n'));
+    });
   });
 }

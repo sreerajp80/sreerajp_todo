@@ -12,10 +12,11 @@
     -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <!--
-        Needed for background alarms and scheduled task reminders when the app is closed.
+        Needed to schedule task reminders again after the phone restarts.
+        Reminders use inexact alarms (setAndAllowWhileIdle), which need no
+        alarm permission, so no exact-alarm permission is declared.
     -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <!--
         Needed ONLY for Wi-Fi sync between the user's own devices on the same
         local network. Android asks for this permission for any socket, even
@@ -30,6 +31,18 @@
     -->
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE"
+        tools:node="remove" />
+    <!--
+        Not needed by the app. The camera plugin adds the write-storage
+        permission (Android 9 and older) for saving to shared storage, but this app saves
+        photos only in its private cache folder. Backup and image picking use
+        the system file picker, which needs no storage permission.
+    -->
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         tools:node="remove" />
     <application
         android:label="@string/app_name"

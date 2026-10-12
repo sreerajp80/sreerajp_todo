@@ -3,7 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'time_segment_entity.freezed.dart';
 
 @freezed
-class TimeSegmentEntity with _$TimeSegmentEntity {
+abstract class TimeSegmentEntity with _$TimeSegmentEntity {
   const TimeSegmentEntity._();
 
   const factory TimeSegmentEntity({
